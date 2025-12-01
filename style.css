@@ -5,5 +5,14 @@ src: url(DungeonFont.ttf);
 body {
 background-color: rgb(17, 170, 86);
 overflow: auto;
+}
+
+p {
+font-size: 26px;
+font-family: DDF;
+}
+
+h1 {
+font-size: 26px;
 font-family: DDF;
 }
