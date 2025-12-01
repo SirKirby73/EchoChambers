@@ -1,0 +1,21 @@
+{
+	"name": "SoundText2",
+	"plugin-id": "Text",
+	"sid": 911089329177606,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Sin",
+			"name": "Sine",
+			"sid": 995190360332864
+		}
+	],
+	"effectTypes": [
+		{
+			"effectId": "sharpen",
+			"name": "Sharpen"
+		}
+	]
+}

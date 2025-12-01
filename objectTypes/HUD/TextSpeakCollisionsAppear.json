@@ -1,0 +1,52 @@
+{
+	"name": "TextSpeakCollisionsAppear",
+	"plugin-id": "Sprite",
+	"sid": 646263706508291,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 3,
+						"height": 16,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 1442167,
+						"collisionPoly": {
+							"points": [
+								0.3333333333333333,
+								0.0625,
+								0.6666666666666666,
+								0.0625,
+								0.6666666666666666,
+								0.9375,
+								0.3333333333333333,
+								0.9375
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 919400445397753,
+				"name": "Animation 1",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 5
+			}
+		],
+		"subfolders": []
+	}
+}

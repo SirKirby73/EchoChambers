@@ -1,0 +1,61 @@
+{
+	"name": "BreakableBlock1",
+	"plugin-id": "Sprite",
+	"sid": 782034353659567,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [
+		{
+			"name": "BlockHealth",
+			"type": "number",
+			"desc": "",
+			"show": true,
+			"sid": 248626476449580
+		}
+	],
+	"behaviorTypes": [
+		{
+			"behaviorId": "solid",
+			"name": "Solid",
+			"sid": 891922834163965
+		}
+	],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 32,
+						"height": 32,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 5268070,
+						"useCollisionPoly": true,
+						"imagePoints": [
+							{
+								"name": "HPBAR",
+								"x": -0.375,
+								"y": -0.0625
+							}
+						],
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 126933967842581,
+				"name": "Animation 1",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			}
+		],
+		"subfolders": []
+	}
+}

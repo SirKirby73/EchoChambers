@@ -1,0 +1,16 @@
+{
+	"name": "SOHPTEXT",
+	"plugin-id": "Text",
+	"sid": 300516754712736,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Pin",
+			"name": "Pin",
+			"sid": 737871865183196
+		}
+	],
+	"effectTypes": []
+}

@@ -1,0 +1,911 @@
+{
+	"projectFormatVersion": 1,
+	"savedWithRelease": 45802,
+	"name": "Echo Chambers",
+	"runtime": "c3",
+	"useWorker": "auto",
+	"bundleAddons": true,
+	"usedAddons": [
+		{
+			"type": "plugin",
+			"id": "Audio",
+			"name": "Audio",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "plugin",
+			"id": "Button",
+			"name": "Button",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "plugin",
+			"id": "Keyboard",
+			"name": "Keyboard",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "plugin",
+			"id": "Mouse",
+			"name": "Mouse",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "plugin",
+			"id": "Particles",
+			"name": "Particles",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "plugin",
+			"id": "Sprite",
+			"name": "Sprite",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "plugin",
+			"id": "Text",
+			"name": "Text",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "plugin",
+			"id": "TiledBg",
+			"name": "Tiled Background",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "plugin",
+			"id": "Tilemap",
+			"name": "Tilemap",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "plugin",
+			"id": "progressbar",
+			"name": "Progress bar",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "plugin",
+			"id": "shadowlight",
+			"name": "Shadow light",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "plugin",
+			"id": "sliderbar",
+			"name": "Slider bar",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "behavior",
+			"id": "Anchor",
+			"name": "Anchor",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "behavior",
+			"id": "Bullet",
+			"name": "Bullet",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "behavior",
+			"id": "Flash",
+			"name": "Flash",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "behavior",
+			"id": "Pin",
+			"name": "Pin",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "behavior",
+			"id": "Platform",
+			"name": "Platform",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "behavior",
+			"id": "Sin",
+			"name": "Sine",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "behavior",
+			"id": "TileMovement",
+			"name": "Tile movement",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "behavior",
+			"id": "Turret",
+			"name": "Turret",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "behavior",
+			"id": "bound",
+			"name": "Bound to layout",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "behavior",
+			"id": "jumpthru",
+			"name": "Jump-thru",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "behavior",
+			"id": "scrollto",
+			"name": "Scroll To",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "behavior",
+			"id": "shadowcaster",
+			"name": "Shadow caster",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "behavior",
+			"id": "skymen_FollowMouse",
+			"name": "Follow Mouse",
+			"author": "skymen",
+			"bundled": true,
+			"version": "2.0.0.0",
+			"sdkVersion": 2
+		},
+		{
+			"type": "behavior",
+			"id": "solid",
+			"name": "Solid",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "effect",
+			"id": "pulse",
+			"name": "Pulse",
+			"author": "Danguafer/Silexars",
+			"bundled": false
+		},
+		{
+			"type": "effect",
+			"id": "setcolor",
+			"name": "Set color",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "effect",
+			"id": "sharpen",
+			"name": "Sharpen",
+			"author": "Brad Larson",
+			"bundled": false
+		},
+		{
+			"type": "effect",
+			"id": "tint",
+			"name": "Tint",
+			"author": "Scirra",
+			"bundled": false
+		}
+	],
+	"uniqueId": "vicym9z8670",
+	"objectTypes": {
+		"items": [
+			"aaaaaa"
+		],
+		"subfolders": [
+			{
+				"items": [
+					"CooldownText",
+					"CursorSprite",
+					"InstructionsText",
+					"InstructionHUDbringup",
+					"InstructionsText2",
+					"ContinueGameButton",
+					"DeathScreen",
+					"TheVoiceTextSpeak",
+					"TextSpeakCollisionsAppear",
+					"RubyTextSpeak",
+					"Instructions",
+					"bkgrdfix",
+					"fullscreenfix",
+					"ToNextLevelButton"
+				],
+				"subfolders": [
+					{
+						"items": [
+							"HPbar",
+							"HPTEXT",
+							"MPbar",
+							"MPTEXT",
+							"ShieldBar",
+							"SOHPTEXT",
+							"ManaBar30",
+							"LifeBar30",
+							"NECROT1HPtext",
+							"BossBarLVL1variable",
+							"BossBarLVL1PROGRESS",
+							"ATKtypeText",
+							"blockhptexttest",
+							"SKHPTEXT"
+						],
+						"subfolders": [
+							{
+								"items": [
+									"ArrowNumberstatic",
+									"BossBarLVLstatic",
+									"MoneyTextStatic"
+								],
+								"subfolders": [],
+								"name": "Static"
+							}
+						],
+						"name": "StatBars"
+					},
+					{
+						"items": [
+							"StartBCGRND",
+							"StartGameText",
+							"StartHUD",
+							"StartScreenGameTitle",
+							"ControlsText",
+							"BackToMainMenuText",
+							"StartScreenGameWarning",
+							"SoundText1",
+							"SoundText2",
+							"VolumeSliderBar"
+						],
+						"subfolders": [],
+						"name": "StartHUD"
+					},
+					{
+						"items": [
+							"ShopHUDbckgrd",
+							"HeartContainer",
+							"ItemCostDescription",
+							"ItemCostVariable",
+							"ItemCostStatic",
+							"ArrowItemPurchaseable",
+							"ArrowItemPurchaseable2",
+							"ItemCostDescription2",
+							"ManaContainer",
+							"HPpot",
+							"MPpot",
+							"ShopDescriptionBorder"
+						],
+						"subfolders": [],
+						"name": "ShopHUD"
+					},
+					{
+						"items": [
+							"MPpotHUD1",
+							"InventoryHUD",
+							"HPpotHUD1",
+							"ArrowsNumberVariable",
+							"HPpotsHUD2",
+							"MPpotsHUD2",
+							"MoneyHUD1",
+							"ArrowHUD",
+							"MoneyTextVariable",
+							"inv1",
+							"inv2",
+							"inv3",
+							"inv4"
+						],
+						"subfolders": [],
+						"name": "INV"
+					}
+				],
+				"name": "HUD"
+			},
+			{
+				"items": [
+					"a",
+					"DungeonBackGround",
+					"DungeonTileMap",
+					"Platform",
+					"Platform2",
+					"Platform3",
+					"BreakableBlock1",
+					"BreakableBlock1hp",
+					"BreakableBlock2",
+					"BreakableBlock2hp"
+				],
+				"subfolders": [],
+				"name": "Tilemapping"
+			},
+			{
+				"items": [
+					"Ruby",
+					"TorchFlames",
+					"Sapphire",
+					"particlesBlue",
+					"particlesRed",
+					"ShadowLight"
+				],
+				"subfolders": [
+					{
+						"items": [
+							"NecromancerT1",
+							"SpiritOrbT1",
+							"SkeletonT1"
+						],
+						"subfolders": [
+							{
+								"items": [
+									"NecromancerATKS"
+								],
+								"subfolders": [],
+								"name": "EnemiesATKS"
+							}
+						],
+						"name": "Enemies"
+					},
+					{
+						"items": [
+							"RubyATKS",
+							"RubyMelee",
+							"FriendlyArrow"
+						],
+						"subfolders": [],
+						"name": "ATKS"
+					},
+					{
+						"items": [
+							"CC",
+							"GC",
+							"PC",
+							"SC",
+							"TC"
+						],
+						"subfolders": [],
+						"name": "Money"
+					},
+					{
+						"items": [
+							"HPpickup",
+							"MPpickup",
+							"ShieldEpickup",
+							"JumpSkillPickup",
+							"DEFboost",
+							"ATKboost",
+							"ArrowPickup"
+						],
+						"subfolders": [],
+						"name": "Pickups"
+					},
+					{
+						"items": [
+							"ExitPortal",
+							"LVL1Portal",
+							"LVL2Portal",
+							"LVL3Portal",
+							"TPportal",
+							"tpportalend1",
+							"TPportal2",
+							"tpportalend2",
+							"TPportal3",
+							"tpportalend3",
+							"TPportal2a",
+							"tpportalend2a",
+							"tpportalend3a",
+							"TPportal3a"
+						],
+						"subfolders": [],
+						"name": "Portals"
+					}
+				],
+				"name": "Entities"
+			},
+			{
+				"items": [
+					"Keyboard",
+					"Mouse"
+				],
+				"subfolders": [],
+				"name": "InputControls"
+			},
+			{
+				"items": [
+					"Audio"
+				],
+				"subfolders": [],
+				"name": "Outputandwhatnot"
+			},
+			{
+				"items": [
+					"background",
+					"DialogueText",
+					"DialogueText2",
+					"RubyCharacterPRO",
+					"SapphireCharacterPRO",
+					"letsGo",
+					"skipIntroMovieButton"
+				],
+				"subfolders": [],
+				"name": "IntroMovieObjects"
+			},
+			{
+				"items": [
+					"SplashC3",
+					"SplashPiskel",
+					"SplashKrita"
+				],
+				"subfolders": [],
+				"name": "SplashObjects"
+			}
+		]
+	},
+	"functionsName": "Functions",
+	"autosaveData": null,
+	"containers": [],
+	"families": {
+		"items": [
+			"Enemies"
+		],
+		"subfolders": []
+	},
+	"layouts": {
+		"items": [
+			"StartScreen",
+			"StartScreenSound",
+			"StartScreenControls",
+			"Shop",
+			"IntroMovie",
+			"LVL1",
+			"LVL2",
+			"LVL3",
+			"EndofGame",
+			"LVL4",
+			"Splash"
+		],
+		"subfolders": []
+	},
+	"eventSheets": {
+		"items": [
+			"GameEventSheet",
+			"StartMenusSheet",
+			"IntroMovieSheet",
+			"ShopSheet",
+			"splashSheet"
+		],
+		"subfolders": []
+	},
+	"rootFileFolders": {
+		"script": {
+			"items": [],
+			"subfolders": []
+		},
+		"sound": {
+			"items": [
+				{
+					"name": "atk.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 724206129779894,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "levelUp.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 749628102448705,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "atkBlocked.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 491494748723426,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "defeated.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 760775960165187,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "enemyDefeated.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 431576839576622,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "enemyHit.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 445309468529412,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "healHP.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 350899364546508,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "itemPurchased.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 164926010314093,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "magicATK.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 281438305099818,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "menusClick.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 602824025716089,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "run.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 961262962604373,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "spiritFlame.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 471601269876212,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "startGame.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 699965508266805,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "victory.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 595806412783390,
+					"file-info": {
+						"purpose": "none"
+					}
+				}
+			],
+			"subfolders": []
+		},
+		"music": {
+			"items": [],
+			"subfolders": [
+				{
+					"items": [
+						{
+							"name": "intromovie.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 407124430523348,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "startScreenMusic.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 377286594299833,
+							"file-info": {
+								"purpose": "none"
+							}
+						}
+					],
+					"subfolders": [],
+					"name": "preGame"
+				},
+				{
+					"items": [
+						{
+							"name": "Boss1.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 615902865258018,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "Boss2.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 993056180452512,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "Boss3.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 484111348425674,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "Boss4.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 700636786902541,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "Boss5.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 902847096626614,
+							"file-info": {
+								"purpose": "none"
+							}
+						}
+					],
+					"subfolders": [],
+					"name": "boss"
+				},
+				{
+					"items": [
+						{
+							"name": "ECBGM.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 213872103905533,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "ECBGM2.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 492675137165145,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "ECBGM3.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 393128635394551,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "ECBGM4.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 296795749720098,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "ECBGM5.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 524368661696268,
+							"file-info": {
+								"purpose": "none"
+							}
+						}
+					],
+					"subfolders": [],
+					"name": "lvl"
+				}
+			]
+		},
+		"video": {
+			"items": [],
+			"subfolders": []
+		},
+		"font": {
+			"items": [
+				{
+					"name": "DungeonFont.ttf",
+					"type": "application/font-sfnt",
+					"sid": 683385269806056,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "Atrélurn-Regular.woff",
+					"type": "application/font-woff",
+					"sid": 216343497013178,
+					"file-info": {
+						"purpose": "none"
+					}
+				}
+			],
+			"subfolders": []
+		},
+		"icon": {
+			"items": [
+				{
+					"name": "loading-logo.png",
+					"type": "image/png",
+					"sid": 321102706691235,
+					"icon-info": {
+						"purpose": "loading-logo"
+					}
+				},
+				{
+					"name": "Iconnew512.png",
+					"type": "image/png",
+					"sid": 814599697807162,
+					"icon-info": {
+						"purpose": "app-icon"
+					}
+				},
+				{
+					"name": "Iconnew16.png",
+					"type": "image/png",
+					"sid": 501989342510558,
+					"icon-info": {
+						"purpose": "app-icon"
+					}
+				},
+				{
+					"name": "Iconnew32.png",
+					"type": "image/png",
+					"sid": 487395293911532,
+					"icon-info": {
+						"purpose": "app-icon"
+					}
+				},
+				{
+					"name": "Iconnew64.png",
+					"type": "image/png",
+					"sid": 580237726439412,
+					"icon-info": {
+						"purpose": "app-icon"
+					}
+				},
+				{
+					"name": "Iconnew128.png",
+					"type": "image/png",
+					"sid": 748921087274105,
+					"icon-info": {
+						"purpose": "app-icon"
+					}
+				},
+				{
+					"name": "Iconnew256.png",
+					"type": "image/png",
+					"sid": 705083863002794,
+					"icon-info": {
+						"purpose": "app-icon"
+					}
+				}
+			],
+			"subfolders": []
+		},
+		"general": {
+			"items": [],
+			"subfolders": []
+		}
+	},
+	"timelines": {
+		"items": [
+			"Timeline 1"
+		],
+		"subfolders": [
+			{
+				"items": [],
+				"subfolders": []
+			}
+		]
+	},
+	"flowcharts": {
+		"items": [
+			"Flowchart 1"
+		],
+		"subfolders": []
+	},
+	"properties": {
+		"description": "",
+		"version": "1.0.0.8",
+		"autoIncrementVersion": true,
+		"author": "Sir_Kirby!",
+		"authorEmail": "",
+		"authorWebsite": "",
+		"appId": "",
+		"pixelRounding": true,
+		"zAxisScale": "normalized",
+		"fov": 0.7853981633974483,
+		"useLoaderLayout": true,
+		"fullscreenMode": "scale-outer",
+		"fullscreenQuality": "high",
+		"viewportFit": "auto",
+		"backgroundColor": [
+			0,
+			0,
+			0,
+			0
+		],
+		"splashColor": [
+			1,
+			1,
+			1,
+			0
+		],
+		"useThemeColor": true,
+		"themeColor": [
+			0.09411764705882353,
+			0.1568627450980392,
+			0.4392156862745098,
+			0
+		],
+		"orientations": "any",
+		"webgpu": "auto",
+		"multitexturing": "auto",
+		"gpuPreference": "high-performance",
+		"framerateMode": "vsync",
+		"sampling": "nearest",
+		"downscaling": "medium",
+		"renderingMode": "auto",
+		"anisotropicFiltering": "auto",
+		"zNear": 1,
+		"zFar": 10000,
+		"maxSpriteSheetSize": 2048,
+		"loaderStyle": "progress-logo",
+		"preloadSounds": true,
+		"uidAllocationMode": "increment",
+		"cordovaiOSScheme": "app",
+		"cordovaAndroidScheme": "https",
+		"exportFileStructure": "folders",
+		"scriptsType": "module"
+	},
+	"viewportWidth": 600,
+	"viewportHeight": 600,
+	"firstLayout": "Splash"
+}

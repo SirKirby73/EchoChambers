@@ -1,0 +1,161 @@
+{
+	"name": "splashSheet",
+	"events": [
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-start-of-layout",
+					"objectClass": "System",
+					"sid": 786768651413815
+				}
+			],
+			"actions": [
+				{
+					"id": "set-active",
+					"objectClass": "SplashC3",
+					"sid": 633680758873845,
+					"behaviorType": "Sine",
+					"parameters": {
+						"state": "active"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 780121260043155,
+					"parameters": {
+						"seconds": "2.0",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 789118548434687
+				},
+				{
+					"id": "set-visible",
+					"objectClass": "SplashC3",
+					"sid": 696542600361568,
+					"parameters": {
+						"visibility": "invisible"
+					}
+				},
+				{
+					"id": "set-active",
+					"objectClass": "SplashPiskel",
+					"sid": 633297305666182,
+					"behaviorType": "Sine",
+					"parameters": {
+						"state": "active"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 708548383682369,
+					"parameters": {
+						"seconds": "2.0",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 682242273249856
+				},
+				{
+					"id": "set-visible",
+					"objectClass": "SplashPiskel",
+					"sid": 824880242795493,
+					"parameters": {
+						"visibility": "invisible"
+					}
+				},
+				{
+					"id": "set-active",
+					"objectClass": "SplashKrita",
+					"sid": 297991854042753,
+					"behaviorType": "Sine",
+					"parameters": {
+						"state": "active"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 797199244143058,
+					"parameters": {
+						"seconds": "2.0",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 149687422369668
+				},
+				{
+					"id": "set-visible",
+					"objectClass": "SplashKrita",
+					"sid": 917293612654307,
+					"parameters": {
+						"visibility": "invisible"
+					}
+				},
+				{
+					"id": "set-active",
+					"objectClass": "SplashC3",
+					"sid": 523760117023019,
+					"behaviorType": "Sine",
+					"parameters": {
+						"state": "inactive"
+					}
+				},
+				{
+					"id": "set-active",
+					"objectClass": "SplashPiskel",
+					"sid": 450539434385858,
+					"behaviorType": "Sine",
+					"parameters": {
+						"state": "inactive"
+					}
+				},
+				{
+					"id": "set-active",
+					"objectClass": "SplashKrita",
+					"sid": 192295992720393,
+					"behaviorType": "Sine",
+					"parameters": {
+						"state": "inactive"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 606600966171460,
+					"parameters": {
+						"seconds": "2.0",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 197948692345764
+				},
+				{
+					"id": "go-to-layout-by-name",
+					"objectClass": "System",
+					"sid": 811676320758985,
+					"parameters": {
+						"layout": "\"StartScreen\""
+					}
+				}
+			],
+			"sid": 673830505348976
+		}
+	],
+	"sid": 993108848453373
+}

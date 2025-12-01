@@ -1,0 +1,16 @@
+{
+	"name": "ATKtypeText",
+	"plugin-id": "Text",
+	"sid": 437845616185907,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 497786614188435
+		}
+	],
+	"effectTypes": []
+}

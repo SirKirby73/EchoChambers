@@ -1,0 +1,21 @@
+{
+	"name": "StartScreenGameWarning",
+	"plugin-id": "Text",
+	"sid": 825606870391802,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Sin",
+			"name": "Sine",
+			"sid": 938769502921764
+		}
+	],
+	"effectTypes": [
+		{
+			"effectId": "sharpen",
+			"name": "Sharpen"
+		}
+	]
+}

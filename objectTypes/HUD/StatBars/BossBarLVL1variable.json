@@ -1,0 +1,63 @@
+{
+	"name": "BossBarLVL1variable",
+	"plugin-id": "Sprite",
+	"sid": 493841970945318,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Pin",
+			"name": "Pin",
+			"sid": 243182496426011
+		},
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 637978668167199
+		}
+	],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 562,
+						"height": 42,
+						"originX": 0,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 6546170,
+						"collisionPoly": {
+							"points": [
+								0.028469750889679714,
+								0,
+								0.9715302491103203,
+								0,
+								0.9715302491103203,
+								1,
+								0.028469750889679714,
+								1
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 297656063839941,
+				"name": "Animation 1",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			}
+		],
+		"subfolders": []
+	}
+}

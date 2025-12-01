@@ -1,0 +1,16 @@
+{
+	"name": "SKHPTEXT",
+	"plugin-id": "Text",
+	"sid": 895436386388360,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Pin",
+			"name": "Pin",
+			"sid": 560052891829989
+		}
+	],
+	"effectTypes": []
+}

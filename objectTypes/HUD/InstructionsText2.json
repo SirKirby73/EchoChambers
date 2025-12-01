@@ -1,0 +1,16 @@
+{
+	"name": "InstructionsText2",
+	"plugin-id": "Text",
+	"sid": 773965391004870,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 862429439108069
+		}
+	],
+	"effectTypes": []
+}

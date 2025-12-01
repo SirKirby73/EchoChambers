@@ -1,0 +1,79 @@
+{
+	"name": "MoneyHUD1",
+	"plugin-id": "Sprite",
+	"sid": 362917920210664,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 837967271546553
+		}
+	],
+	"effectTypes": [
+		{
+			"effectId": "pulse",
+			"name": "Pulse"
+		}
+	],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 12,
+						"height": 16,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 9053951,
+						"collisionPoly": {
+							"points": [
+								0.3333333333333333,
+								0,
+								0.6666666666666666,
+								0,
+								0.8333333333333334,
+								0.0625,
+								1,
+								0.25,
+								1,
+								0.75,
+								0.8333333333333334,
+								0.9375,
+								0.6666666666666666,
+								1,
+								0.3333333333333333,
+								1,
+								0.16666666666666666,
+								0.9375,
+								0,
+								0.75,
+								0,
+								0.25,
+								0.16666666666666666,
+								0.0625
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 379471736754471,
+				"name": "Animation 1",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 5
+			}
+		],
+		"subfolders": []
+	}
+}

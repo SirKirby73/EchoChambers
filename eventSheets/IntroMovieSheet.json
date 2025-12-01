@@ -1,0 +1,1606 @@
+{
+	"name": "IntroMovieSheet",
+	"events": [
+		{
+			"eventType": "variable",
+			"name": "IntroMovieTextVariableThingy",
+			"type": "number",
+			"initialValue": "0",
+			"comment": "",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 889469993515665
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-start-of-layout",
+					"objectClass": "System",
+					"sid": 848959446279840
+				}
+			],
+			"actions": [
+				{
+					"id": "set-master-volume",
+					"objectClass": "Audio",
+					"sid": 453885747841994,
+					"parameters": {
+						"db": "SoundVolume"
+					}
+				},
+				{
+					"id": "stop-all",
+					"objectClass": "Audio",
+					"sid": 999402427647499
+				},
+				{
+					"id": "play",
+					"objectClass": "Audio",
+					"sid": 518337543021763,
+					"parameters": {
+						"audio-file": "intromovie",
+						"loop": "looping",
+						"volume": "SoundVolume",
+						"stereo-pan": "0",
+						"tag-optional": "\"intro\""
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 387796967417610,
+					"parameters": {
+						"seconds": "1.0",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-visible",
+					"objectClass": "DialogueText",
+					"sid": 691786456675805,
+					"parameters": {
+						"visibility": "visible"
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 496026681094441,
+					"parameters": {
+						"opacity": "25"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 507548250220197,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 422544113779062,
+					"parameters": {
+						"opacity": "50"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 641880536627708,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 100515739180108,
+					"parameters": {
+						"opacity": "75"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 381010565769966,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 704255599228829,
+					"parameters": {
+						"opacity": "100"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 740342937430053,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 125315955282555
+				},
+				{
+					"id": "set-visible",
+					"objectClass": "DialogueText2",
+					"sid": 217142770526796,
+					"parameters": {
+						"visibility": "visible"
+					}
+				},
+				{
+					"id": "typewriter-text",
+					"objectClass": "DialogueText2",
+					"sid": 272061704377158,
+					"parameters": {
+						"text": "\"Wauh?! Where... where am I?!\"",
+						"duration": "0.5"
+					}
+				},
+				{
+					"id": "set-eventvar-value",
+					"objectClass": "System",
+					"sid": 874220536810174,
+					"parameters": {
+						"variable": "IntroMovieTextVariableThingy",
+						"value": "1"
+					}
+				}
+			],
+			"sid": 343860378245784
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-click",
+					"objectClass": "Mouse",
+					"sid": 164159098607066,
+					"parameters": {
+						"mouse-button": "left",
+						"click-type": "clicked"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 552930990661622,
+					"parameters": {
+						"variable": "IntroMovieTextVariableThingy",
+						"comparison": 0,
+						"value": "1"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 931759552661405,
+					"parameters": {
+						"seconds": "1.5",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 472372154431021
+				},
+				{
+					"id": "set-text",
+					"objectClass": "DialogueText",
+					"sid": 670150472381085,
+					"parameters": {
+						"text": "\"???:\""
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "DialogueText2",
+					"sid": 579950329049184,
+					"parameters": {
+						"text": "\"\""
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 510643838547022,
+					"parameters": {
+						"opacity": "0"
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 737266389842436,
+					"parameters": {
+						"opacity": "25"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 589560898984697,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 920383537164787,
+					"parameters": {
+						"opacity": "50"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 298651835187863,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 675946825965079,
+					"parameters": {
+						"opacity": "75"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 986028741880685,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 764703255454819,
+					"parameters": {
+						"opacity": "100"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 178435832943574,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 120826069058470
+				},
+				{
+					"id": "typewriter-text",
+					"objectClass": "DialogueText2",
+					"sid": 860705596162334,
+					"parameters": {
+						"text": "\"This is called..... The Echo Chambers. You must survive the trials ahead. Certain death awaits if you are defeated. Ruby, take your sword and fight your way out.\"",
+						"duration": "3.5"
+					}
+				}
+			],
+			"sid": 926942394630109
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-click",
+					"objectClass": "Mouse",
+					"sid": 906681040019158,
+					"parameters": {
+						"mouse-button": "left",
+						"click-type": "clicked"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 378603916514412,
+					"parameters": {
+						"variable": "IntroMovieTextVariableThingy",
+						"comparison": 0,
+						"value": "2"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "set-text",
+					"objectClass": "DialogueText",
+					"sid": 139255553792535,
+					"parameters": {
+						"text": "\"Ruby:\""
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "DialogueText2",
+					"sid": 318461171887586,
+					"parameters": {
+						"text": "\"\""
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 366263552715473,
+					"parameters": {
+						"opacity": "0"
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 251043200896508,
+					"parameters": {
+						"opacity": "25"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 544942975986819,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 156586890363466,
+					"parameters": {
+						"opacity": "50"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 606187303766969,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 473306360063986,
+					"parameters": {
+						"opacity": "75"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 101326624330906,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 659351096487280,
+					"parameters": {
+						"opacity": "100"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 315775447766961,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 727554685732654
+				},
+				{
+					"id": "typewriter-text",
+					"objectClass": "DialogueText2",
+					"sid": 623771606983517,
+					"parameters": {
+						"text": "\"Who... Who are you?\"",
+						"duration": "0.5"
+					}
+				}
+			],
+			"sid": 389308126526693
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-click",
+					"objectClass": "Mouse",
+					"sid": 580171489081011,
+					"parameters": {
+						"mouse-button": "left",
+						"click-type": "clicked"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 197383175069409,
+					"parameters": {
+						"variable": "IntroMovieTextVariableThingy",
+						"comparison": 0,
+						"value": "3"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "set-text",
+					"objectClass": "DialogueText",
+					"sid": 827593238417809,
+					"parameters": {
+						"text": "\"???:\""
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "DialogueText2",
+					"sid": 323865618259805,
+					"parameters": {
+						"text": "\"\""
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 204305174999395,
+					"parameters": {
+						"opacity": "0"
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 682491554986207,
+					"parameters": {
+						"opacity": "25"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 706913209826673,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 575557315550683,
+					"parameters": {
+						"opacity": "50"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 228938502444053,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 508488570025362,
+					"parameters": {
+						"opacity": "75"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 942469626257573,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 484458242789800,
+					"parameters": {
+						"opacity": "100"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 410734680091726,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 892476782989507
+				},
+				{
+					"id": "typewriter-text",
+					"objectClass": "DialogueText2",
+					"sid": 937052533408861,
+					"parameters": {
+						"text": "\"*chuckles* That is a question for another time. Go on and fight.\"",
+						"duration": "2.0"
+					}
+				}
+			],
+			"sid": 141848941799231
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-click",
+					"objectClass": "Mouse",
+					"sid": 764158664765523,
+					"parameters": {
+						"mouse-button": "left",
+						"click-type": "clicked"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 366560775362056,
+					"parameters": {
+						"variable": "IntroMovieTextVariableThingy",
+						"comparison": 0,
+						"value": "4"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "set-text",
+					"objectClass": "DialogueText",
+					"sid": 295374670831099,
+					"parameters": {
+						"text": "\"Ruby:\""
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "DialogueText2",
+					"sid": 404292982923808,
+					"parameters": {
+						"text": "\"\""
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 482111310375770,
+					"parameters": {
+						"opacity": "0"
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 468401478214129,
+					"parameters": {
+						"opacity": "25"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 440450697910057,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 746347773848686,
+					"parameters": {
+						"opacity": "50"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 242948191771349,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 393086799537681,
+					"parameters": {
+						"opacity": "75"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 884731030390769,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 653853866584837,
+					"parameters": {
+						"opacity": "100"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 485361708412807,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 710103518758295
+				},
+				{
+					"id": "typewriter-text",
+					"objectClass": "DialogueText2",
+					"sid": 882441314375561,
+					"parameters": {
+						"text": "\"But--\"",
+						"duration": "0.5"
+					}
+				}
+			],
+			"sid": 252756793689919
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-click",
+					"objectClass": "Mouse",
+					"sid": 967289406118539,
+					"parameters": {
+						"mouse-button": "left",
+						"click-type": "clicked"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 395014384416765,
+					"parameters": {
+						"variable": "IntroMovieTextVariableThingy",
+						"comparison": 0,
+						"value": "5"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "set-text",
+					"objectClass": "DialogueText",
+					"sid": 900626990601241,
+					"parameters": {
+						"text": "\"???:\""
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "DialogueText2",
+					"sid": 342901138829099,
+					"parameters": {
+						"text": "\"\""
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 542972365155889,
+					"parameters": {
+						"opacity": "0"
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 795835653056253,
+					"parameters": {
+						"opacity": "25"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 542201992530208,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 605343331362951,
+					"parameters": {
+						"opacity": "50"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 969807257119032,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 211991341591489,
+					"parameters": {
+						"opacity": "75"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 914666303966023,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 384201680529679,
+					"parameters": {
+						"opacity": "100"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 588759923706781,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 622988206683531
+				},
+				{
+					"id": "typewriter-text",
+					"objectClass": "DialogueText2",
+					"sid": 632324428671449,
+					"parameters": {
+						"text": "\"But nothing. Idling around won't get you anywhere.\"",
+						"duration": "2.0"
+					}
+				}
+			],
+			"sid": 993421329569305
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-click",
+					"objectClass": "Mouse",
+					"sid": 479477970285617,
+					"parameters": {
+						"mouse-button": "left",
+						"click-type": "clicked"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 574543131875230,
+					"parameters": {
+						"variable": "IntroMovieTextVariableThingy",
+						"comparison": 0,
+						"value": "6"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "set-text",
+					"objectClass": "DialogueText",
+					"sid": 115487956190843,
+					"parameters": {
+						"text": "\"Ruby:\""
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "DialogueText2",
+					"sid": 231490000290244,
+					"parameters": {
+						"text": "\"\""
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 837015205992951,
+					"parameters": {
+						"opacity": "0"
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 171298750850838,
+					"parameters": {
+						"opacity": "25"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 361599866799519,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 282496401983839,
+					"parameters": {
+						"opacity": "50"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 740316074718087,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 544795130885264,
+					"parameters": {
+						"opacity": "75"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 781817591375640,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 563695325382018,
+					"parameters": {
+						"opacity": "100"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 227714952189979,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 793980723965297
+				},
+				{
+					"id": "typewriter-text",
+					"objectClass": "DialogueText2",
+					"sid": 980939303370012,
+					"parameters": {
+						"text": "\"But I need information, not mindless quests.\"",
+						"duration": "1.5"
+					}
+				}
+			],
+			"sid": 765463632199699
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-click",
+					"objectClass": "Mouse",
+					"sid": 120758241364153,
+					"parameters": {
+						"mouse-button": "left",
+						"click-type": "clicked"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 175385819711766,
+					"parameters": {
+						"variable": "IntroMovieTextVariableThingy",
+						"comparison": 0,
+						"value": "7"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "set-text",
+					"objectClass": "DialogueText",
+					"sid": 834218038254128,
+					"parameters": {
+						"text": "\"???:\""
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "DialogueText2",
+					"sid": 164416231747984,
+					"parameters": {
+						"text": "\"\""
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 443731681739456,
+					"parameters": {
+						"opacity": "0"
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 565137627507720,
+					"parameters": {
+						"opacity": "25"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 437942866868174,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 998242440018629,
+					"parameters": {
+						"opacity": "50"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 316978886236771,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 307193940085427,
+					"parameters": {
+						"opacity": "75"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 702635522367356,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 380092656154607,
+					"parameters": {
+						"opacity": "100"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 361051115059749,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 995154609995523
+				},
+				{
+					"id": "typewriter-text",
+					"objectClass": "DialogueText2",
+					"sid": 228263478820629,
+					"parameters": {
+						"text": "\"...\"",
+						"duration": "0.5"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 211318143706324,
+					"parameters": {
+						"seconds": "1.5",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 101277153151281
+				},
+				{
+					"id": "typewriter-text",
+					"objectClass": "DialogueText2",
+					"sid": 154862480088703,
+					"parameters": {
+						"text": "\"Good point.\"",
+						"duration": "0.75"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 378805329065776,
+					"parameters": {
+						"seconds": "1.75",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 172957597486314
+				},
+				{
+					"id": "typewriter-text",
+					"objectClass": "DialogueText2",
+					"sid": 995972652573107,
+					"parameters": {
+						"text": "\"This Echo Chambers is a dungeon filled with Skeletons, Spirit Orbs, Necromancers, and unholy magicks. With the amount of magic around, you are capable of some small spells. But be careful, Ruby. You will never know what is around the corner, or behind a door.\"",
+						"duration": "7.5"
+					}
+				}
+			],
+			"sid": 666011350880113
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-click",
+					"objectClass": "Mouse",
+					"sid": 714093643397289,
+					"parameters": {
+						"mouse-button": "left",
+						"click-type": "clicked"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 600169547693820,
+					"parameters": {
+						"variable": "IntroMovieTextVariableThingy",
+						"comparison": 0,
+						"value": "8"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "set-text",
+					"objectClass": "DialogueText",
+					"sid": 385235110149850,
+					"parameters": {
+						"text": "\"Ruby:\""
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "DialogueText2",
+					"sid": 527372193662567,
+					"parameters": {
+						"text": "\"\""
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 969052286489779,
+					"parameters": {
+						"opacity": "0"
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 178322724193940,
+					"parameters": {
+						"opacity": "25"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 577719719992101,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 382101336514092,
+					"parameters": {
+						"opacity": "50"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 478644477637549,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 428982801032943,
+					"parameters": {
+						"opacity": "75"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 333919696831520,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 956309155537604,
+					"parameters": {
+						"opacity": "100"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 523238341265308,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 864315860143619
+				},
+				{
+					"id": "typewriter-text",
+					"objectClass": "DialogueText2",
+					"sid": 663775986468255,
+					"parameters": {
+						"text": "\"That seems good...\"",
+						"duration": "1.25"
+					}
+				}
+			],
+			"sid": 474232609678189
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-click",
+					"objectClass": "Mouse",
+					"sid": 700106392491091,
+					"parameters": {
+						"mouse-button": "left",
+						"click-type": "clicked"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 602160601327622,
+					"parameters": {
+						"variable": "IntroMovieTextVariableThingy",
+						"comparison": 0,
+						"value": "9"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "set-text",
+					"objectClass": "DialogueText",
+					"sid": 961751083529301,
+					"parameters": {
+						"text": "\"???:\""
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "DialogueText2",
+					"sid": 621825796048273,
+					"parameters": {
+						"text": "\"\""
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "RubyCharacterPRO",
+					"sid": 454092160955205,
+					"parameters": {
+						"opacity": "0"
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 887454433000928,
+					"parameters": {
+						"opacity": "25"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 121310965264518,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 824045684637828,
+					"parameters": {
+						"opacity": "50"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 807209502668535,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 544385128372277,
+					"parameters": {
+						"opacity": "75"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 372189567917519,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-opacity",
+					"objectClass": "SapphireCharacterPRO",
+					"sid": 120298241791121,
+					"parameters": {
+						"opacity": "100"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 890941089778984,
+					"parameters": {
+						"seconds": "0.1",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 495157923717974
+				},
+				{
+					"id": "typewriter-text",
+					"objectClass": "DialogueText2",
+					"sid": 289158035863213,
+					"parameters": {
+						"text": "\"Idling around won't get you anywhere.\"",
+						"duration": "2.0"
+					}
+				}
+			],
+			"sid": 294805515634800
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-click",
+					"objectClass": "Mouse",
+					"sid": 550761962051991,
+					"parameters": {
+						"mouse-button": "left",
+						"click-type": "clicked"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 583955188349141,
+					"parameters": {
+						"variable": "IntroMovieTextVariableThingy",
+						"comparison": 0,
+						"value": "10"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "typewriter-text",
+					"objectClass": "DialogueText2",
+					"sid": 302485475162034,
+					"parameters": {
+						"text": "\"Now go. You have difficult times ahead of you.\"",
+						"duration": "2.5"
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 226225517125030
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 858993692378959,
+					"parameters": {
+						"seconds": "6.25",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-visible",
+					"objectClass": "letsGo",
+					"sid": 320771791876006,
+					"parameters": {
+						"visibility": "visible"
+					}
+				},
+				{
+					"id": "set-enabled",
+					"objectClass": "letsGo",
+					"sid": 275846676729964,
+					"parameters": {
+						"mode": "enabled"
+					}
+				}
+			],
+			"sid": 943288588113800
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-clicked",
+					"objectClass": "letsGo",
+					"sid": 263843307041778
+				},
+				{
+					"id": "is-enabled",
+					"objectClass": "letsGo",
+					"sid": 452981781426715
+				}
+			],
+			"actions": [
+				{
+					"id": "play",
+					"objectClass": "Audio",
+					"sid": 456889030663694,
+					"parameters": {
+						"audio-file": "menusClick",
+						"loop": "not-looping",
+						"volume": "0",
+						"stereo-pan": "0",
+						"tag-optional": "\"\""
+					}
+				},
+				{
+					"id": "play",
+					"objectClass": "Audio",
+					"sid": 371855350514251,
+					"parameters": {
+						"audio-file": "startGame",
+						"loop": "not-looping",
+						"volume": "0",
+						"stereo-pan": "0",
+						"tag-optional": "\"\""
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 808326904326287,
+					"parameters": {
+						"seconds": "1.5",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "go-to-layout",
+					"objectClass": "System",
+					"sid": 789295782235828,
+					"parameters": {
+						"layout": "LVL1"
+					}
+				}
+			],
+			"sid": 147458340982831
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-clicked",
+					"objectClass": "skipIntroMovieButton",
+					"sid": 167847848730289
+				}
+			],
+			"actions": [
+				{
+					"id": "play",
+					"objectClass": "Audio",
+					"sid": 124377854906556,
+					"parameters": {
+						"audio-file": "menusClick",
+						"loop": "not-looping",
+						"volume": "0",
+						"stereo-pan": "0",
+						"tag-optional": "\"\""
+					}
+				},
+				{
+					"id": "play",
+					"objectClass": "Audio",
+					"sid": 153553360628917,
+					"parameters": {
+						"audio-file": "startGame",
+						"loop": "not-looping",
+						"volume": "0",
+						"stereo-pan": "0",
+						"tag-optional": "\"\""
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 300768522175968,
+					"parameters": {
+						"seconds": "1.5",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "go-to-layout",
+					"objectClass": "System",
+					"sid": 114930270766942,
+					"parameters": {
+						"layout": "LVL1"
+					}
+				}
+			],
+			"sid": 507373003333176
+		}
+	],
+	"sid": 610843771475747
+}

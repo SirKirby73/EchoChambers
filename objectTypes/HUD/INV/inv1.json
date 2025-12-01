@@ -1,0 +1,15 @@
+{
+	"name": "inv1",
+	"plugin-id": "Button",
+	"sid": 277335333316691,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 843984565001803
+		}
+	]
+}

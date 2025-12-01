@@ -1,0 +1,10 @@
+{
+	"name": "ItemCostStatic",
+	"plugin-id": "Text",
+	"sid": 944623722803937,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": []
+}

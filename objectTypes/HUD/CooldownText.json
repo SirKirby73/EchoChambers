@@ -1,0 +1,21 @@
+{
+	"name": "CooldownText",
+	"plugin-id": "Text",
+	"sid": 924654303129488,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Pin",
+			"name": "Pin",
+			"sid": 616180530643633
+		},
+		{
+			"behaviorId": "Flash",
+			"name": "Flash",
+			"sid": 933065592365878
+		}
+	],
+	"effectTypes": []
+}

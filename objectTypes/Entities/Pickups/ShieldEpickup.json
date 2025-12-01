@@ -1,0 +1,96 @@
+{
+	"name": "ShieldEpickup",
+	"plugin-id": "Sprite",
+	"sid": 428313131046598,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Platform",
+			"name": "Platform",
+			"sid": 856855505525566
+		}
+	],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 56,
+						"height": 53,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 4262804,
+						"collisionPoly": {
+							"points": [
+								0.4107142857142857,
+								0.018867924528301886,
+								0.9910714285714287,
+								0.04716981132075472,
+								0.9107142857142857,
+								0.33962264150943394,
+								0.5,
+								0.7169811320754716,
+								0.05357142857142857,
+								0.9811320754716981,
+								0.017857142857142856,
+								0.4339622641509434,
+								0.23214285714285715,
+								0.05660377358490566
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					},
+					{
+						"width": 64,
+						"height": 64,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 8715367,
+						"collisionPoly": {
+							"points": [
+								0.46875,
+								0.140625,
+								0.96875,
+								0.1875,
+								0.90625,
+								0.40625,
+								0.546875,
+								0.71875,
+								0.15625,
+								0.9375,
+								0.125,
+								0.484375,
+								0.3125,
+								0.171875
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 413628885006551,
+				"name": "Animation 1",
+				"isLooping": true,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 3
+			}
+		],
+		"subfolders": []
+	}
+}

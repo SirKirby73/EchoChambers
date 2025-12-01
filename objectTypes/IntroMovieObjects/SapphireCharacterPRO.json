@@ -1,0 +1,78 @@
+{
+	"name": "SapphireCharacterPRO",
+	"plugin-id": "Sprite",
+	"sid": 404806571824441,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 399,
+						"height": 664,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 9036768,
+						"collisionPoly": {
+							"points": [
+								0.0012531328320802004,
+								0,
+								0.9987468671679198,
+								0,
+								0.9987468671679198,
+								1,
+								0.0012531328320802004,
+								1
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					},
+					{
+						"width": 399,
+						"height": 664,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 9095053,
+						"collisionPoly": {
+							"points": [
+								0.0012531328320802004,
+								0,
+								0.9987468671679198,
+								0,
+								0.9987468671679198,
+								1,
+								0.0012531328320802004,
+								1
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 401050206669649,
+				"name": "Animation 1",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			}
+		],
+		"subfolders": []
+	}
+}

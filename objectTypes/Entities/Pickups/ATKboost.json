@@ -1,0 +1,109 @@
+{
+	"name": "ATKboost",
+	"plugin-id": "Sprite",
+	"sid": 971183326430754,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Platform",
+			"name": "Platform",
+			"sid": 581376760714895
+		}
+	],
+	"effectTypes": [
+		{
+			"effectId": "pulse",
+			"name": "Pulse"
+		}
+	],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 87,
+						"height": 107,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 153888,
+						"collisionPoly": {
+							"points": [
+								0.4942528735632184,
+								0.009345794392523364,
+								0.9080459770114943,
+								0.07476635514018691,
+								0.9885057471264368,
+								0.2897196261682243,
+								0.9540229885057471,
+								0.40186915887850466,
+								0.735632183908046,
+								0.9252336448598131,
+								0.4942528735632184,
+								1,
+								0.06896551724137931,
+								0.9345794392523364,
+								0.011494252873563218,
+								0.8878504672897196,
+								0.022988505747126436,
+								0.38317757009345793
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					},
+					{
+						"width": 87,
+						"height": 107,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 1632296,
+						"collisionPoly": {
+							"points": [
+								0.4942528735632184,
+								0.009345794392523364,
+								0.9080459770114943,
+								0.07476635514018691,
+								0.9885057471264368,
+								0.2897196261682243,
+								0.9540229885057471,
+								0.40186915887850466,
+								0.735632183908046,
+								0.9252336448598131,
+								0.4942528735632184,
+								1,
+								0.06896551724137931,
+								0.9345794392523364,
+								0.011494252873563218,
+								0.8878504672897196,
+								0.022988505747126436,
+								0.38317757009345793
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 386735774725025,
+				"name": "Animation 1",
+				"isLooping": true,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 5
+			}
+		],
+		"subfolders": []
+	}
+}

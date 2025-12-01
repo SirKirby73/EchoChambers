@@ -1,0 +1,14 @@
+{
+	"name": "Enemies",
+	"plugin-id": "Sprite",
+	"sid": 825048498754091,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": [],
+	"members": [
+		"NecromancerATKS",
+		"SpiritOrbT1",
+		"NecromancerT1",
+		"SkeletonT1"
+	]
+}

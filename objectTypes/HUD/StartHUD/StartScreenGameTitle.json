@@ -1,0 +1,21 @@
+{
+	"name": "StartScreenGameTitle",
+	"plugin-id": "Text",
+	"sid": 700217490895102,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Sin",
+			"name": "Sine",
+			"sid": 156150188090794
+		}
+	],
+	"effectTypes": [
+		{
+			"effectId": "sharpen",
+			"name": "Sharpen"
+		}
+	]
+}

@@ -1,0 +1,9 @@
+{
+	"name": "VolumeSliderBar",
+	"plugin-id": "sliderbar",
+	"sid": 301909093991838,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": []
+}

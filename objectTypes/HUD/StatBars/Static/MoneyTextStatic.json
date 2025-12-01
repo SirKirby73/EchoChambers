@@ -1,0 +1,10 @@
+{
+	"name": "MoneyTextStatic",
+	"plugin-id": "Text",
+	"sid": 567599269579043,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": []
+}

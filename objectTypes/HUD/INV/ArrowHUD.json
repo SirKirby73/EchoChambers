@@ -1,0 +1,68 @@
+{
+	"name": "ArrowHUD",
+	"plugin-id": "Sprite",
+	"sid": 543619932906755,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 272944387110001
+		}
+	],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 87,
+						"height": 122,
+						"originX": 0.5402298850574713,
+						"originY": 0.48360655737704916,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 8879396,
+						"collisionPoly": {
+							"points": [
+								0.8505747126436781,
+								0.00819672131147541,
+								0.9425287356321839,
+								0.040983606557377046,
+								0.9770114942528736,
+								0.08196721311475409,
+								0.9885057471264368,
+								0.20491803278688525,
+								0.3103448275862069,
+								0.9836065573770492,
+								0.2413793103448276,
+								0.9754098360655737,
+								0.022988505747126436,
+								0.8688524590163934,
+								0.022988505747126436,
+								0.7950819672131147,
+								0.6896551724137931,
+								0.05737704918032787
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 241944728225406,
+				"name": "Animation 1",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			}
+		],
+		"subfolders": []
+	}
+}

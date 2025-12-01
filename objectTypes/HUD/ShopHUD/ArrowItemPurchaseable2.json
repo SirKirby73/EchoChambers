@@ -1,0 +1,66 @@
+{
+	"name": "ArrowItemPurchaseable2",
+	"plugin-id": "Sprite",
+	"sid": 814863189198522,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 26,
+						"height": 128,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 4389910,
+						"collisionPoly": {
+							"points": [
+								0.46153846153846156,
+								0.0078125,
+								0.5384615384615384,
+								0.0078125,
+								0.8461538461538461,
+								0.09375,
+								0.9615384615384616,
+								0.90625,
+								0.9615384615384616,
+								0.953125,
+								0.8846153846153846,
+								0.96875,
+								0.5,
+								0.9921875,
+								0.11538461538461539,
+								0.96875,
+								0.038461538461538464,
+								0.953125,
+								0.038461538461538464,
+								0.90625,
+								0.15384615384615385,
+								0.09375
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 640323613735059,
+				"name": "Animation 1",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 5
+			}
+		],
+		"subfolders": []
+	}
+}

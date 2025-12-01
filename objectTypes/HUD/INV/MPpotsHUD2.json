@@ -1,0 +1,16 @@
+{
+	"name": "MPpotsHUD2",
+	"plugin-id": "Text",
+	"sid": 472994781069860,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 509852858889660
+		}
+	],
+	"effectTypes": []
+}

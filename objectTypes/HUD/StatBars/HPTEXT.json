@@ -1,0 +1,16 @@
+{
+	"name": "HPTEXT",
+	"plugin-id": "Text",
+	"sid": 844774067391236,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 461715522801680
+		}
+	],
+	"effectTypes": []
+}

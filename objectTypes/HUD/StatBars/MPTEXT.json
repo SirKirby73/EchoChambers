@@ -1,0 +1,16 @@
+{
+	"name": "MPTEXT",
+	"plugin-id": "Text",
+	"sid": 810931373206190,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 363547969478011
+		}
+	],
+	"effectTypes": []
+}
