@@ -1,5 +1,6 @@
 # EchoChambers
 A game made for SkillsUSA
+Currently still WORK IN PROGRESS!
 
 
 Credits to:
