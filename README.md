@@ -4,7 +4,7 @@ Currently still WORK IN PROGRESS!
 
 The Team:
 - Lead Dev/Programmer, Co-Writer: SirKirby73, programmed the game, wrote the game lore and scripting, beta tester
-- Lead Sound Designer: (placeholderAC), made the music and SFX using SoundTrap and ChipTune, respectively
+- Lead Sound Designer: anthonyc43, made the music and SFX using SoundTrap and ChipTune, respectively
 - Lead Game Artist: PersonMan135, made the sprites using piskelapp
 - Co-Writer: (placeholderMB), wrote the game lore and scripting
 - Concept Artist 1: (placeholderGP), made the Concept Art using Krita
