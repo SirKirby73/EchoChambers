@@ -845,54 +845,54 @@
   perspective = perspectiveNO;
   ortho = orthoNO;
   mul$5 = multiply$5, sub$3 = subtract$3, mat4 = Object.freeze({ __proto__: null, create: create$5, clone: clone$5, copy: copy$5, fromValues: fromValues$5, set: set$5, identity: identity$2, transpose, invert: invert$2, adjoint, determinant, multiply: multiply$5, translate: translate$1, scale: scale$5, rotate: rotate$1, rotateX: rotateX$3, rotateY: rotateY$3, rotateZ: rotateZ$3, fromTranslation: fromTranslation$1, fromScaling, fromRotation: fromRotation$1, fromXRotation, fromYRotation, fromZRotation, fromRotationTranslation: fromRotationTranslation$1, fromQuat2, getTranslation: getTranslation$1, getScaling, getRotation, decompose, fromRotationTranslationScale, fromRotationTranslationScaleOrigin, fromQuat, frustum, perspectiveNO, perspective, perspectiveZO, perspectiveFromFieldOfView, orthoNO, ortho, orthoZO, lookAt, targetTo, str: str$5, frob, add: add$5, subtract: subtract$3, multiplyScalar, multiplyScalarAndAdd, exactEquals: exactEquals$5, equals: equals$5, mul: mul$5, sub: sub$3 });
-  sub$2 = subtract$2, mul$4 = multiply$4, div$2 = divide$2, dist$2 = distance$2, sqrDist$2 = squaredDistance$2, len$4 = length$4, sqrLen$4 = squaredLength$4, forEach$2 = function() {
+  sub$2 = subtract$2, mul$4 = multiply$4, div$2 = divide$2, dist$2 = distance$2, sqrDist$2 = squaredDistance$2, len$4 = length$4, sqrLen$4 = squaredLength$4, forEach$2 = (function() {
     var t2 = create$4();
     return function(a2, r2, n, e, o2, u2) {
       var s, i;
       for (r2 || (r2 = 3), n || (n = 0), i = e ? Math.min(e * r2 + n, a2.length) : a2.length, s = n; s < i; s += r2) t2[0] = a2[s], t2[1] = a2[s + 1], t2[2] = a2[s + 2], o2(t2, t2, u2), a2[s] = t2[0], a2[s + 1] = t2[1], a2[s + 2] = t2[2];
       return a2;
     };
-  }(), vec3 = Object.freeze({ __proto__: null, create: create$4, clone: clone$4, length: length$4, fromValues: fromValues$4, copy: copy$4, set: set$4, add: add$4, subtract: subtract$2, multiply: multiply$4, divide: divide$2, ceil: ceil$2, floor: floor$2, min: min$2, max: max$2, round: round$2, scale: scale$4, scaleAndAdd: scaleAndAdd$2, distance: distance$2, squaredDistance: squaredDistance$2, squaredLength: squaredLength$4, negate: negate$2, inverse: inverse$2, normalize: normalize$4, dot: dot$4, cross: cross$2, lerp: lerp$4, slerp: slerp$1, hermite, bezier, random: random$3, transformMat4: transformMat4$2, transformMat3: transformMat3$1, transformQuat: transformQuat$1, rotateX: rotateX$2, rotateY: rotateY$2, rotateZ: rotateZ$2, angle: angle$1, zero: zero$2, str: str$4, exactEquals: exactEquals$4, equals: equals$4, sub: sub$2, mul: mul$4, div: div$2, dist: dist$2, sqrDist: sqrDist$2, len: len$4, sqrLen: sqrLen$4, forEach: forEach$2 });
-  sub$1 = subtract$1, mul$3 = multiply$3, div$1 = divide$1, dist$1 = distance$1, sqrDist$1 = squaredDistance$1, len$3 = length$3, sqrLen$3 = squaredLength$3, forEach$1 = function() {
+  })(), vec3 = Object.freeze({ __proto__: null, create: create$4, clone: clone$4, length: length$4, fromValues: fromValues$4, copy: copy$4, set: set$4, add: add$4, subtract: subtract$2, multiply: multiply$4, divide: divide$2, ceil: ceil$2, floor: floor$2, min: min$2, max: max$2, round: round$2, scale: scale$4, scaleAndAdd: scaleAndAdd$2, distance: distance$2, squaredDistance: squaredDistance$2, squaredLength: squaredLength$4, negate: negate$2, inverse: inverse$2, normalize: normalize$4, dot: dot$4, cross: cross$2, lerp: lerp$4, slerp: slerp$1, hermite, bezier, random: random$3, transformMat4: transformMat4$2, transformMat3: transformMat3$1, transformQuat: transformQuat$1, rotateX: rotateX$2, rotateY: rotateY$2, rotateZ: rotateZ$2, angle: angle$1, zero: zero$2, str: str$4, exactEquals: exactEquals$4, equals: equals$4, sub: sub$2, mul: mul$4, div: div$2, dist: dist$2, sqrDist: sqrDist$2, len: len$4, sqrLen: sqrLen$4, forEach: forEach$2 });
+  sub$1 = subtract$1, mul$3 = multiply$3, div$1 = divide$1, dist$1 = distance$1, sqrDist$1 = squaredDistance$1, len$3 = length$3, sqrLen$3 = squaredLength$3, forEach$1 = (function() {
     var t2 = create$3();
     return function(a2, r2, n, e, o2, u2) {
       var s, i;
       for (r2 || (r2 = 4), n || (n = 0), i = e ? Math.min(e * r2 + n, a2.length) : a2.length, s = n; s < i; s += r2) t2[0] = a2[s], t2[1] = a2[s + 1], t2[2] = a2[s + 2], t2[3] = a2[s + 3], o2(t2, t2, u2), a2[s] = t2[0], a2[s + 1] = t2[1], a2[s + 2] = t2[2], a2[s + 3] = t2[3];
       return a2;
     };
-  }(), vec4 = Object.freeze({ __proto__: null, create: create$3, clone: clone$3, fromValues: fromValues$3, copy: copy$3, set: set$3, add: add$3, subtract: subtract$1, multiply: multiply$3, divide: divide$1, ceil: ceil$1, floor: floor$1, min: min$1, max: max$1, round: round$1, scale: scale$3, scaleAndAdd: scaleAndAdd$1, distance: distance$1, squaredDistance: squaredDistance$1, length: length$3, squaredLength: squaredLength$3, negate: negate$1, inverse: inverse$1, normalize: normalize$3, dot: dot$3, cross: cross$1, lerp: lerp$3, random: random$2, transformMat4: transformMat4$1, transformQuat, zero: zero$1, str: str$3, exactEquals: exactEquals$3, equals: equals$3, sub: sub$1, mul: mul$3, div: div$1, dist: dist$1, sqrDist: sqrDist$1, len: len$3, sqrLen: sqrLen$3, forEach: forEach$1 });
+  })(), vec4 = Object.freeze({ __proto__: null, create: create$3, clone: clone$3, fromValues: fromValues$3, copy: copy$3, set: set$3, add: add$3, subtract: subtract$1, multiply: multiply$3, divide: divide$1, ceil: ceil$1, floor: floor$1, min: min$1, max: max$1, round: round$1, scale: scale$3, scaleAndAdd: scaleAndAdd$1, distance: distance$1, squaredDistance: squaredDistance$1, length: length$3, squaredLength: squaredLength$3, negate: negate$1, inverse: inverse$1, normalize: normalize$3, dot: dot$3, cross: cross$1, lerp: lerp$3, random: random$2, transformMat4: transformMat4$1, transformQuat, zero: zero$1, str: str$3, exactEquals: exactEquals$3, equals: equals$3, sub: sub$1, mul: mul$3, div: div$1, dist: dist$1, sqrDist: sqrDist$1, len: len$3, sqrLen: sqrLen$3, forEach: forEach$1 });
   clone$2 = clone$3, fromValues$2 = fromValues$3, copy$2 = copy$3, set$2 = set$3, add$2 = add$3, mul$2 = multiply$2, scale$2 = scale$3, dot$2 = dot$3, lerp$2 = lerp$3, length$2 = length$3, len$2 = length$2, squaredLength$2 = squaredLength$3, sqrLen$2 = squaredLength$2, normalize$2 = normalize$3, exactEquals$2 = exactEquals$3;
-  rotationTo = function() {
+  rotationTo = (function() {
     var t2 = create$4(), a2 = fromValues$4(1, 0, 0), r2 = fromValues$4(0, 1, 0);
     return function(n, e, o2) {
       var u2 = dot$4(e, o2);
       return u2 < -0.999999 ? (cross$2(t2, a2, e), len$4(t2) < 1e-6 && cross$2(t2, r2, e), normalize$4(t2, t2), setAxisAngle(n, t2, Math.PI), n) : u2 > 0.999999 ? (n[0] = 0, n[1] = 0, n[2] = 0, n[3] = 1, n) : (cross$2(t2, e, o2), n[0] = t2[0], n[1] = t2[1], n[2] = t2[2], n[3] = 1 + u2, normalize$2(n, n));
     };
-  }(), sqlerp = function() {
+  })(), sqlerp = (function() {
     var t2 = create$2(), a2 = create$2();
     return function(r2, n, e, o2, u2, s) {
       return slerp(t2, n, u2, s), slerp(a2, e, o2, s), slerp(r2, t2, a2, 2 * s * (1 - s)), r2;
     };
-  }(), setAxes = function() {
+  })(), setAxes = (function() {
     var t2 = create$6();
     return function(a2, r2, n, e) {
       return t2[0] = n[0], t2[3] = n[1], t2[6] = n[2], t2[1] = e[0], t2[4] = e[1], t2[7] = e[2], t2[2] = -r2[0], t2[5] = -r2[1], t2[8] = -r2[2], normalize$2(a2, fromMat3(a2, t2));
     };
-  }(), quat = Object.freeze({ __proto__: null, create: create$2, identity: identity$1, setAxisAngle, getAxisAngle, getAngle, multiply: multiply$2, rotateX: rotateX$1, rotateY: rotateY$1, rotateZ: rotateZ$1, calculateW, exp, ln, pow, slerp, random: random$1, invert: invert$1, conjugate: conjugate$1, fromMat3, fromEuler, str: str$2, clone: clone$2, fromValues: fromValues$2, copy: copy$2, set: set$2, add: add$2, mul: mul$2, scale: scale$2, dot: dot$2, lerp: lerp$2, length: length$2, len: len$2, squaredLength: squaredLength$2, sqrLen: sqrLen$2, normalize: normalize$2, exactEquals: exactEquals$2, equals: equals$2, rotationTo, sqlerp, setAxes });
+  })(), quat = Object.freeze({ __proto__: null, create: create$2, identity: identity$1, setAxisAngle, getAxisAngle, getAngle, multiply: multiply$2, rotateX: rotateX$1, rotateY: rotateY$1, rotateZ: rotateZ$1, calculateW, exp, ln, pow, slerp, random: random$1, invert: invert$1, conjugate: conjugate$1, fromMat3, fromEuler, str: str$2, clone: clone$2, fromValues: fromValues$2, copy: copy$2, set: set$2, add: add$2, mul: mul$2, scale: scale$2, dot: dot$2, lerp: lerp$2, length: length$2, len: len$2, squaredLength: squaredLength$2, sqrLen: sqrLen$2, normalize: normalize$2, exactEquals: exactEquals$2, equals: equals$2, rotationTo, sqlerp, setAxes });
   getReal = copy$2;
   setReal = copy$2;
   mul$1 = multiply$1;
   dot$1 = dot$2;
   length$1 = length$2, len$1 = length$1, squaredLength$1 = squaredLength$2, sqrLen$1 = squaredLength$1;
   quat2 = Object.freeze({ __proto__: null, create: create$1, clone: clone$1, fromValues: fromValues$1, fromRotationTranslationValues, fromRotationTranslation, fromTranslation, fromRotation, fromMat4, copy: copy$1, identity, set: set$1, getReal, getDual, setReal, setDual, getTranslation, translate, rotateX, rotateY, rotateZ, rotateByQuatAppend, rotateByQuatPrepend, rotateAroundAxis, add: add$1, multiply: multiply$1, mul: mul$1, scale: scale$1, dot: dot$1, lerp: lerp$1, invert, conjugate, length: length$1, len: len$1, squaredLength: squaredLength$1, sqrLen: sqrLen$1, normalize: normalize$1, str: str$1, exactEquals: exactEquals$1, equals: equals$1 });
-  len = length, sub = subtract, mul = multiply, div = divide, dist = distance, sqrDist = squaredDistance, sqrLen = squaredLength, forEach = function() {
+  len = length, sub = subtract, mul = multiply, div = divide, dist = distance, sqrDist = squaredDistance, sqrLen = squaredLength, forEach = (function() {
     var t2 = create();
     return function(a2, r2, n, e, o2, u2) {
       var s, i;
       for (r2 || (r2 = 2), n || (n = 0), i = e ? Math.min(e * r2 + n, a2.length) : a2.length, s = n; s < i; s += r2) t2[0] = a2[s], t2[1] = a2[s + 1], o2(t2, t2, u2), a2[s] = t2[0], a2[s + 1] = t2[1];
       return a2;
     };
-  }(), vec2 = Object.freeze({ __proto__: null, create, clone, fromValues, copy, set, add, subtract, multiply, divide, ceil, floor, min, max, round, scale, scaleAndAdd, distance, squaredDistance, length, squaredLength, negate, inverse, normalize, dot, cross, lerp, random, transformMat2, transformMat2d, transformMat3, transformMat4, rotate, angle, zero, str, exactEquals, equals, len, sub, mul, div, dist, sqrDist, sqrLen, forEach });
+  })(), vec2 = Object.freeze({ __proto__: null, create, clone, fromValues, copy, set, add, subtract, multiply, divide, ceil, floor, min, max, round, scale, scaleAndAdd, distance, squaredDistance, length, squaredLength, negate, inverse, normalize, dot, cross, lerp, random, transformMat2, transformMat2d, transformMat3, transformMat4, rotate, angle, zero, str, exactEquals, equals, len, sub, mul, div, dist, sqrDist, sqrLen, forEach });
   globalThis.glMatrix = common, globalThis.glMatrix.mat2 = mat2, globalThis.glMatrix.mat2d = mat2d, globalThis.glMatrix.mat3 = mat3, globalThis.glMatrix.mat4 = mat4, globalThis.glMatrix.quat = quat, globalThis.glMatrix.quat2 = quat2, globalThis.glMatrix.vec2 = vec2, globalThis.glMatrix.vec3 = vec3, globalThis.glMatrix.vec4 = vec4;
 }
 var EPSILON;
@@ -1425,7 +1425,7 @@ var scalar_eq2;
 var points_eq2;
 {
   let isReady = false, hasAppStarted = false, buildMode = "dev";
-  const internalApiToken = Symbol("Construct internal API token");
+  const internalApiToken = /* @__PURE__ */ Symbol("Construct internal API token");
   let internalApiTokenAccessesRemaining = 16;
   const C32 = self.C3 = class {
     constructor() {
@@ -2910,19 +2910,23 @@ var isNegativeZero2;
     getCssRgba(t2, s, e, r2) {
       return `rgba(${100 * (C32.IsFiniteNumber(t2) ? t2 : this.getR())}%, ${100 * (C32.IsFiniteNumber(s) ? s : this.getG())}%, ${100 * (C32.IsFiniteNumber(e) ? e : this.getB())}%, ${C32.IsFiniteNumber(r2) ? r2 : this.getA()})`;
     }
-    toHexString() {
-      const t2 = Math.round(255 * this.getR()), s = Math.round(255 * this.getG()), e = Math.round(255 * this.getB());
-      return "#" + padTwoDigits(t2.toString(16)) + padTwoDigits(s.toString(16)) + padTwoDigits(e.toString(16));
+    toHexString(t2 = false) {
+      const s = Math.round(255 * this.getR()), e = Math.round(255 * this.getG()), r2 = Math.round(255 * this.getB());
+      let i = "#" + padTwoDigits(s.toString(16)) + padTwoDigits(e.toString(16)) + padTwoDigits(r2.toString(16));
+      if (t2) {
+        i += padTwoDigits(Math.round(255 * this.getA()).toString(16));
+      }
+      return i;
     }
     parseHexString(t2) {
       if ("string" != typeof t2) return false;
-      let s, e, r2;
-      if ("#" === (t2 = t2.trim()).charAt(0) && (t2 = t2.substr(1)), 3 === t2.length) s = parseInt(t2[0], 16) / 15, e = parseInt(t2[1], 16) / 15, r2 = parseInt(t2[2], 16) / 15;
+      let s, e, r2, i;
+      if ("#" === (t2 = t2.trim()).charAt(0) && (t2 = t2.substr(1)), 3 === t2.length || 4 === t2.length) s = parseInt(t2[0], 16) / 15, e = parseInt(t2[1], 16) / 15, r2 = parseInt(t2[2], 16) / 15, 4 === t2.length && (i = parseInt(t2[3], 16) / 15);
       else {
-        if (6 !== t2.length) return false;
-        s = parseInt(t2.substr(0, 2), 16) / 255, e = parseInt(t2.substr(2, 2), 16) / 255, r2 = parseInt(t2.substr(4, 2), 16) / 255;
+        if (6 !== t2.length && 8 !== t2.length) return false;
+        s = parseInt(t2.substr(0, 2), 16) / 255, e = parseInt(t2.substr(2, 2), 16) / 255, r2 = parseInt(t2.substr(4, 2), 16) / 255, 8 === t2.length && (i = parseInt(t2.substr(6, 2), 16) / 255);
       }
-      return isFinite(s) && this.setR(s), isFinite(e) && this.setG(e), isFinite(r2) && this.setB(r2), this.setA(1), true;
+      return !!(Number.isFinite(s) && Number.isFinite(e) && Number.isFinite(r2)) && (this.setRgb(s, e, r2), Number.isFinite(i) ? this.setA(i) : this.setA(1), true);
     }
     toCommaSeparatedRgb() {
       return `${Math.round(255 * this.getR())}, ${Math.round(255 * this.getG())}, ${Math.round(255 * this.getB())}`;
@@ -6016,28 +6020,17 @@ var IsPointInFrontOfPlane2;
       C32.clearArray(this._blendModeTable), this._namedBlendModeMap.clear();
       let t2 = 0;
       for (const i of e) {
-        const e2 = i[0], a2 = i[1], s = i[2];
-        this._blendModeTable.push([a2, s]), this._namedBlendModeMap.set(e2, { number: t2, srcBlend: a2, destBlend: s }), t2++;
+        const e2 = i[0], a2 = i[1];
+        this._blendModeTable.push(a2), this._namedBlendModeMap.set(e2, t2), t2++;
       }
     }
-    _GetBlendByIndex(e) {
+    _GetBlendParametersByIndex(e) {
       return this._blendModeTable[e];
-    }
-    GetSrcBlendByIndex(e) {
-      return this._GetBlendByIndex(e)[0];
-    }
-    GetDestBlendByIndex(e) {
-      return this._GetBlendByIndex(e)[1];
-    }
-    GetNamedBlend(e) {
-      const t2 = this._namedBlendModeMap.get(e);
-      if (void 0 === t2) throw new Error("invalid blend name");
-      return t2;
     }
     NamedBlendToNumber(e) {
       const t2 = this._namedBlendModeMap.get(e);
       if (void 0 === t2) throw new Error("invalid blend name");
-      return t2.number;
+      return t2;
     }
     SetBaseZ(e) {
       this._baseZ = e;
@@ -6060,32 +6053,32 @@ var IsPointInFrontOfPlane2;
       2 === c2 ? this.LinePreCalc_LineCap2(e, t2, i, a2, s, r2, p2, _2) : 1 === c2 ? this.LinePreCalc_LineCap1(e, t2, i, a2, s, r2, p2, _2) : this.LinePreCalc_LineCap0(e, t2, i, a2, s, r2, p2, _2);
     }
     LinePreCalc_LineCap2(e, t2, i, a2, s, r2, l, n) {
-      const h2 = this._lineOffset, o2 = e + h2 - n, p2 = t2 + h2 - l, _2 = a2 + h2 + n, c2 = s + h2 + l, u2 = 2 * n, d2 = 2 * l, C2 = o2 + l, m2 = p2 - n, L = o2 - l + u2, g2 = p2 + n + d2, S2 = _2 + l, f2 = c2 - n, P2 = _2 - l - u2, G = c2 + n - d2;
-      this.Quad3D2(C2, m2, i, S2, f2, r2, P2, G, r2, L, g2, i, defaultTexCoordsQuad);
+      const h2 = this._lineOffset, o2 = e + h2 - n, p2 = t2 + h2 - l, _2 = a2 + h2 + n, c2 = s + h2 + l, u2 = 2 * n, C2 = 2 * l, d2 = o2 + l, m2 = p2 - n, L = o2 - l + u2, g2 = p2 + n + C2, S2 = _2 + l, f2 = c2 - n, P2 = _2 - l - u2, T2 = c2 + n - C2;
+      this.Quad3D2(d2, m2, i, S2, f2, r2, P2, T2, r2, L, g2, i, defaultTexCoordsQuad);
     }
     LinePreCalc_LineCap1(e, t2, i, a2, s, r2, l, n) {
-      const h2 = this._lineOffset, o2 = e + h2 - n, p2 = t2 + h2 - l, _2 = a2 + h2 + n, c2 = s + h2 + l, u2 = o2 + l, d2 = p2 - n, C2 = o2 - l, m2 = p2 + n, L = _2 + l, g2 = c2 - n, S2 = _2 - l, f2 = c2 + n;
-      this.Quad3D2(u2, d2, i, L, g2, r2, S2, f2, r2, C2, m2, i, defaultTexCoordsQuad);
+      const h2 = this._lineOffset, o2 = e + h2 - n, p2 = t2 + h2 - l, _2 = a2 + h2 + n, c2 = s + h2 + l, u2 = o2 + l, C2 = p2 - n, d2 = o2 - l, m2 = p2 + n, L = _2 + l, g2 = c2 - n, S2 = _2 - l, f2 = c2 + n;
+      this.Quad3D2(u2, C2, i, L, g2, r2, S2, f2, r2, d2, m2, i, defaultTexCoordsQuad);
     }
     LinePreCalc_LineCap0(e, t2, i, a2, s, r2, l, n) {
-      const h2 = this._lineOffset, o2 = e + h2, p2 = t2 + h2, _2 = a2 + h2, c2 = s + h2, u2 = o2 + l, d2 = p2 - n, C2 = o2 - l, m2 = p2 + n, L = _2 + l, g2 = c2 - n, S2 = _2 - l, f2 = c2 + n;
-      this.Quad3D2(u2, d2, i, L, g2, r2, S2, f2, r2, C2, m2, i, defaultTexCoordsQuad);
+      const h2 = this._lineOffset, o2 = e + h2, p2 = t2 + h2, _2 = a2 + h2, c2 = s + h2, u2 = o2 + l, C2 = p2 - n, d2 = o2 - l, m2 = p2 + n, L = _2 + l, g2 = c2 - n, S2 = _2 - l, f2 = c2 + n;
+      this.Quad3D2(u2, C2, i, L, g2, r2, S2, f2, r2, d2, m2, i, defaultTexCoordsQuad);
     }
     TexturedLine(e, t2, i, a2, s, r2) {
       const l = C32.angleTo(e, t2, i, a2), n = Math.sin(l), h2 = Math.cos(l), o2 = 0.5 * this._lineWidth, p2 = n * o2, _2 = h2 * o2, c2 = this._lineCap;
       2 === c2 ? this.TexturedLinePreCalc_LineCap2(e, t2, i, a2, p2, _2, s, r2) : 1 === c2 ? this.TexturedLinePreCalc_LineCap1(e, t2, i, a2, p2, _2, s, r2) : this.TexturedLinePreCalc_LineCap0(e, t2, i, a2, p2, _2, s, r2);
     }
     TexturedLinePreCalc_LineCap2(e, t2, i, a2, s, r2, l, n) {
-      const h2 = this._lineOffset, o2 = e + h2 - r2, p2 = t2 + h2 - s, _2 = i + h2 + r2, c2 = a2 + h2 + s, u2 = 2 * r2, d2 = 2 * s, C2 = o2 + s, m2 = p2 - r2, L = o2 - s + u2, g2 = p2 + r2 + d2, S2 = _2 + s, f2 = c2 - r2, P2 = _2 - s - u2, G = c2 + r2 - d2;
-      tmpQuad.set(C2, m2, S2, f2, P2, G, L, g2), tmpRect.set(l, 0, n, 0), this.Quad3(tmpQuad, tmpRect);
+      const h2 = this._lineOffset, o2 = e + h2 - r2, p2 = t2 + h2 - s, _2 = i + h2 + r2, c2 = a2 + h2 + s, u2 = 2 * r2, C2 = 2 * s, d2 = o2 + s, m2 = p2 - r2, L = o2 - s + u2, g2 = p2 + r2 + C2, S2 = _2 + s, f2 = c2 - r2, P2 = _2 - s - u2, T2 = c2 + r2 - C2;
+      tmpQuad.set(d2, m2, S2, f2, P2, T2, L, g2), tmpRect.set(l, 0, n, 0), this.Quad3(tmpQuad, tmpRect);
     }
     TexturedLinePreCalc_LineCap1(e, t2, i, a2, s, r2, l, n) {
-      const h2 = this._lineOffset, o2 = e + h2 - r2, p2 = t2 + h2 - s, _2 = i + h2 + r2, c2 = a2 + h2 + s, u2 = o2 + s, d2 = p2 - r2, C2 = o2 - s, m2 = p2 + r2, L = _2 + s, g2 = c2 - r2, S2 = _2 - s, f2 = c2 + r2;
-      tmpQuad.set(u2, d2, L, g2, S2, f2, C2, m2), tmpRect.set(l, 0, n, 0), this.Quad3(tmpQuad, tmpRect);
+      const h2 = this._lineOffset, o2 = e + h2 - r2, p2 = t2 + h2 - s, _2 = i + h2 + r2, c2 = a2 + h2 + s, u2 = o2 + s, C2 = p2 - r2, d2 = o2 - s, m2 = p2 + r2, L = _2 + s, g2 = c2 - r2, S2 = _2 - s, f2 = c2 + r2;
+      tmpQuad.set(u2, C2, L, g2, S2, f2, d2, m2), tmpRect.set(l, 0, n, 0), this.Quad3(tmpQuad, tmpRect);
     }
     TexturedLinePreCalc_LineCap0(e, t2, i, a2, s, r2, l, n) {
-      const h2 = this._lineOffset, o2 = e + h2, p2 = t2 + h2, _2 = i + h2, c2 = a2 + h2, u2 = o2 + s, d2 = p2 - r2, C2 = o2 - s, m2 = p2 + r2, L = _2 + s, g2 = c2 - r2, S2 = _2 - s, f2 = c2 + r2;
-      tmpQuad.set(u2, d2, L, g2, S2, f2, C2, m2), tmpRect.set(l, 0, n, 0), this.Quad3(tmpQuad, tmpRect);
+      const h2 = this._lineOffset, o2 = e + h2, p2 = t2 + h2, _2 = i + h2, c2 = a2 + h2, u2 = o2 + s, C2 = p2 - r2, d2 = o2 - s, m2 = p2 + r2, L = _2 + s, g2 = c2 - r2, S2 = _2 - s, f2 = c2 + r2;
+      tmpQuad.set(u2, C2, L, g2, S2, f2, d2, m2), tmpRect.set(l, 0, n, 0), this.Quad3(tmpQuad, tmpRect);
     }
     LineRect(e, t2, i, a2) {
       const s = 0.5 * this._lineWidth, r2 = this._lineCap;
@@ -7332,11 +7325,16 @@ void main(void) {
       const t2 = this._colorParam, e = this._batchState.currentShader;
       e._uColor2.IsUsed() && e._uColor2.Update4f(t2[0], t2[1], t2[2], t2[3]);
     }
-    InitSetBlend(t2, e) {
-      this._type = 3, this._startIndex = t2, this._indexCount = e;
+    InitSetBlend(t2) {
+      this._type = 3;
+      const e = this._mat4param;
+      e[0] = t2.length;
+      for (let r2 = 0, a2 = t2.length; r2 < a2; ++r2) e[r2 + 1] = t2[r2];
     }
     DoSetBlend() {
-      this._gl.blendFunc(this._startIndex, this._indexCount);
+      const t2 = this._gl, e = this._mat4param, r2 = e[0], a2 = e[1], s = e[2];
+      let i = a2, n = s, o2 = t2.FUNC_ADD, _2 = t2.FUNC_ADD;
+      r2 >= 4 && (i = e[3], n = e[4]), 6 === r2 && (o2 = e[5], _2 = e[6]), t2.blendFuncSeparate(a2, s, i, n), t2.blendEquationSeparate(o2, _2);
     }
     InitSetViewport(t2, e, r2, a2) {
       this._type = 4;
@@ -7847,7 +7845,7 @@ void main(void) {
       (!this._texture || this._drawChanged || this._textLayoutChanged || this._wordWrapChanged || this._forceRecreateTexture) && (this._wasReleased || this._width <= 0 || this._height <= 0 || this._DoUpdate());
     }
     _DoUpdate() {
-      this._wasReleased || (this._UpdateTextMeasurements(), this._SetTextCanvasSize(Math.max(C32.nextHighestPowerOfTwo(Math.ceil(this._width)), 128), Math.max(C32.nextHighestPowerOfTwo(Math.ceil(this._height)), 64)), this._DrawTextToCanvas(), this._UpdateTexture(), this._textureTimeout.Reset());
+      this._wasReleased || (this._UpdateTextMeasurements(), this._DrawTextToCanvas(), this._UpdateTexture(), this._textureTimeout.Reset());
     }
     _SetTextCanvasSize(t2, e) {
       this._textCanvas || (this._textCanvas = C32.CreateCanvas(16, 16));
@@ -7956,7 +7954,7 @@ void main(void) {
     }
     _DrawTextToCanvas() {
       if (!this._drawChanged) return;
-      this._textContext.imageSmoothingEnabled = this._iconSmoothing, this._textContext.imageSmoothingQuality = "high", this._drawCharCount = 0;
+      this._SetTextCanvasSize(Math.max(C32.nextHighestPowerOfTwo(Math.ceil(this._width)), 128), Math.max(C32.nextHighestPowerOfTwo(Math.ceil(this._height)), 64)), this._textContext.imageSmoothingEnabled = this._iconSmoothing, this._textContext.imageSmoothingQuality = "high", this._drawCharCount = 0;
       const t2 = this.GetDrawScale(), e = this._wrappedText.GetLines();
       for (const i of e) this._DrawTextLine(i, t2);
       this._drawChanged = false;
@@ -8171,7 +8169,7 @@ var getOffsetParam2;
       const r2 = { "alpha": !!e.alpha, "depth": false, "antialias": false, "powerPreference": e.powerPreference, "failIfMajorPerformanceCaveat": !!e.failIfMajorPerformanceCaveat };
       let i = null, s = 0;
       if (e.maxWebGLVersion >= 2 && (i = t2.getContext("webgl2", r2), s = 2), i || (i = t2.getContext("webgl", r2), s = 1), !i) throw new Error("renderer-unavailable (could not get WebGL context)");
-      this._gl = i, this._attribs = i.getContextAttributes(), this._versionString = i.getParameter(i.VERSION), this._version = s, this._viewport = vec4.create(), this._didChangeTransform = false, this._bbProjectionMatrix = mat4.create(), this._usesDepthBuffer = !!e.depth, this._canSampleDepth = !(!e.depth || !e.canSampleDepth), this._isDepthEnabled = this._usesDepthBuffer, this._isDepthSamplingEnabled = false, this._depthBuffer = null, this._isAutoSizeDepthBuffer = true, this._depthBufferWidth = 0, this._depthBufferHeight = 0, this._vertexBuffer = null, this._texcoordBuffer = null, this._colorBuffer = null, this._indexBuffer = null, this._pointBuffer = null, this._isColorDataF16 = this._version >= 2 && void 0 !== globalThis["Float16Array"], this._vertexData = new Float32Array(196605), this._indexData = new Uint16Array(393210), this._texcoordData = new Float32Array(131070), this._colorData = this._isColorDataF16 ? new globalThis["Float16Array"](262140) : new Float32Array(262140), this._pointData = new Float32Array(32e3), this._vertexPtr = 0, this._indexPtr = 0, this._pointPtr = 0, this._lastProgram = null, this._spDeviceTransformTextureFill = null, this._batch = [], this._batchPtr = 0, this._topOfBatch = 0, this._currentRenderTarget = null, this._lastPointZ = 0, this._batchState = C32.New(C32.Gfx.BatchState, this), this._lastColor = C32.New(C32.Color, 1, 1, 1, 1), this._lastTexture0 = null, this._lastTexture1 = null, this._lastSrcBlend = 0, this._lastDestBlend = 0, this._lastPointTexCoords = new C32.Rect(), this._lastScissorRect = C32.New(C32.Rect, 0, 0, -1, -1), this._coplanarMode = 0, this._lastCullFace = 0, this._lastFrontFaceWinding = 0, this._maxTextureSize = -1, this._minPointSize = 0, this._maxPointSize = 0, this._unmaskedVendor = "(unavailable)", this._unmaskedRenderer = "(unavailable)", this._extensions = [], this._isInitialisingAfterContextRestored = false, this._parallelShaderCompileExt = null, this._anisotropicExt = null, this._conservativeDepthExt = null, this._depthTextureExt = null, this._fragDepthExt = null, this._stdDerivativesExt = null, this._textureLodExt = null, this._maxAnisotropy = 0, this._isGpuProfilingEnabled = !!e.enableGpuProfiling, this._timerExt = null, this._allQueryResultBuffers = /* @__PURE__ */ new Set(), this._timeQueryStack = [];
+      this._gl = i, this._attribs = i.getContextAttributes(), this._versionString = i.getParameter(i.VERSION), this._version = s, this._viewport = vec4.create(), this._didChangeTransform = false, this._bbProjectionMatrix = mat4.create(), this._usesDepthBuffer = !!e.depth, this._canSampleDepth = !(!e.depth || !e.canSampleDepth), this._isDepthEnabled = this._usesDepthBuffer, this._isDepthSamplingEnabled = false, this._depthBuffer = null, this._isAutoSizeDepthBuffer = true, this._depthBufferWidth = 0, this._depthBufferHeight = 0, this._vertexBuffer = null, this._texcoordBuffer = null, this._colorBuffer = null, this._indexBuffer = null, this._pointBuffer = null, this._isColorDataF16 = this._version >= 2 && void 0 !== globalThis["Float16Array"], this._vertexData = new Float32Array(196605), this._indexData = new Uint16Array(393210), this._texcoordData = new Float32Array(131070), this._colorData = this._isColorDataF16 ? new globalThis["Float16Array"](262140) : new Float32Array(262140), this._pointData = new Float32Array(32e3), this._vertexPtr = 0, this._indexPtr = 0, this._pointPtr = 0, this._lastProgram = null, this._spDeviceTransformTextureFill = null, this._batch = [], this._batchPtr = 0, this._topOfBatch = 0, this._currentRenderTarget = null, this._lastPointZ = 0, this._batchState = C32.New(C32.Gfx.BatchState, this), this._lastColor = C32.New(C32.Color, 1, 1, 1, 1), this._lastTexture0 = null, this._lastTexture1 = null, this._lastBlendMode = 0, this._lastPointTexCoords = new C32.Rect(), this._lastScissorRect = C32.New(C32.Rect, 0, 0, -1, -1), this._coplanarMode = 0, this._lastCullFace = 0, this._lastFrontFaceWinding = 0, this._maxTextureSize = -1, this._minPointSize = 0, this._maxPointSize = 0, this._unmaskedVendor = "(unavailable)", this._unmaskedRenderer = "(unavailable)", this._extensions = [], this._isInitialisingAfterContextRestored = false, this._parallelShaderCompileExt = null, this._anisotropicExt = null, this._conservativeDepthExt = null, this._depthTextureExt = null, this._fragDepthExt = null, this._stdDerivativesExt = null, this._textureLodExt = null, this._blendMinMaxExt = null, this._maxAnisotropy = 0, this._isGpuProfilingEnabled = !!e.enableGpuProfiling, this._timerExt = null, this._allQueryResultBuffers = /* @__PURE__ */ new Set(), this._timeQueryStack = [];
     }
     IsWebGL() {
       return true;
@@ -8181,7 +8179,7 @@ var getOffsetParam2;
       const t2 = this._gl;
       this._lastColor.setRgba(1, 1, 1, 1), this._lastTexture0 = null, this._lastTexture1 = null, this._vertexPtr = 0, this._indexPtr = 0, this._pointPtr = 0, C32.clearArray(this._batch), this._batchPtr = 0, this._topOfBatch = 0, this._lastProgram = null, this._currentRenderTarget = null, this._lastPointTexCoords.set(0, 0, 1, 1), this._lastPointZ = 0;
       const e = this._batchState;
-      e.currentShader = null, e.currentFramebuffer = null, e.currentFramebufferNoDepth = null, e.clearColor.setRgba(0, 0, 0, 0), e.pointTexCoords.set(0, 0, 1, 1), t2.clearColor(0, 0, 0, 0), t2.clear(t2.COLOR_BUFFER_BIT), t2.enable(t2.BLEND), t2.blendFunc(t2.ONE, t2.ONE_MINUS_SRC_ALPHA), this._lastSrcBlend = t2.ONE, this._lastDestBlend = t2.ONE_MINUS_SRC_ALPHA, this._InitBlendModes(t2), t2.cullFace(t2.BACK), t2.disable(t2.CULL_FACE), this._lastCullFace = 0, t2.frontFace(t2.CW), this._lastFrontFaceWinding = 0, t2.disable(t2.STENCIL_TEST), t2.disable(t2.DITHER), this._usesDepthBuffer ? (t2.enable(t2.DEPTH_TEST), t2.depthMask(true), t2.depthFunc(t2.LEQUAL)) : (t2.disable(t2.DEPTH_TEST), t2.depthMask(false)), this._isDepthEnabled = this._usesDepthBuffer, this._isDepthSamplingEnabled = false, this._pointBuffer = t2.createBuffer(), t2.bindBuffer(t2.ARRAY_BUFFER, this._pointBuffer), t2.bufferData(t2.ARRAY_BUFFER, this._pointData.byteLength, t2.DYNAMIC_DRAW), this._vertexBuffer = t2.createBuffer(), t2.bindBuffer(t2.ARRAY_BUFFER, this._vertexBuffer), t2.bufferData(t2.ARRAY_BUFFER, this._vertexData.byteLength, t2.DYNAMIC_DRAW), this._texcoordBuffer = t2.createBuffer(), t2.bindBuffer(t2.ARRAY_BUFFER, this._texcoordBuffer), t2.bufferData(t2.ARRAY_BUFFER, this._texcoordData.byteLength, t2.DYNAMIC_DRAW), this._colorBuffer = t2.createBuffer(), t2.bindBuffer(t2.ARRAY_BUFFER, this._colorBuffer), t2.bufferData(t2.ARRAY_BUFFER, this._colorData.byteLength, t2.DYNAMIC_DRAW), this._indexBuffer = t2.createBuffer(), t2.bindBuffer(t2.ELEMENT_ARRAY_BUFFER, this._indexBuffer), t2.bufferData(t2.ELEMENT_ARRAY_BUFFER, this._indexData.byteLength, t2.DYNAMIC_DRAW), t2.activeTexture(t2.TEXTURE0), t2.bindTexture(t2.TEXTURE_2D, null), this._maxTextureSize = t2.getParameter(t2.MAX_TEXTURE_SIZE);
+      e.currentShader = null, e.currentFramebuffer = null, e.currentFramebufferNoDepth = null, e.clearColor.setRgba(0, 0, 0, 0), e.pointTexCoords.set(0, 0, 1, 1), t2.clearColor(0, 0, 0, 0), t2.clear(t2.COLOR_BUFFER_BIT), t2.enable(t2.BLEND), t2.blendFunc(t2.ONE, t2.ONE_MINUS_SRC_ALPHA), t2.blendEquationSeparate(t2.FUNC_ADD, t2.FUNC_ADD), this._lastBlendMode = 0, 1 === this._version ? this._blendMinMaxExt = t2.getExtension("EXT_blend_minmax") : this._blendMinMaxExt = null, this._InitBlendModes(t2), t2.cullFace(t2.BACK), t2.disable(t2.CULL_FACE), this._lastCullFace = 0, t2.frontFace(t2.CW), this._lastFrontFaceWinding = 0, t2.disable(t2.STENCIL_TEST), t2.disable(t2.DITHER), this._usesDepthBuffer ? (t2.enable(t2.DEPTH_TEST), t2.depthMask(true), t2.depthFunc(t2.LEQUAL)) : (t2.disable(t2.DEPTH_TEST), t2.depthMask(false)), this._isDepthEnabled = this._usesDepthBuffer, this._isDepthSamplingEnabled = false, this._pointBuffer = t2.createBuffer(), t2.bindBuffer(t2.ARRAY_BUFFER, this._pointBuffer), t2.bufferData(t2.ARRAY_BUFFER, this._pointData.byteLength, t2.DYNAMIC_DRAW), this._vertexBuffer = t2.createBuffer(), t2.bindBuffer(t2.ARRAY_BUFFER, this._vertexBuffer), t2.bufferData(t2.ARRAY_BUFFER, this._vertexData.byteLength, t2.DYNAMIC_DRAW), this._texcoordBuffer = t2.createBuffer(), t2.bindBuffer(t2.ARRAY_BUFFER, this._texcoordBuffer), t2.bufferData(t2.ARRAY_BUFFER, this._texcoordData.byteLength, t2.DYNAMIC_DRAW), this._colorBuffer = t2.createBuffer(), t2.bindBuffer(t2.ARRAY_BUFFER, this._colorBuffer), t2.bufferData(t2.ARRAY_BUFFER, this._colorData.byteLength, t2.DYNAMIC_DRAW), this._indexBuffer = t2.createBuffer(), t2.bindBuffer(t2.ELEMENT_ARRAY_BUFFER, this._indexBuffer), t2.bufferData(t2.ELEMENT_ARRAY_BUFFER, this._indexData.byteLength, t2.DYNAMIC_DRAW), t2.activeTexture(t2.TEXTURE0), t2.bindTexture(t2.TEXTURE_2D, null), this._maxTextureSize = t2.getParameter(t2.MAX_TEXTURE_SIZE);
       const r2 = t2.getParameter(t2.ALIASED_POINT_SIZE_RANGE);
       this._minPointSize = r2[0], this._maxPointSize = r2[1], this._maxPointSize > 2048 && (this._maxPointSize = 2048), this._extensions = t2.getSupportedExtensions();
       const i = t2.getExtension("WEBGL_debug_renderer_info");
@@ -8296,25 +8294,19 @@ var getOffsetParam2;
       this._lastTexture0 = null;
     }
     SetBlendMode(t2) {
-      const e = this._GetBlendByIndex(t2);
-      this._SetBlend(e[0], e[1]);
+      this._lastBlendMode !== t2 && (this._lastBlendMode = t2, this._SetBlend(this._GetBlendParametersByIndex(t2)));
     }
     SetNamedBlendMode(t2) {
-      const e = this.GetNamedBlend(t2);
-      this._SetBlend(e.srcBlend, e.destBlend);
+      this.SetBlendMode(this.NamedBlendToNumber(t2));
     }
-    _SetBlend(t2, e) {
-      if (t2 === this._lastSrcBlend && e === this._lastDestBlend) return;
-      this.PushBatch().InitSetBlend(t2, e), this._lastSrcBlend = t2, this._lastDestBlend = e, this._topOfBatch = 0, this._currentStateGroup = null;
+    _SetBlend(t2) {
+      this.PushBatch().InitSetBlend(t2), this._topOfBatch = 0, this._currentStateGroup = null;
     }
     IsPremultipliedAlphaBlend() {
-      return this._lastSrcBlend === this._gl.ONE && this._lastDestBlend === this._gl.ONE_MINUS_SRC_ALPHA;
+      return 0 === this._lastBlendMode;
     }
     SetAlphaBlend() {
-      this._SetBlend(this._gl.ONE, this._gl.ONE_MINUS_SRC_ALPHA);
-    }
-    SetNoPremultiplyAlphaBlend() {
-      this._SetBlend(this._gl.SRC_ALPHA, this._gl.ONE_MINUS_SRC_ALPHA);
+      this.SetBlendMode(0);
     }
     SetCullFaceMode(t2) {
       if (this._lastCullFace === t2) return;
@@ -8331,7 +8323,7 @@ var getOffsetParam2;
       return this._lastFrontFaceWinding;
     }
     SetCopyBlend() {
-      this._SetBlend(this._gl.ONE, this._gl.ZERO);
+      this.SetBlendMode(3);
     }
     Rect(t2) {
       this.Rect2(t2.getLeft(), t2.getTop(), t2.getRight(), t2.getBottom());
@@ -8770,7 +8762,8 @@ var getOffsetParam2;
       return this._gl;
     }
     _InitBlendModes(t2) {
-      this._InitBlendModeData([["normal", t2.ONE, t2.ONE_MINUS_SRC_ALPHA], ["additive", t2.ONE, t2.ONE], ["xor", t2.ONE, t2.ONE_MINUS_SRC_ALPHA], ["copy", t2.ONE, t2.ZERO], ["destination-over", t2.ONE_MINUS_DST_ALPHA, t2.ONE], ["source-in", t2.DST_ALPHA, t2.ZERO], ["destination-in", t2.ZERO, t2.SRC_ALPHA], ["source-out", t2.ONE_MINUS_DST_ALPHA, t2.ZERO], ["destination-out", t2.ZERO, t2.ONE_MINUS_SRC_ALPHA], ["source-atop", t2.DST_ALPHA, t2.ONE_MINUS_SRC_ALPHA], ["destination-atop", t2.ONE_MINUS_DST_ALPHA, t2.SRC_ALPHA]]);
+      let e = t2.FUNC_ADD, r2 = t2.FUNC_ADD;
+      this._version >= 2 ? (e = t2.MAX, r2 = t2.MIN) : this._blendMinMaxExt && (e = this._blendMinMaxExt["MAX_EXT"], r2 = this._blendMinMaxExt["MIN_EXT"]), this._InitBlendModeData([["normal", [t2.ONE, t2.ONE_MINUS_SRC_ALPHA]], ["additive", [t2.ONE, t2.ONE]], ["xor", [t2.ONE, t2.ONE_MINUS_SRC_ALPHA]], ["copy", [t2.ONE, t2.ZERO]], ["destination-over", [t2.ONE_MINUS_DST_ALPHA, t2.ONE]], ["source-in", [t2.DST_ALPHA, t2.ZERO]], ["destination-in", [t2.ZERO, t2.SRC_ALPHA]], ["source-out", [t2.ONE_MINUS_DST_ALPHA, t2.ZERO]], ["destination-out", [t2.ZERO, t2.ONE_MINUS_SRC_ALPHA]], ["source-atop", [t2.DST_ALPHA, t2.ONE_MINUS_SRC_ALPHA]], ["destination-atop", [t2.ONE_MINUS_DST_ALPHA, t2.SRC_ALPHA]], ["lighten", [t2.ONE, t2.ONE, t2.ONE, t2.ONE, e, e]], ["darken", [t2.ONE, t2.ONE, t2.ONE, t2.ONE, r2, r2]], ["multiply", [t2.DST_COLOR, t2.ONE_MINUS_SRC_ALPHA, t2.ONE, t2.ONE_MINUS_SRC_ALPHA]], ["screen", [t2.ONE, t2.ONE_MINUS_SRC_COLOR, t2.ONE, t2.ONE_MINUS_SRC_ALPHA]]]);
     }
     CreateWebGLText() {
       return this.CreateRendererText();
@@ -8801,6 +8794,7 @@ var CheckPendingPolls2;
     }
     async Create(e, t2) {
       if (t2 = Object.assign({}, DEFAULT_WEBGPURENDERER_OPTS, t2), !navigator["gpu"]) throw new Error("renderer-unavailable (WebGPU not supported)");
+      if ("Safari" === C32.Platform.Browser || "iOS" === C32.Platform.OS) throw new Error("WebGPU is currently disabled in Safari - see https://bugs.webkit.org/show_bug.cgi?id=301627");
       t2.depth && (this._flags |= 524288), t2.isMultiTexturingAllowed && (this._flags |= 65536), this._canSampleBackbuffer = !!t2.canSampleBackbuffer, this._backTextureSampling = t2.backTextureSampling, this._usesBackgroundBlending = !!t2.usesBackgroundBlending, this._adapterOpts = {}, this._canSampleDepth = !(!t2.depth || !t2.canSampleDepth), "default" !== t2.powerPreference && (this._adapterOpts["powerPreference"] = t2.powerPreference), this._canvas = e, await this._InitDevice(t2.failIfMajorPerformanceCaveat);
     }
     async _InitDevice(e) {
@@ -8810,8 +8804,10 @@ var CheckPendingPolls2;
     async _TryGetDeviceOnCurrentAdapter(e) {
       if (!this._adapter) {
         if (this._adapter = await navigator["gpu"]["requestAdapter"](this._adapterOpts), !this._adapter) throw new Error("renderer-unavailable (no WebGPU adapter available)");
-        if (e && (this._adapter["isFallbackAdapter"] || this._adapter["info"]["isFallbackAdapter"])) throw new Error("renderer-unavailable (WebGPU provided fallback adapter)");
-        if ("adreno-7xx" === this._adapter["info"]["architecture"]) throw new Error("WebGPU disabled on adreno-7xx devices - see https://issues.chromium.org/issues/329702056");
+        const t3 = this._adapter["info"];
+        if (e && t3["isFallbackAdapter"]) throw new Error("renderer-unavailable (WebGPU provided fallback adapter)");
+        if ("adreno-7xx" === t3["architecture"]) throw new Error("WebGPU disabled on adreno-7xx devices - see https://issues.chromium.org/issues/329702056");
+        if ("intel" === t3["vendor"] && ("gen-7" === t3["architecture"] || "gen7" === t3["architecture"])) throw new Error("WebGPU disabled on Intel Gen7 GPUs - see https://issues.chromium.org/issues/462468373");
       }
       const t2 = [];
       if (this._adapter["features"].has("timestamp-query") && t2.push("timestamp-query"), this._adapter["features"].has("shader-f16") && t2.push("shader-f16"), this._device = await this._adapter["requestDevice"]({ "requiredFeatures": t2, "requiredLimits": { "maxTextureDimension2D": this._adapter["limits"]["maxTextureDimension2D"] } }), !this._device) return null;
@@ -9550,7 +9546,7 @@ var CheckPendingPolls2;
       this._MaybeEndRenderPass(), this.SetDepthEnabled(e), this._flags &= -16777217;
     }
     _InitBlendModes() {
-      this._InitBlendModeData([["normal", "one", "one-minus-src-alpha"], ["additive", "one", "one"], ["xor", "one", "one-minus-src-alpha"], ["copy", "one", "zero"], ["destination-over", "one-minus-dst-alpha", "one"], ["source-in", "dst-alpha", "zero"], ["destination-in", "zero", "src-alpha"], ["source-out", "one-minus-dst-alpha", "zero"], ["destination-out", "zero", "one-minus-src-alpha"], ["source-atop", "dst-alpha", "one-minus-src-alpha"], ["destination-atop", "one-minus-dst-alpha", "src-alpha"]]);
+      this._InitBlendModeData([["normal", ["one", "one-minus-src-alpha"]], ["additive", ["one", "one"]], ["xor", ["one", "one-minus-src-alpha"]], ["copy", ["one", "zero"]], ["destination-over", ["one-minus-dst-alpha", "one"]], ["source-in", ["dst-alpha", "zero"]], ["destination-in", ["zero", "src-alpha"]], ["source-out", ["one-minus-dst-alpha", "zero"]], ["destination-out", ["zero", "one-minus-src-alpha"]], ["source-atop", ["dst-alpha", "one-minus-src-alpha"]], ["destination-atop", ["one-minus-dst-alpha", "src-alpha"]], ["lighten", ["one", "one", "one", "one", "max", "max"]], ["darken", ["one", "one", "one", "one", "min", "min"]], ["multiply", ["dst", "one-minus-src-alpha", "one", "one-minus-src-alpha"]], ["screen", ["one", "one-minus-src", "one", "one-minus-src-alpha"]]]);
     }
     GetAvailableAdapterFeatures() {
       return this._adapter ? [...this._adapter["features"]] : [];
@@ -9834,27 +9830,29 @@ fn c3_getDepthUV(fragPos : vec2<f32>, texDepth : texture_depth_2d) -> vec2<f32>
       return this._parameters[t2];
     }
     _GetRenderPipelineDescriptor(t2, e, n, r2, a2) {
-      const i = this._renderer, o2 = i.IsColorDataF16(), [u2, f2] = i._GetBlendByIndex(t2);
-      let c2 = "none";
+      const i = this._renderer, o2 = i.IsColorDataF16(), u2 = i._GetBlendParametersByIndex(t2);
+      let f2 = u2[0], c2 = u2[1], s = f2, l = c2, p2 = "add", d2 = "add";
+      u2.length >= 4 && (s = u2[2], l = u2[3]), 6 === u2.length && (p2 = u2[4], d2 = u2[5]);
+      let m2 = "none";
       switch (n) {
         case 1:
-          c2 = "back";
+          m2 = "back";
           break;
         case 2:
-          c2 = "front";
+          m2 = "front";
       }
-      const s = { "label": `${this.GetName()} blendMode ${t2} variant ${e} multisampleCount ${a2}`, "layout": this._GetPipelineLayout(), "primitive": { "cullMode": c2, "frontFace": 0 === r2 ? "cw" : "ccw" }, "vertex": { "module": 4 === e ? this._normVertexModule : this._vertexModule, "entryPoint": "main", "buffers": [{ "arrayStride": 12, "attributes": [{ "shaderLocation": 0, "offset": 0, "format": "float32x3" }] }, { "arrayStride": 8, "attributes": [{ "shaderLocation": 1, "offset": 0, "format": "float32x2" }] }, { "arrayStride": 4 * (o2 ? 2 : 4), "attributes": [{ "shaderLocation": 2, "offset": 0, "format": o2 ? "float16x4" : "float32x4" }] }, { "arrayStride": 4, "attributes": [{ "shaderLocation": 3, "offset": 0, "format": "uint32" }] }] }, "fragment": { "module": this._fragmentModule, "entryPoint": "main", "targets": [{ "format": i.GetSwapChainFormat(), "blend": { "color": { "srcFactor": u2, "dstFactor": f2 }, "alpha": { "srcFactor": u2, "dstFactor": f2 } } }] } };
-      if (a2 >= 2 && (s["multisample"] = { "count": a2 }), 1 === e) s["fragment"]["module"] = this._fragmentModuleFragDepth || this._fragmentModule, s["depthStencil"] = { "format": i._GetDepthBufferFormat(), "depthWriteEnabled": true, "depthCompare": "less-equal" };
+      const g2 = { "label": `${this.GetName()} blendMode ${t2} variant ${e} multisampleCount ${a2}`, "layout": this._GetPipelineLayout(), "primitive": { "cullMode": m2, "frontFace": 0 === r2 ? "cw" : "ccw" }, "vertex": { "module": 4 === e ? this._normVertexModule : this._vertexModule, "entryPoint": "main", "buffers": [{ "arrayStride": 12, "attributes": [{ "shaderLocation": 0, "offset": 0, "format": "float32x3" }] }, { "arrayStride": 8, "attributes": [{ "shaderLocation": 1, "offset": 0, "format": "float32x2" }] }, { "arrayStride": 4 * (o2 ? 2 : 4), "attributes": [{ "shaderLocation": 2, "offset": 0, "format": o2 ? "float16x4" : "float32x4" }] }, { "arrayStride": 4, "attributes": [{ "shaderLocation": 3, "offset": 0, "format": "uint32" }] }] }, "fragment": { "module": this._fragmentModule, "entryPoint": "main", "targets": [{ "format": i.GetSwapChainFormat(), "blend": { "color": { "srcFactor": f2, "dstFactor": c2, "operation": p2 }, "alpha": { "srcFactor": s, "dstFactor": l, "operation": d2 } } }] } };
+      if (a2 >= 2 && (g2["multisample"] = { "count": a2 }), 1 === e) g2["fragment"]["module"] = this._fragmentModuleFragDepth || this._fragmentModule, g2["depthStencil"] = { "format": i._GetDepthBufferFormat(), "depthWriteEnabled": true, "depthCompare": "less-equal" };
       else if (2 === e) {
-        s["fragment"]["module"] = this._fragmentModuleFragDepth || this._fragmentModule, s["fragment"]["targets"] = [];
+        g2["fragment"]["module"] = this._fragmentModuleFragDepth || this._fragmentModule, g2["fragment"]["targets"] = [];
         const t3 = { "compare": "always", "failOp": "keep", "depthFailOp": "keep", "passOp": "replace" };
-        s["depthStencil"] = { "format": i._GetDepthBufferFormat(), "depthWriteEnabled": true, "depthCompare": "less-equal", "stencilFront": t3, "stencilBack": t3, "stencilReadMask": 1, "stencilWriteMask": 1 };
+        g2["depthStencil"] = { "format": i._GetDepthBufferFormat(), "depthWriteEnabled": true, "depthCompare": "less-equal", "stencilFront": t3, "stencilBack": t3, "stencilReadMask": 1, "stencilWriteMask": 1 };
       } else if (3 === e) {
-        s["fragment"]["module"] = this._fragmentModuleFragDepth || this._fragmentModule;
+        g2["fragment"]["module"] = this._fragmentModuleFragDepth || this._fragmentModule;
         const t3 = { "compare": "equal", "failOp": "keep", "depthFailOp": "keep", "passOp": "keep" };
-        s["depthStencil"] = { "format": i._GetDepthBufferFormat(), "depthWriteEnabled": false, "depthCompare": "always", "stencilFront": t3, "stencilBack": t3, "stencilReadMask": 1, "stencilWriteMask": 0 };
+        g2["depthStencil"] = { "format": i._GetDepthBufferFormat(), "depthWriteEnabled": false, "depthCompare": "always", "stencilFront": t3, "stencilBack": t3, "stencilReadMask": 1, "stencilWriteMask": 0 };
       }
-      return s;
+      return g2;
     }
     _CreateRenderPipeline(t2, e, n, r2, a2) {
       return this._GetDevice()["createRenderPipeline"](this._GetRenderPipelineDescriptor(t2, e, n, r2, a2));
@@ -11279,7 +11277,7 @@ var HashPipelineState2;
         for (const t3 of o2.GetSolModifiersIncludingParents()) e2.has(t3) || (a2.push(t3), e2.add(t3));
         for (const t3 of r2.GetDynamicSolModifiersSet()) e2.has(t3) || (a2.push(t3), e2.add(t3));
       }
-      return i.RunAsExpressionFunctionCall(a2, n.IsCopyPicked(), n.GetReturnType(), n.GetDefaultReturnValue(), ...t2);
+      return i.RunAsExpressionOrJSFunctionCall(a2, n.IsCopyPicked(), n.GetReturnType(), n.GetDefaultReturnValue(), null, ...t2);
     }
     setReturnValue(e) {
       const t2 = runtime.GetEventStack().GetCurrentExpFuncStackFrame();
@@ -11435,7 +11433,7 @@ var HashPipelineState2;
       const r2 = runtime.GetCurrentLayout();
       for (const t3 of e) {
         const e2 = runtime._UnwrapIWorldInstance(t3), r3 = e2.GetWorldInfo();
-        tempZOrderList.push([r3.GetLayer().GetIndex(), r3.GetZIndex()]), tempInstances.push(e2);
+        r3.IsDestroyed() || (tempZOrderList.push([r3.GetLayer().GetIndex(), r3.GetZIndex()]), tempInstances.push(e2));
       }
       if (0 === tempZOrderList.length) return;
       tempZOrderList.sort(SortZOrderList), tempInstances.sort((e2, r3) => t2(e2.GetInterfaceClass(), r3.GetInterfaceClass()));
@@ -11445,6 +11443,13 @@ var HashPipelineState2;
         o2[a2] !== t4 && (o2[a2] = t4, t4.GetWorldInfo()._SetLayer(i, true), i.SetZIndicesChanged(t4), n = true);
       }
       n && runtime.UpdateRender(), C32.clearArray(tempZOrderList), C32.clearArray(tempInstances);
+    }
+    destroyMultiple(e) {
+      for (const t2 of e) {
+        const e2 = runtime._UnwrapIWorldInstance(t2);
+        runtime.DestroyInstance(e2);
+      }
+      runtime.GetEventSheetManager().IsInEventEngine() || runtime.GetLayoutManager().IsEndingLayout() || runtime.GetEventSheetManager().IsFlushingBlocked() || runtime.FlushPendingInstances();
     }
     async createWorker(e, t2) {
       didWarnCreateWorkerDeprecated || (console.warn("IRuntime.createWorker() is deprecated. All modern browsers now support nested workers so this method is no longer needed."), didWarnCreateWorkerDeprecated = true);
@@ -11672,14 +11677,54 @@ var SortZOrderList2;
       return C32.first(this.pickedInstances());
     }
     getPairedInstance(e) {
-      const t2 = this.#e, n = t2.GetRuntime()._UnwrapIInstance(e), i = t2.GetPairedInstance(n);
-      return i ? i.GetInterfaceClass() : null;
+      const t2 = this.#e, n = t2.GetRuntime()._UnwrapIInstance(e), s = t2.GetPairedInstance(n);
+      return s ? s.GetInterfaceClass() : null;
     }
     *instances() {
       for (const e of this.#e.instancesIncludingPendingCreate()) yield e.GetInterfaceClass();
     }
     *pickedInstances() {
       for (const e of this.#e.GetCurrentSol().GetInstances()) yield e.GetInterfaceClass();
+    }
+    callCustomAction(e, t2, ...n) {
+      C3X.RequireString(e);
+      const s = this.#e, i = s.GetRuntime(), r2 = i.GetEventSheetManager(), a2 = r2.GetCustomActionBlockByName(s, e);
+      if (!a2) throw new Error(`cannot find '${this.name}' custom action '${e}'`);
+      if (!a2.IsEnabled()) return null;
+      if (n.length < a2.GetFunctionParameterCount()) throw new Error(`not enough function parameters passed for '${this.name}' custom action '${e}' (${n.length} passed, ${a2.GetFunctionParameterCount()} expected)`);
+      const c2 = a2.GetEventBlock();
+      let o2 = c2.GetSolModifiersIncludingParents();
+      const l = r2.GetCurrentEvent();
+      if (l) {
+        o2 = o2.slice(0);
+        const e2 = new Set(o2);
+        for (const t3 of l.GetSolModifiersIncludingParents()) e2.has(t3) || (o2.push(t3), e2.add(t3));
+        for (const t3 of r2.GetDynamicSolModifiersSet()) e2.has(t3) || (o2.push(t3), e2.add(t3));
+      }
+      if (s.IsFamily() && a2.HasCustomACEOverrides()) {
+        const r3 = /* @__PURE__ */ new Map(), l2 = [];
+        for (const n2 of t2) {
+          const t3 = i._UnwrapIInstance(n2), s2 = t3.GetObjectClass();
+          if (s2.HasOwnCustomActionByName(e)) {
+            const e2 = r3.get(s2);
+            Array.isArray(e2) ? e2.push(t3) : r3.set(s2, [t3]);
+          } else l2.push(t3);
+        }
+        const u2 = [];
+        if (l2.length > 0) {
+          const e2 = { pickObjectClass: s, pickInstances: l2 }, t3 = c2.RunAsExpressionOrJSFunctionCall(o2, a2.IsCopyPicked(), 0, null, e2, ...n);
+          u2.push(t3);
+        }
+        if (r3.size > 0) for (const [t3, s2] of r3) {
+          const i2 = t3.GetOwnCustomActionByName(e).GetEventBlock(), r4 = [.../* @__PURE__ */ new Set([...o2, ...i2.GetSolModifiers()])], c3 = { pickObjectClass: t3, pickInstances: s2 }, l3 = i2.RunAsExpressionOrJSFunctionCall(r4, a2.IsCopyPicked(), 0, null, c3, ...n);
+          u2.push(l3);
+        }
+        return Promise.all(u2);
+      }
+      {
+        const e2 = { pickObjectClass: a2.GetObjectClass(), pickInstances: (Array.isArray(t2) ? t2 : [...t2]).map((e3) => i._UnwrapIInstance(e3)) }, s2 = c2.RunAsExpressionOrJSFunctionCall(o2, a2.IsCopyPicked(), 0, null, e2, ...n);
+        return s2 instanceof Promise ? s2 : Promise.resolve();
+      }
     }
   };
 }
@@ -11875,7 +11920,7 @@ var SortZOrderList2;
   };
 }
 {
-  const C32 = self.C3, C3X = self.C3X, BLEND_MODE_TO_INDEX = /* @__PURE__ */ new Map([["normal", 0], ["additive", 1], ["copy", 3], ["destination-over", 4], ["source-in", 5], ["destination-in", 6], ["source-out", 7], ["destination-out", 8], ["source-atop", 9], ["destination-atop", 10]]), INDEX_TO_BLEND_MODE = new Map([...BLEND_MODE_TO_INDEX.entries()].map((e) => [e[1], e[0]])), VALID_RENDERING_MODES = /* @__PURE__ */ new Set(["2d", "3d"]), tempColor = C32.New(C32.Color);
+  const C32 = self.C3, C3X = self.C3X, BLEND_MODE_TO_INDEX = /* @__PURE__ */ new Map([["normal", 0], ["additive", 1], ["copy", 3], ["destination-over", 4], ["source-in", 5], ["destination-in", 6], ["source-out", 7], ["destination-out", 8], ["source-atop", 9], ["destination-atop", 10], ["lighten", 11], ["darken", 12], ["multiply", 13], ["screen", 14]]), INDEX_TO_BLEND_MODE = new Map([...BLEND_MODE_TO_INDEX.entries()].map((e) => [e[1], e[0]])), VALID_RENDERING_MODES = /* @__PURE__ */ new Set(["2d", "3d"]), tempColor = C32.New(C32.Color);
   self.ILayer = class {
     #e;
     constructor(e) {
@@ -12127,13 +12172,16 @@ var SortZOrderList2;
       const e = this.#e;
       return e.GetRuntime().GetDt(e);
     }
+    hasTag(e) {
+      return C3X.RequireString(e), this.#e.HasTag(e);
+    }
     hasTags(...e) {
       C3X.RequireArray(e);
-      const t2 = new Set(e), i = this.#e.GetTagsSet();
+      const t2 = new Set(e.map((e2) => e2.toLowerCase())), i = this.#e.GetLowercaseTagsSet();
       return t2.isSubsetOf(i);
     }
     setAllTags(e) {
-      C3X.RequireInstanceOf(e, Set), this.#e.SetTagsSet(e);
+      e instanceof Set || (e = new Set(e)), this.#e.SetTagsSet(e);
     }
     getAllTags() {
       return new Set(this.#e.GetTagsSet());
@@ -12147,6 +12195,9 @@ var SortZOrderList2;
       C3X.RequireString(e);
       const t2 = this.#e;
       return t2.GetRuntime().GetEventSheetManager().WaitForInstanceSignal(t2, e);
+    }
+    callCustomAction(e, ...t2) {
+      return this.objectType.callCustomAction(e, [this], ...t2);
     }
   };
 }
@@ -12550,7 +12601,7 @@ var GetDispatcher2;
     };
   };
   MakeIWorldInstanceClass2 = MakeIWorldInstanceClass;
-  const C32 = self.C3, C3X = self.C3X, IInstance = self.IInstance, ILayer = self.ILayer, tempRect = C32.New(C32.Rect), tempQuad = C32.New(C32.Quad), map = /* @__PURE__ */ new WeakMap(), internalApiToken = C32._GetInternalAPIToken(), BLEND_MODE_TO_INDEX = /* @__PURE__ */ new Map([["normal", 0], ["additive", 1], ["copy", 3], ["destination-over", 4], ["source-in", 5], ["destination-in", 6], ["source-out", 7], ["destination-out", 8], ["source-atop", 9], ["destination-atop", 10]]), INDEX_TO_BLEND_MODE = new Map([...BLEND_MODE_TO_INDEX.entries()].map((e) => [e[1], e[0]])), tempColor = C32.New(C32.Color);
+  const C32 = self.C3, C3X = self.C3X, IInstance = self.IInstance, ILayer = self.ILayer, tempRect = C32.New(C32.Rect), tempQuad = C32.New(C32.Quad), map = /* @__PURE__ */ new WeakMap(), internalApiToken = C32._GetInternalAPIToken(), BLEND_MODE_TO_INDEX = /* @__PURE__ */ new Map([["normal", 0], ["additive", 1], ["copy", 3], ["destination-over", 4], ["source-in", 5], ["destination-in", 6], ["source-out", 7], ["destination-out", 8], ["source-atop", 9], ["destination-atop", 10], ["lighten", 11], ["darken", 12], ["multiply", 13], ["screen", 14]]), INDEX_TO_BLEND_MODE = new Map([...BLEND_MODE_TO_INDEX.entries()].map((e) => [e[1], e[0]])), tempColor = C32.New(C32.Color);
   self.IWorldInstance = MakeIWorldInstanceClass(self.IInstance), self.IWorldInstanceSDKBase = MakeIWorldInstanceClass(self.ISDKInstanceBase);
 }
 var MakeIWorldInstanceClass2;
@@ -13235,6 +13286,9 @@ var GetTweenState2;
     addLoadPromise(e) {
       runtime.AddLoadPromise(e);
     }
+    isWrapperExtensionAvailable(e) {
+      return C3X.RequireString(e), runtime.HasWrapperComponentId(e);
+    }
     sendWrapperExtensionMessage(e, n, t2) {
       C3X.RequireString(e), C3X.RequireString(n), C3X.RequireOptionalArray(t2), runtime.SendWrapperExtensionMessage(e, n, t2);
     }
@@ -13780,9 +13834,9 @@ var getActual2;
       const t2 = e.map((e2) => this.GetProjectFileUrl(e2));
       if (this._runtime.IsInWorker()) if (1 === e.length) {
         const t3 = e[0];
-        await import((C32.IsRelativeURL(t3) ? "./" : "") + t3);
+        await import(new URL(t3, location.href).toString());
       } else {
-        const t3 = e.map((e2) => `import "${C32.IsRelativeURL(e2) ? "./" : ""}${e2}";`).join("\n"), s = URL.createObjectURL(new Blob([t3], { type: "application/javascript" }));
+        const t3 = e.map((e2) => `import "${new URL(e2, location.href).toString()}";`).join("\n"), s = URL.createObjectURL(new Blob([t3], { type: "application/javascript" }));
         await import(s);
       }
       else await Promise.all(t2.map((e2) => AddScript(e2)));
@@ -13840,7 +13894,7 @@ var AddScript2;
       super(e, t2), this._texturePromise = null, this._webglTexture = null, this._refCount = 0, this._imageWidth = -1, this._imageHeight = -1, this._isTiled = !!t2.isTiled, allImageAssets.add(this);
     }
     Release() {
-      if (0 !== this._refCount) throw new Error("released image asset which still has texture references");
+      if (0 !== this._refCount) throw new Error("released image asset which still has references");
       this._assetManager._ReleaseImageAsset(this), this._texturePromise = null, allImageAssets.delete(this), super.Release();
     }
     static OnRendererContextLost() {
@@ -13866,8 +13920,14 @@ var AddScript2;
         this._webglTexture.GetRenderer().DeleteTexture(this._webglTexture), this._webglTexture = null;
       }
     }
+    IncRefCount() {
+      this._refCount++;
+    }
     GetRefCount() {
       return this._refCount;
+    }
+    DecRefCount() {
+      this._refCount--;
     }
     GetTexture() {
       return this._webglTexture;
@@ -16485,17 +16545,23 @@ var MaybePrepareLayerDraw2;
         return this.Stop(true), void this.OnCompleted();
       }
       const c2 = this._beforeAndAfterTracksLength;
-      for (m2 = 0; m2 < c2; m2++) this._beforeAndAfterTracks[m2].BeforeInterpolate();
+      for (m2 = 0; m2 < c2; m2++) {
+        const t3 = this._beforeAndAfterTracks[m2], e2 = t3.GetStartOffset();
+        this._playheadTime - e2 < 0 && s - e2 > 0 ? t3.BeforeInterpolate(e2) : t3.BeforeInterpolate(this._playheadTime);
+      }
       if (1 === this._hasNestedContent) for (m2 = 0; m2 < _2; m2++) {
         const t3 = this._tracks[m2], e2 = t3.GetStartOffset();
-        this._playheadTime - e2 < 0 && s - e2 > 0 ? (this._playheadTime = e2 < 0 ? 0 : e2 >= n ? n : e2, t3.Interpolate(e2, true, false, h2, this._firstTick, false)) : t3.Interpolate(this._playheadTime, true, false, h2, this._firstTick, false);
+        this._playheadTime - e2 < 0 && s - e2 > 0 ? t3.Interpolate(e2, true, false, h2, this._firstTick, false) : t3.Interpolate(this._playheadTime, true, false, h2, this._firstTick, false);
       }
       else for (m2 = 0; m2 < _2; m2++) this._tracks[m2].Interpolate(this._playheadTime, true, false, h2, this._firstTick, false);
       if (!this.IsPlaying() && this._stoppedKeyframeDataItem) {
         const t3 = this._stoppedKeyframeDataItem.GetTime() + this._stoppedKeyframeDataItem.GetKeyframeData().GetTrackDataItem().GetStartOffset(), e2 = this._playheadTime - t3;
         this._playheadTime -= e2, 0 !== this._overshoot && (this._overshoot -= e2), this._stoppedKeyframeDataItem = null;
       }
-      for (m2 = 0; m2 < c2; m2++) this._beforeAndAfterTracks[m2].AfterInterpolate();
+      for (m2 = 0; m2 < c2; m2++) {
+        const t3 = this._beforeAndAfterTracks[m2], e2 = t3.GetStartOffset();
+        this._playheadTime - e2 < 0 && s - e2 > 0 ? t3.AfterInterpolate(e2) : t3.AfterInterpolate(this._playheadTime);
+      }
       this._firstTick && (this._firstTick = false);
     }
     SetStoppedOnKeyframe(t2) {
@@ -16504,17 +16570,27 @@ var MaybePrepareLayerDraw2;
     GetStoppedOnKeyframe() {
       return this._stoppedKeyframeDataItem;
     }
+    _GetTrackStartTime(t2, e, i, s = false) {
+      let a2 = t2;
+      if ("number" == typeof e && !isNaN(e)) {
+        const t3 = this.GetTime() - i.GetStartOffset(), n = e - i.GetStartOffset();
+        t3 < 0 && n > 0 && (a2 = i.GetStartOffset(), s && this._SetTime(a2));
+      }
+      return a2;
+    }
     _Interpolate(t2, e = false, i = false, s = false, a2 = NaN, n = false, r2 = false) {
-      for (const t3 of this._tracks) t3.BeforeInterpolate();
+      for (const e2 of this._tracks) {
+        const s2 = this._GetTrackStartTime(t2, a2, e2);
+        e2.BeforeInterpolate(s2, i);
+      }
       for (const n2 of this._tracks) {
-        let h2 = t2;
-        if ("number" == typeof a2 && !isNaN(a2)) {
-          const t3 = this.GetTime() - n2.GetStartOffset(), e2 = a2 - n2.GetStartOffset();
-          t3 < 0 && e2 > 0 && (h2 = n2.GetStartOffset(), this._SetTime(h2));
-        }
+        const h2 = this._GetTrackStartTime(t2, a2, n2, true);
         n2.Interpolate(h2, e, i, s, this._firstTick, r2);
       }
-      for (const t3 of this._tracks) t3.AfterInterpolate();
+      for (const e2 of this._tracks) {
+        const s2 = this._GetTrackStartTime(t2, a2, e2);
+        e2.AfterInterpolate(s2, i);
+      }
       this._firstTick && n && (this._firstTick = false);
     }
     AddTrack() {
@@ -16631,7 +16707,7 @@ var MaybePrepareLayerDraw2;
   const C32 = self.C3, INSTANCE_TRACK = 0, VALUE_TRACK = 1, AUDIO_TRACK = 2;
   C32.TrackState = class extends C32.DefendedBase {
     constructor(t2, e) {
-      super(), this._timeline = t2, this._trackDataItem = e, this._trackData = e.GetTrackData(), this._instanceUid = NaN, this._objectClassIndex = NaN, this._instance = null, this._worldInfo = null, this._cleared = false, this._isNested = e.GetStartOffset() > 0, this._initialStateOfNestedSet = false, this._endStateOfNestedSet = false, this._instanceUidToLoad = NaN, this._lastKeyframeDataItem = null, this._keyframeDataItems = this._trackDataItem.GetKeyframeData().GetKeyframeDataItemArray(), this._propertyTracks = [], this.CreatePropertyTrackStates(), this._worldInfoChange = 0, this._renderChange = 0, this._needsBeforeAndAfter = 0;
+      super(), this._timeline = t2, this._trackDataItem = e, this._trackData = e.GetTrackData(), this._instanceUid = NaN, this._objectClassIndex = NaN, this._instance = null, this._worldInfo = null, this._cleared = false, this._isNested = e.GetStartOffset() > 0, this._initialStateOfNestedSet = false, this._endStateOfNestedSet = false, this._instanceUidToLoad = NaN, this._lastKeyframeDataItem = null, this._keyframeDataItems = this._trackDataItem.GetKeyframeData().GetKeyframeDataItemArray(), this._propertyTracks = [], this.CreatePropertyTrackStates(), this._worldInfoChange = 0, this._renderChange = 0, this._needsBeforeAndAfter = 0, this._keyframeReachedOnCurrentTick = null;
     }
     static Create(t2, e) {
       return C32.New(C32.TrackState, t2, e);
@@ -16856,7 +16932,9 @@ var MaybePrepareLayerDraw2;
       return this._isNested;
     }
     SetResetState() {
-      for (const t2 of this._propertyTracks) t2.SetResetState();
+      for (const t3 of this._propertyTracks) t3.SetResetState();
+      const t2 = this.GetTimeline(), e = t2.GetTime();
+      t2.IsForwardPlayBack() ? this._lastKeyframeDataItem = this._GetLastKeyFrameBeforeTime(e) : this._lastKeyframeDataItem = this._GetFirstKeyFrameAfterTime(e);
     }
     SetInitialState() {
       if (this.MaybeGetInstance(), !this.IsInstanceValid() && this.IsInstanceTrack()) return;
@@ -16895,22 +16973,22 @@ var MaybePrepareLayerDraw2;
         e2._SetUpdateState(), 0 === this._worldInfoChange && 1 === e2.GetWorldInfoChange() && (this._worldInfoChange = 1), 0 === this._renderChange && 1 === e2.GetRenderChange() && (this._renderChange = 1);
       }
     }
-    BeforeInterpolate() {
-      const t2 = this._propertyTracks.length;
-      for (let e = 0; e < t2; e++) this._propertyTracks[e].BeforeInterpolate();
+    BeforeInterpolate(t2, e = false) {
+      const a2 = this._propertyTracks.length;
+      for (let s = 0; s < a2; s++) this._propertyTracks[s].BeforeInterpolate(t2, e);
     }
     Interpolate(t2, e = false, a2 = false, s = false, r2 = false, i = false, n = false) {
       this._instance || this.GetInstance();
-      const o2 = this._instance && !this._instance.IsDestroyed(), h2 = 0 === this._trackDataItem._type;
-      if ((o2 || !h2) && !(i && h2 && this.GetObjectClass().IsGlobal() || (t2 -= this.GetStartOffset()) < 0)) {
+      const h2 = this._instance && !this._instance.IsDestroyed(), o2 = 0 === this._trackDataItem._type;
+      if ((h2 || !o2) && !(i && o2 && this.GetObjectClass().IsGlobal() || (t2 -= this.GetStartOffset()) < 0)) {
         this.MaybeSetInitialStateOfNestedTrack(t2, e), this.MaybeTriggerKeyframeReachedConditions(t2, e, r2), !this.GetTimeline().IsPlaying() && this.GetTimeline().GetStoppedOnKeyframe() && (t2 = this.GetTimeline().GetStoppedOnKeyframe().GetTime());
         for (let e2 = 0, r3 = this._propertyTracks.length; e2 < r3; e2++) this._propertyTracks[e2].Interpolate(t2, a2, s, n);
         this.MaybeSetEndStateOfNestedTrack(t2, e), 0 !== this._worldInfoChange && (this._worldInfo || (this._worldInfo = this._instance.GetWorldInfo()), this._worldInfo && this._worldInfo.SetBboxChanged());
       }
     }
-    AfterInterpolate() {
-      const t2 = this._propertyTracks.length;
-      for (let e = 0; e < t2; e++) this._propertyTracks[e].AfterInterpolate();
+    AfterInterpolate(t2, e = false) {
+      const a2 = this._propertyTracks.length;
+      for (let s = 0; s < a2; s++) this._propertyTracks[s].AfterInterpolate(t2, e);
     }
     MaybeSetInitialStateOfNestedTrack(t2, e) {
       if (!e) return;
@@ -16937,7 +17015,7 @@ var MaybePrepareLayerDraw2;
       }
     }
     MaybeTriggerKeyframeReachedConditions(t2, e, a2) {
-      if (a2) return;
+      if (this._keyframeReachedOnCurrentTick = null, a2) return;
       if (!e) return;
       if (!C32.Plugins.Timeline) return;
       const s = this.GetTimeline();
@@ -16962,7 +17040,10 @@ var MaybePrepareLayerDraw2;
     OnKeyframeReached(t2, e = false) {
       if (!C32.Plugins.Timeline) return;
       const a2 = this.GetTimeline(), s = a2.GetTimelineManager();
-      C32.Plugins.Timeline.Cnds.PushTriggerTimeline(a2), C32.Plugins.Timeline.Cnds.PushTriggerKeyframe(t2), s.Trigger(C32.Plugins.Timeline.Cnds.OnAnyKeyframeReached), s.Trigger(C32.Plugins.Timeline.Cnds.OnKeyframeReached), a2.IsPlaying() || e || a2.SetStoppedOnKeyframe(t2), C32.Plugins.Timeline.Cnds.PopTriggerTimeline(a2), C32.Plugins.Timeline.Cnds.PopTriggerKeyframe(t2);
+      C32.Plugins.Timeline.Cnds.PushTriggerTimeline(a2), C32.Plugins.Timeline.Cnds.PushTriggerKeyframe(t2), s.Trigger(C32.Plugins.Timeline.Cnds.OnAnyKeyframeReached), s.Trigger(C32.Plugins.Timeline.Cnds.OnKeyframeReached), a2.IsPlaying() || e || a2.SetStoppedOnKeyframe(t2), C32.Plugins.Timeline.Cnds.PopTriggerTimeline(a2), C32.Plugins.Timeline.Cnds.PopTriggerKeyframe(t2), this._keyframeReachedOnCurrentTick = t2;
+    }
+    WasKeyframeReachedOnCurrentTick() {
+      return this._keyframeReachedOnCurrentTick;
     }
     OnInitialKeyframeReached(t2) {
       this.OnKeyframeReached(t2, true);
@@ -17230,8 +17311,17 @@ var MaybePrepareLayerDraw2;
       const t2 = this.GetTimeline(), r2 = this._propertyTrackData.GetPropertyKeyFrameDataItemAtTime(e, this._propertyTrackDataItem);
       return r2 || (t2.IsForwardPlayBack() ? this._propertyTrackData.GetFirstPropertyKeyFrameDataItemLowerOrEqualThan(e, this._propertyTrackDataItem) : this._propertyTrackData.GetFirstPropertyKeyFrameDataItemHigherOrEqualThan(e, this._propertyTrackDataItem));
     }
-    BeforeInterpolate() {
-      this._sourceAdapter.BeforeInterpolate();
+    BeforeInterpolate(e, t2) {
+      let r2, a2;
+      if (t2) r2 = this._propertyTrackData.GetFirstPropertyKeyFrameDataItemLowerOrEqualThan(e, this._propertyTrackDataItem);
+      else {
+        if (this._lastPropertyKeyframeDataItem) {
+          const t3 = this.GetTimeline(), r3 = this._lastPropertyKeyframeDataItem.GetNext(), a3 = this._lastPropertyKeyframeDataItem.GetTime(), o2 = r3 ? r3.GetTime() : t3.GetTotalTime();
+          (e <= a3 || e >= o2) && (this._lastPropertyKeyframeDataItem = this._propertyTrackData.GetFirstPropertyKeyFrameDataItemLowerOrEqualThan(e, this._propertyTrackDataItem));
+        } else this._lastPropertyKeyframeDataItem = this._propertyTrackData.GetFirstPropertyKeyFrameDataItemLowerOrEqualThan(e, this._propertyTrackDataItem);
+        r2 = this._lastPropertyKeyframeDataItem;
+      }
+      r2 && (a2 = r2.GetNext()), this._sourceAdapter.BeforeInterpolate(r2, a2);
     }
     Interpolate(e, t2 = false, r2 = false, a2 = false) {
       let o2, s, p2 = false;
@@ -17256,8 +17346,17 @@ var MaybePrepareLayerDraw2;
     GetInterpolatedValueFast(e, t2, r2) {
       return this._sourceAdapter.GetInterpolatedValue(e, t2, r2);
     }
-    AfterInterpolate() {
-      this._sourceAdapter.AfterInterpolate();
+    AfterInterpolate(e, t2) {
+      let r2, a2;
+      if (t2) r2 = this._propertyTrackData.GetFirstPropertyKeyFrameDataItemLowerOrEqualThan(e, this._propertyTrackDataItem);
+      else {
+        if (this._lastPropertyKeyframeDataItem) {
+          const t3 = this.GetTimeline(), r3 = this._lastPropertyKeyframeDataItem.GetNext(), a3 = this._lastPropertyKeyframeDataItem.GetTime(), o2 = r3 ? r3.GetTime() : t3.GetTotalTime();
+          (e <= a3 || e >= o2) && (this._lastPropertyKeyframeDataItem = this._propertyTrackData.GetFirstPropertyKeyFrameDataItemLowerOrEqualThan(e, this._propertyTrackDataItem));
+        } else this._lastPropertyKeyframeDataItem = this._propertyTrackData.GetFirstPropertyKeyFrameDataItemLowerOrEqualThan(e, this._propertyTrackDataItem);
+        r2 = this._lastPropertyKeyframeDataItem;
+      }
+      r2 && (a2 = r2.GetNext()), this._sourceAdapter.AfterInterpolate(r2, a2);
     }
     static GetStartPropertyKeyframeForTime(e, t2) {
       const r2 = t2.GetPropertyTrackDataItem();
@@ -17266,6 +17365,9 @@ var MaybePrepareLayerDraw2;
     static GetEndPropertyKeyframeForTime(e, t2) {
       const r2 = t2.GetPropertyTrackDataItem();
       return t2._propertyTrackData.GetFirstPropertyKeyFrameDataItemHigherOrEqualThan(e, r2);
+    }
+    static GetPropertyKeyframeValueWithPlaybackDirection(e, t2, r2) {
+      return t2 ? r2.GetTimeline().IsForwardPlayBack() ? e.GetValueWithResultMode() : t2.GetValueWithResultMode() : e.GetValueWithResultMode();
     }
     AddPropertyKeyframe() {
       const e = this._propertyTrackDataItem.GetPropertyKeyframeData().AddEmptyPropertyKeyframeDataItem();
@@ -17340,8 +17442,8 @@ var MaybePrepareLayerDraw2;
     SetResumeState() {
       this.GetPropertyAdapter().SetResumeState();
     }
-    BeforeInterpolate() {
-      this._propertyAdapter.BeforeChangeProperty();
+    BeforeInterpolate(e, t2) {
+      this._propertyAdapter.BeforeChangeProperty(e, t2);
     }
     Interpolate(e, t2, r2, p2, a2, o2, n) {
       let s;
@@ -17377,8 +17479,8 @@ var MaybePrepareLayerDraw2;
           return NS.TextTypeAdapter.Interpolate(e, t2, r2, this._propertyTrack);
       }
     }
-    AfterInterpolate() {
-      this._propertyAdapter.AfterChangeProperty();
+    AfterInterpolate(e, t2) {
+      this._propertyAdapter.AfterChangeProperty(e, t2);
     }
     SaveState() {
       this.GetPropertyAdapter().SetSaveState();
@@ -17540,10 +17642,10 @@ var MaybePrepareLayerDraw2;
   C32.PropertyTrackState.EffectSourceAdapter = EffectSourceAdapter;
 }
 {
-  const C32 = self.C3, INDEX = 0;
+  const C32 = self.C3, INDEX = 0, UNIQUE_PROPERTIES = 1, SPRITE_START_FROM_UNIQUE_PROPERTY = 0;
   class PluginSourceAdapter extends C32.PropertyTrackState.PropertySourceAdapter {
-    constructor(t2) {
-      super(t2);
+    constructor(e) {
+      super(e), this._optionalCallbacksRelative = null, this._optionalCallbacksAbsolute = null, this._forceNextChange = false;
     }
     GetEditorIndex() {
       return this._propertyTrack.GetPropertyTrackDataItem().GetSourceAdapterArguments()[0];
@@ -17551,99 +17653,119 @@ var MaybePrepareLayerDraw2;
     GetTarget() {
       return this._propertyTrack.GetTrack().GetInstance().GetSdkInstance();
     }
-    Interpolate(t2, e, r2, n, a2, i, s) {
-      const c2 = this._propertyTrack.GetTrack();
-      c2.GetObjectClass().GetPlugin() === c2.GetInstance().GetObjectClass().GetPlugin() && super.Interpolate(t2, e, r2, n, a2, i, s);
+    Interpolate(e, t2, r2, a2, i, n, s) {
+      const o2 = this._propertyTrack.GetTrack();
+      o2.GetObjectClass().GetPlugin() === o2.GetInstance().GetObjectClass().GetPlugin() && super.Interpolate(e, t2, r2, a2, i, n, s);
     }
-    GetInterpolatedValue(t2, e, r2) {
-      const n = this._propertyTrack.GetTrack();
-      if (n.GetObjectClass().GetPlugin() === n.GetInstance().GetObjectClass().GetPlugin()) return super.GetInterpolatedValue(t2, e, r2);
+    GetInterpolatedValue(e, t2, r2) {
+      const a2 = this._propertyTrack.GetTrack();
+      if (a2.GetObjectClass().GetPlugin() === a2.GetInstance().GetObjectClass().GetPlugin()) return super.GetInterpolatedValue(e, t2, r2);
     }
-    GetOptionalCallbacks() {
-      const t2 = this._propertyTrack.GetTrack(), e = t2.GetObjectClass().GetPlugin();
-      if (C32.Plugins.Sprite && e instanceof C32.Plugins.Sprite && ("initial-frame" === this._propertyTrack.GetPropertyName() || "initial-animation" === this._propertyTrack.GetPropertyName())) switch (this._propertyTrack.GetResultMode()) {
+    _IsTimelineChunkDiscreteLike(e, t2) {
+      if (!t2) return true;
+      if (e?.GetValueWithResultMode() === t2?.GetValueWithResultMode()) return true;
+      const r2 = this._propertyTrack?.GetInterpolationMode();
+      return "discrete" === r2;
+    }
+    _WasKeyframeReached(e, t2, r2) {
+      const a2 = e.WasKeyframeReachedOnCurrentTick();
+      if (!a2) return false;
+      return this._propertyTrack.GetTimeline().IsForwardPlayBack() ? a2.GetTime() === t2.GetTime() : a2.GetTime() === r2.GetTime();
+    }
+    SetResetState() {
+      this.GetPropertyAdapter().SetResetState();
+      const e = this._propertyTrack.GetTrack().GetObjectClass().GetPlugin();
+      this._forceNextChange = false, C32.Plugins.Sprite && e instanceof C32.Plugins.Sprite && "initial-animation" === this._propertyTrack.GetPropertyName() && (this._forceNextChange = true);
+    }
+    ForceChanges() {
+      const e = this._forceNextChange;
+      return this._forceNextChange = false, e;
+    }
+    GetOptionalCallbacks(e, t2) {
+      const r2 = this._propertyTrack.GetTrack(), a2 = r2.GetObjectClass().GetPlugin();
+      if (C32.Plugins.Sprite && a2 instanceof C32.Plugins.Sprite && ("initial-frame" === this._propertyTrack.GetPropertyName() || "initial-animation" === this._propertyTrack.GetPropertyName())) switch (this._propertyTrack.GetResultMode()) {
         case "relative":
-          return { onFrameChange: (e2, r2, n, a2, i) => {
-            if (r2 !== a2) {
-              const n2 = a2 / r2, i2 = t2.GetPropertyTrack("offsetWidth"), s = t2.GetPropertyTrack("offsetScaleX");
+          return this._optionalCallbacksRelative ? (this._optionalCallbacksRelative.startFrom = e.GetAddOn("initial-animation")?.GetStartFrom() ?? 0, this._optionalCallbacksRelative.keyframeReached = this._WasKeyframeReached(r2, e, t2), this._optionalCallbacksRelative.isChunkDiscreteLike = this._IsTimelineChunkDiscreteLike(e, t2), this._optionalCallbacksRelative) : (this._optionalCallbacksRelative = { onFrameChange: (e2, t3, a3, i, n) => {
+            if (t3 !== i) {
+              const a4 = i / t3, n2 = r2.GetPropertyTrack("offsetWidth"), s = r2.GetPropertyTrack("offsetScaleX");
+              if (n2 || s) {
+                const o2 = n2?.GetSourceAdapter()?.GetPropertyAdapter(), c2 = s?.GetSourceAdapter()?.GetPropertyAdapter();
+                if (e2.HasParent() && e2.GetTransformWithParentWidth()) c2 && c2.SetOriginalSizeProperty(i), e2.SetWidth(this.GetNewWidth(i, t3, e2, r2, o2, c2));
+                else {
+                  const t4 = i * ((e2._GetSceneGraphInfo()?._GetStartWidth() ?? this.GetInstanceOriginalWidth(e2, r2)) / this.GetInstanceOriginalWidth(e2, r2));
+                  c2 && c2.SetOriginalSizeProperty(i);
+                  const n3 = o2?.GetChangeAccumulatorProperty() ?? 0, s2 = c2?.GetChangeAccumulatorProperty() ?? 0;
+                  e2.SetWidth(t4 + (n3 + s2 * a4));
+                }
+              } else e2.SetWidth(e2.GetWidth() * a4);
+            }
+            if (a3 !== n) {
+              const t4 = n / a3, i2 = r2.GetPropertyTrack("offsetHeight"), s = r2.GetPropertyTrack("offsetScaleY");
               if (i2 || s) {
-                const c2 = i2?.GetSourceAdapter()?.GetPropertyAdapter(), o2 = s?.GetSourceAdapter()?.GetPropertyAdapter();
-                if (e2.HasParent() && e2.GetTransformWithParentWidth()) o2 && o2.SetOriginalSizeProperty(a2), e2.SetWidth(this.GetNewWidth(a2, r2, e2, t2, c2, o2));
+                const o2 = i2?.GetSourceAdapter()?.GetPropertyAdapter(), c2 = s?.GetSourceAdapter()?.GetPropertyAdapter();
+                if (e2.HasParent() && e2.GetTransformWithParentHeight()) c2 && c2.SetOriginalSizeProperty(n), e2.SetHeight(this.GetNewHeight(n, a3, e2, r2, o2, c2));
                 else {
-                  const r3 = a2 * ((e2._GetSceneGraphInfo()?._GetStartWidth() ?? this.GetInstanceOriginalWidth(e2, t2)) / this.GetInstanceOriginalWidth(e2, t2));
-                  o2 && o2.SetOriginalSizeProperty(a2);
-                  const i3 = c2?.GetChangeAccumulatorProperty() ?? 0, s2 = o2?.GetChangeAccumulatorProperty() ?? 0;
-                  e2.SetWidth(r3 + (i3 + s2 * n2));
+                  const a4 = n * ((e2._GetSceneGraphInfo()?._GetStartHeight() ?? this.GetInstanceOriginalHeight(e2, r2)) / this.GetInstanceOriginalHeight(e2, r2));
+                  c2 && c2.SetOriginalSizeProperty(n);
+                  const i3 = o2?.GetChangeAccumulatorProperty() ?? 0, s2 = c2?.GetChangeAccumulatorProperty() ?? 0;
+                  e2.SetHeight(a4 + (i3 + s2 * t4));
                 }
-              } else e2.SetWidth(e2.GetWidth() * n2);
+              } else e2.SetHeight(e2.GetHeight() * t4);
             }
-            if (n !== i) {
-              const r3 = i / n, a3 = t2.GetPropertyTrack("offsetHeight"), s = t2.GetPropertyTrack("offsetScaleY");
-              if (a3 || s) {
-                const c2 = a3?.GetSourceAdapter()?.GetPropertyAdapter(), o2 = s?.GetSourceAdapter()?.GetPropertyAdapter();
-                if (e2.HasParent() && e2.GetTransformWithParentHeight()) o2 && o2.SetOriginalSizeProperty(i), e2.SetHeight(this.GetNewHeight(i, n, e2, t2, c2, o2));
-                else {
-                  const n2 = i * ((e2._GetSceneGraphInfo()?._GetStartHeight() ?? this.GetInstanceOriginalHeight(e2, t2)) / this.GetInstanceOriginalHeight(e2, t2));
-                  o2 && o2.SetOriginalSizeProperty(i);
-                  const a4 = c2?.GetChangeAccumulatorProperty() ?? 0, s2 = o2?.GetChangeAccumulatorProperty() ?? 0;
-                  e2.SetHeight(n2 + (a4 + s2 * r3));
-                }
-              } else e2.SetHeight(e2.GetHeight() * r3);
-            }
-          } };
+          }, startFrom: e.GetAddOn("initial-animation")?.GetStartFrom() ?? 0, keyframeReached: this._WasKeyframeReached(r2, e, t2), isChunkDiscreteLike: this._IsTimelineChunkDiscreteLike(e, t2) }, this._optionalCallbacksRelative);
         case "absolute":
-          return null;
+          return this._optionalCallbacksAbsolute ? (this._optionalCallbacksAbsolute.startFrom = e.GetAddOn("initial-animation")?.GetStartFrom() ?? 0, this._optionalCallbacksAbsolute.keyframeReached = this._WasKeyframeReached(r2, e, t2), this._optionalCallbacksAbsolute.isChunkDiscreteLike = this._IsTimelineChunkDiscreteLike(e, t2), this._optionalCallbacksAbsolute) : (this._optionalCallbacksAbsolute = { startFrom: e.GetAddOn("initial-animation")?.GetStartFrom() ?? 0, keyframeReached: this._WasKeyframeReached(r2, e, t2), isChunkDiscreteLike: this._IsTimelineChunkDiscreteLike(e, t2) }, this._optionalCallbacksAbsolute);
       }
     }
-    GetLastPropertyKeyframeValue(t2, e, r2, n = 0) {
-      const a2 = e.GetTimeline().GetTrackFromInstance(t2.GetInstance());
-      if (!a2) return n;
-      const i = a2.GetPropertyTrack(r2);
-      if (!i) return n;
-      const s = i.GetPropertyTrackDataItem().GetPropertyKeyframeData();
-      if (!s) return n;
-      const c2 = s.GetLastPropertyKeyframeDataItem();
-      return c2 ? c2.GetValue() : n;
+    GetLastPropertyKeyframeValue(e, t2, r2, a2 = 0) {
+      const i = t2.GetTimeline().GetTrackFromInstance(e.GetInstance());
+      if (!i) return a2;
+      const n = i.GetPropertyTrack(r2);
+      if (!n) return a2;
+      const s = n.GetPropertyTrackDataItem().GetPropertyKeyframeData();
+      if (!s) return a2;
+      const o2 = s.GetLastPropertyKeyframeDataItem();
+      return o2 ? o2.GetValue() : a2;
     }
-    GetInstanceOriginalWidth(t2, e) {
-      const r2 = e.GetTimeline().GetTrackFromInstance(t2.GetInstance());
+    GetInstanceOriginalWidth(e, t2) {
+      const r2 = t2.GetTimeline().GetTrackFromInstance(e.GetInstance());
       if (r2) return r2.GetOriginalWidth();
-      const n = t2.GetInstance().GetSdkInstance();
-      return n.IsOriginalSizeKnown() ? n.GetOriginalWidth() : t2._GetSceneGraphInfo()._GetStartWidth();
+      const a2 = e.GetInstance().GetSdkInstance();
+      return a2.IsOriginalSizeKnown() ? a2.GetOriginalWidth() : e._GetSceneGraphInfo()._GetStartWidth();
     }
-    GetInstanceOriginalHeight(t2, e) {
-      const r2 = e.GetTimeline().GetTrackFromInstance(t2.GetInstance());
+    GetInstanceOriginalHeight(e, t2) {
+      const r2 = t2.GetTimeline().GetTrackFromInstance(e.GetInstance());
       if (r2) return r2.GetOriginalHeight();
-      const n = t2.GetInstance().GetSdkInstance();
-      return n.IsOriginalSizeKnown() ? n.GetOriginalHeight() : t2._GetSceneGraphInfo()._GetStartHeight();
+      const a2 = e.GetInstance().GetSdkInstance();
+      return a2.IsOriginalSizeKnown() ? a2.GetOriginalHeight() : e._GetSceneGraphInfo()._GetStartHeight();
     }
-    GetNewWidth(t2, e, r2, n, a2, i) {
-      const s = r2._GetSceneGraphInfo()._GetStartWidth(), c2 = s / r2.GetParent()._GetSceneGraphInfo()._GetStartWidth();
-      let o2 = 1;
-      const G = i?.GetAbsoluteScaleXOffsetProperty() ?? 0;
-      if (0 !== G) {
-        const t3 = s / this.GetInstanceOriginalWidth(r2, n);
-        o2 = (t3 + G) / (0 === t3 ? Number.EPSILON : t3);
+    GetNewWidth(e, t2, r2, a2, i, n) {
+      const s = r2._GetSceneGraphInfo()._GetStartWidth(), o2 = s / r2.GetParent()._GetSceneGraphInfo()._GetStartWidth();
+      let c2 = 1;
+      const l = n?.GetAbsoluteScaleXOffsetProperty() ?? 0;
+      if (0 !== l) {
+        const e2 = s / this.GetInstanceOriginalWidth(r2, a2);
+        c2 = (e2 + l) / (0 === e2 ? Number.EPSILON : e2);
       }
-      const p2 = s * (t2 / e);
-      let l = a2?.GetAbsoluteWidthOffsetProperty() ?? 0;
-      l += p2 - s;
-      const h2 = (s + l) / (0 === s ? Number.EPSILON : s);
-      return r2.GetParent().GetWidth() * c2 * o2 * h2;
+      const G = s * (e / t2);
+      let h2 = i?.GetAbsoluteWidthOffsetProperty() ?? 0;
+      h2 += G - s;
+      const p2 = (s + h2) / (0 === s ? Number.EPSILON : s);
+      return r2.GetParent().GetWidth() * o2 * c2 * p2;
     }
-    GetNewHeight(t2, e, r2, n, a2, i) {
-      const s = r2._GetSceneGraphInfo()._GetStartHeight(), c2 = s / r2.GetParent()._GetSceneGraphInfo()._GetStartHeight();
-      let o2 = 1;
-      const G = i?.GetAbsoluteScaleYOffsetProperty() ?? 0;
-      if (0 !== G) {
-        const t3 = s / this.GetInstanceOriginalHeight(r2, n);
-        o2 = (t3 + G) / (0 === t3 ? Number.EPSILON : t3);
+    GetNewHeight(e, t2, r2, a2, i, n) {
+      const s = r2._GetSceneGraphInfo()._GetStartHeight(), o2 = s / r2.GetParent()._GetSceneGraphInfo()._GetStartHeight();
+      let c2 = 1;
+      const l = n?.GetAbsoluteScaleYOffsetProperty() ?? 0;
+      if (0 !== l) {
+        const e2 = s / this.GetInstanceOriginalHeight(r2, a2);
+        c2 = (e2 + l) / (0 === e2 ? Number.EPSILON : e2);
       }
-      const p2 = s * (t2 / e);
-      let l = a2?.GetAbsoluteHeightOffsetProperty() ?? 0;
-      l += p2 - s;
-      const h2 = (s + l) / (0 === s ? Number.EPSILON : s);
-      return r2.GetParent().GetHeight() * c2 * o2 * h2;
+      const G = s * (e / t2);
+      let h2 = i?.GetAbsoluteHeightOffsetProperty() ?? 0;
+      h2 += G - s;
+      const p2 = (s + h2) / (0 === s ? Number.EPSILON : s);
+      return r2.GetParent().GetHeight() * o2 * c2 * p2;
     }
   }
   C32.PropertyTrackState.PluginSourceAdapter = PluginSourceAdapter;
@@ -17854,11 +17976,11 @@ var MaybePrepareLayerDraw2;
     CanChange(t2) {
       return typeof this._Getter() === typeof t2;
     }
-    BeforeChangeProperty() {
+    BeforeChangeProperty(t2, e) {
     }
     ChangeProperty(t2, e, r2, a2, s, o2, i, n) {
     }
-    AfterChangeProperty() {
+    AfterChangeProperty(t2, e) {
     }
     _FirstKeyframeGetter() {
       return this._PickTimelinePlaybackMode(() => {
@@ -18089,29 +18211,47 @@ var MaybePrepareLayerDraw2;
     MayNeedBeforeAndAfterInterpolate() {
       return false;
     }
-    ChangeProperty(e, t2, r2, a2, n, i, s, o2) {
-      const p2 = this._propertyTrack, c2 = p2.GetTrack(), l = p2.GetSourceAdapterId(), h2 = p2.GetTimeline(), u2 = c2.GetInstance(), S2 = p2.GetSourceAdapter(), G = this._property, d2 = h2.GetSimilarPropertyTracks(u2, S2, G, p2);
+    ChangeProperty(e, t2, r2, a2, s, n, i, o2) {
+      const c2 = this._propertyTrack, p2 = c2.GetTrack(), h2 = c2.GetSourceAdapterId(), l = c2.GetTimeline(), u2 = p2.GetInstance(), S2 = c2.GetSourceAdapter(), G = this._property, d2 = l.GetSimilarPropertyTracks(u2, S2, G, c2);
       if (d2 && d2.length > 1) {
-        const r3 = this._GetPropertyKeyframeStubs(d2), a3 = e + c2.GetStartOffset(), n2 = this._GetLastPropertyKeyframeStub(h2, a3, r3);
-        n2 && (t2 = n2.value);
+        const r3 = this._GetPropertyKeyframeStubs(d2), a3 = e + p2.GetStartOffset(), s2 = this._GetLastPropertyKeyframeStub(l, a3, r3);
+        s2 && (t2 = s2.value);
       }
-      switch (p2.GetPropertyKeyframeType()) {
+      switch (c2.GetPropertyKeyframeType()) {
         case "numeric":
-          if (!NS.NumericTypeAdapter.WillChange(this._GetIndex(), this._GetTarget(), t2, l)) return;
+          if (!NS.NumericTypeAdapter.WillChange(this._GetIndex(), this._GetTarget(), t2, h2)) return;
+          this._Setter(t2, r2, a2);
           break;
         case "angle":
-          if (!NS.AngleTypeAdapter.WillChange(this._GetIndex(), this._GetTarget(), t2, l)) return;
+          if (!NS.AngleTypeAdapter.WillChange(this._GetIndex(), this._GetTarget(), t2, h2)) return;
+          this._Setter(t2, r2, a2);
           break;
         case "boolean":
-          if (!NS.BooleanTypeAdapter.WillChange(this._GetIndex(), this._GetTarget(), t2, l)) return;
+          if (!NS.BooleanTypeAdapter.WillChange(this._GetIndex(), this._GetTarget(), t2, h2)) return;
+          this._Setter(t2, r2, a2);
           break;
         case "color":
-          if (!NS.ColorTypeAdapter.WillChange(this._GetIndex(), this._GetTarget(), t2, l)) return;
+          if (!NS.ColorTypeAdapter.WillChange(this._GetIndex(), this._GetTarget(), t2, h2)) return;
+          this._Setter(t2, r2, a2);
           break;
-        case "text":
-          if (!NS.TextTypeAdapter.WillChange(this._GetIndex(), this._GetTarget(), t2, l)) return;
+        case "text": {
+          const e2 = this._ForceChanges();
+          if (!NS.TextTypeAdapter.WillChange(this._GetIndex(), this._GetTarget(), t2, h2) && !e2) return;
+          this._Setter(t2, r2, a2);
+          break;
+        }
       }
-      this._Setter(t2);
+    }
+    _ForceChanges() {
+      switch (this._propertyTrack.GetSourceAdapterId()) {
+        case "behavior":
+        case "effect":
+        case "instance-variable":
+          return false;
+        case "plugin":
+          return this.GetSourceAdapter().ForceChanges();
+      }
+      return false;
     }
     _Getter() {
       const e = this._propertyTrack.GetSourceAdapterId(), t2 = this._GetTarget(), r2 = this._GetIndex();
@@ -18125,18 +18265,20 @@ var MaybePrepareLayerDraw2;
           return t2.GetInstanceVariableValue(r2);
       }
     }
-    _Setter(e) {
-      const t2 = this._propertyTrack.GetSourceAdapterId(), r2 = this._GetTarget(), a2 = this._GetIndex();
-      switch (t2) {
+    _Setter(e, t2, r2) {
+      const a2 = this._propertyTrack.GetSourceAdapterId(), s = this._GetTarget(), n = this._GetIndex();
+      switch (a2) {
         case "behavior":
-        case "plugin":
-          r2.SetPropertyValueByIndex(a2, e);
+          s.SetPropertyValueByIndex(n, e);
           break;
         case "effect":
-          r2[a2] = e;
+          s[n] = e;
           break;
         case "instance-variable":
-          r2.SetInstanceVariableValue(a2, e);
+          s.SetInstanceVariableValue(n, e);
+          break;
+        case "plugin":
+          s.SetPropertyValueByIndex(n, e, this.GetSourceAdapter().GetOptionalCallbacks(t2, r2));
       }
     }
   }
@@ -18368,14 +18510,14 @@ var MaybePrepareLayerDraw2;
     CompareSaveStateWithCurrent() {
       return !C32.IsNullOrUndefined(this._saveState) && this._saveState !== this.GetCurrentState();
     }
-    BeforeChangeProperty() {
-      this._typeAdapter.BeforeChangeProperty();
+    BeforeChangeProperty(t2, e) {
+      this._typeAdapter.BeforeChangeProperty(t2, e);
     }
     ChangeProperty(t2, e, a2, r2, i, s, o2, n) {
       return this._typeAdapter.ChangeProperty(t2, e, a2, r2, i, s, o2, n);
     }
-    AfterChangeProperty() {
-      this._typeAdapter.AfterChangeProperty();
+    AfterChangeProperty(t2, e) {
+      this._typeAdapter.AfterChangeProperty(t2, e);
     }
     _Getter() {
       const t2 = this._GetTarget(), e = this._GetIndex(), a2 = this.GetWorldInfo(), r2 = this._propertyTrack.GetTrack();
@@ -18406,7 +18548,7 @@ var MaybePrepareLayerDraw2;
           i.SetInstanceVariableOffset(s, t2);
           break;
         case "plugin":
-          i.OffsetPropertyValueByIndex(s, t2, this.GetSourceAdapter().GetOptionalCallbacks());
+          i.OffsetPropertyValueByIndex(s, t2, this.GetSourceAdapter().GetOptionalCallbacks(e, a2));
           break;
         case "world-instance":
           this._instance_setter(o2, t2, n, this, false, r2);
@@ -18415,32 +18557,32 @@ var MaybePrepareLayerDraw2;
           this._source_adapter_setter.call(this.GetSourceAdapter(), o2, t2, n, this);
       }
     }
-    _SetterAbsolute(t2, e, a2) {
-      let r2 = this._propertyTrack.GetInterpolationMode();
-      if (r2 = "default" === r2 ? "continuous" : r2, "discrete" === r2 && !e) return;
-      if ("discrete" === r2 && a2) {
+    _SetterAbsolute(t2, e, a2, r2, i) {
+      let s = this._propertyTrack.GetInterpolationMode();
+      if (s = "default" === s ? "continuous" : s, "discrete" === s && !e) return;
+      if ("discrete" === s && a2) {
         const t3 = this._propertyTrack.GetTimeline().GetTime();
         if (!this._propertyTrack.GetPropertyKeyFrameDataItemAtTime(t3)) return;
       }
-      const i = this._GetTarget(), s = this._GetIndex(), o2 = this.GetWorldInfo(), n = this._propertyTrack.GetTrack();
+      const o2 = this._GetTarget(), n = this._GetIndex(), l = this.GetWorldInfo(), c2 = this._propertyTrack.GetTrack();
       switch (this._propertyTrack.GetSourceAdapterId()) {
         case "behavior":
-          i.SetPropertyValueByIndex(s, t2);
+          o2.SetPropertyValueByIndex(n, t2);
           break;
         case "effect":
-          i[s] = t2;
+          o2[n] = t2;
           break;
         case "instance-variable":
-          i.SetInstanceVariableValue(s, t2);
+          o2.SetInstanceVariableValue(n, t2);
           break;
         case "plugin":
-          i.SetPropertyValueByIndex(s, t2, this.GetSourceAdapter().GetOptionalCallbacks());
+          o2.SetPropertyValueByIndex(n, t2, this.GetSourceAdapter().GetOptionalCallbacks(r2, i));
           break;
         case "world-instance":
-          this._instance_absolute_setter(o2, t2, n);
+          this._instance_absolute_setter(l, t2, c2);
           break;
         case "audio":
-          this._source_adapter_absolute_setter.call(this.GetSourceAdapter(), o2, t2, n);
+          this._source_adapter_absolute_setter.call(this.GetSourceAdapter(), l, t2, c2);
       }
     }
     _MaybeEnsureValue(t2, e, a2, r2, i, s, o2, n) {
@@ -18562,17 +18704,17 @@ var MaybePrepareLayerDraw2;
           return true;
       }
     }
-    BeforeChangeProperty() {
+    BeforeChangeProperty(e, t2) {
       this._numericInterpolationAdapter;
-      const e = this._numericInterpolationAdapter.GetPropertyTrack(), t2 = e.GetPropertyName();
-      switch (e.GetResultMode()) {
+      const r2 = this._numericInterpolationAdapter.GetPropertyTrack(), a2 = r2.GetPropertyName();
+      switch (r2.GetResultMode()) {
         case "relative":
           break;
         case "absolute":
-          if (e.HasAbsoluteValueObject()) {
-            e.GetAbsoluteValueObject().Reset();
+          if (r2.HasAbsoluteValueObject()) {
+            r2.GetAbsoluteValueObject().Reset();
           } else {
-            const r2 = e.GetTimeline(), a2 = e.GetInstance(), s = e.GetSourceAdapter(), o2 = r2.GetSimilarPropertyTracks(a2, s, t2, e);
+            const e2 = r2.GetTimeline(), t3 = r2.GetInstance(), s = r2.GetSourceAdapter(), o2 = e2.GetSimilarPropertyTracks(t3, s, a2, r2);
             o2 && o2.length > 1 && new AbsoluteValueObject(o2);
           }
       }
@@ -18586,33 +18728,33 @@ var MaybePrepareLayerDraw2;
           break;
         }
         case "absolute": {
-          const e2 = u2.GetTimeline(), r3 = u2.GetTrack();
+          const e2 = u2.GetTimeline(), s2 = u2.GetTrack();
           u2.GetInstance(), u2.GetSourceAdapter();
           if (u2.HasAbsoluteValueObject()) {
-            const a3 = u2.GetAbsoluteValueObject(), s2 = a3.GetPropertyTracks(), o3 = l._GetPropertyKeyframeStubs(s2, true), c2 = l._GetLastPropertyKeyframeStub(e2, e2.GetTime(), o3);
+            const r3 = u2.GetAbsoluteValueObject(), a3 = r3.GetPropertyTracks(), o3 = l._GetPropertyKeyframeStubs(a3, true), c2 = l._GetLastPropertyKeyframeStub(e2, e2.GetTime(), o3);
             if (c2) {
-              const e3 = r3.GetStartOffset(), s3 = c2.time - e3;
-              if (0 === s3) a3.SetEndState(i), a3.SetPropertyKeyframeReached(n), a3.SetUsed(), a3.SetValue(a3.GetValue() + t2);
+              const e3 = s2.GetStartOffset(), a4 = c2.time - e3;
+              if (0 === a4) r3.SetEndState(i), r3.SetPropertyKeyframeReached(n), r3.SetUsed(), r3.SetValue(r3.GetValue() + t2);
               else {
-                if (s3 < 0) return;
-                const e4 = u2.GetInterpolatedValue(s3);
-                a3.SetEndState(i), a3.SetPropertyKeyframeReached(n), a3.SetUsed(), a3.SetValue(a3.GetValue() + (t2 - e4));
+                if (a4 < 0) return;
+                const e4 = u2.GetInterpolatedValue(a4);
+                r3.SetEndState(i), r3.SetPropertyKeyframeReached(n), r3.SetUsed(), r3.SetValue(r3.GetValue() + (t2 - e4));
               }
             }
-          } else l._SetterAbsolute(t2, n, i);
+          } else l._SetterAbsolute(t2, n, i, r2, a2);
           break;
         }
       }
     }
-    AfterChangeProperty() {
-      const e = this._numericInterpolationAdapter, t2 = this._numericInterpolationAdapter.GetPropertyTrack();
-      switch (t2.GetResultMode()) {
+    AfterChangeProperty(e, t2) {
+      const r2 = this._numericInterpolationAdapter, a2 = this._numericInterpolationAdapter.GetPropertyTrack();
+      switch (a2.GetResultMode()) {
         case "relative":
           break;
         case "absolute":
-          if (t2.HasAbsoluteValueObject()) {
-            const r2 = t2.GetAbsoluteValueObject();
-            r2.GetUsed() && e._SetterAbsolute(r2.GetValue(), r2.GetPropertyKeyframeReached(), r2.GetEndState());
+          if (a2.HasAbsoluteValueObject()) {
+            const s = a2.GetAbsoluteValueObject();
+            s.GetUsed() && r2._SetterAbsolute(s.GetValue(), s.GetPropertyKeyframeReached(), s.GetEndState(), e, t2);
           }
       }
     }
@@ -18655,7 +18797,7 @@ var MaybePrepareLayerDraw2;
           s._Setter(t2 - u2, r2, a2), i && this._MaybeEnsureValue(e, r2, a2, n, u2, t2, false, o2);
           break;
         case "absolute":
-          s.GetFirstAbsoluteUpdate() ? (s.SetFirstAbsoluteUpdate(false), s._Setter(u2, r2, a2)) : 0 === e && 0 === s.GetPropertyTrack().GetTimeline().GetTotalTime() ? s._SetterAbsolute(t2, true, false) : (s._Setter(t2 - u2, r2, a2), i && this._MaybeEnsureValue(e, r2, a2, n, u2, t2, this._ForceEndValue(), o2));
+          s.GetFirstAbsoluteUpdate() ? (s.SetFirstAbsoluteUpdate(false), s._Setter(u2, r2, a2)) : 0 === e && 0 === s.GetPropertyTrack().GetTimeline().GetTotalTime() ? s._SetterAbsolute(t2, true, false, r2, a2) : (s._Setter(t2 - u2, r2, a2), i && this._MaybeEnsureValue(e, r2, a2, n, u2, t2, this._ForceEndValue(), o2));
       }
       s.SetLastValue(t2);
     }
@@ -18683,44 +18825,44 @@ var MaybePrepareLayerDraw2;
     constructor() {
     }
     static WillChange(e, t2, a2, r2) {
-      let s;
+      let n;
       switch (r2) {
         case "behavior":
         case "plugin":
-          s = t2.GetPropertyValueByIndex(e);
+          n = t2.GetPropertyValueByIndex(e);
           break;
         case "effect":
-          s = t2[e];
+          n = t2[e];
           break;
         case "instance-variable":
-          s = t2.GetInstanceVariableValue(e);
+          n = t2.GetInstanceVariableValue(e);
       }
-      return s !== a2;
+      return n !== a2;
     }
     static Interpolate(e, t2, a2, r2) {
       if (!a2) {
-        let e2 = r2.GetPropertyTrackDataItem();
-        return e2 = r2.GetPropertyTrackData().GetLastPropertyKeyframeDataItem(e2), e2.GetValueWithResultMode();
+        const e2 = r2.GetPropertyTrackDataItem();
+        return r2.GetPropertyTrackData().GetLastPropertyKeyframeDataItem(e2).GetValueWithResultMode();
       }
-      let s = r2.GetInterpolationMode();
-      if ("default" === s && (s = "continuous"), "combo" === r2.GetPropertyType() && (s = "discrete"), "discrete" === s) return t2.GetValueWithResultMode();
-      if ("continuous" === s || "step" === s) {
-        const n = r2.GetTimeline().GetStep();
-        if ("step" === s && 0 !== n) {
-          const t3 = 1 / n;
+      let n = r2.GetInterpolationMode();
+      if ("default" === n && (n = "continuous"), "combo" === r2.GetPropertyType() && (n = "discrete"), "discrete" === n) return C32.PropertyTrackState.GetPropertyKeyframeValueWithPlaybackDirection(t2, a2, r2);
+      if ("continuous" === n || "step" === n) {
+        const s = r2.GetTimeline().GetStep();
+        if ("step" === n && 0 !== s) {
+          const t3 = 1 / s;
           e = Math.floor(e * t3) / t3;
         }
-        const i = t2.GetValueWithResultMode(), c2 = a2.GetValueWithResultMode(), o2 = t2.GetAddOn("cubic-bezier"), l = a2.GetAddOn("cubic-bezier"), u2 = o2 && o2.GetStartEnable() && l && l.GetEndEnable();
-        if (!u2 && i === c2) return i;
+        const c2 = t2.GetValueWithResultMode(), i = a2.GetValueWithResultMode(), o2 = t2.GetAddOn("cubic-bezier"), l = a2.GetAddOn("cubic-bezier"), u2 = o2 && o2.GetStartEnable() && l && l.GetEndEnable();
+        if (!u2 && c2 === i) return c2;
         const G = t2.GetTime(), p2 = a2.GetTime();
-        "step" === s && 0 !== n && (e = C32.clamp(e, G, p2));
-        const d2 = C32.normalize(e, G, p2), b2 = t2.GetEase();
-        let f2;
+        "step" === n && 0 !== s && (e = C32.clamp(e, G, p2));
+        const y2 = C32.normalize(e, G, p2), b2 = t2.GetEase();
+        let d2;
         if (u2) {
           const e2 = p2 - G;
-          f2 = Ease.GetRuntimeEase(b2)(e2 * d2, 0, 1, e2), f2 = Ease.GetRuntimeEase("cubicbezier")(f2, i, i + o2.GetStartAnchor(), c2 + l.GetEndAnchor(), c2);
-        } else f2 = Ease.GetRuntimeEase(b2)((p2 - G) * d2, i, c2 - i, p2 - G);
-        return "integer" === r2.GetPropertyType() ? Math.floor(f2) : f2;
+          d2 = Ease.GetRuntimeEase(b2)(e2 * y2, 0, 1, e2), d2 = Ease.GetRuntimeEase("cubicbezier")(d2, c2, c2 + o2.GetStartAnchor(), i + l.GetEndAnchor(), i);
+        } else d2 = Ease.GetRuntimeEase(b2)((p2 - G) * y2, c2, i - c2, p2 - G);
+        return "integer" === r2.GetPropertyType() ? Math.floor(d2) : d2;
       }
     }
   };
@@ -18747,36 +18889,36 @@ var MaybePrepareLayerDraw2;
     }
     static Interpolate(e, t2, a2, r2) {
       if (!a2) {
-        let e2 = r2.GetPropertyTrackDataItem();
-        return e2 = r2.GetPropertyTrackData().GetLastPropertyKeyframeDataItem(e2), e2.GetValueWithResultMode();
+        const e2 = r2.GetPropertyTrackDataItem();
+        return r2.GetPropertyTrackData().GetLastPropertyKeyframeDataItem(e2).GetValueWithResultMode();
       }
       let s = r2.GetInterpolationMode();
-      if ("default" === s && (s = "continuous"), "combo" === r2.GetPropertyType() && (s = "discrete"), "discrete" === s) return t2.GetValueWithResultMode();
+      if ("default" === s && (s = "continuous"), "combo" === r2.GetPropertyType() && (s = "discrete"), "discrete" === s) return C32.PropertyTrackState.GetPropertyKeyframeValueWithPlaybackDirection(t2, a2, r2);
       if ("continuous" === s || "step" === s) {
         const n = r2.GetTimeline().GetStep();
         if ("step" === s && 0 !== n) {
           const t3 = 1 / n;
           e = Math.floor(e * t3) / t3;
         }
-        const i = t2.GetTime(), o2 = a2.GetTime(), c2 = t2.GetValueWithResultMode(), l = a2.GetValueWithResultMode();
-        "step" === s && 0 !== n && (e = C32.clamp(e, i, o2));
+        const c2 = t2.GetTime(), o2 = a2.GetTime(), i = t2.GetValueWithResultMode(), l = a2.GetValueWithResultMode();
+        "step" === s && 0 !== n && (e = C32.clamp(e, c2, o2));
         const u2 = t2.GetAddOn("angle");
         if (!u2) {
-          if (c2 === l) return c2;
-          const a3 = C32.normalize(e, i, o2), r3 = self.Ease.GetRuntimeEase(t2.GetEase());
-          return C32.angleLerp(c2, l, r3(a3, 0, 1, 1));
+          if (i === l) return i;
+          const a3 = C32.normalize(e, c2, o2), r3 = self.Ease.GetRuntimeEase(t2.GetEase());
+          return C32.angleLerp(i, l, r3(a3, 0, 1, 1));
         }
         {
           const a3 = u2.GetRevolutions();
-          if (c2 === l && 0 === a3) return c2;
-          const r3 = C32.normalize(e, i, o2), s2 = self.Ease.GetRuntimeEase(t2.GetEase())(r3, 0, 1, 1);
+          if (i === l && 0 === a3) return i;
+          const r3 = C32.normalize(e, c2, o2), s2 = self.Ease.GetRuntimeEase(t2.GetEase())(r3, 0, 1, 1);
           switch (u2.GetDirection()) {
             case "closest":
-              return C32.angleLerp(c2, l, s2, a3);
+              return C32.angleLerp(i, l, s2, a3);
             case "clockwise":
-              return C32.angleLerpClockwise(c2, l, s2, a3);
+              return C32.angleLerpClockwise(i, l, s2, a3);
             case "anti-clockwise":
-              return C32.angleLerpAntiClockwise(c2, l, s2, a3);
+              return C32.angleLerpAntiClockwise(i, l, s2, a3);
           }
         }
       }
@@ -18805,10 +18947,10 @@ var MaybePrepareLayerDraw2;
     }
     static Interpolate(e, t2, a2, r2) {
       if (!a2) {
-        let e2 = r2.GetPropertyTrackDataItem();
-        return e2 = r2.GetPropertyTrackData().GetLastPropertyKeyframeDataItem(e2), e2.GetValueWithResultMode() ? 1 : 0;
+        const e2 = r2.GetPropertyTrackDataItem();
+        return r2.GetPropertyTrackData().GetLastPropertyKeyframeDataItem(e2).GetValueWithResultMode() ? 1 : 0;
       }
-      return t2.GetValueWithResultMode() ? 1 : 0;
+      return C32.PropertyTrackState.GetPropertyKeyframeValueWithPlaybackDirection(t2, a2, r2) ? 1 : 0;
     }
   };
 }
@@ -18817,43 +18959,41 @@ var MaybePrepareLayerDraw2;
   C32.PropertyTrackState.ColorTypeAdapter = class {
     constructor() {
     }
-    static WillChange(R, _2, e, t2) {
+    static WillChange(R, e, _2, t2) {
       let A;
       switch (t2) {
         case "behavior":
         case "plugin":
-          A = _2.GetPropertyValueByIndex(R);
+          A = e.GetPropertyValueByIndex(R);
           break;
         case "effect":
-          A = _2[R];
+          A = e[R];
           break;
         case "instance-variable":
-          A = _2.GetInstanceVariableValue(R);
+          A = e.GetInstanceVariableValue(R);
       }
-      return Array.isArray(e) ? (TEMP_COLOR_ARRAY[0] = e[0], TEMP_COLOR_ARRAY[1] = e[1], TEMP_COLOR_ARRAY[2] = e[2]) : (TEMP_COLOR_ARRAY_3.parseCommaSeparatedRgb(e), TEMP_COLOR_ARRAY[0] = Math.floor(255 * TEMP_COLOR_ARRAY_3.getR()), TEMP_COLOR_ARRAY[1] = Math.floor(255 * TEMP_COLOR_ARRAY_3.getG()), TEMP_COLOR_ARRAY[2] = Math.floor(255 * TEMP_COLOR_ARRAY_3.getB())), Array.isArray(A) ? (TEMP_COLOR_ARRAY_2[0] = A[0], TEMP_COLOR_ARRAY_2[1] = A[1], TEMP_COLOR_ARRAY_2[2] = A[2]) : (TEMP_COLOR_ARRAY_3.parseCommaSeparatedRgb(A), TEMP_COLOR_ARRAY_2[0] = Math.floor(255 * TEMP_COLOR_ARRAY_3.getR()), TEMP_COLOR_ARRAY_2[1] = Math.floor(255 * TEMP_COLOR_ARRAY_3.getG()), TEMP_COLOR_ARRAY_2[2] = Math.floor(255 * TEMP_COLOR_ARRAY_3.getB())), TEMP_COLOR_ARRAY[0] !== TEMP_COLOR_ARRAY_2[0] || (TEMP_COLOR_ARRAY[1] !== TEMP_COLOR_ARRAY_2[1] || TEMP_COLOR_ARRAY[2] !== TEMP_COLOR_ARRAY_2[2]);
+      return Array.isArray(_2) ? (TEMP_COLOR_ARRAY[0] = _2[0], TEMP_COLOR_ARRAY[1] = _2[1], TEMP_COLOR_ARRAY[2] = _2[2]) : (TEMP_COLOR_ARRAY_3.parseCommaSeparatedRgb(_2), TEMP_COLOR_ARRAY[0] = Math.floor(255 * TEMP_COLOR_ARRAY_3.getR()), TEMP_COLOR_ARRAY[1] = Math.floor(255 * TEMP_COLOR_ARRAY_3.getG()), TEMP_COLOR_ARRAY[2] = Math.floor(255 * TEMP_COLOR_ARRAY_3.getB())), Array.isArray(A) ? (TEMP_COLOR_ARRAY_2[0] = A[0], TEMP_COLOR_ARRAY_2[1] = A[1], TEMP_COLOR_ARRAY_2[2] = A[2]) : (TEMP_COLOR_ARRAY_3.parseCommaSeparatedRgb(A), TEMP_COLOR_ARRAY_2[0] = Math.floor(255 * TEMP_COLOR_ARRAY_3.getR()), TEMP_COLOR_ARRAY_2[1] = Math.floor(255 * TEMP_COLOR_ARRAY_3.getG()), TEMP_COLOR_ARRAY_2[2] = Math.floor(255 * TEMP_COLOR_ARRAY_3.getB())), TEMP_COLOR_ARRAY[0] !== TEMP_COLOR_ARRAY_2[0] || (TEMP_COLOR_ARRAY[1] !== TEMP_COLOR_ARRAY_2[1] || TEMP_COLOR_ARRAY[2] !== TEMP_COLOR_ARRAY_2[2]);
     }
-    static Interpolate(R, _2, e, t2) {
-      if (!e) {
-        let R2 = t2.GetPropertyTrackDataItem();
-        R2 = t2.GetPropertyTrackData().GetLastPropertyKeyframeDataItem(R2);
-        const _3 = R2.GetValueWithResultMode();
-        return TEMP_COLOR_ARRAY[0] = _3[0], TEMP_COLOR_ARRAY[1] = _3[1], TEMP_COLOR_ARRAY[2] = _3[2], TEMP_COLOR_ARRAY;
+    static Interpolate(R, e, _2, t2) {
+      if (!_2) {
+        const R2 = t2.GetPropertyTrackDataItem(), e2 = t2.GetPropertyTrackData().GetLastPropertyKeyframeDataItem(R2).GetValueWithResultMode();
+        return TEMP_COLOR_ARRAY[0] = e2[0], TEMP_COLOR_ARRAY[1] = e2[1], TEMP_COLOR_ARRAY[2] = e2[2], TEMP_COLOR_ARRAY;
       }
       let A = t2.GetInterpolationMode();
       if ("default" === A && (A = "continuous"), "discrete" === A) {
-        const R2 = _2.GetValueWithResultMode();
+        const R2 = C32.PropertyTrackState.GetPropertyKeyframeValueWithPlaybackDirection(e, _2, t2);
         return TEMP_COLOR_ARRAY[0] = R2[0], TEMP_COLOR_ARRAY[1] = R2[1], TEMP_COLOR_ARRAY[2] = R2[2], TEMP_COLOR_ARRAY;
       }
       if ("continuous" === A || "step" === A) {
         const O2 = t2.GetTimeline().GetStep();
         if ("step" === A && 0 !== O2) {
-          const _3 = 1 / O2;
-          R = Math.floor(R * _3) / _3;
+          const e2 = 1 / O2;
+          R = Math.floor(R * e2) / e2;
         }
-        const a2 = _2.GetTime(), r2 = e.GetTime(), M2 = _2.GetValueWithResultMode(), C2 = e.GetValueWithResultMode();
+        const a2 = e.GetTime(), r2 = _2.GetTime(), M2 = e.GetValueWithResultMode(), C2 = _2.GetValueWithResultMode();
         "step" === A && 0 !== O2 && (R = C32.clamp(R, a2, r2));
-        const T2 = C32.normalize(R, a2, r2), o2 = _2.GetEase(), P2 = M2[0], E2 = M2[1], L = M2[2], Y = C2[0], s = C2[1], l = C2[2], i = self.Ease.GetRuntimeEase(o2), n = r2 - a2, c2 = n * T2;
-        return TEMP_COLOR_ARRAY[0] = P2 === Y ? P2 : i(c2, P2, Y - P2, n), TEMP_COLOR_ARRAY[1] = E2 === s ? E2 : i(c2, E2, s - E2, n), TEMP_COLOR_ARRAY[2] = L === l ? L : i(c2, L, l - L, n), TEMP_COLOR_ARRAY;
+        const P2 = C32.normalize(R, a2, r2), T2 = e.GetEase(), o2 = M2[0], E2 = M2[1], L = M2[2], Y = C2[0], s = C2[1], l = C2[2], i = self.Ease.GetRuntimeEase(T2), c2 = r2 - a2, n = c2 * P2;
+        return TEMP_COLOR_ARRAY[0] = o2 === Y ? o2 : i(n, o2, Y - o2, c2), TEMP_COLOR_ARRAY[1] = E2 === s ? E2 : i(n, E2, s - E2, c2), TEMP_COLOR_ARRAY[2] = L === l ? L : i(n, L, l - L, c2), TEMP_COLOR_ARRAY;
       }
     }
   };
@@ -18880,10 +19020,10 @@ var MaybePrepareLayerDraw2;
     }
     static Interpolate(e, t2, a2, r2) {
       if (!a2) {
-        let e2 = r2.GetPropertyTrackDataItem();
-        return e2 = r2.GetPropertyTrackData().GetLastPropertyKeyframeDataItem(e2), e2.GetValueWithResultMode();
+        const e2 = r2.GetPropertyTrackDataItem();
+        return r2.GetPropertyTrackData().GetLastPropertyKeyframeDataItem(e2).GetValueWithResultMode();
       }
-      return t2.GetValueWithResultMode();
+      return C32.PropertyTrackState.GetPropertyKeyframeValueWithPlaybackDirection(t2, a2, r2);
     }
   };
 }
@@ -19674,9 +19814,27 @@ var MaybePrepareLayerDraw2;
       t2 && (super._LoadFromJson(t2), this._direction = t2["direction"], this._revolutions = t2["revolutions"]);
     }
   }
+  const START_FROM = 0;
+  class AddonDataInitialAnimationItem extends AddonDataItem {
+    constructor(t2, a2) {
+      super(t2, a2), this._startFrom = this._data[0];
+    }
+    Release() {
+      super.Release();
+    }
+    GetStartFrom() {
+      return this._startFrom;
+    }
+    _SaveToJson() {
+      return Object.assign(super._SaveToJson(), { "startFrom": this._startFrom });
+    }
+    _LoadFromJson(t2) {
+      t2 && (super._LoadFromJson(t2), this._startFrom = t2["startFrom"]);
+    }
+  }
   C32.AddonData = class {
     constructor(t2, a2) {
-      this._propertyKeyframeDataItem = a2, this._addonDataItems = [], C32.TimelineDataManager._CreateDataItems(this._addonDataItems, t2, { prop: 0, map: /* @__PURE__ */ new Map([["cubic-bezier", AddonDataCubicBezierItem], ["angle", AddonDataAngleItem]]) }, this);
+      this._propertyKeyframeDataItem = a2, this._addonDataItems = [], C32.TimelineDataManager._CreateDataItems(this._addonDataItems, t2, { prop: 0, map: /* @__PURE__ */ new Map([["cubic-bezier", AddonDataCubicBezierItem], ["angle", AddonDataAngleItem], ["initial-animation", AddonDataInitialAnimationItem]]) }, this);
     }
     Release() {
       this._propertyKeyframeDataItem = null;
@@ -19696,7 +19854,7 @@ var MaybePrepareLayerDraw2;
       return { "addonDataItemsJson": this._addonDataItems.map((t2) => t2._SaveToJson()) };
     }
     _LoadFromJson(t2) {
-      t2 && C32.TimelineDataManager._LoadDataItemsFromJson(this._addonDataItems, t2["addonDataItemsJson"], { prop: "id", map: /* @__PURE__ */ new Map([["cubic-bezier", AddonDataCubicBezierItem], ["angle", AddonDataAngleItem]]) }, this);
+      t2 && C32.TimelineDataManager._LoadDataItemsFromJson(this._addonDataItems, t2["addonDataItemsJson"], { prop: "id", map: /* @__PURE__ */ new Map([["cubic-bezier", AddonDataCubicBezierItem], ["angle", AddonDataAngleItem], ["initial-animation", AddonDataInitialAnimationItem]]) }, this);
     }
   };
 }
@@ -21854,7 +22012,7 @@ var MaybePrepareLayerDraw2;
         } while (e.length < n.length);
       }
       const i = s.GetEventBlock();
-      return i.RunAsExpressionFunctionCall(i.GetSolModifiersIncludingParents(), false, s.GetReturnType(), s.GetDefaultReturnValue(), ...e);
+      return i.RunAsExpressionOrJSFunctionCall(i.GetSolModifiersIncludingParents(), false, s.GetReturnType(), s.GetDefaultReturnValue(), null, ...e);
     }
   };
 }
@@ -22600,31 +22758,33 @@ var IsSolArrayIdentical2;
       } else this._scopeParent.EvaluateFunctionParameters(e);
       else n && t2.GetLocalVarStack().Push();
     }
+    #t(t2, e, n, s) {
+      let i = null;
+      if (e.copyFromObjectClass) {
+        const t3 = n ? e.copyFromObjectClass.GetCurrentSol() : e.copyFromObjectClass.GetSolStack().GetOneBelowCurrentSol(), s2 = e.copyToObjectClass.GetCurrentSol();
+        s2.SetArrayPicked(t3.GetInstances()), s2.ClearElseInstances(), n || e.copyToObjectClass.ApplySolToContainer();
+      } else if (e.pickObjectClass) {
+        const t3 = e.pickObjectClass.GetCurrentSol();
+        t3.SetArrayPicked(e.pickInstances), t3.ClearElseInstances();
+      }
+      return e.pushCleanSolDynamic && (i = t2.PushCleanSolDynamic(s)), i;
+    }
     RunAsFunctionCall(t2, e, n, s) {
       let i, o2;
       const r2 = t2.length > 0;
       let u2 = null;
-      const l = this._runtime, a2 = this._eventStack, h2 = l.GetEventSheetManager(), c2 = this._scopeParent, _2 = c2.IsAsync(), d2 = h2._IncTriggerDepth() > 1;
-      if (this._EvaluateFunctionCallParameters(h2, e, d2), r2 && (n ? h2.PushCopySol(t2) : h2.PushCleanSol(t2)), null !== s) {
-        if (s.copyFromObjectClass) {
-          const t3 = n ? s.copyFromObjectClass.GetCurrentSol() : s.copyFromObjectClass.GetSolStack().GetOneBelowCurrentSol(), e2 = s.copyToObjectClass.GetCurrentSol();
-          e2.SetArrayPicked(t3.GetInstances()), e2.ClearElseInstances(), n || s.copyToObjectClass.ApplySolToContainer();
-        } else if (s.pickObjectClass) {
-          const t3 = s.pickObjectClass.GetCurrentSol();
-          t3.SetArrayPicked(s.pickInstances), t3.ClearElseInstances();
-        }
-        s.pushCleanSolDynamic && (u2 = h2.PushCleanSolDynamic(t2));
-      }
+      const l = this._runtime, a2 = this._eventStack, c2 = l.GetEventSheetManager(), h2 = this._scopeParent, _2 = h2.IsAsync(), d2 = c2._IncTriggerDepth() > 1;
+      this._EvaluateFunctionCallParameters(c2, e, d2), r2 && (n ? c2.PushCopySol(t2) : c2.PushCleanSol(t2)), null !== s && (u2 = this.#t(c2, s, n, t2));
       const g2 = a2.Push(this);
-      return n && g2.SetDynamicSolModifiers(t2), this._CheckParentsOKToRun(g2) && (g2.SetCurrentEvent(this), _2 && ([o2, i] = c2.StartAsyncFunctionCall()), this._RunAndBlock(g2), _2 && c2.MaybeFinishAsyncFunctionCall(o2)), a2.Pop(), d2 && h2.GetLocalVarStack().Pop(), null !== u2 && h2.PopSol(u2), r2 && h2.PopSol(t2), h2._DecTriggerDepth(), i;
+      return n && g2.SetDynamicSolModifiers(t2), this._CheckParentsOKToRun(g2) && (g2.SetCurrentEvent(this), _2 && ([o2, i] = h2.StartAsyncFunctionCall()), this._RunAndBlock(g2), _2 && h2.MaybeFinishAsyncFunctionCall(o2)), a2.Pop(), d2 && c2.GetLocalVarStack().Pop(), null !== u2 && c2.PopSol(u2), r2 && c2.PopSol(t2), c2._DecTriggerDepth(), i;
     }
     *DebugRunAsFunctionCall(t2, e, n, s) {
       let i, o2;
       (this.IsDebugBreakpoint() || this._runtime.DebugBreakNext()) && (yield this);
       const r2 = t2.length > 0;
       let u2 = null;
-      const l = this._runtime, a2 = this._eventStack, h2 = l.GetEventSheetManager(), c2 = this._scopeParent, _2 = c2.IsAsync(), d2 = h2._IncTriggerDepth() > 1;
-      if (this._EvaluateFunctionCallParameters(h2, e, d2), r2 && (n ? h2.PushCopySol(t2) : h2.PushCleanSol(t2)), null !== s) {
+      const l = this._runtime, a2 = this._eventStack, c2 = l.GetEventSheetManager(), h2 = this._scopeParent, _2 = h2.IsAsync(), d2 = c2._IncTriggerDepth() > 1;
+      if (this._EvaluateFunctionCallParameters(c2, e, d2), r2 && (n ? c2.PushCopySol(t2) : c2.PushCleanSol(t2)), null !== s) {
         if (s.copyFromObjectClass) {
           const t3 = n ? s.copyFromObjectClass.GetCurrentSol() : s.copyFromObjectClass.GetSolStack().GetOneBelowCurrentSol(), e2 = s.copyToObjectClass.GetCurrentSol();
           e2.SetArrayPicked(t3.GetInstances()), e2.ClearElseInstances(), n || s.copyToObjectClass.ApplySolToContainer();
@@ -22632,10 +22792,10 @@ var IsSolArrayIdentical2;
           const t3 = s.pickObjectClass.GetCurrentSol();
           t3.SetArrayPicked(s.pickInstances), t3.ClearElseInstances();
         }
-        s.pushCleanSolDynamic && (u2 = h2.PushCleanSolDynamic(t2));
+        s.pushCleanSolDynamic && (u2 = c2.PushCleanSolDynamic(t2));
       }
       const g2 = a2.Push(this);
-      return n && g2.SetDynamicSolModifiers(t2), (yield* this._DebugCheckParentsOKToRun(g2)) && (g2.SetCurrentEvent(this), _2 && ([o2, i] = c2.StartAsyncFunctionCall()), yield* this._DebugRunAndBlock(g2), _2 && c2.MaybeFinishAsyncFunctionCall(o2)), a2.Pop(), d2 && h2.GetLocalVarStack().Pop(), null !== u2 && h2.PopSol(u2), r2 && h2.PopSol(t2), h2._DecTriggerDepth(), i;
+      return n && g2.SetDynamicSolModifiers(t2), (yield* this._DebugCheckParentsOKToRun(g2)) && (g2.SetCurrentEvent(this), _2 && ([o2, i] = h2.StartAsyncFunctionCall()), yield* this._DebugRunAndBlock(g2), _2 && h2.MaybeFinishAsyncFunctionCall(o2)), a2.Pop(), d2 && c2.GetLocalVarStack().Pop(), null !== u2 && c2.PopSol(u2), r2 && c2.PopSol(t2), c2._DecTriggerDepth(), i;
     }
     RunAsMappedFunctionCall(t2, e) {
       const n = this.GetSolModifiersIncludingParents(), s = n.length > 0, i = this._runtime, o2 = this._eventStack, r2 = i.GetEventSheetManager(), u2 = r2._IncTriggerDepth() > 1;
@@ -22650,12 +22810,14 @@ var IsSolArrayIdentical2;
       const l = o2.Push(this);
       (yield* this._DebugCheckParentsOKToRun(l)) && (l.SetCurrentEvent(this), yield* this._DebugRunAndBlock(l)), o2.Pop(), u2 && r2.GetLocalVarStack().Pop(), s && r2.PopSol(n), r2._DecTriggerDepth();
     }
-    RunAsExpressionFunctionCall(t2, e, n, s, ...i) {
-      let o2, r2;
-      const u2 = t2.length > 0, l = this._runtime, a2 = this._eventStack, h2 = l.GetEventSheetManager(), c2 = this._scopeParent, _2 = c2.IsAsync(), d2 = h2._IncTriggerDepth() > 1;
-      d2 && h2.GetLocalVarStack().Push(), i.length > 0 && this._scopeParent.SetFunctionParameters(i), u2 && (e ? h2.PushCopySol(t2) : h2.PushCleanSol(t2));
-      const g2 = a2.Push(this);
-      return g2.InitCallFunctionExpression(n, s), a2.PushExpFunc(g2), l.SetDebuggingEnabled(false), this._CheckParentsOKToRun(g2) && (g2.SetCurrentEvent(this), _2 && ([r2, o2] = c2.StartAsyncFunctionCall()), this._RunAndBlock(g2), _2 && c2.MaybeFinishAsyncFunctionCall(r2)), l.SetDebuggingEnabled(true), a2.Pop(), a2.PopExpFunc(), d2 && h2.GetLocalVarStack().Pop(), u2 && h2.PopSol(t2), h2._DecTriggerDepth(), o2 || g2.GetFunctionReturnValue();
+    RunAsExpressionOrJSFunctionCall(t2, e, n, s, i, ...o2) {
+      let r2, u2;
+      const l = t2.length > 0;
+      let a2 = null;
+      const c2 = this._runtime, h2 = this._eventStack, _2 = c2.GetEventSheetManager(), d2 = this._scopeParent, g2 = d2.IsAsync(), S2 = _2._IncTriggerDepth() > 1;
+      S2 && _2.GetLocalVarStack().Push(), o2.length > 0 && this._scopeParent.SetFunctionParameters(o2), l && (e ? _2.PushCopySol(t2) : _2.PushCleanSol(t2)), null !== i && (a2 = this.#t(_2, i, e, t2));
+      const b2 = h2.Push(this);
+      return b2.InitCallFunctionExpression(n, s), e && b2.SetDynamicSolModifiers(t2), h2.PushExpFunc(b2), c2.SetDebuggingEnabled(false), this._CheckParentsOKToRun(b2) && (b2.SetCurrentEvent(this), g2 && ([u2, r2] = d2.StartAsyncFunctionCall()), this._RunAndBlock(b2), g2 && d2.MaybeFinishAsyncFunctionCall(u2)), c2.SetDebuggingEnabled(true), h2.Pop(), h2.PopExpFunc(), S2 && _2.GetLocalVarStack().Pop(), null !== a2 && _2.PopSol(a2), l && _2.PopSol(t2), _2._DecTriggerDepth(), r2 || b2.GetFunctionReturnValue();
     }
   };
 }
@@ -22890,7 +23052,7 @@ var NoActions2;
     constructor(t2, e, s) {
       super();
       const i = t2.GetEventSheetManager();
-      this._eventSheet = t2, this._eventSheetManager = i, this._runtime = t2.GetRuntime(), this._parent = e, this._localVarStack = i.GetLocalVarStack(), this._name = s[1], this._type = s[2], this._initialValue = s[3], this._isStatic = !!s[4], this._isConstant = !!s[5], this._isFunctionParameter = e instanceof C32.FunctionBlock, this._sid = s[6], this._jsPropName = this._runtime.GetJsPropName(s[8]), this._scriptSetter = (t3) => this.SetValue(t3), this._scriptGetter = () => this.GetTypedValue(), this._hasSingleValue = !this._parent || this._isStatic || this._isConstant, this._value = this._initialValue, this._localIndex = -1, this.IsBoolean() && (this._value = this._value ? 1 : 0), !this.IsLocal() || this.IsStatic() || this.IsConstant() || (this._localIndex = i._GetNextLocalVarIndex(this)), i._RegisterEventVariable(this);
+      this._eventSheet = t2, this._eventSheetManager = i, this._runtime = t2.GetRuntime(), this._parent = e, this._localVarStack = i.GetLocalVarStack(), this._name = s[1], this._type = s[2], this._initialValue = s[3], this._isStatic = !!s[4], this._isConstant = !!s[5], this._isFunctionParameter = e instanceof C32.FunctionBlock, this._sid = s[6], this._jsPropName = this._runtime.GetJsPropName(s[8]), this._scriptSetter = (t3) => this._ScriptSetValue(t3), this._scriptGetter = () => this.GetTypedValue(), this._hasSingleValue = !this._parent || this._isStatic || this._isConstant, this._value = this._initialValue, this._localIndex = -1, this.IsBoolean() && (this._value = this._value ? 1 : 0), !this.IsLocal() || this.IsStatic() || this.IsConstant() || (this._localIndex = i._GetNextLocalVarIndex(this)), i._RegisterEventVariable(this);
     }
     static Create(t2, e, s) {
       return C32.New(C32.EventVariable, t2, e, s);
@@ -22960,6 +23122,10 @@ var NoActions2;
     }
     SetValue(t2) {
       this.IsNumber() ? "number" != typeof t2 && (t2 = parseFloat(t2)) : this.IsString() ? "string" != typeof t2 && (t2 = t2.toString()) : this.IsBoolean() && (t2 = t2 ? 1 : 0), this._hasSingleValue ? this._value = t2 : this._localVarStack.GetCurrent()[this._localIndex] = t2;
+    }
+    _ScriptSetValue(t2) {
+      if (this.IsConstant()) throw new Error(`assignment to constant event variable '${this.GetName()}'`);
+      this.SetValue(t2);
     }
     GetValue() {
       return this._hasSingleValue ? this._value : this._localVarStack.GetCurrent()[this._localIndex];
@@ -23065,7 +23231,7 @@ var NoActions2;
       const e = this._functionBlock;
       if (e.IsEnabled()) {
         const t2 = e.GetEventBlock();
-        return C32.EventBlock.prototype.RunAsExpressionFunctionCall.bind(t2, this._combinedSolModifiers, e.IsCopyPicked(), e.GetReturnType(), e.GetDefaultReturnValue());
+        return C32.EventBlock.prototype.RunAsExpressionOrJSFunctionCall.bind(t2, this._combinedSolModifiers, e.IsCopyPicked(), e.GetReturnType(), e.GetDefaultReturnValue(), null);
       }
       {
         const t2 = e.GetDefaultReturnValue();
@@ -23712,7 +23878,7 @@ var EvalParams2;
     constructor(t2, e, s) {
       super(), this._eventBlock = t2;
       const n = t2.GetRuntime();
-      this._runtime = n, this._index = s, this._sid = e.length >= 4 ? e[3] : -1, this._actionType = e.length >= 5 ? 255 & e[4] : 0, this._flags = e.length >= 5 ? e[4] >> 8 : 0, this._func = null, this._objectClass = null, this._behaviorType = null, this._behaviorIndex = -1, this._systemPlugin = null, this._callFunctionName = "", this._callCustomAceObjectClass = null, this._callEventBlock = null, this.Run = noop, this.DebugRun = noop, this._parameters = [], this._results = [], this._anyParamVariesPerInstance = false, this._savedData = null, this._unsavedData = null;
+      this._runtime = n, this._index = s, this._sid = e.length >= 4 ? e[3] : -1, this._actionType = e.length >= 5 ? 255 & e[4] : 0, this._flags = e.length >= 5 ? e[4] >> 8 : 0, this._func = null, this._objectClass = null, this._behaviorType = null, this._behaviorIndex = -1, this._systemPlugin = null, this._callFunctionName = "", this._callCustomAceObjectClass = null, this._callEventBlock = null, this.Run = noop, this.DebugRun = noop, this._parameters = [], this._results = [], this._anyParamVariesPerInstance = false;
       const i = -3 === e[0], a2 = i ? e[2] : e[5];
       if (this._debugData = n.IsDebug() || i ? { isBreakpoint: a2[0], canDebug: a2[1], index: a2[2] } : null, -1 === e[0]) this._systemPlugin = n.GetSystemPlugin(), this._func = n.GetObjectReference(e[1]);
       else if (-2 === e[0]) this._callFunctionName = e[1];
@@ -23878,12 +24044,6 @@ var EvalParams2;
     }
     DebugCanRunFast() {
       return !this.IsBreakpoint() && !this._runtime.DebugBreakNext() && !this._DebugReturnsGenerator();
-    }
-    GetSavedDataMap() {
-      return this._savedData || (this._savedData = /* @__PURE__ */ new Map()), this._savedData;
-    }
-    GetUnsavedDataMap() {
-      return this._unsavedData || (this._unsavedData = /* @__PURE__ */ new Map()), this._unsavedData;
     }
     _RunSystem() {
       const t2 = this._results;
@@ -24682,8 +24842,11 @@ var EvalParams2;
     const e = GetObjectClass(this);
     return e.GetRuntime().GetCurrentCondition().IsInverted() ? PickByUID_Inverted(e, t2) : PickByUID_Normal(e, t2);
   }, AnySDK.HasTags = function(t2) {
-    const e = new Set(C32.splitStringAndNormalize(t2)), n = GetInst(this).GetTagsSet();
-    return e.isSubsetOf(n);
+    const e = GetInst(this);
+    if (t2.includes(" ")) {
+      return new Set(C32.splitStringAndNormalize(t2.toLowerCase())).isSubsetOf(e.GetLowercaseTagsSet());
+    }
+    return !t2 || e.HasTag(t2);
   }, AnySDK.Tags = function() {
     return GetInst(this).GetTagsString();
   }, AnySDK.TagsCount = function() {
@@ -24691,11 +24854,20 @@ var EvalParams2;
   }, AnySDK.TagAt = function(t2) {
     return GetInst(this).GetTagAt(t2);
   }, AnySDK.ChangeTags = function(t2, e) {
-    const n = C32.splitStringAndNormalize(e);
+    const n = C32.splitStringAndNormalize(e), o2 = GetInst(this);
+    if (2 === t2) return void o2.SetTagsSet(new Set(n));
     if (0 === n.length) return;
-    const o2 = GetInst(this), s = new Set(o2.GetTagsSet());
+    const s = new Set(o2.GetTagsSet());
     if (0 === t2) for (const t3 of n) s.add(t3);
-    else if (1 === t2) for (const t3 of n) s.delete(t3);
+    else if (1 === t2) for (const t3 of n) {
+      if (!s.delete(t3)) {
+        const e2 = t3.toLowerCase();
+        for (const t4 of s) if (t4.toLowerCase() === e2) {
+          s.delete(t4);
+          break;
+        }
+      }
+    }
     o2.SetTagsSet(s);
   }, AnySDK.Destroy = function() {
     runtime.DestroyInstance(GetInst(this));
@@ -26051,7 +26223,7 @@ var ValidateInternalAPIToken2;
       const i = t2.GetObjectReference(s[1]);
       this._runtime = t2, this._plugin = C32.AddonManager.GetPluginByConstructorFunction(i), this._sdkType = null, this._instSdkCtor = i.Instance, this._index = e, this._sid = s[11], this._name = s[0], this._jsPropName = this._runtime.GetJsPropName(s[14]), this._isGlobal = !!s[9], this._isFamily = !!s[2], this._isOnLoaderLayout = !!s[10], this._instVars = s[3].map((e2) => ({ sid: e2[0], type: e2[1], name: e2[2], jsPropName: t2.GetJsPropName(e2[3]) })), this._behaviorsCount = s[4], this._effectsCount = s[5], this._isWorldType = this._plugin.IsWorldType(), this._dispatcher = C32.New(C32.Event.Dispatcher), this._effectList = null;
       const [n, a2] = t2.GetCollisionEngine().GetCollisionCellSize();
-      if (this._collisionGrid = C32.New(C32.SparseGrid, n, a2), this._anyCollisionCellChanged = true, this._familyMembers = null, this._familyMembersSet = null, this._familyIndex = -1, this._families = null, this._familiesSet = null, this._familyInstVarMap = null, this._familyBehaviorMap = null, this._familyEffectMap = null, this._isInContainer = false, this._container = null, this._behaviorTypes = s[8].map((t3) => C32.BehaviorType.Create(this, t3)), this._behaviorTypesIncludingInherited = [], this._behaviorsByName = /* @__PURE__ */ new Map(), this._behaviorNameToIndex = /* @__PURE__ */ new Map(), this._usedBehaviorCtors = /* @__PURE__ */ new Set(), this._customActionMap = /* @__PURE__ */ new Map(), this._solStack = C32.New(C32.SolStack, this), this._defaultInstanceData = null, this._defaultLayerIndex = 0, this._isContained = false, this._container = null, this._imageInfo = null, this._animations = null, this._animationsByName = null, this._animationsBySid = null, this._textureRefCount = 0, this._savedData = /* @__PURE__ */ new Map(), this._unsavedData = /* @__PURE__ */ new Map(), this._instances = [], this._worldInfosByLayer = /* @__PURE__ */ new Map(), this._iidsStale = true, this._plugin.HasEffects() && (this._effectList = C32.New(C32.EffectList, this, s[12])), s[6] && (this._imageInfo = C32.New(C32.ImageInfo), this._imageInfo.LoadData(s[6])), s[7]) {
+      if (this._collisionGrid = C32.New(C32.SparseGrid, n, a2), this._anyCollisionCellChanged = true, this._familyMembers = null, this._familyMembersSet = null, this._familyIndex = -1, this._families = null, this._familiesSet = null, this._familyInstVarMap = null, this._familyBehaviorMap = null, this._familyEffectMap = null, this._isInContainer = false, this._container = null, this._behaviorTypes = s[8].map((t3) => C32.BehaviorType.Create(this, t3)), this._behaviorTypesIncludingInherited = [], this._behaviorsByName = /* @__PURE__ */ new Map(), this._behaviorNameToIndex = /* @__PURE__ */ new Map(), this._usedBehaviorCtors = /* @__PURE__ */ new Set(), this._customActionMap = /* @__PURE__ */ new Map(), this._solStack = C32.New(C32.SolStack, this), this._defaultInstanceData = null, this._defaultLayerIndex = 0, this._isContained = false, this._container = null, this._imageInfo = null, this._animations = null, this._animationsByName = null, this._animationsBySid = null, this._textureRefCount = 0, this._savedData = /* @__PURE__ */ new Map(), this._instances = [], this._worldInfosByLayer = /* @__PURE__ */ new Map(), this._iidsStale = true, this._plugin.HasEffects() && (this._effectList = C32.New(C32.EffectList, this, s[12])), s[6] && (this._imageInfo = C32.New(C32.ImageInfo), this._imageInfo.LoadData(s[6])), s[7]) {
         this._animations = s[7].map((t3) => C32.New(C32.AnimationInfo, t3)), this._animationsByName = /* @__PURE__ */ new Map(), this._animationsBySid = /* @__PURE__ */ new Map();
         for (const t3 of this._animations) this._animationsByName.set(t3.GetName().toLowerCase(), t3), this._animationsBySid.set(t3.GetSID(), t3);
       }
@@ -26083,7 +26255,7 @@ var ValidateInternalAPIToken2;
         for (const t2 of this._animations) t2.Release();
         C32.clearArray(this._animations), this._animationsByName.clear(), this._animationsBySid.clear();
       }
-      this._loadInstancesJson = null, this._solStack.Release(), this._solStack = null, this._savedData.clear(), this._unsavedData.clear(), this._container = null, this._runtime = null;
+      this._loadInstancesJson = null, this._solStack.Release(), this._solStack = null, this._savedData.clear(), this._container = null, this._runtime = null;
     }
     _LoadFamily(t2) {
       for (let e = 1, s = t2.length; e < s; ++e) {
@@ -26466,9 +26638,6 @@ var ValidateInternalAPIToken2;
     GetSavedDataMap() {
       return this._savedData || (this._savedData = /* @__PURE__ */ new Map()), this._savedData;
     }
-    GetUnsavedDataMap() {
-      return this._unsavedData || (this._unsavedData = /* @__PURE__ */ new Map()), this._unsavedData;
-    }
     HasSolidBehavior() {
       return this.UsesBehaviorByCtor(C32.Behaviors.solid);
     }
@@ -26553,15 +26722,16 @@ var ValidateInternalAPIToken2;
   };
 }
 {
-  const C32 = self.C3, C3Debugger = self.C3Debugger, IInstance = self.IInstance, originalAddonManager = C32.AddonManager, EMPTY_ARRAY = [];
+  const C32 = self.C3, C3Debugger = self.C3Debugger, IInstance = self.IInstance, originalAddonManager = C32.AddonManager, EMPTY_ARRAY = [], EMPTY_SET = /* @__PURE__ */ new Set();
   let nextPuid = 0;
-  const savedDataMaps = /* @__PURE__ */ new WeakMap(), unsavedDataMaps = /* @__PURE__ */ new WeakMap(), FLAG_DESTROYED = 1, FLAG_TILEMAP = 2, FLAG_MUST_PREDRAW = 4, FLAG_SOLID_ENABLED = 8, FLAG_JUMPTHRU_ENABLED = 16, FLAG_MUST_MITIGATE_Z_FIGHTING = 32, FLAG_IS_DRAWING_WITH_EFFECTS = 64;
+  const savedDataMaps = /* @__PURE__ */ new WeakMap(), FLAG_DESTROYED = 1, FLAG_TILEMAP = 2, FLAG_MUST_PREDRAW = 4, FLAG_SOLID_ENABLED = 8, FLAG_SOLID_USES_INSTANCE_TAGS = 16, FLAG_JUMPTHRU_ENABLED = 32, FLAG_MUST_MITIGATE_Z_FIGHTING = 32, FLAG_IS_DRAWING_WITH_EFFECTS = 64;
   C32.Instance = class extends C32.DefendedBase {
+    #t = null;
     constructor(t2) {
       if (C32.AddonManager !== originalAddonManager) throw new Error("invalid addon manager");
-      super(), this._runtime = t2.runtime, this._objectType = t2.objectType, this._worldInfo = null, this._sdkInst = null, this._iScriptInterface = null, this._iid = 0, this._uid = t2.uid, this._puid = nextPuid++, this._flags = 0, this._tagsSet = null;
+      super(), this._runtime = t2.runtime, this._objectType = t2.objectType, this._worldInfo = null, this._sdkInst = null, this._iScriptInterface = null, this._iid = 0, this._uid = t2.uid, this._puid = nextPuid++, this._flags = 0;
       const e = C32.splitStringAndNormalize(t2.tags);
-      e.length > 0 && (this._tagsSet = new Set(e)), this._instVarValues = EMPTY_ARRAY, this._behaviorInstances = EMPTY_ARRAY;
+      e.length > 0 && this.SetTagsSet(new Set(e)), this._instVarValues = EMPTY_ARRAY, this._behaviorInstances = EMPTY_ARRAY;
       const s = this._objectType.GetBehaviorTypesIncludingInherited();
       s.length > 0 && (this._behaviorInstances = s.map((t3, e2) => C32.New(C32.BehaviorInstance, { runtime: this._runtime, behaviorType: t3, instance: this, index: e2 }))), this._siblings = this._objectType.IsInContainer() ? [] : null, this._timeScale = -1, this._dispatcher = null;
       const n = this.GetPlugin();
@@ -26580,9 +26750,7 @@ var ValidateInternalAPIToken2;
       }
       this._sdkInst && (this._sdkInst.Release(), this._sdkInst = null);
       const t2 = savedDataMaps.get(this);
-      t2 && (t2.clear(), savedDataMaps.delete(this));
-      const e = unsavedDataMaps.get(this);
-      e && (e.clear(), unsavedDataMaps.delete(this)), this._siblings && C32.clearArray(this._siblings), this._dispatcher && (this._dispatcher.Release(), this._dispatcher = null), this._tagsSet && this._tagsSet.clear(), this._tagsSet = null, this._runtime = null, this._objectType = null, this._instVarValues.length > 0 && C32.clearArray(this._instVarValues), this._worldInfo && (this._worldInfo.Release(), this._worldInfo = null);
+      t2 && (t2.clear(), savedDataMaps.delete(this)), this._siblings && C32.clearArray(this._siblings), this._dispatcher && (this._dispatcher.Release(), this._dispatcher = null), this.#t && (this.#t.originalTags.clear(), this.#t.lowercaseTags.clear()), this.#t = null, this._runtime = null, this._objectType = null, this._instVarValues.length > 0 && C32.clearArray(this._instVarValues), this._worldInfo && (this._worldInfo.Release(), this._worldInfo = null);
     }
     _LoadInstanceVariableData(t2) {
       t2.length > 0 && (this._instVarValues = [], C32.shallowAssignArray(this._instVarValues, t2));
@@ -26668,11 +26836,17 @@ var ValidateInternalAPIToken2;
     _SetSolidEnabled(t2) {
       t2 ? this._flags |= 8 : this._flags &= -9;
     }
-    _IsJumpthruEnabled() {
+    _IsSolidUsingInstanceTags() {
       return !!(16 & this._flags);
     }
-    _SetJumpthruEnabled(t2) {
+    _SetSolidUsingInstanceTags(t2) {
       t2 ? this._flags |= 16 : this._flags &= -17;
+    }
+    _IsJumpthruEnabled() {
+      return !!(32 & this._flags);
+    }
+    _SetJumpthruEnabled(t2) {
+      t2 ? this._flags |= 32 : this._flags &= -33;
     }
     _IsDrawingWithEffects() {
       return !!(64 & this._flags);
@@ -26890,18 +27064,27 @@ var ValidateInternalAPIToken2;
     GetPUID() {
       return this._puid;
     }
-    _SetTagsSetFromJson(t2) {
-      t2 ? this.SetTagsSet(new Set(t2)) : this._tagsSet = null;
-    }
     SetTagsSet(t2) {
-      if (0 === t2.size) this._tagsSet = null;
+      if (this.#t && (this.#t.originalTags.clear(), this.#t.lowercaseTags.clear()), 0 === t2.size) this.#t = null;
       else {
-        this._tagsSet ? this._tagsSet.clear() : this._tagsSet = /* @__PURE__ */ new Set();
-        for (const e of t2) this._tagsSet.add(e);
+        this.#t || (this.#t = { originalTags: /* @__PURE__ */ new Set(), lowercaseTags: /* @__PURE__ */ new Set() });
+        for (const e of t2) {
+          const t3 = e.toLowerCase();
+          this.#t.lowercaseTags.has(t3) || (this.#t.originalTags.add(e), this.#t.lowercaseTags.add(t3));
+        }
       }
     }
     GetTagsSet() {
-      return this._tagsSet ?? /* @__PURE__ */ new Set();
+      return this.#t ? this.#t.originalTags : EMPTY_SET;
+    }
+    GetLowercaseTagsSet() {
+      return this.#t ? this.#t.lowercaseTags : EMPTY_SET;
+    }
+    _GetLowercaseTagsSetMaybeNull() {
+      return this.#t ? this.#t.lowercaseTags : null;
+    }
+    HasTag(t2) {
+      return !!this.#t && this.#t.lowercaseTags.has(t2.toLowerCase());
     }
     GetTagsString() {
       return Array.from(this.GetTagsSet()).join(" ");
@@ -26984,10 +27167,6 @@ var ValidateInternalAPIToken2;
     GetSavedDataMap() {
       let t2 = savedDataMaps.get(this);
       return t2 || (t2 = /* @__PURE__ */ new Map(), savedDataMaps.set(this, t2), t2);
-    }
-    GetUnsavedDataMap() {
-      let t2 = unsavedDataMaps.get(this);
-      return t2 || (t2 = /* @__PURE__ */ new Map(), unsavedDataMaps.set(this, t2), t2);
     }
     _HasAnyCreateDestroyHandler(t2) {
       const e = this.GetObjectClass();
@@ -27092,7 +27271,7 @@ var ValidateInternalAPIToken2;
     LoadFromJson(t2, e = "full", s = null) {
       if ("full" === e) this._uid = t2["uid"];
       else if (!t2["c3"]) return;
-      if (this._SetTagsSetFromJson(t2["tags"]), "visual-state" !== e) {
+      if (this.SetTagsSet(new Set(t2["tags"] ?? [])), "visual-state" !== e) {
         let e2 = savedDataMaps.get(this);
         e2 && (e2.clear(), savedDataMaps.delete(this));
         const s2 = t2["ex"];
@@ -27561,6 +27740,9 @@ var ValidateInternalAPIToken2;
     }
     _MarkDestroyed() {
       this._flags |= 256;
+    }
+    IsDestroyed() {
+      return !!(256 & this._flags);
     }
     Release() {
       if (this._objectClass._OnWorldInstanceLayerChanged(this, this._layer, null), this._stateGroup && (this._runtime.GetRenderer().ReleaseStateGroup(this._stateGroup), this._stateGroup = null), this._sourceCollisionPoly = null, this._transformedPolyInfo && (this._transformedPolyInfo.poly.Release(), this._transformedPolyInfo = null), this._solidFilterTags && (this._solidFilterTags.clear(), this._solidFilterTags = null), this.ReleaseMesh(), this._instanceEffectList && this._instanceEffectList.Release(), this.HasParent() && this.GetParent().RemoveChild(this), this.HasChildren()) {
@@ -28133,16 +28315,15 @@ var ValidateInternalAPIToken2;
       t2 = !!t2, this.IsCollisionEnabled() !== t2 && (this._SetFlag(8, t2), t2 ? this.SetBboxChanged() : this._RemoveFromCollisionCells());
     }
     SetSolidCollisionFilter(t2, e) {
-      if (this._SetFlag(32, t2), this._solidFilterTags && this._solidFilterTags.clear(), e.trim()) {
-        this._solidFilterTags || (this._solidFilterTags = /* @__PURE__ */ new Set());
-        for (const t3 of e.split(" ")) t3 && this._solidFilterTags.add(t3.toLowerCase());
-      } else this._solidFilterTags = null;
+      this._SetFlag(32, t2), this._solidFilterTags && this._solidFilterTags.clear();
+      for (const t3 of e) this._solidFilterTags || (this._solidFilterTags = /* @__PURE__ */ new Set()), this._solidFilterTags.add(t3.toLowerCase());
+      this._solidFilterTags && 0 === this._solidFilterTags.size && (this._solidFilterTags = null);
     }
     IsSolidCollisionAllowed(t2) {
-      const e = !!(32 & this._flags), s = this._solidFilterTags;
-      if (!t2 || !s) return !e;
-      for (const i of s) if (t2.has(i)) return e;
-      return !e;
+      const e = t2._IsSolidUsingInstanceTags() ? t2._GetLowercaseTagsSetMaybeNull() : t2.GetSavedDataMap().get("solidTags"), s = !!(32 & this._flags), i = this._solidFilterTags;
+      if (!e || !i) return !s;
+      for (const t3 of i) if (e.has(t3)) return s;
+      return !s;
     }
     SetBboxChanged() {
       if (this._flags |= 65554, this._objectClass._SetAnyCollisionCellChanged(true), this._runtime.UpdateRender(), this._layer.UsesRenderCells() && (this.CalculateBbox(this._boundingBox, this._boundingQuad, true), this._flags &= -3, this._UpdateRenderCell()), 4 & this._flags && this._inst.Dispatcher().dispatchEvent(bboxChangeEvent), null !== this._sceneGraphInfo) {
@@ -28306,7 +28487,7 @@ var ValidateInternalAPIToken2;
       return !!(16 & this._flags);
     }
     _UpdateCollisionCell() {
-      if (!this._IsCollisionCellChanged() || !this.IsCollisionEnabled() || 256 & this._flags) return;
+      if (!this._IsCollisionCellChanged() || !this.IsCollisionEnabled() || this.IsDestroyed()) return;
       const t2 = this.GetBoundingBox(), e = this._objectClass._GetCollisionCellGrid(), s = this._collisionCells;
       if (tempRect.set(e.XToCell(t2.getLeft()), e.YToCell(t2.getTop()), e.XToCell(t2.getRight()), e.YToCell(t2.getBottom())), s.equals(tempRect)) return;
       const i = this._inst;
@@ -28321,7 +28502,7 @@ var ValidateInternalAPIToken2;
     }
     _UpdateRenderCell() {
       const t2 = this.GetLayer();
-      if (!t2.UsesRenderCells() || 256 & this._flags) return;
+      if (!t2.UsesRenderCells() || this.IsDestroyed()) return;
       const e = t2.GetRenderGrid(), s = this.GetBoundingBox(), i = this._renderCells;
       if (tempRect.set(e.XToCell(s.getLeft()), e.YToCell(s.getTop()), e.XToCell(s.getRight()), e.YToCell(s.getBottom())), i.equals(tempRect)) return;
       const n = this._inst;
@@ -28335,19 +28516,23 @@ var ValidateInternalAPIToken2;
       return this._renderCells;
     }
     ZOrderMoveToTop() {
+      if (this.IsDestroyed()) return;
       const t2 = this._inst, e = this._layer, s = e._GetInstances();
       s.length && s.at(-1) === t2 || (e._RemoveInstance(t2, false), e._AddInstance(t2, false), this._runtime.UpdateRender());
     }
     ZOrderMoveToBottom() {
+      if (this.IsDestroyed()) return;
       const t2 = this._inst, e = this._layer, s = e._GetInstances();
       s.length && s[0] === t2 || (e._RemoveInstance(t2, false), e._PrependInstance(t2, false), this._runtime.UpdateRender());
     }
     ZOrderMoveToLayer(t2) {
+      if (this.IsDestroyed()) return;
       const e = this._inst, s = this._layer;
       if (s.GetLayout() !== t2.GetLayout()) throw new Error("layer from different layout");
       t2 !== s && (s._RemoveInstance(e, true), this._SetLayer(t2), t2._AddInstance(e, true), this._runtime.UpdateRender());
     }
     ZOrderMoveAdjacentToInstance(t2, e) {
+      if (this.IsDestroyed()) return;
       const s = this._inst;
       let i = false;
       const n = this._layer;
@@ -28388,12 +28573,12 @@ var ValidateInternalAPIToken2;
     }
     _OnAfterLoad(t2, e = "full", s = null) {
       if (t2.hasOwnProperty("sgi") && "visual-state" !== e) {
-        if (256 & this._flags) return;
+        if (this.IsDestroyed()) return;
         this._sceneGraphInfo._OnAfterLoad(t2["sgi"], s);
       }
     }
     _OnAfterLoad2(t2, e = "full", s = null) {
-      if ("visual-state" !== e) if (256 & this._flags) this._ReleaseTmpSceneGraphInfo();
+      if ("visual-state" !== e) if (this.IsDestroyed()) this._ReleaseTmpSceneGraphInfo();
       else {
         if (t2.hasOwnProperty("sgi")) this._sceneGraphInfo._SetTmpSceneGraphChildren(null, null, t2["sgi"], s);
         else if (s?.setFromJson && this._tmpSceneGraphChildren) for (const t3 of this._tmpSceneGraphChildren) t3.IsDestroyed() || this._runtime.DestroyInstance(t3);
@@ -29068,7 +29253,7 @@ var ValidateInternalAPIToken2;
       n && this.GetObjectClassesCollisionCandidates(e, n.GetObjectClasses(), t2, s);
     }
     IsSolidCollisionAllowed(e, t2) {
-      return e._IsSolidEnabled() && (!t2 || t2.GetWorldInfo().IsSolidCollisionAllowed(e.GetSavedDataMap().get("solidTags")));
+      return e._IsSolidEnabled() && (!t2 || t2.GetWorldInfo().IsSolidCollisionAllowed(e));
     }
     TestOverlapSolid(e) {
       const t2 = e.GetWorldInfo();
@@ -31700,19 +31885,19 @@ var ValidateInternalAPIToken2;
       _ForEach(t3) {
         const n2 = t3.GetCurrentSol(), r3 = n2.GetInstances();
         if (0 === r3.length) return false;
-        const a3 = this._runtime.GetEventSheetManager(), i2 = a3.GetEventStack(), s2 = i2.GetCurrentStackFrame(), o3 = s2.GetCurrentEvent(), l = o3.GetSolModifiers(), c2 = s2.IsSolModifierAfterCnds(), h2 = i2.Push(o3), g2 = a3.GetLoopStack(), d2 = g2.Push(), S2 = t3.IsInContainer(), p2 = u2.Push();
-        if (e.shallowAssignArray(p2, r3), d2.SetEnd(p2.length), c2) for (let e2 = 0, n3 = p2.length; e2 < n3 && !d2.IsStopped(); ++e2) {
+        const a3 = this._runtime.GetEventSheetManager(), i2 = a3.GetEventStack(), s2 = i2.GetCurrentStackFrame(), o3 = s2.GetCurrentEvent(), l = o3.GetSolModifiers(), c2 = s2.IsSolModifierAfterCnds(), h2 = i2.Push(o3), g2 = a3.GetLoopStack(), S2 = g2.Push(), d2 = t3.IsInContainer(), p2 = u2.Push();
+        if (e.shallowAssignArray(p2, r3), S2.SetEnd(p2.length), c2) for (let e2 = 0, n3 = p2.length; e2 < n3 && !S2.IsStopped(); ++e2) {
           a3.PushCopySol(l);
           const n4 = p2[e2];
-          t3.GetCurrentSol().SetSinglePicked(n4), S2 && n4.SetSiblingsSinglePicked(), d2.SetIndex(e2), o3.Retrigger(s2, h2), a3.PopSol(l);
+          t3.GetCurrentSol().SetSinglePicked(n4), d2 && n4.SetSiblingsSinglePicked(), S2.SetIndex(e2), o3.Retrigger(s2, h2), a3.PopSol(l);
         }
         else {
           n2._SetSelectAll(false);
           const t4 = n2._GetOwnInstances();
           e.clearArray(t4), t4.push(null);
-          for (let e2 = 0, n3 = p2.length; e2 < n3 && !d2.IsStopped(); ++e2) {
+          for (let e2 = 0, n3 = p2.length; e2 < n3 && !S2.IsStopped(); ++e2) {
             const n4 = p2[e2];
-            t4[0] = n4, S2 && n4.SetSiblingsSinglePicked(), d2.SetIndex(e2), o3.Retrigger(s2, h2);
+            t4[0] = n4, d2 && n4.SetSiblingsSinglePicked(), S2.SetIndex(e2), o3.Retrigger(s2, h2);
           }
         }
         return i2.Pop(), g2.Pop(), e.clearArray(p2), u2.Pop(), false;
@@ -31720,19 +31905,19 @@ var ValidateInternalAPIToken2;
       *_DebugForEach(t3) {
         const n2 = t3.GetCurrentSol(), r3 = n2.GetInstances();
         if (0 === r3.length) return false;
-        const a3 = this._runtime.GetEventSheetManager(), i2 = a3.GetEventStack(), s2 = i2.GetCurrentStackFrame(), o3 = s2.GetCurrentEvent(), l = o3.GetSolModifiers(), c2 = s2.IsSolModifierAfterCnds(), h2 = i2.Push(o3), g2 = a3.GetLoopStack(), d2 = g2.Push(), S2 = t3.IsInContainer(), p2 = u2.Push();
-        if (e.shallowAssignArray(p2, r3), d2.SetEnd(p2.length), c2) for (let e2 = 0, n3 = p2.length; e2 < n3 && !d2.IsStopped(); ++e2) {
+        const a3 = this._runtime.GetEventSheetManager(), i2 = a3.GetEventStack(), s2 = i2.GetCurrentStackFrame(), o3 = s2.GetCurrentEvent(), l = o3.GetSolModifiers(), c2 = s2.IsSolModifierAfterCnds(), h2 = i2.Push(o3), g2 = a3.GetLoopStack(), S2 = g2.Push(), d2 = t3.IsInContainer(), p2 = u2.Push();
+        if (e.shallowAssignArray(p2, r3), S2.SetEnd(p2.length), c2) for (let e2 = 0, n3 = p2.length; e2 < n3 && !S2.IsStopped(); ++e2) {
           a3.PushCopySol(l);
           const n4 = p2[e2];
-          t3.GetCurrentSol().SetSinglePicked(n4), S2 && n4.SetSiblingsSinglePicked(), d2.SetIndex(e2), yield* o3.DebugRetrigger(s2, h2), a3.PopSol(l);
+          t3.GetCurrentSol().SetSinglePicked(n4), d2 && n4.SetSiblingsSinglePicked(), S2.SetIndex(e2), yield* o3.DebugRetrigger(s2, h2), a3.PopSol(l);
         }
         else {
           n2._SetSelectAll(false);
           const t4 = n2._GetOwnInstances();
           e.clearArray(t4), t4.push(null);
-          for (let e2 = 0, n3 = p2.length; e2 < n3 && !d2.IsStopped(); ++e2) {
+          for (let e2 = 0, n3 = p2.length; e2 < n3 && !S2.IsStopped(); ++e2) {
             const n4 = p2[e2];
-            t4[0] = n4, S2 && n4.SetSiblingsSinglePicked(), d2.SetIndex(e2), yield* o3.DebugRetrigger(s2, h2);
+            t4[0] = n4, d2 && n4.SetSiblingsSinglePicked(), S2.SetIndex(e2), yield* o3.DebugRetrigger(s2, h2);
           }
         }
         return i2.Pop(), g2.Pop(), e.clearArray(p2), u2.Pop(), false;
@@ -31740,13 +31925,13 @@ var ValidateInternalAPIToken2;
       _ForEachOrdered(t3, n2) {
         const r3 = t3.GetCurrentSol(), a3 = r3.GetInstances();
         if (0 === a3.length) return false;
-        const i2 = this._runtime.GetEventSheetManager(), s2 = i2.GetEventStack(), o3 = i2.GetCurrentCondition(), l = s2.GetCurrentStackFrame(), c2 = l.GetCurrentEvent(), h2 = c2.GetSolModifiers(), g2 = l.IsSolModifierAfterCnds(), d2 = s2.Push(c2), S2 = i2.GetLoopStack(), p2 = S2.Push(), m2 = t3.IsInContainer(), G = u2.Push();
+        const i2 = this._runtime.GetEventSheetManager(), s2 = i2.GetEventStack(), o3 = i2.GetCurrentCondition(), l = s2.GetCurrentStackFrame(), c2 = l.GetCurrentEvent(), h2 = c2.GetSolModifiers(), g2 = l.IsSolModifierAfterCnds(), S2 = s2.Push(c2), d2 = i2.GetLoopStack(), p2 = d2.Push(), m2 = t3.IsInContainer(), G = u2.Push();
         e.clearArray(G), p2.SetEnd(a3.length);
         for (let e2 = 0, t4 = a3.length; e2 < t4; ++e2) G.push([a3[e2], o3.ReevaluateParameter(1, e2)]);
         if (G.sort(ForEachOrdered_SortInstances), 1 === n2 && G.reverse(), g2) for (let e2 = 0, n3 = G.length; e2 < n3 && !p2.IsStopped(); ++e2) {
           i2.PushCopySol(h2);
           const n4 = G[e2][0];
-          t3.GetCurrentSol().SetSinglePicked(n4), m2 && n4.SetSiblingsSinglePicked(), p2.SetIndex(e2), c2.Retrigger(l, d2), i2.PopSol(h2);
+          t3.GetCurrentSol().SetSinglePicked(n4), m2 && n4.SetSiblingsSinglePicked(), p2.SetIndex(e2), c2.Retrigger(l, S2), i2.PopSol(h2);
         }
         else {
           r3._SetSelectAll(false);
@@ -31754,21 +31939,21 @@ var ValidateInternalAPIToken2;
           e.clearArray(t4), t4.push(null);
           for (let e2 = 0, n3 = G.length; e2 < n3 && !p2.IsStopped(); ++e2) {
             const n4 = G[e2][0];
-            t4[0] = n4, m2 && n4.SetSiblingsSinglePicked(), p2.SetIndex(e2), c2.Retrigger(l, d2);
+            t4[0] = n4, m2 && n4.SetSiblingsSinglePicked(), p2.SetIndex(e2), c2.Retrigger(l, S2);
           }
         }
-        return s2.Pop(), S2.Pop(), e.clearArray(G), u2.Pop(), false;
+        return s2.Pop(), d2.Pop(), e.clearArray(G), u2.Pop(), false;
       }
       *_DebugForEachOrdered(t3, n2) {
         const r3 = t3.GetCurrentSol(), a3 = r3.GetInstances();
         if (0 === a3.length) return false;
-        const i2 = this._runtime.GetEventSheetManager(), s2 = i2.GetEventStack(), o3 = i2.GetCurrentCondition(), l = s2.GetCurrentStackFrame(), c2 = l.GetCurrentEvent(), h2 = c2.GetSolModifiers(), g2 = l.IsSolModifierAfterCnds(), d2 = s2.Push(c2), S2 = i2.GetLoopStack(), p2 = S2.Push(), m2 = t3.IsInContainer(), G = u2.Push();
+        const i2 = this._runtime.GetEventSheetManager(), s2 = i2.GetEventStack(), o3 = i2.GetCurrentCondition(), l = s2.GetCurrentStackFrame(), c2 = l.GetCurrentEvent(), h2 = c2.GetSolModifiers(), g2 = l.IsSolModifierAfterCnds(), S2 = s2.Push(c2), d2 = i2.GetLoopStack(), p2 = d2.Push(), m2 = t3.IsInContainer(), G = u2.Push();
         e.clearArray(G), p2.SetEnd(a3.length);
         for (let e2 = 0, t4 = a3.length; e2 < t4; ++e2) G.push([a3[e2], o3.ReevaluateParameter(1, e2)]);
         if (G.sort(ForEachOrdered_SortInstances), 1 === n2 && G.reverse(), g2) for (let e2 = 0, n3 = G.length; e2 < n3 && !p2.IsStopped(); ++e2) {
           i2.PushCopySol(h2);
           const n4 = G[e2][0];
-          t3.GetCurrentSol().SetSinglePicked(n4), m2 && n4.SetSiblingsSinglePicked(), p2.SetIndex(e2), yield* c2.DebugRetrigger(l, d2), i2.PopSol(h2);
+          t3.GetCurrentSol().SetSinglePicked(n4), m2 && n4.SetSiblingsSinglePicked(), p2.SetIndex(e2), yield* c2.DebugRetrigger(l, S2), i2.PopSol(h2);
         }
         else {
           r3._SetSelectAll(false);
@@ -31776,10 +31961,10 @@ var ValidateInternalAPIToken2;
           e.clearArray(t4), t4.push(null);
           for (let e2 = 0, n3 = G.length; e2 < n3 && !p2.IsStopped(); ++e2) {
             const n4 = G[e2][0];
-            t4[0] = n4, m2 && n4.SetSiblingsSinglePicked(), p2.SetIndex(e2), yield* c2.DebugRetrigger(l, d2);
+            t4[0] = n4, m2 && n4.SetSiblingsSinglePicked(), p2.SetIndex(e2), yield* c2.DebugRetrigger(l, S2);
           }
         }
-        return s2.Pop(), S2.Pop(), e.clearArray(G), u2.Pop(), false;
+        return s2.Pop(), d2.Pop(), e.clearArray(G), u2.Pop(), false;
       }
       _GetFunctionMap(e2, t3) {
         let n2 = this._functionMaps.get(e2);
@@ -31987,9 +32172,9 @@ var ValidateInternalAPIToken2;
       return e[1] - t2[1];
     };
     SortZOrderList2 = SortZOrderList, SortInstancesByValue2 = SortInstancesByValue;
-    const d2 = self.C3;
-    const S2 = [], p2 = [], m2 = d2.New(d2.Rect), G = d2.New(d2.Color), y2 = [];
-    d2.Plugins.System.Acts = { SetVar(e, t2) {
+    const S2 = self.C3;
+    const d2 = [], p2 = [], m2 = S2.New(S2.Rect), G = S2.New(S2.Color), y2 = [];
+    S2.Plugins.System.Acts = { SetVar(e, t2) {
       e.SetValue(t2);
     }, AddVar(e, t2) {
       e.IsNumber() && "number" != typeof t2 && (t2 = parseFloat(t2)), e.SetValue(e.GetValue() + t2);
@@ -32016,7 +32201,7 @@ var ValidateInternalAPIToken2;
     }, CreateObjectByName(e, t2, n, r2, a2, i) {
       if (!e || !t2) return;
       const s = this._runtime.GetObjectClassByName(e);
-      s && d2.Plugins.System.Acts.CreateObject.call(this, s, t2, n, r2, a2, i);
+      s && S2.Plugins.System.Acts.CreateObject.call(this, s, t2, n, r2, a2, i);
     }, RecreateInitialObjects(e, t2, n, r2, a2, i, s, o2, u2, l, c2) {
       if (!e) return;
       const h2 = this._runtime.GetCurrentLayout();
@@ -32026,12 +32211,12 @@ var ValidateInternalAPIToken2;
         if (!e2) return;
         g2 = e2;
       }
-      let d3 = null;
-      if (("number" != typeof s || s >= 0) && (d3 = g2.GetLayer(s), !d3)) return;
       let S3 = null;
-      if (("number" != typeof o2 || o2 >= 0) && (S3 = h2.GetLayer(o2), !S3)) return;
+      if (("number" != typeof s || s >= 0) && (S3 = g2.GetLayer(s), !S3)) return;
+      let d3 = null;
+      if (("number" != typeof o2 || o2 >= 0) && (d3 = h2.GetLayer(o2), !d3)) return;
       m2.set(t2, n, r2, a2);
-      const p3 = g2.RecreateInitialObjects(e, m2, d3, S3, u2, l, c2);
+      const p3 = g2.RecreateInitialObjects(e, m2, S3, d3, u2, l, c2);
       e.GetCurrentSol().SetArrayPicked(p3), e.ApplySolToContainer();
     }, StopLoop() {
       const e = this._loopStack;
@@ -32062,7 +32247,7 @@ var ValidateInternalAPIToken2;
       this._runtime.GetEventSheetManager().Signal(e);
     }, async SnapshotCanvas(e, t2, n, r2, a2, i) {
       const s = this._runtime.GetCanvasManager();
-      s && (this.UpdateRender(), await s.SnapshotCanvas(0 === e ? "image/png" : "image/jpeg", t2 / 100, n, r2, a2, i), await this._runtime.TriggerAsync(d2.Plugins.System.Cnds.OnCanvasSnapshot, null));
+      s && (this.UpdateRender(), await s.SnapshotCanvas(0 === e ? "image/png" : "image/jpeg", t2 / 100, n, r2, a2, i), await this._runtime.TriggerAsync(S2.Plugins.System.Cnds.OnCanvasSnapshot, null));
     }, SetCanvasSize(e, t2) {
       if (e <= 0 || t2 <= 0) return;
       this._runtime.SetViewportSize(e, t2), this._runtime.GetCurrentLayout().BoundScrolling();
@@ -32092,10 +32277,10 @@ var ValidateInternalAPIToken2;
       this._runtime._SetFramerateMode(["vsync", "unlimited-tick", "unlimited-frame"][e]);
     }, SortZOrderByInstVar(e, t2) {
       if (!e) return;
-      const n = e.GetCurrentSol().GetInstances(), r2 = S2, a2 = p2, i = this._runtime.GetCurrentLayout(), s = e.IsFamily(), o2 = e.GetFamilyIndex();
+      const n = e.GetCurrentSol().GetInstances(), r2 = d2, a2 = p2, i = this._runtime.GetCurrentLayout(), s = e.IsFamily(), o2 = e.GetFamilyIndex();
       for (let e2 = 0, i2 = n.length; e2 < i2; ++e2) {
         const i3 = n[e2], u3 = i3.GetWorldInfo();
-        if (!u3) continue;
+        if (!u3 || u3.IsDestroyed()) continue;
         let l;
         l = s ? i3.GetInstanceVariableValue(t2 + i3.GetObjectClass().GetFamilyInstanceVariableOffset(o2)) : i3.GetInstanceVariableValue(t2), r2.push([u3.GetLayer().GetIndex(), u3.GetZIndex()]), a2.push([i3, l]);
       }
@@ -32106,7 +32291,7 @@ var ValidateInternalAPIToken2;
         const t4 = a2[e2][0], n2 = i.GetLayerByIndex(r2[e2][0]), s2 = r2[e2][1], o3 = n2._GetInstances();
         o3[s2] !== t4 && (o3[s2] = t4, t4.GetWorldInfo()._SetLayer(n2, true), n2.SetZIndicesChanged(t4), u2 = true);
       }
-      u2 && this._runtime.UpdateRender(), d2.clearArray(S2), d2.clearArray(p2);
+      u2 && this._runtime.UpdateRender(), S2.clearArray(d2), S2.clearArray(p2);
     }, SetCollisionCellSize(e, t2) {
       e = Math.floor(e), t2 = Math.floor(t2), e <= 0 || t2 <= 0 || !Number.isFinite(e) || !Number.isFinite(t2) || this._runtime.GetCollisionEngine().SetCollisionCellSize(e, t2);
     }, GoToLayout(e) {
@@ -32145,7 +32330,7 @@ var ValidateInternalAPIToken2;
     }, SetLayerScaleRate(e, t2) {
       e && e.SetScaleRate(t2);
     }, SetLayerAngle(e, t2) {
-      e && e.SetAngle(d2.toRadians(+t2));
+      e && e.SetAngle(S2.toRadians(+t2));
     }, SetLayerScroll(e, t2, n) {
       e && (e.SetOwnScrollPositionEnabled(true), e.SetScrollX(t2), e.SetScrollY(n));
     }, RestoreLayerScroll(e) {
@@ -32185,7 +32370,7 @@ var ValidateInternalAPIToken2;
     }, SetLayoutScale(e) {
       this._runtime.GetCurrentLayout().SetScale(+e);
     }, SetLayoutAngle(e) {
-      this._runtime.GetCurrentLayout().SetAngle(d2.toRadians(+e));
+      this._runtime.GetCurrentLayout().SetAngle(S2.toRadians(+e));
     }, SetLayoutEffectEnabled(e, t2) {
       const n = this._runtime.GetCurrentLayout(), r2 = n.GetEffectList().GetEffectTypeByName(t2);
       if (!r2) return;
@@ -32245,14 +32430,14 @@ var ValidateInternalAPIToken2;
       const n = e.IsFamily() ? e.GetFamilyMembers() : [e];
       await this._LoadTexturesForObjectClasses(t2, n);
     }, async LoadObjectTexturesByName(e) {
-      await d2.Plugins.System.Acts.LoadObjectTextures.call(this, this._runtime.GetObjectClassByName(e));
+      await S2.Plugins.System.Acts.LoadObjectTextures.call(this, this._runtime.GetObjectClassByName(e));
     }, UnloadObjectTextures(e) {
       const t2 = this._runtime.GetMainRunningLayout();
       if (!t2 || !e) return;
       const n = e.IsFamily() ? e.GetFamilyMembers() : [e];
       this._UnloadTexturesForObjectClasses(t2, n);
     }, UnloadObjectTexturesByName(e) {
-      d2.Plugins.System.Acts.UnloadObjectTextures.call(this, this._runtime.GetObjectClassByName(e));
+      S2.Plugins.System.Acts.UnloadObjectTextures.call(this, this._runtime.GetObjectClassByName(e));
     }, UnloadUnusedTextures() {
       const e = this._runtime.GetMainRunningLayout();
       if (!e) return;
@@ -32279,7 +32464,7 @@ var ValidateInternalAPIToken2;
     }, MapFunction(e, t2, n) {
       const r2 = this._GetFunctionMap(e.toLowerCase(), true), a2 = r2.strMap, i = t2.toLowerCase();
       a2.has(i) && console.warn(`[Construct] Function map '${e}' string '${t2}' already in map; overwriting entry`);
-      const s = d2.first(a2.values()) || r2.defaultFunc;
+      const s = S2.first(a2.values()) || r2.defaultFunc;
       if (s) {
         if (0 !== s.GetReturnType() !== (0 !== n.GetReturnType())) return void console.error(`[Construct] Function map '${e}' string '${t2}' function return type not compatible with other functions in the map; entry ignored`);
       }
@@ -32287,7 +32472,7 @@ var ValidateInternalAPIToken2;
     }, MapFunctionDefault(e, t2) {
       const n = this._GetFunctionMap(e.toLowerCase(), true);
       n.defaultFunc && console.warn(`[Construct] Function map '${e}' already has a default; overwriting entry`);
-      const r2 = d2.first(n.strMap.values()) || n.defaultFunc;
+      const r2 = S2.first(n.strMap.values()) || n.defaultFunc;
       if (r2) {
         if (0 !== r2.GetReturnType() !== (0 !== t2.GetReturnType())) return void console.error(`[Construct] Function map '${e}' default: function return type not compatible with other functions in the map; entry ignored`);
       }
@@ -32311,13 +32496,13 @@ var ValidateInternalAPIToken2;
         const e2 = g2.GetFunctionParameters();
         for (let t3 = n, r3 = e2.length; t3 < r3; ++t3) h2.push(e2[t3].GetValue());
       }
-      const d3 = s.GetFunctionParameters();
-      for (let e2 = h2.length, t3 = d3.length; e2 < t3; ++e2) h2.push(d3[e2].GetInitialValue());
+      const S3 = s.GetFunctionParameters();
+      for (let e2 = h2.length, t3 = S3.length; e2 < t3; ++e2) h2.push(S3[e2].GetInitialValue());
       return r2.IsDebugging() ? this._DebugDoCallMappedFunction(o2, s, h2, c2, l) : this._DoCallMappedFunction(o2, s, h2, c2, l);
     } };
   }
   {
-    const f2 = self.C3;
+    const f2 = self.C3, C2 = f2.New(f2.Color);
     f2.Plugins.System.Exps = { int: function(e) {
       return "string" == typeof e && (e = parseInt(e, 10), isNaN(e) && (e = 0)), Math.floor(e);
     }, float: function(e) {
@@ -32534,7 +32719,7 @@ var ValidateInternalAPIToken2;
       l && (a2.IsCopyPicked() ? o2.PushCopySol(u2) : o2.PushCleanSol(u2));
       const c2 = a2.GetFunctionParameters();
       for (let e2 = n.length, t3 = c2.length; e2 < t3; ++e2) n.push(c2[e2].GetInitialValue());
-      const h2 = a2.GetEventBlock(), g2 = h2.RunAsExpressionFunctionCall(h2.GetSolModifiersIncludingParents(), a2.IsCopyPicked(), i, s, ...n);
+      const h2 = a2.GetEventBlock(), g2 = h2.RunAsExpressionOrJSFunctionCall(h2.GetSolModifiersIncludingParents(), a2.IsCopyPicked(), i, s, null, ...n);
       return l && o2.PopSol(u2), g2;
     }, loadingprogress() {
       return this._runtime.GetAssetManager().GetLoadProgress();
@@ -32547,7 +32732,7 @@ var ValidateInternalAPIToken2;
     }, imagememoryusage() {
       let e = this._runtime.GetRenderer().GetEstimatedTextureMemoryUsage();
       return Math.round(100 * e / 1048576) / 100;
-    }, rgb: (e, t2, n) => f2.PackRGB(e, t2, n), rgbex: (e, t2, n) => f2.PackRGBEx(e / 100, t2 / 100, n / 100), rgba: (e, t2, n, r2) => f2.PackRGBAEx(e / 100, t2 / 100, n / 100, r2 / 100), rgbex255: (e, t2, n) => f2.PackRGBEx(e / 255, t2 / 255, n / 255), rgba255: (e, t2, n, r2) => f2.PackRGBAEx(e / 255, t2 / 255, n / 255, r2 / 255), projectname() {
+    }, rgb: (e, t2, n) => f2.PackRGB(e, t2, n), rgbex: (e, t2, n) => f2.PackRGBEx(e / 100, t2 / 100, n / 100), rgba: (e, t2, n, r2) => f2.PackRGBAEx(e / 100, t2 / 100, n / 100, r2 / 100), rgbex255: (e, t2, n) => f2.PackRGBEx(e / 255, t2 / 255, n / 255), rgba255: (e, t2, n, r2) => f2.PackRGBAEx(e / 255, t2 / 255, n / 255, r2 / 255), hexcolor: (e) => (C2.setRgba(0, 0, 0, 1), C2.parseHexString(e), f2.PackRGBAEx(C2.getR(), C2.getG(), C2.getB(), C2.getA())), colortohexstring: (e) => (C2.setFromRgbValue(e), C2.toHexString(1 !== C2.getA())), projectname() {
       return this._runtime.GetProjectName();
     }, projectversion() {
       return this._runtime.GetProjectVersion();
@@ -32639,18 +32824,24 @@ var SortInstancesByValue2;
       }
       _OnBeforeRender() {
         const e2 = this.GetWorldInfo(), t3 = e2.GetLayer(), i2 = e2.GetLayout();
-        e2.IsVisible() && e2.IsInViewport(t3.GetViewport(), i2.HasVanishingPointOutsideViewport(), i2.IsOrthographicProjection()) && (this._UpdateTextSize(), this._pendingUpdateIconSet && (this._pendingUpdateIconSet = false, this._rendererText.IsBBCodeEnabled() && this._iconObjectClass && this._rendererText.SetIconSet(this.GetRuntime().GetTextIconSet(this._iconObjectClass))), this._rendererText.GetTexture());
+        e2.IsVisible() && e2.IsInViewport(t3.GetViewport(), i2.HasVanishingPointOutsideViewport(), i2.IsOrthographicProjection()) && (this._UpdateTextForDraw(), this._rendererText.GetTexture());
+      }
+      _UpdateTextForDraw() {
+        this._UpdateTextSize(), this._pendingUpdateIconSet && (this._pendingUpdateIconSet = false, this._rendererText.IsBBCodeEnabled() && this._iconObjectClass && this._rendererText.SetIconSet(this.GetRuntime().GetTextIconSet(this._iconObjectClass)));
       }
       Draw(e2) {
-        const t3 = this._rendererText.GetTexture();
-        if (!t3) return;
-        const i2 = this.GetWorldInfo(), r3 = i2.GetLayer();
-        if (0 === i2.GetAngle() && 0 === r3.GetAngle() && 0 === i2.GetTotalZElevation() && !i2.HasMesh() && r3.RendersIn2DMode()) {
-          const s2 = i2.GetBoundingQuad(), [n2, a3] = r3.LayerToDrawSurface(s2.getTlx(), s2.getTly()), [o3, h3] = r3.LayerToDrawSurface(s2.getBrx(), s2.getBry()), _3 = n2 - Math.round(n2), l2 = a3 - Math.round(a3);
+        const t3 = this._runtime.GetCanvasManager().IsPastingToDrawingCanvas();
+        t3 && this._UpdateTextForDraw();
+        const i2 = this._rendererText.GetTexture();
+        if (!i2) return;
+        const r3 = this.GetWorldInfo(), s2 = r3.GetLayer();
+        if (0 !== r3.GetAngle() || 0 !== s2.GetAngle() || 0 !== r3.GetTotalZElevation() || r3.HasMesh() || !s2.RendersIn2DMode() || t3) e2.SetTexture(i2), r3.HasMesh() ? this._DrawMesh(r3, e2) : this._DrawStandard(r3, e2);
+        else {
+          const t4 = r3.GetBoundingQuad(), [n2, a3] = s2.LayerToDrawSurface(t4.getTlx(), t4.getTly()), [o3, h3] = s2.LayerToDrawSurface(t4.getBrx(), t4.getBry()), _3 = n2 - Math.round(n2), l2 = a3 - Math.round(a3);
           w2.set(n2, a3, o3, h3), w2.offset(-_3, -l2), I2.setFromRect(w2);
           const [c3, d3] = e2.GetRenderTargetSize(e2.GetRenderTarget());
-          e2.IsWebGL() ? this._runtime.GetCanvasManager().SetDeviceTransform(e2, c3, d3) : (e2.SetNormalizedCoordsProgramVariant(true), I2.divide(c3, d3)), e2.SetTexture(t3), e2.Quad3(I2, this._rendererText.GetTexRect()), e2.IsWebGL() ? r3._SetTransform(e2) : e2.SetNormalizedCoordsProgramVariant(false);
-        } else e2.SetTexture(t3), i2.HasMesh() ? this._DrawMesh(i2, e2) : this._DrawStandard(i2, e2);
+          e2.IsWebGL() ? this._runtime.GetCanvasManager().SetDeviceTransform(e2, c3, d3) : (e2.SetNormalizedCoordsProgramVariant(true), I2.divide(c3, d3)), e2.SetTexture(i2), e2.Quad3(I2, this._rendererText.GetTexRect()), e2.IsWebGL() ? s2._SetTransform(e2) : e2.SetNormalizedCoordsProgramVariant(false);
+        }
       }
       _DrawStandard(e2, t3) {
         let i2 = e2.GetBoundingQuad();
@@ -33591,14 +33782,21 @@ var SortInstancesByValue2;
           case a2:
             o3.SetCollisionEnabled(!!n2);
             break;
-          case r2: {
-            this.SetAnimationPlaying(false);
-            const e3 = this._currentAnimation.GetFrameCount() - 1, i2 = n2 = t2.clamp(n2, 0, e3), r3 = this._currentAnimation.GetFrameAt(this._currentFrameIndex), a3 = this._currentAnimation.GetFrameAt(i2);
-            this._OnFrameChanged(r3, a3, s2), this._currentFrameIndex = t2.clamp(i2, 0, e3);
+          case r2:
+            if (s2.isChunkDiscreteLike) {
+              if (!s2.keyframeReached) return;
+              {
+                const e3 = this._currentAnimation.GetFrameCount() - 1, i2 = n2 = t2.clamp(n2, 0, e3), r3 = this._currentAnimation.GetFrameAt(this._currentFrameIndex), a3 = this._currentAnimation.GetFrameAt(i2);
+                this._OnFrameChanged(r3, a3, s2), this._currentFrameIndex = t2.clamp(i2, 0, e3);
+              }
+            } else {
+              this.SetAnimationPlaying(false);
+              const e3 = this._currentAnimation.GetFrameCount() - 1, i2 = n2 = t2.clamp(n2, 0, e3), r3 = this._currentAnimation.GetFrameAt(this._currentFrameIndex), a3 = this._currentAnimation.GetFrameAt(i2);
+              this._OnFrameChanged(r3, a3, s2), this._currentFrameIndex = t2.clamp(i2, 0, e3);
+            }
             break;
-          }
           case i:
-            this._changeAnimationName = n2, this._DoChangeAnimation(s2);
+            this._changeAnimationName = n2, this._changeAnimationFrom = s2?.startFrom ?? 0, this._DoChangeAnimation(s2);
             this._currentAnimation.GetFrameCount() > 1 && this._currentAnimation.GetSpeed() > 0 ? this._StartTicking() : this._StopTicking();
             break;
         }
@@ -33710,8 +33908,8 @@ var SortInstancesByValue2;
         const o3 = i2.GetSdkType();
         o3._UpdateAllCurrentTexture(), o3.GetObjectClass().Dispatcher().dispatchEvent(new t2.Event("animationframeimagechange")), r3.UpdateRender();
       }
-      setSolidCollisionFilter(t3, n2) {
-        e.RequireString(n2), l.get(this).GetWorldInfo().SetSolidCollisionFilter(!!t3, n2);
+      setSolidCollisionFilter(e2, n2) {
+        "string" == typeof n2 && (n2 = t2.splitStringAndNormalize(n2)), l.get(this).GetWorldInfo().SetSolidCollisionFilter(!!e2, n2);
       }
     };
   }
@@ -33796,8 +33994,8 @@ var SortInstancesByValue2;
       this.WasReleased() ? m2.Release() : (r2.ReplaceWith(m2), o2._UpdateAllCurrentTexture(), o2.GetObjectClass().Dispatcher().dispatchEvent(new t2.Event("animationframeimagechange")), s.UpdateRender(), 0 === n && (a2.SetSize(r2.GetWidth(), r2.GetHeight()), a2.SetBboxChanged()), await this.TriggerAsync(t2.Plugins.Sprite.Cnds.OnURLLoaded));
     }, SetCollisions(t3) {
       this.GetWorldInfo().SetCollisionEnabled(t3);
-    }, SetSolidCollisionFilter(t3, e) {
-      this.GetWorldInfo().SetSolidCollisionFilter(0 === t3, e);
+    }, SetSolidCollisionFilter(e, n) {
+      this.GetWorldInfo().SetSolidCollisionFilter(0 === e, t2.splitStringAndNormalize(n));
     }, SetEffect(t3) {
       this.GetWorldInfo().SetBlendMode(t3), this._runtime.UpdateRender();
     } };
@@ -37562,6 +37760,279 @@ var StringFromCharCode2;
 var GetMouseSdkInstance2;
 {
   {
+    const t2 = self.C3;
+    t2.Plugins.gamepad = class extends t2.SDKPluginBase {
+      constructor(t3) {
+        super(t3);
+      }
+      Release() {
+        super.Release();
+      }
+    };
+  }
+  {
+    const t2 = self.C3;
+    t2.Plugins.gamepad.Type = class extends t2.SDKTypeBase {
+      constructor(t3) {
+        super(t3);
+      }
+      Release() {
+        super.Release();
+      }
+      OnCreate() {
+      }
+    };
+  }
+  {
+    const t2 = self.C3, e = "gamepad";
+    class s {
+      constructor(t3, e2, s2) {
+        this._index = t3, this._id = e2, this._vibrationEffects = new Set(s2), this._state = new n(), this._oldState = new n(), this._buttonsPressed = [], this._buttonsReleased = [];
+      }
+      GetID() {
+        return this._id;
+      }
+      Update(e2, s2) {
+        const n2 = this._oldState;
+        this._oldState = this._state, this._state = n2, this._state.Update(e2, s2), t2.resizeArray(this._buttonsPressed, this._state.GetButtonCount(), false), t2.resizeArray(this._buttonsReleased, this._state.GetButtonCount(), false);
+        for (let t3 = 0, e3 = this._state.GetButtonCount(); t3 < e3; ++t3) {
+          const e4 = this._oldState.GetButtonAt(t3), s3 = this._state.GetButtonAt(t3);
+          s3 >= 0.5 && e4 < 0.5 && (this._buttonsPressed[t3] = true), s3 < 0.5 && e4 >= 0.5 && (this._buttonsReleased[t3] = true);
+        }
+      }
+      GetButtonCount() {
+        return this._state.GetButtonCount();
+      }
+      GetAxisCount() {
+        return this._state.GetAxisCount();
+      }
+      HasButtonBecomePressed(t3) {
+        return !((t3 = Math.floor(t3)) < 0 || t3 >= this._buttonsPressed.length) && this._buttonsPressed[t3];
+      }
+      HasButtonBecomeReleased(t3) {
+        return !((t3 = Math.floor(t3)) < 0 || t3 >= this._buttonsReleased.length) && this._buttonsReleased[t3];
+      }
+      ResetButtonPressAndReleaseFlags() {
+        this._buttonsPressed.fill(false), this._buttonsReleased.fill(false);
+      }
+      GetButtonAt(t3) {
+        return this._state.GetButtonAt(t3);
+      }
+      IsButtonDown(t3) {
+        return this._state.GetButtonAt(t3) >= 0.5;
+      }
+      GetAxisAt(t3) {
+        return this._state.GetAxisAt(t3);
+      }
+      GetIndex() {
+        return this._index;
+      }
+      GetVibrationEffects() {
+        return this._vibrationEffects;
+      }
+    }
+    class n {
+      constructor() {
+        this._buttons = [], this._axes = [];
+      }
+      Update(e2, s2) {
+        const n2 = this._buttons;
+        let a2 = 0;
+        for (let t3 = e2.length; a2 < t3; ++a2) {
+          const t4 = e2[a2];
+          a2 === n2.length ? n2.push(t4["value"]) : n2[a2] = t4["value"];
+        }
+        a2 < n2.length && t2.truncateArray(n2, a2), t2.shallowAssignArray(this._axes, s2);
+      }
+      GetButtonCount() {
+        return this._buttons.length;
+      }
+      GetAxisCount() {
+        return this._axes.length;
+      }
+      GetButtonAt(t3) {
+        return (t3 = Math.floor(t3)) < 0 || t3 >= this._buttons.length ? 0 : this._buttons[t3];
+      }
+      GetAxisAt(t3) {
+        return (t3 = Math.floor(t3)) < 0 || t3 >= this._axes.length ? 0 : this._axes[t3];
+      }
+    }
+    t2.Plugins.gamepad.Instance = class extends t2.SDKInstanceBase {
+      constructor(s2, n2) {
+        super(s2, e), this._deadZone = 25, this._lastButton = 0, this._lastIndex = -1, this._gamepads = /* @__PURE__ */ new Map(), n2 && (this._deadZone = n2[0]), this.AddDOMMessageHandler("gamepad-connected", (t3) => this._OnGamepadConnected(t3)), this.AddDOMMessageHandler("gamepad-disconnected", (t3) => this._OnGamepadDisconnected(t3)), this.AddDOMMessageHandler("input-update", (t3) => this._OnInputUpdate(t3));
+        const a2 = this.GetRuntime().Dispatcher();
+        this._disposables = new t2.CompositeDisposable(t2.Disposable.From(a2, "tick2", () => this._OnTick2()), t2.Disposable.From(a2, "suspend", () => this._OnSuspend()), t2.Disposable.From(a2, "resume", () => this._OnResume())), this.PostToDOM("ready");
+      }
+      Release() {
+        super.Release();
+      }
+      _OnGamepadConnected(e2) {
+        const n2 = e2["index"], a2 = e2["id"], o2 = e2["vibrationEffects"];
+        this._gamepads.has(n2) || (this._gamepads.set(n2, new s(n2, a2, o2)), this._lastIndex = n2, this.Trigger(t2.Plugins.gamepad.Cnds.OnGamepadConnected), this._lastIndex = -1);
+      }
+      _OnGamepadDisconnected(e2) {
+        const s2 = e2["index"];
+        this._lastIndex = s2, this.Trigger(t2.Plugins.gamepad.Cnds.OnGamepadDisconnected), this._lastIndex = -1, this._gamepads.delete(s2);
+      }
+      _OnInputUpdate(t3) {
+        for (const e2 of t3) this._OnGamepadInputUpdate(e2);
+      }
+      _OnGamepadInputUpdate(t3) {
+        const e2 = t3["index"];
+        this._gamepads.has(e2) || this._OnGamepadConnected(t3);
+        const s2 = this._gamepads.get(e2);
+        s2.Update(t3["buttons"], t3["axes"]);
+        for (let t4 = 0, e3 = s2.GetButtonCount(); t4 < e3; ++t4) s2.HasButtonBecomePressed(t4) && (this._lastButton = t4);
+      }
+      _GetGamepadByIndex(t3) {
+        return this._gamepads.get(Math.floor(t3)) || null;
+      }
+      _GetAllGamepadsByIndex(t3) {
+        if (-1 === t3) return [...this._gamepads.values()];
+        {
+          const e2 = this._gamepads.get(Math.floor(t3));
+          return e2 ? [e2] : [];
+        }
+      }
+      _OnTick2() {
+        for (const t3 of this._gamepads.values()) t3.ResetButtonPressAndReleaseFlags();
+      }
+      _OnSuspend() {
+        this.PostToDOM("suspend");
+      }
+      _OnResume() {
+        this.PostToDOM("resume");
+      }
+      GetDebuggerProperties() {
+        const t3 = "plugins.gamepad";
+        return [{ title: t3 + ".name", properties: [{ name: t3 + ".debugger.last-button", value: this._lastButton }, { name: t3 + ".properties.analog-deadzone.name", value: this._deadZone }] }];
+      }
+    };
+  }
+  {
+    const t2 = self.C3;
+    t2.Plugins.gamepad.Cnds = { OnGamepadConnected: () => true, OnGamepadDisconnected: () => true, IsButtonDown(t3, e) {
+      const s = this._GetGamepadByIndex(t3);
+      if (!s) return false;
+      const n = s.IsButtonDown(e);
+      return n && (this._lastButton = e), n;
+    }, OnButtonDown(t3, e) {
+      const s = this._GetGamepadByIndex(t3);
+      if (!s) return false;
+      const n = s.HasButtonBecomePressed(e);
+      return n && (this._lastButton = e), n;
+    }, OnButtonUp(t3, e) {
+      const s = this._GetGamepadByIndex(t3);
+      if (!s) return false;
+      const n = s.HasButtonBecomeReleased(e);
+      return n && (this._lastButton = e), n;
+    }, HasGamepads() {
+      return this._gamepads.size > 0;
+    }, CompareAxis(e, s, n, a2) {
+      s = Math.floor(s);
+      const o2 = this._GetGamepadByIndex(e);
+      if (!o2) return false;
+      let r2 = o2.GetAxisAt(s), i = 0;
+      return i = s % 2 == 0 ? o2.GetAxisAt(s + 1) : o2.GetAxisAt(s - 1), r2 *= 100, i *= 100, Math.hypot(r2, i) <= this._deadZone && (r2 = 0), t2.compare(r2, n, a2);
+    }, OnAnyButtonDown(t3) {
+      const e = this._GetAllGamepadsByIndex(t3);
+      if (0 === e.length) return false;
+      const s = this._runtime, n = s.GetEventSheetManager(), a2 = s.GetCurrentEvent(), o2 = a2.GetSolModifiers(), r2 = s.GetEventStack(), i = r2.GetCurrentStackFrame(), u2 = r2.Push(a2);
+      s.SetDebuggingEnabled(false);
+      for (const t4 of e) for (let e2 = 0, s2 = t4.GetButtonCount(); e2 < s2; ++e2) t4.HasButtonBecomePressed(e2) && (this._lastIndex = t4.GetIndex(), this._lastButton = e2, n.PushCopySol(o2), a2.Retrigger(i, u2), n.PopSol(o2), this._lastIndex = -1);
+      return s.SetDebuggingEnabled(true), r2.Pop(), false;
+    }, OnAnyButtonUp(t3) {
+      const e = this._GetAllGamepadsByIndex(t3);
+      if (0 === e.length) return false;
+      const s = this._runtime, n = s.GetEventSheetManager(), a2 = s.GetCurrentEvent(), o2 = a2.GetSolModifiers(), r2 = s.GetEventStack(), i = r2.GetCurrentStackFrame(), u2 = r2.Push(a2);
+      s.SetDebuggingEnabled(false);
+      for (const t4 of e) for (let e2 = 0, s2 = t4.GetButtonCount(); e2 < s2; ++e2) t4.HasButtonBecomeReleased(e2) && (this._lastIndex = t4.GetIndex(), this._lastButton = e2, n.PushCopySol(o2), a2.Retrigger(i, u2), n.PopSol(o2), this._lastIndex = -1);
+      return s.SetDebuggingEnabled(true), r2.Pop(), false;
+    }, IsButtonIndexDown(t3, e) {
+      e = Math.floor(e);
+      const s = this._GetGamepadByIndex(t3);
+      if (!s) return false;
+      const n = s.IsButtonDown(e);
+      return n && (this._lastButton = e), n;
+    }, OnButtonIndexDown(t3, e) {
+      e = Math.floor(e);
+      const s = this._GetGamepadByIndex(t3);
+      if (!s) return false;
+      const n = s.HasButtonBecomePressed(e);
+      return n && (this._lastButton = e), n;
+    }, OnButtonIndexUp(t3, e) {
+      e = Math.floor(e);
+      const s = this._GetGamepadByIndex(t3);
+      if (!s) return false;
+      const n = s.HasButtonBecomeReleased(e);
+      return n && (this._lastButton = e), n;
+    }, GamepadSupportsVibrationType(t3, e) {
+      const s = this._GetGamepadByIndex(t3);
+      if (!s) return false;
+      const n = s.GetVibrationEffects();
+      return 0 === e ? n.has("dual-rumble") : 1 === e && n.has("trigger-rumble");
+    }, SupportsGamepad: () => true };
+  }
+  {
+    const t2 = self.C3;
+    t2.Plugins.gamepad.Acts = { VibrateDualRumble(e, s, n, a2) {
+      this.PostToDOM("vibrate-dual-rumble", { "index": e, "duration": s, "weakMag": t2.clamp(n / 100, 0, 1), "strongMag": t2.clamp(a2 / 100, 0, 1) });
+    }, VibrateTriggerRumble(e, s, n, a2, o2, r2) {
+      this.PostToDOM("vibrate-trigger-rumble", { "index": e, "duration": s, "weakMag": t2.clamp(n / 100, 0, 1), "strongMag": t2.clamp(a2 / 100, 0, 1), "leftMag": t2.clamp(o2 / 100, 0, 1), "rightMag": t2.clamp(r2 / 100, 0, 1) });
+    }, ResetVibrate(t3) {
+      this.PostToDOM("reset-vibrate", { "index": t3 });
+    } };
+  }
+  self.C3.Plugins.gamepad.Exps = { GamepadCount() {
+    return this._gamepads.size;
+  }, GamepadID(t2) {
+    const e = this._GetGamepadByIndex(t2);
+    return e ? e.GetID() : "";
+  }, GamepadIndex() {
+    return this._lastIndex;
+  }, GamepadAxes(t2) {
+    const e = this._GetGamepadByIndex(t2);
+    if (!e) return "";
+    let s = "";
+    for (let t3 = 0, n = e.GetAxisCount(); t3 < n; ++t3) s += `Axis ${t3}: ${Math.round(100 * e.GetAxisAt(t3))}
+`;
+    return s;
+  }, GamepadButtons(t2) {
+    const e = this._GetGamepadByIndex(t2);
+    if (!e) return "";
+    let s = "";
+    for (let t3 = 0, n = e.GetButtonCount(); t3 < n; ++t3) s += `Button ${t3}: ${Math.round(100 * e.GetButtonAt(t3))}
+`;
+    return s;
+  }, RawButton(t2, e) {
+    const s = this._GetGamepadByIndex(t2);
+    return s ? s.GetButtonAt(Math.floor(e)) : 0;
+  }, RawAxis(t2, e) {
+    const s = this._GetGamepadByIndex(t2);
+    return s ? s.GetAxisAt(Math.floor(e)) : 0;
+  }, RawButtonCount(t2) {
+    const e = this._GetGamepadByIndex(t2);
+    return e ? e.GetButtonCount() : 0;
+  }, RawAxisCount(t2) {
+    const e = this._GetGamepadByIndex(t2);
+    return e ? e.GetAxisCount() : 0;
+  }, Button(t2, e) {
+    const s = this._GetGamepadByIndex(t2);
+    return s ? 100 * s.GetButtonAt(Math.floor(e)) : 0;
+  }, Axis(t2, e) {
+    e = Math.floor(e);
+    const s = this._GetGamepadByIndex(t2);
+    if (!s) return 0;
+    let n = s.GetAxisAt(e), a2 = 0;
+    return a2 = e % 2 == 0 ? s.GetAxisAt(e + 1) : s.GetAxisAt(e - 1), n *= 100, a2 *= 100, Math.hypot(n, a2) <= this._deadZone && (n = 0), n;
+  }, ButtonIndex() {
+    return this._lastButton;
+  }, LastButton() {
+    return this._lastButton;
+  } };
+}
+{
+  {
     const t2 = self.C3, e = [];
     t2.Plugins.Audio = class extends t2.SDKPluginBase {
       constructor(t3) {
@@ -38746,437 +39217,6 @@ var GetAudioDOMInterface2;
 }
 {
   {
-    const e = self.C3;
-    e.Behaviors.scrollto = class extends e.SDKBehaviorBase {
-      constructor(e2) {
-        super(e2), this._shakeMag = 0, this._shakeStart = 0, this._shakeEnd = 0, this._shakeMode = 0;
-      }
-      Release() {
-        super.Release();
-      }
-      SetShakeMagnitude(e2) {
-        this._shakeMag = e2;
-      }
-      GetShakeMagnitude() {
-        return this._shakeMag;
-      }
-      SetShakeStart(e2) {
-        this._shakeStart = e2;
-      }
-      GetShakeStart() {
-        return this._shakeStart;
-      }
-      SetShakeEnd(e2) {
-        this._shakeEnd = e2;
-      }
-      GetShakeEnd() {
-        return this._shakeEnd;
-      }
-      SetShakeMode(e2) {
-        this._shakeMode = e2;
-      }
-      GetShakeMode() {
-        return this._shakeMode;
-      }
-    };
-  }
-  {
-    const e = self.C3;
-    e.Behaviors.scrollto.Type = class extends e.SDKBehaviorTypeBase {
-      constructor(e2) {
-        super(e2);
-      }
-      Release() {
-        super.Release();
-      }
-      OnCreate() {
-      }
-    };
-  }
-  {
-    const e = self.C3, t2 = 0;
-    e.Behaviors.scrollto.Instance = class extends e.SDKBehaviorInstanceBase {
-      constructor(e2, s) {
-        super(e2), this._isEnabled = true, s && (this._isEnabled = s[t2]), this._isEnabled && this._StartTicking2();
-      }
-      Release() {
-        super.Release();
-      }
-      SaveToJson() {
-        const e2 = this.GetBehavior();
-        return { "e": this._isEnabled, "smg": e2.GetShakeMagnitude(), "ss": e2.GetShakeStart(), "se": e2.GetShakeEnd(), "smd": e2.GetShakeMode() };
-      }
-      LoadFromJson(e2) {
-        const t3 = this.GetBehavior();
-        t3.SetShakeMagnitude(e2["smg"]), t3.SetShakeStart(e2["ss"]), t3.SetShakeEnd(e2["se"]), t3.SetShakeMode(e2["smd"]), this._isEnabled = e2["e"], this._isEnabled ? this._StartTicking2() : this._StopTicking2();
-      }
-      _SetEnabled(e2) {
-        this._isEnabled = !!e2, this._isEnabled ? this._StartTicking2() : this._StopTicking2();
-      }
-      IsEnabled() {
-        return this._isEnabled;
-      }
-      Tick2() {
-        if (!this.IsEnabled()) return;
-        this._runtime.GetDt(this._inst);
-        const t3 = this.GetBehavior(), s = t3.GetInstances();
-        let a2 = 0, i = 0, h2 = 0;
-        for (const t4 of s) {
-          const s2 = t4.GetBehaviorInstanceFromCtor(e.Behaviors.scrollto);
-          if (!s2 || !s2.GetSdkInstance().IsEnabled()) continue;
-          const n2 = t4.GetWorldInfo();
-          a2 += n2.GetX(), i += n2.GetY(), ++h2;
-        }
-        const n = this._inst.GetWorldInfo().GetLayout(), r2 = this._runtime.GetGameTime();
-        let o2 = 0, S2 = 0;
-        if (r2 >= t3.GetShakeStart() && r2 < t3.GetShakeEnd()) {
-          let e2 = t3.GetShakeMagnitude() * Math.min(this._runtime.GetTimeScale(), 1);
-          0 === t3.GetShakeMode() && (e2 *= 1 - (r2 - t3.GetShakeStart()) / (t3.GetShakeEnd() - t3.GetShakeStart()));
-          const s2 = this._runtime.Random() * Math.PI * 2, a3 = this._runtime.Random() * e2;
-          o2 = Math.cos(s2) * a3, S2 = Math.sin(s2) * a3;
-        }
-        n.SetScrollX(a2 / h2 + o2), n.SetScrollY(i / h2 + S2);
-      }
-      GetPropertyValueByIndex(e2) {
-        if (e2 === t2) return this._isEnabled;
-      }
-      SetPropertyValueByIndex(e2, s) {
-        if (e2 === t2) this._isEnabled = !!s, this._isEnabled ? this._StartTicking2() : this._StopTicking2();
-      }
-      GetDebuggerProperties() {
-        return [{ title: "$" + this.GetBehaviorType().GetName(), properties: [{ name: "behaviors.scrollto.properties.enabled.name", value: this.IsEnabled(), onedit: (e2) => this._SetEnabled(e2) }] }];
-      }
-    };
-  }
-  self.C3.Behaviors.scrollto.Cnds = { IsEnabled() {
-    return this.IsEnabled();
-  } };
-  self.C3.Behaviors.scrollto.Acts = { Shake(e, t2, s) {
-    const a2 = this.GetBehavior();
-    a2.SetShakeMagnitude(e), a2.SetShakeStart(this._runtime.GetGameTime()), a2.SetShakeEnd(this._runtime.GetGameTime() + t2), a2.SetShakeMode(s);
-  }, SetEnabled(e) {
-    this._SetEnabled(0 !== e);
-  } };
-  self.C3.Behaviors.scrollto.Exps = {};
-}
-{
-  {
-    const e = self.C3;
-    e.Behaviors.solid = class extends e.SDKBehaviorBase {
-      constructor(e2) {
-        super(e2);
-      }
-      Release() {
-        super.Release();
-      }
-    };
-  }
-  {
-    const e = self.C3;
-    e.Behaviors.solid.Type = class extends e.SDKBehaviorTypeBase {
-      constructor(e2) {
-        super(e2);
-      }
-      Release() {
-        super.Release();
-      }
-      OnCreate() {
-      }
-    };
-  }
-  {
-    const e = self.C3, s = self.C3X, t2 = self.IBehaviorInstance, a2 = 0, n = 1, i = /* @__PURE__ */ new Set();
-    e.Behaviors.solid.Instance = class extends e.SDKBehaviorInstanceBase {
-      constructor(e2, s2) {
-        super(e2), this.SetEnabled(true), s2 && (this.SetEnabled(s2[a2]), this.SetTags(s2[n]));
-      }
-      Release() {
-        super.Release();
-      }
-      SetEnabled(e2) {
-        this._inst._SetSolidEnabled(!!e2);
-      }
-      IsEnabled() {
-        return this._inst._IsSolidEnabled();
-      }
-      SetTags(e2) {
-        const s2 = this._inst.GetSavedDataMap();
-        if (!e2.trim()) return void s2.delete("solidTags");
-        let t3 = s2.get("solidTags");
-        t3 || (t3 = /* @__PURE__ */ new Set(), s2.set("solidTags", t3)), t3.clear();
-        for (const s3 of e2.split(" ")) s3 && t3.add(s3.toLowerCase());
-      }
-      GetTags() {
-        return this._inst.GetSavedDataMap().get("solidTags") || i;
-      }
-      _GetTagsString() {
-        return [...this.GetTags()].join(" ");
-      }
-      SaveToJson() {
-        return { "e": this.IsEnabled() };
-      }
-      LoadFromJson(e2) {
-        this.SetEnabled(e2["e"]);
-      }
-      GetPropertyValueByIndex(e2) {
-        if (e2 === a2) return this.IsEnabled();
-      }
-      SetPropertyValueByIndex(e2, s2) {
-        if (e2 === a2) this.SetEnabled(s2);
-      }
-      GetDebuggerProperties() {
-        return [{ title: "$" + this.GetBehaviorType().GetName(), properties: [{ name: "behaviors.solid.properties.enabled.name", value: this.IsEnabled(), onedit: (e2) => this.SetEnabled(e2) }, { name: "behaviors.solid.properties.tags.name", value: this._GetTagsString(), onedit: (e2) => this.SetTags(e2) }] }];
-      }
-      GetScriptInterfaceClass() {
-        return self.ISolidBehaviorInstance;
-      }
-    };
-    const r2 = /* @__PURE__ */ new WeakMap();
-    self.ISolidBehaviorInstance = class extends t2 {
-      constructor() {
-        super(), r2.set(this, t2._GetInitInst().GetSdkInstance());
-      }
-      set isEnabled(e2) {
-        r2.get(this).SetEnabled(!!e2);
-      }
-      get isEnabled() {
-        return r2.get(this).IsEnabled();
-      }
-      set tags(e2) {
-        s.RequireString(e2), r2.get(this).SetTags(e2);
-      }
-      get tags() {
-        return r2.get(this)._GetTagsString();
-      }
-    };
-  }
-  self.C3.Behaviors.solid.Cnds = { IsEnabled() {
-    return this.IsEnabled();
-  } };
-  self.C3.Behaviors.solid.Acts = { SetEnabled(e) {
-    this.SetEnabled(e);
-  }, SetTags(e) {
-    this.SetTags(e);
-  } };
-  self.C3.Behaviors.solid.Exps = {};
-}
-{
-  {
-    const e = self.C3;
-    e.Behaviors.shadowcaster = class extends e.SDKBehaviorBase {
-      constructor(e2) {
-        super(e2);
-      }
-      Release() {
-        super.Release();
-      }
-    };
-  }
-  {
-    const e = self.C3;
-    e.Behaviors.shadowcaster.Type = class extends e.SDKBehaviorTypeBase {
-      constructor(e2) {
-        super(e2);
-      }
-      Release() {
-        super.Release();
-      }
-      OnCreate() {
-      }
-    };
-  }
-  {
-    const e = self.C3, t2 = self.C3X, s = self.IBehaviorInstance, a2 = 0, i = 1, h2 = 2;
-    e.Behaviors.shadowcaster.Instance = class extends e.SDKBehaviorInstanceBase {
-      constructor(e2, t3) {
-        super(e2), t3 ? (this.SetHeight(t3[a2]), this.SetTag(t3[i]), this.SetEnabled(!!t3[h2])) : (this.SetHeight(100), this.SetTag(""), this.SetEnabled(true));
-      }
-      Release() {
-        super.Release();
-      }
-      SetHeight(e2) {
-        this.GetHeight() !== e2 && (this._inst.GetSavedDataMap().set("shadowcasterHeight", e2), this._runtime.UpdateRender());
-      }
-      GetHeight() {
-        return this._inst.GetSavedDataMap().get("shadowcasterHeight");
-      }
-      SetTag(e2) {
-        this.GetTag() !== e2 && (this._inst.GetSavedDataMap().set("shadowcasterTag", e2), this._runtime.UpdateRender());
-      }
-      GetTag() {
-        return this._inst.GetSavedDataMap().get("shadowcasterTag");
-      }
-      SetEnabled(e2) {
-        this._inst.GetSavedDataMap().set("shadowcasterEnabled", !!e2);
-      }
-      IsEnabled() {
-        return this._inst.GetSavedDataMap().get("shadowcasterEnabled");
-      }
-      SaveToJson() {
-        return { "h": this.GetHeight(), "t": this.GetTag(), "e": this.IsEnabled() };
-      }
-      LoadFromJson(e2) {
-        this.SetHeight(e2["h"]), this.SetTag(e2["t"]), this.SetEnabled(e2["e"]);
-      }
-      GetPropertyValueByIndex(e2) {
-        switch (e2) {
-          case a2:
-            return this.GetHeight();
-          case i:
-            return this.GetTag();
-          case h2:
-            return this.IsEnabled();
-        }
-      }
-      SetPropertyValueByIndex(e2, t3) {
-        switch (e2) {
-          case a2:
-            this.SetHeight(t3);
-            break;
-          case i:
-            this.SetTag(t3);
-            break;
-          case h2:
-            this.SetEnabled(t3);
-        }
-      }
-      GetDebuggerProperties() {
-        const e2 = "behaviors.shadowcaster";
-        this._inst.GetSavedDataMap();
-        return [{ title: "$" + this.GetBehaviorType().GetName(), properties: [{ name: e2 + ".properties.enabled.name", value: this.IsEnabled(), onedit: (e3) => this.SetEnabled(e3) }, { name: e2 + ".properties.height.name", value: this.GetHeight(), onedit: (e3) => this.SetHeight(e3) }, { name: e2 + ".properties.tag.name", value: this.GetTag(), onedit: (e3) => this.SetTag(e3) }] }];
-      }
-      GetScriptInterfaceClass() {
-        return self.IShadowCasterBehaviorInstance;
-      }
-    };
-    const r2 = /* @__PURE__ */ new WeakMap();
-    self.IShadowCasterBehaviorInstance = class extends s {
-      constructor() {
-        super(), r2.set(this, s._GetInitInst().GetSdkInstance());
-      }
-      set height(e2) {
-        t2.RequireFiniteNumber(e2), r2.get(this).SetHeight(e2);
-      }
-      get height() {
-        return r2.get(this).GetHeight();
-      }
-      set tag(e2) {
-        t2.RequireString(e2), r2.get(this).SetTag(e2);
-      }
-      get tag() {
-        return r2.get(this).GetTag();
-      }
-      get isEnabled() {
-        return r2.get(this).IsEnabled();
-      }
-      set isEnabled(e2) {
-        r2.get(this).SetEnabled(e2);
-      }
-    };
-  }
-  {
-    const e = self.C3;
-    e.Behaviors.shadowcaster.Cnds = { IsEnabled() {
-      return this.IsEnabled();
-    }, CompareHeight(t2, s) {
-      return e.compare(this.GetHeight(), t2, s);
-    } };
-  }
-  self.C3.Behaviors.shadowcaster.Acts = { SetEnabled(e) {
-    this.SetEnabled(e);
-  }, SetHeight(e) {
-    this.SetHeight(e);
-  }, SetTag(e) {
-    this.SetTag(e);
-  } };
-  self.C3.Behaviors.shadowcaster.Exps = { Height() {
-    return this.GetHeight();
-  }, Tag() {
-    return this.GetTag();
-  } };
-}
-{
-  {
-    const e = self.C3;
-    e.Behaviors.jumpthru = class extends e.SDKBehaviorBase {
-      constructor(e2) {
-        super(e2);
-      }
-      Release() {
-        super.Release();
-      }
-    };
-  }
-  {
-    const e = self.C3;
-    e.Behaviors.jumpthru.Type = class extends e.SDKBehaviorTypeBase {
-      constructor(e2) {
-        super(e2);
-      }
-      Release() {
-        super.Release();
-      }
-      OnCreate() {
-      }
-    };
-  }
-  {
-    const e = self.C3, s = self.IBehaviorInstance, t2 = 0;
-    e.Behaviors.jumpthru.Instance = class extends e.SDKBehaviorInstanceBase {
-      constructor(e2, s2) {
-        super(e2), this.SetEnabled(true), s2 && this.SetEnabled(s2[t2]);
-      }
-      Release() {
-        super.Release();
-      }
-      SetEnabled(e2) {
-        this._inst._SetJumpthruEnabled(!!e2);
-      }
-      IsEnabled() {
-        return this._inst._IsJumpthruEnabled();
-      }
-      SaveToJson() {
-        return { "e": this.IsEnabled() };
-      }
-      LoadFromJson(e2) {
-        this.SetEnabled(e2["e"]);
-      }
-      GetPropertyValueByIndex(e2) {
-        if (e2 === t2) return this.IsEnabled();
-      }
-      SetPropertyValueByIndex(e2, s2) {
-        if (e2 === t2) this.SetEnabled(s2);
-      }
-      GetDebuggerProperties() {
-        return [{ title: "$" + this.GetBehaviorType().GetName(), properties: [{ name: "behaviors.jumpthru.properties.enabled.name", value: this.IsEnabled(), onedit: (e2) => this.SetEnabled(e2) }] }];
-      }
-      GetScriptInterfaceClass() {
-        return self.IJumpthruBehaviorInstance;
-      }
-    };
-    const r2 = /* @__PURE__ */ new WeakMap();
-    self.IJumpthruBehaviorInstance = class extends s {
-      constructor() {
-        super(), r2.set(this, s._GetInitInst().GetSdkInstance());
-      }
-      set isEnabled(e2) {
-        r2.get(this).SetEnabled(!!e2);
-      }
-      get isEnabled() {
-        return r2.get(this).IsEnabled();
-      }
-    };
-  }
-  self.C3.Behaviors.jumpthru.Cnds = { IsEnabled() {
-    return this.IsEnabled();
-  } };
-  self.C3.Behaviors.jumpthru.Acts = { SetEnabled(e) {
-    this.SetEnabled(e);
-  } };
-  self.C3.Behaviors.jumpthru.Exps = {};
-}
-{
-  {
     const t2 = self.C3;
     t2.Behaviors.Bullet = class extends t2.SDKBehaviorBase {
       constructor(t3) {
@@ -39451,6 +39491,942 @@ var GetAudioDOMInterface2;
       return this._GetGravity();
     } };
   }
+}
+{
+  {
+    const t2 = self.C3;
+    t2.Behaviors.EightDir = class extends t2.SDKBehaviorBase {
+      constructor(t3) {
+        super(t3);
+      }
+      Release() {
+        super.Release();
+      }
+    };
+  }
+  {
+    const t2 = self.C3;
+    t2.Behaviors.EightDir.Type = class extends t2.SDKBehaviorTypeBase {
+      constructor(t3) {
+        super(t3);
+      }
+      Release() {
+        super.Release();
+      }
+      OnCreate() {
+      }
+    };
+  }
+  {
+    const t2 = self.C3, e = self.C3X, i = self.IBehaviorInstance, s = 1 / Math.sqrt(2), h2 = 0, n = 1, r2 = 2, a2 = 3, o2 = 4, _2 = 5, l = 6, d2 = 7;
+    t2.Behaviors.EightDir.Instance = class extends t2.SDKBehaviorInstanceBase {
+      constructor(t3, e2) {
+        super(t3), this._upKey = false, this._downKey = false, this._leftKey = false, this._rightKey = false, this._ignoreInput = false, this._simUp = false, this._simDown = false, this._simLeft = false, this._simRight = false, this._dx = 0, this._dy = 0, this._maxSpeed = 200, this._acc = 600, this._dec = 500, this._directions = 3, this._angleMode = 3, this._allowSliding = false, this._defaultControls = true, this._isEnabled = true, e2 && (this._maxSpeed = e2[h2], this._acc = e2[n], this._dec = e2[r2], this._directions = e2[a2], this._angleMode = e2[o2], this._allowSliding = !!e2[_2], this._defaultControls = !!e2[l], this._isEnabled = !!e2[d2]), this._isEnabled && this._StartTicking(), this._defaultControls && this._BindEvents();
+      }
+      _BindEvents() {
+        if (this._disposables) return;
+        const e2 = this._runtime.Dispatcher();
+        this._disposables = new t2.CompositeDisposable(t2.Disposable.From(e2, "keydown", (t3) => this._OnKeyDown(t3.data)), t2.Disposable.From(e2, "keyup", (t3) => this._OnKeyUp(t3.data)), t2.Disposable.From(e2, "window-blur", () => this._OnWindowOrKeyboardBlur()), t2.Disposable.From(e2, "keyboard-blur", () => this._OnWindowOrKeyboardBlur()));
+      }
+      _UnBindEvents() {
+        this._disposables && (this._disposables.Release(), this._disposables = null);
+      }
+      Release() {
+        super.Release();
+      }
+      SaveToJson() {
+        return { "dx": this._dx, "dy": this._dy, "e": this._isEnabled, "ms": this._maxSpeed, "acc": this._acc, "dec": this._dec, "d": this._directions, "am": this._angleMode, "dc": this._defaultControls, "ii": this._ignoreInput };
+      }
+      LoadFromJson(t3) {
+        this._dx = t3["dx"], this._dy = t3["dy"], this._SetEnabled(t3["e"]), this._maxSpeed = t3["ms"], this._acc = t3["acc"], this._dec = t3["dec"], this._directions = t3["d"], this._angleMode = t3["am"], this._defaultControls = t3["dc"], this._ignoreInput = t3["ii"], this._upKey = false, this._downKey = false, this._leftKey = false, this._rightKey = false, this._simUp = false, this._simDown = false, this._simLeft = false, this._simRight = false, this._defaultControls ? this._BindEvents() : this._UnBindEvents();
+      }
+      _OnKeyDown(t3) {
+        switch (t3["key"]) {
+          case "ArrowLeft":
+            this._leftKey = true;
+            break;
+          case "ArrowUp":
+            this._upKey = true;
+            break;
+          case "ArrowRight":
+            this._rightKey = true;
+            break;
+          case "ArrowDown":
+            this._downKey = true;
+        }
+      }
+      _OnKeyUp(t3) {
+        switch (t3["key"]) {
+          case "ArrowLeft":
+            this._leftKey = false;
+            break;
+          case "ArrowUp":
+            this._upKey = false;
+            break;
+          case "ArrowRight":
+            this._rightKey = false;
+            break;
+          case "ArrowDown":
+            this._downKey = false;
+        }
+      }
+      _OnWindowOrKeyboardBlur() {
+        this._upKey = false, this._downKey = false, this._leftKey = false, this._rightKey = false;
+      }
+      Tick() {
+        const e2 = this._runtime.GetDt(this._inst), i2 = this._runtime.GetCollisionEngine();
+        let h3 = this._leftKey || this._simLeft, n2 = this._rightKey || this._simRight, r3 = this._upKey || this._simUp, a3 = this._downKey || this._simDown;
+        if (this._simLeft = false, this._simRight = false, this._simUp = false, this._simDown = false, !this._isEnabled) return;
+        let o3 = i2.TestOverlapSolid(this._inst);
+        if (o3 && (i2.RegisterCollision(this._inst, o3), !i2.PushOutSolidNearest(this._inst))) return;
+        if (this._ignoreInput && (h3 = n2 = r3 = a3 = false), 0 === this._directions ? h3 = n2 = false : 1 === this._directions && (r3 = a3 = false), 2 === this._directions && (r3 || a3) && (h3 = n2 = false), h3 === n2) {
+          const t3 = r3 === a3 && 0 !== this._dy ? s : 1;
+          this._dx < 0 ? this._dx = Math.min(this._dx + this._dec * t3 * e2, 0) : this._dx > 0 && (this._dx = Math.max(this._dx - this._dec * t3 * e2, 0));
+        }
+        if (r3 === a3) {
+          const t3 = h3 === n2 && 0 !== this._dx ? s : 1;
+          this._dy < 0 ? this._dy = Math.min(this._dy + this._dec * t3 * e2, 0) : this._dy > 0 && (this._dy = Math.max(this._dy - this._dec * t3 * e2, 0));
+        }
+        let _3 = 0, l2 = 0;
+        h3 && !n2 && (_3 = -1), n2 && !h3 && (_3 = 1), r3 && !a3 && (l2 = -1), a3 && !r3 && (l2 = 1);
+        let d3 = 0, c3 = 0;
+        if (0 !== _3) {
+          const t3 = 0 !== l2 ? s : 1;
+          d3 = Math.sign(this._dx) === -_3 ? _3 * t3 * (this._acc + this._dec) : _3 * t3 * this._acc;
+        }
+        if (0 !== l2) {
+          const t3 = 0 !== _3 ? s : 1;
+          c3 = Math.sign(this._dy) === -l2 ? l2 * t3 * (this._acc + this._dec) : l2 * t3 * this._acc;
+        }
+        if (this._dx += d3 * e2, this._dy += c3 * e2, 0 !== this._dx || 0 !== this._dy) {
+          let s2 = Math.hypot(this._dx, this._dy);
+          const h4 = Math.atan2(this._dy, this._dx), n3 = this._maxSpeed * Math.cos(h4), r4 = this._maxSpeed * Math.sin(h4);
+          s2 > this._maxSpeed && (s2 = this._maxSpeed, this._dx = n3, this._dy = r4);
+          const a4 = this._inst.GetWorldInfo(), _4 = a4.GetX(), l3 = a4.GetY(), S3 = a4.GetAngle(), u2 = Math.abs(n3) * e2, g2 = Math.abs(r4) * e2, p2 = t2.clamp(this._dx * e2 + 0.5 * d3 * e2 * e2, -u2, u2), m2 = t2.clamp(this._dy * e2 + 0.5 * c3 * e2 * e2, -g2, g2);
+          if (this._allowSliding) {
+            if (a4.OffsetXY(p2, m2), a4.SetBboxChanged(), o3 = i2.TestOverlapSolid(this._inst), o3) {
+              i2.RegisterCollision(this._inst, o3);
+              const h5 = Math.atan2(this._dy, this._dx) + Math.PI / 2;
+              let n4 = false;
+              const r5 = (a4.GetWidth() + a4.GetHeight()) / 4;
+              if (i2.PushOutSolidAxis(this._inst, Math.cos(h5), Math.sin(h5), Math.max(2.5 * s2 * e2, r5))) {
+                n4 = true;
+                const h6 = a4.GetX(), r6 = a4.GetY(), d4 = s2 * e2, c4 = t2.distanceTo(_4, l3, h6, r6);
+                if (c4 > 1.01 * d4) {
+                  const e3 = d4 / c4, s3 = t2.lerp(_4, h6, e3), S4 = t2.lerp(l3, r6, e3);
+                  if (a4.SetXY(s3, S4), a4.SetBboxChanged(), o3 = i2.TestOverlapSolid(this._inst), o3) {
+                    const e4 = t2.angleTo(_4, l3, h6, r6) + Math.PI / 2, s4 = Math.cos(e4), o4 = Math.sin(e4), d5 = (a4.GetWidth() + a4.GetHeight()) / 2 / 10;
+                    i2.PushOutSolidAxis(this._inst, s4, o4, Math.max(d5, 1)) || (a4.SetXY(_4, l3), a4.SetBboxChanged(), n4 = false);
+                  }
+                }
+              }
+              if (!n4) {
+                const t3 = Math.hypot(p2, m2), h6 = -p2 / t3, n5 = -m2 / t3;
+                this._dx = 0, this._dy = 0, i2.PushOutSolid(this._inst, h6, n5, Math.max(2.5 * s2 * e2, r5)) || (a4.SetXY(_4, l3), a4.SetBboxChanged());
+              }
+            }
+          } else a4.OffsetX(p2), a4.SetBboxChanged(), o3 = i2.TestOverlapSolid(this._inst), o3 && (i2.PushOutSolid(this._inst, this._dx < 0 ? 1 : -1, 0, Math.max(Math.abs(Math.floor(p2)), 1)) || (a4.SetX(_4), a4.SetBboxChanged()), this._dx = 0, i2.RegisterCollision(this._inst, o3)), a4.OffsetY(m2), a4.SetBboxChanged(), o3 = i2.TestOverlapSolid(this._inst), o3 && (i2.PushOutSolid(this._inst, 0, this._dy < 0 ? 1 : -1, Math.max(Math.abs(Math.floor(m2)), 1)) || (a4.SetY(l3), a4.SetBboxChanged()), this._dy = 0, i2.RegisterCollision(this._inst, o3));
+          const b2 = t2.roundToDp(this._dx, 6), x2 = t2.roundToDp(this._dy, 6);
+          0 === b2 && 0 === x2 || !this._inst.GetPlugin().IsRotatable() || (1 === this._angleMode ? a4.SetAngle(t2.toRadians(90 * Math.round(t2.toDegrees(Math.atan2(x2, b2)) / 90))) : 2 === this._angleMode ? a4.SetAngle(t2.toRadians(45 * Math.round(t2.toDegrees(Math.atan2(x2, b2)) / 45))) : 3 === this._angleMode && a4.SetAngle(Math.atan2(x2, b2))), a4.SetBboxChanged(), a4.GetAngle() != S3 && (o3 = i2.TestOverlapSolid(this._inst), o3 && (a4.SetAngle(S3), a4.SetBboxChanged(), i2.RegisterCollision(this._inst, o3)));
+        }
+      }
+      GetPropertyValueByIndex(t3) {
+        switch (t3) {
+          case h2:
+            return this._GetMaxSpeed();
+          case n:
+            return this._GetAcceleration();
+          case r2:
+            return this._GetDeceleration();
+          case a2:
+            return this._directions;
+          case o2:
+            return this._angleMode;
+          case _2:
+            return this._allowSliding;
+          case l:
+            return this._IsDefaultControls();
+          case d2:
+            return this._IsEnabled();
+        }
+      }
+      SetPropertyValueByIndex(t3, e2) {
+        switch (t3) {
+          case h2:
+            this._SetMaxSpeed(e2);
+            break;
+          case n:
+            this._SetAcceleration(e2);
+            break;
+          case r2:
+            this._SetDeceleration(e2);
+            break;
+          case a2:
+            this._directions = e2;
+            break;
+          case o2:
+            this._angleMode = e2;
+            break;
+          case _2:
+            this._allowSliding = !!e2;
+            break;
+          case l:
+            this._SetDefaultControls(!!e2);
+            break;
+          case d2:
+            this._SetEnabled(!!e2);
+        }
+      }
+      _Stop() {
+        this._dx = 0, this._dy = 0;
+      }
+      _Reverse() {
+        this._dx *= -1, this._dy *= -1;
+      }
+      _MaybeClampSpeed() {
+        const t3 = Math.hypot(this._dx, this._dy);
+        t3 > this._maxSpeed && this._SetSpeed(t3);
+      }
+      _SetSpeed(e2) {
+        e2 = t2.clamp(e2, 0, this._maxSpeed);
+        const i2 = Math.atan2(this._dy, this._dx);
+        this._dx = e2 * Math.cos(i2), this._dy = e2 * Math.sin(i2);
+      }
+      _GetSpeed() {
+        return Math.hypot(this._dx, this._dy);
+      }
+      _SetMaxSpeed(t3) {
+        this._maxSpeed = Math.max(t3, 0);
+      }
+      _GetMaxSpeed() {
+        return this._maxSpeed;
+      }
+      _SetAcceleration(t3) {
+        this._acc = Math.max(t3, 0);
+      }
+      _GetAcceleration() {
+        return this._acc;
+      }
+      _SetDeceleration(t3) {
+        this._dec = Math.max(t3, 0);
+      }
+      _GetDeceleration() {
+        return this._dec;
+      }
+      _GetMovingAngle() {
+        return Math.atan2(this._dy, this._dx);
+      }
+      _SetVectorX(t3) {
+        this._dx = t3, this._MaybeClampSpeed();
+      }
+      _GetVectorX() {
+        return this._dx;
+      }
+      _SetVectorY(t3) {
+        this._dy = t3, this._MaybeClampSpeed();
+      }
+      _GetVectorY() {
+        return this._dy;
+      }
+      _SimulateControl(t3) {
+        if (this._isEnabled) switch (t3) {
+          case 0:
+            this._simLeft = true;
+            break;
+          case 1:
+            this._simRight = true;
+            break;
+          case 2:
+            this._simUp = true;
+            break;
+          case 3:
+            this._simDown = true;
+        }
+      }
+      _SetDefaultControls(t3) {
+        t3 = !!t3, this._defaultControls !== t3 && (this._defaultControls = t3, this._defaultControls ? this._BindEvents() : (this._UnBindEvents(), this._OnWindowOrKeyboardBlur()));
+      }
+      _IsDefaultControls() {
+        return this._defaultControls;
+      }
+      _SetIgnoreInput(t3) {
+        this._ignoreInput = !!t3;
+      }
+      _IsIgnoreInput() {
+        return this._ignoreInput;
+      }
+      _SetEnabled(t3) {
+        this._isEnabled = !!t3, this._isEnabled ? this._StartTicking() : (this._simLeft = false, this._simRight = false, this._simUp = false, this._simDown = false, this._StopTicking());
+      }
+      _IsEnabled() {
+        return this._isEnabled;
+      }
+      _SetAllowSliding(t3) {
+        this._allowSliding = !!t3;
+      }
+      _IsAllowSliding() {
+        return this._allowSliding;
+      }
+      GetDebuggerProperties() {
+        const e2 = "behaviors.eightdir";
+        return [{ title: "$" + this.GetBehaviorType().GetName(), properties: [{ name: e2 + ".debugger.vector-x", value: this._GetVectorX(), onedit: (t3) => this._SetVectorX(t3) }, { name: e2 + ".debugger.vector-y", value: this._GetVectorY(), onedit: (t3) => this._SetVectorY(t3) }, { name: e2 + ".debugger.speed", value: this._GetSpeed(), onedit: (t3) => this._SetSpeed(t3) }, { name: e2 + ".debugger.angle-of-motion", value: t2.toDegrees(this._GetMovingAngle()) }, { name: e2 + ".properties.max-speed.name", value: this._GetMaxSpeed(), onedit: (t3) => this._SetMaxSpeed(t3) }, { name: e2 + ".properties.acceleration.name", value: this._GetAcceleration(), onedit: (t3) => this._SetAcceleration(t3) }, { name: e2 + ".properties.deceleration.name", value: this._GetDeceleration(), onedit: (t3) => this._SetDeceleration(t3) }, { name: e2 + ".properties.allow-sliding.name", value: this._IsAllowSliding(), onedit: (t3) => this._SetAllowSliding(t3) }, { name: e2 + ".properties.enabled.name", value: this._IsEnabled(), onedit: (t3) => this._SetEnabled(t3) }] }];
+      }
+      GetScriptInterfaceClass() {
+        return self.I8DirectionBehaviorInstance;
+      }
+    };
+    const c2 = /* @__PURE__ */ new WeakMap(), S2 = /* @__PURE__ */ new Map([["left", 0], ["right", 1], ["up", 2], ["down", 3]]);
+    self.I8DirectionBehaviorInstance = class extends i {
+      constructor() {
+        super(), c2.set(this, i._GetInitInst().GetSdkInstance());
+      }
+      stop() {
+        c2.get(this)._Stop();
+      }
+      reverse() {
+        c2.get(this)._Reverse();
+      }
+      simulateControl(t3) {
+        e.RequireString(t3);
+        const i2 = S2.get(t3);
+        if ("number" != typeof i2) throw new Error("invalid control");
+        c2.get(this)._SimulateControl(i2);
+      }
+      get speed() {
+        return c2.get(this)._GetSpeed();
+      }
+      set speed(t3) {
+        e.RequireFiniteNumber(t3), c2.get(this)._SetSpeed(t3);
+      }
+      get maxSpeed() {
+        return c2.get(this)._GetMaxSpeed();
+      }
+      set maxSpeed(t3) {
+        e.RequireFiniteNumber(t3), c2.get(this)._SetMaxSpeed(t3);
+      }
+      get acceleration() {
+        return c2.get(this)._GetAcceleration();
+      }
+      set acceleration(t3) {
+        e.RequireFiniteNumber(t3), c2.get(this)._SetAcceleration(t3);
+      }
+      get deceleration() {
+        return c2.get(this)._GetDeceleration();
+      }
+      set deceleration(t3) {
+        e.RequireFiniteNumber(t3), c2.get(this)._SetDeceleration(t3);
+      }
+      get vectorX() {
+        return c2.get(this)._GetVectorX();
+      }
+      set vectorX(t3) {
+        e.RequireFiniteNumber(t3), c2.get(this)._SetVectorX(t3);
+      }
+      get vectorY() {
+        return c2.get(this)._GetVectorY();
+      }
+      set vectorY(t3) {
+        e.RequireFiniteNumber(t3), c2.get(this)._SetVectorY(t3);
+      }
+      setVector(t3, i2) {
+        e.RequireFiniteNumber(t3), e.RequireFiniteNumber(i2);
+        const s2 = c2.get(this);
+        s2._SetVectorX(t3), s2._SetVectorY(i2);
+      }
+      getVector() {
+        const t3 = c2.get(this);
+        return [t3._GetVectorX(), t3._GetVectorY()];
+      }
+      get isDefaultControls() {
+        return c2.get(this)._IsDefaultControls();
+      }
+      set isDefaultControls(t3) {
+        c2.get(this)._SetDefaultControls(!!t3);
+      }
+      get isIgnoringInput() {
+        return c2.get(this)._IsIgnoreInput();
+      }
+      set isIgnoringInput(t3) {
+        c2.get(this)._SetIgnoreInput(!!t3);
+      }
+      get isAllowSliding() {
+        return c2.get(this)._IsAllowSliding();
+      }
+      set isAllowSliding(t3) {
+        c2.get(this)._SetAllowSliding(!!t3);
+      }
+      get isEnabled() {
+        return c2.get(this)._IsEnabled();
+      }
+      set isEnabled(t3) {
+        c2.get(this)._SetEnabled(!!t3);
+      }
+    };
+  }
+  {
+    const t2 = self.C3;
+    t2.Behaviors.EightDir.Cnds = { IsMoving() {
+      return this._GetSpeed() > 1e-10;
+    }, CompareSpeed(e, i) {
+      return t2.compare(this._GetSpeed(), e, i);
+    }, IsEnabled() {
+      return this._IsEnabled();
+    }, IsAllowSliding() {
+      return this._IsAllowSliding();
+    } };
+  }
+  self.C3.Behaviors.EightDir.Acts = { Stop() {
+    this._Stop();
+  }, Reverse() {
+    this._Reverse();
+  }, SetIgnoreInput(t2) {
+    this._SetIgnoreInput(t2);
+  }, SetSpeed(t2) {
+    this._SetSpeed(t2);
+  }, SetMaxSpeed(t2) {
+    this._SetMaxSpeed(t2);
+  }, SetAcceleration(t2) {
+    this._SetAcceleration(t2);
+  }, SetDeceleration(t2) {
+    this._SetDeceleration(t2);
+  }, SimulateControl(t2) {
+    this._SimulateControl(t2);
+  }, SetEnabled(t2) {
+    this._SetEnabled(t2);
+  }, SetVectorX(t2) {
+    this._SetVectorX(t2);
+  }, SetVectorY(t2) {
+    this._SetVectorY(t2);
+  }, SetDefaultControls(t2) {
+    this._SetDefaultControls(!!t2);
+  }, SetAllowSliding(t2) {
+    this._SetAllowSliding(t2);
+  } };
+  {
+    const t2 = self.C3;
+    t2.Behaviors.EightDir.Exps = { Speed() {
+      return this._GetSpeed();
+    }, MaxSpeed() {
+      return this._GetMaxSpeed();
+    }, Acceleration() {
+      return this._GetAcceleration();
+    }, Deceleration() {
+      return this._GetDeceleration();
+    }, MovingAngle() {
+      return t2.toDegrees(this._GetMovingAngle());
+    }, VectorX() {
+      return this._GetVectorX();
+    }, VectorY() {
+      return this._GetVectorY();
+    } };
+  }
+}
+{
+  {
+    const e = self.C3;
+    e.Behaviors.wrap = class extends e.SDKBehaviorBase {
+      constructor(e2) {
+        super(e2);
+      }
+      Release() {
+        super.Release();
+      }
+    };
+  }
+  {
+    const e = self.C3;
+    e.Behaviors.wrap.Type = class extends e.SDKBehaviorTypeBase {
+      constructor(e2) {
+        super(e2);
+      }
+      Release() {
+        super.Release();
+      }
+      OnCreate() {
+      }
+    };
+  }
+  {
+    const e = self.C3, t2 = 0, s = new e.Rect();
+    e.Behaviors.wrap.Instance = class extends e.SDKBehaviorInstanceBase {
+      constructor(e2, s2) {
+        super(e2), this._mode = 0, s2 && (this._mode = s2[t2]), this._StartTicking();
+      }
+      Release() {
+        super.Release();
+      }
+      SaveToJson() {
+        return { "m": this._mode };
+      }
+      LoadFromJson(e2) {
+        this._mode = e2["m"];
+      }
+      Tick() {
+        const t3 = this._inst.GetWorldInfo(), o2 = t3.GetLayer(), r2 = o2.GetLayout(), a2 = t3.GetBoundingBox();
+        0 === this._mode ? s.set(0, 0, r2.GetWidth(), r2.GetHeight()) : s.copy(o2.GetViewport());
+        let i = false;
+        a2.getRight() < s.getLeft() ? (t3.SetX(s.getRight() - 1 + (t3.GetX() - a2.getLeft())), t3.SetBboxChanged(), i = true) : a2.getLeft() > s.getRight() ? (t3.SetX(s.getLeft() + 1 - (a2.getRight() - t3.GetX())), t3.SetBboxChanged(), i = true) : a2.getBottom() < s.getTop() ? (t3.SetY(s.getBottom() - 1 + (t3.GetY() - a2.getTop())), t3.SetBboxChanged(), i = true) : a2.getTop() > s.getBottom() && (t3.SetY(s.getTop() + 1 - (a2.getBottom() - t3.GetY())), t3.SetBboxChanged(), i = true), i && this.Trigger(e.Behaviors.wrap.Cnds.OnWrap);
+      }
+      GetPropertyValueByIndex(e2) {
+        if (e2 === t2) return this._mode;
+      }
+      SetPropertyValueByIndex(e2, s2) {
+        if (e2 === t2) this._mode = s2;
+      }
+    };
+  }
+  self.C3.Behaviors.wrap.Cnds = { OnWrap: () => true };
+  self.C3.Behaviors.wrap.Acts = {};
+  self.C3.Behaviors.wrap.Exps = {};
+}
+{
+  {
+    const e = self.C3;
+    e.Behaviors.scrollto = class extends e.SDKBehaviorBase {
+      constructor(e2) {
+        super(e2), this._shakeMag = 0, this._shakeStart = 0, this._shakeEnd = 0, this._shakeMode = 0;
+      }
+      Release() {
+        super.Release();
+      }
+      SetShakeMagnitude(e2) {
+        this._shakeMag = e2;
+      }
+      GetShakeMagnitude() {
+        return this._shakeMag;
+      }
+      SetShakeStart(e2) {
+        this._shakeStart = e2;
+      }
+      GetShakeStart() {
+        return this._shakeStart;
+      }
+      SetShakeEnd(e2) {
+        this._shakeEnd = e2;
+      }
+      GetShakeEnd() {
+        return this._shakeEnd;
+      }
+      SetShakeMode(e2) {
+        this._shakeMode = e2;
+      }
+      GetShakeMode() {
+        return this._shakeMode;
+      }
+    };
+  }
+  {
+    const e = self.C3;
+    e.Behaviors.scrollto.Type = class extends e.SDKBehaviorTypeBase {
+      constructor(e2) {
+        super(e2);
+      }
+      Release() {
+        super.Release();
+      }
+      OnCreate() {
+      }
+    };
+  }
+  {
+    const e = self.C3, t2 = 0;
+    e.Behaviors.scrollto.Instance = class extends e.SDKBehaviorInstanceBase {
+      constructor(e2, s) {
+        super(e2), this._isEnabled = true, s && (this._isEnabled = s[t2]), this._isEnabled && this._StartTicking2();
+      }
+      Release() {
+        super.Release();
+      }
+      SaveToJson() {
+        const e2 = this.GetBehavior();
+        return { "e": this._isEnabled, "smg": e2.GetShakeMagnitude(), "ss": e2.GetShakeStart(), "se": e2.GetShakeEnd(), "smd": e2.GetShakeMode() };
+      }
+      LoadFromJson(e2) {
+        const t3 = this.GetBehavior();
+        t3.SetShakeMagnitude(e2["smg"]), t3.SetShakeStart(e2["ss"]), t3.SetShakeEnd(e2["se"]), t3.SetShakeMode(e2["smd"]), this._isEnabled = e2["e"], this._isEnabled ? this._StartTicking2() : this._StopTicking2();
+      }
+      _SetEnabled(e2) {
+        this._isEnabled = !!e2, this._isEnabled ? this._StartTicking2() : this._StopTicking2();
+      }
+      IsEnabled() {
+        return this._isEnabled;
+      }
+      Tick2() {
+        if (!this.IsEnabled()) return;
+        this._runtime.GetDt(this._inst);
+        const t3 = this.GetBehavior(), s = t3.GetInstances();
+        let a2 = 0, i = 0, h2 = 0;
+        for (const t4 of s) {
+          const s2 = t4.GetBehaviorInstanceFromCtor(e.Behaviors.scrollto);
+          if (!s2 || !s2.GetSdkInstance().IsEnabled()) continue;
+          const n2 = t4.GetWorldInfo();
+          a2 += n2.GetX(), i += n2.GetY(), ++h2;
+        }
+        const n = this._inst.GetWorldInfo().GetLayout(), r2 = this._runtime.GetGameTime();
+        let o2 = 0, S2 = 0;
+        if (r2 >= t3.GetShakeStart() && r2 < t3.GetShakeEnd()) {
+          let e2 = t3.GetShakeMagnitude() * Math.min(this._runtime.GetTimeScale(), 1);
+          0 === t3.GetShakeMode() && (e2 *= 1 - (r2 - t3.GetShakeStart()) / (t3.GetShakeEnd() - t3.GetShakeStart()));
+          const s2 = this._runtime.Random() * Math.PI * 2, a3 = this._runtime.Random() * e2;
+          o2 = Math.cos(s2) * a3, S2 = Math.sin(s2) * a3;
+        }
+        n.SetScrollX(a2 / h2 + o2), n.SetScrollY(i / h2 + S2);
+      }
+      GetPropertyValueByIndex(e2) {
+        if (e2 === t2) return this._isEnabled;
+      }
+      SetPropertyValueByIndex(e2, s) {
+        if (e2 === t2) this._isEnabled = !!s, this._isEnabled ? this._StartTicking2() : this._StopTicking2();
+      }
+      GetDebuggerProperties() {
+        return [{ title: "$" + this.GetBehaviorType().GetName(), properties: [{ name: "behaviors.scrollto.properties.enabled.name", value: this.IsEnabled(), onedit: (e2) => this._SetEnabled(e2) }] }];
+      }
+    };
+  }
+  self.C3.Behaviors.scrollto.Cnds = { IsEnabled() {
+    return this.IsEnabled();
+  } };
+  self.C3.Behaviors.scrollto.Acts = { Shake(e, t2, s) {
+    const a2 = this.GetBehavior();
+    a2.SetShakeMagnitude(e), a2.SetShakeStart(this._runtime.GetGameTime()), a2.SetShakeEnd(this._runtime.GetGameTime() + t2), a2.SetShakeMode(s);
+  }, SetEnabled(e) {
+    this._SetEnabled(0 !== e);
+  } };
+  self.C3.Behaviors.scrollto.Exps = {};
+}
+{
+  {
+    const e = self.C3;
+    e.Behaviors.solid = class extends e.SDKBehaviorBase {
+      constructor(e2) {
+        super(e2);
+      }
+      Release() {
+        super.Release();
+      }
+    };
+  }
+  {
+    const e = self.C3;
+    e.Behaviors.solid.Type = class extends e.SDKBehaviorTypeBase {
+      constructor(e2) {
+        super(e2);
+      }
+      Release() {
+        super.Release();
+      }
+      OnCreate() {
+      }
+    };
+  }
+  {
+    const e = self.C3, s = self.C3X, t2 = self.IBehaviorInstance, a2 = 0, n = 1, i = 2, r2 = /* @__PURE__ */ new Set();
+    e.Behaviors.solid.Instance = class extends e.SDKBehaviorInstanceBase {
+      constructor(s2, t3) {
+        super(s2), this.SetEnabled(true), t3 && (this.SetEnabled(t3[a2]), this._SetUsesInstanceTags(t3[n]), this.SetTags(e.splitStringAndNormalize(t3[i])));
+      }
+      Release() {
+        super.Release();
+      }
+      SetEnabled(e2) {
+        this._inst._SetSolidEnabled(!!e2);
+      }
+      IsEnabled() {
+        return this._inst._IsSolidEnabled();
+      }
+      _SetUsesInstanceTags(e2) {
+        this._inst._SetSolidUsingInstanceTags(e2);
+      }
+      UsesInstanceTags() {
+        return this._inst._IsSolidUsingInstanceTags();
+      }
+      SetTags(e2) {
+        const s2 = this._inst.GetSavedDataMap();
+        let t3 = s2.get("solidTags");
+        t3 || (t3 = /* @__PURE__ */ new Set(), s2.set("solidTags", t3)), t3.clear();
+        for (const s3 of e2) t3.add(s3.toLowerCase());
+        0 === t3.size && s2.delete("solidTags");
+      }
+      GetTags() {
+        return this._inst.GetSavedDataMap().get("solidTags") || r2;
+      }
+      _GetTagsString() {
+        return [...this.GetTags()].join(" ");
+      }
+      SaveToJson() {
+        return { "e": this.IsEnabled(), "it": this.UsesInstanceTags() };
+      }
+      LoadFromJson(e2) {
+        this.SetEnabled(e2["e"]), this._SetUsesInstanceTags(!!e2["it"]);
+      }
+      GetPropertyValueByIndex(e2) {
+        if (e2 === a2) return this.IsEnabled();
+      }
+      SetPropertyValueByIndex(e2, s2) {
+        if (e2 === a2) this.SetEnabled(s2);
+      }
+      GetDebuggerProperties() {
+        const s2 = [{ name: "behaviors.solid.properties.enabled.name", value: this.IsEnabled(), onedit: (e2) => this.SetEnabled(e2) }, { name: "behaviors.solid.properties.use-instance-tags.name", value: this.UsesInstanceTags() }];
+        return this.UsesInstanceTags() || s2.push({ name: "behaviors.solid.properties.tags.name", value: this._GetTagsString(), onedit: (s3) => this.SetTags(e.splitStringAndNormalize(s3)) }), [{ title: "$" + this.GetBehaviorType().GetName(), properties: s2 }];
+      }
+      GetScriptInterfaceClass() {
+        return self.ISolidBehaviorInstance;
+      }
+    }, self.ISolidBehaviorInstance = class extends t2 {
+      #e;
+      constructor() {
+        super(), this.#e = t2._GetInitInst().GetSdkInstance();
+      }
+      set isEnabled(e2) {
+        this.#e.SetEnabled(!!e2);
+      }
+      get isEnabled() {
+        return this.#e.IsEnabled();
+      }
+      get usesInstanceTags() {
+        return this.#e.UsesInstanceTags();
+      }
+      set tags(t3) {
+        s.RequireString(t3), this.#e.SetTags(e.splitStringAndNormalize(t3));
+      }
+      get tags() {
+        return this.#e._GetTagsString();
+      }
+      setAllTags(e2) {
+        this.#e.SetTags(e2);
+      }
+      getAllTags() {
+        return new Set(this.#e.GetTags());
+      }
+    };
+  }
+  self.C3.Behaviors.solid.Cnds = { IsEnabled() {
+    return this.IsEnabled();
+  } };
+  {
+    const e = self.C3;
+    e.Behaviors.solid.Acts = { SetEnabled(e2) {
+      this.SetEnabled(e2);
+    }, SetTags(s) {
+      this.SetTags(e.splitStringAndNormalize(s));
+    } };
+  }
+  self.C3.Behaviors.solid.Exps = {};
+}
+{
+  {
+    const e = self.C3;
+    e.Behaviors.shadowcaster = class extends e.SDKBehaviorBase {
+      constructor(e2) {
+        super(e2);
+      }
+      Release() {
+        super.Release();
+      }
+    };
+  }
+  {
+    const e = self.C3;
+    e.Behaviors.shadowcaster.Type = class extends e.SDKBehaviorTypeBase {
+      constructor(e2) {
+        super(e2);
+      }
+      Release() {
+        super.Release();
+      }
+      OnCreate() {
+      }
+    };
+  }
+  {
+    const e = self.C3, t2 = self.C3X, s = self.IBehaviorInstance, a2 = 0, i = 1, h2 = 2;
+    e.Behaviors.shadowcaster.Instance = class extends e.SDKBehaviorInstanceBase {
+      constructor(e2, t3) {
+        super(e2), t3 ? (this.SetHeight(t3[a2]), this.SetTag(t3[i]), this.SetEnabled(!!t3[h2])) : (this.SetHeight(100), this.SetTag(""), this.SetEnabled(true));
+      }
+      Release() {
+        super.Release();
+      }
+      SetHeight(e2) {
+        this.GetHeight() !== e2 && (this._inst.GetSavedDataMap().set("shadowcasterHeight", e2), this._runtime.UpdateRender());
+      }
+      GetHeight() {
+        return this._inst.GetSavedDataMap().get("shadowcasterHeight");
+      }
+      SetTag(e2) {
+        this.GetTag() !== e2 && (this._inst.GetSavedDataMap().set("shadowcasterTag", e2), this._runtime.UpdateRender());
+      }
+      GetTag() {
+        return this._inst.GetSavedDataMap().get("shadowcasterTag");
+      }
+      SetEnabled(e2) {
+        this._inst.GetSavedDataMap().set("shadowcasterEnabled", !!e2);
+      }
+      IsEnabled() {
+        return this._inst.GetSavedDataMap().get("shadowcasterEnabled");
+      }
+      SaveToJson() {
+        return { "h": this.GetHeight(), "t": this.GetTag(), "e": this.IsEnabled() };
+      }
+      LoadFromJson(e2) {
+        this.SetHeight(e2["h"]), this.SetTag(e2["t"]), this.SetEnabled(e2["e"]);
+      }
+      GetPropertyValueByIndex(e2) {
+        switch (e2) {
+          case a2:
+            return this.GetHeight();
+          case i:
+            return this.GetTag();
+          case h2:
+            return this.IsEnabled();
+        }
+      }
+      SetPropertyValueByIndex(e2, t3) {
+        switch (e2) {
+          case a2:
+            this.SetHeight(t3);
+            break;
+          case i:
+            this.SetTag(t3);
+            break;
+          case h2:
+            this.SetEnabled(t3);
+        }
+      }
+      GetDebuggerProperties() {
+        const e2 = "behaviors.shadowcaster";
+        this._inst.GetSavedDataMap();
+        return [{ title: "$" + this.GetBehaviorType().GetName(), properties: [{ name: e2 + ".properties.enabled.name", value: this.IsEnabled(), onedit: (e3) => this.SetEnabled(e3) }, { name: e2 + ".properties.height.name", value: this.GetHeight(), onedit: (e3) => this.SetHeight(e3) }, { name: e2 + ".properties.tag.name", value: this.GetTag(), onedit: (e3) => this.SetTag(e3) }] }];
+      }
+      GetScriptInterfaceClass() {
+        return self.IShadowCasterBehaviorInstance;
+      }
+    };
+    const r2 = /* @__PURE__ */ new WeakMap();
+    self.IShadowCasterBehaviorInstance = class extends s {
+      constructor() {
+        super(), r2.set(this, s._GetInitInst().GetSdkInstance());
+      }
+      set height(e2) {
+        t2.RequireFiniteNumber(e2), r2.get(this).SetHeight(e2);
+      }
+      get height() {
+        return r2.get(this).GetHeight();
+      }
+      set tag(e2) {
+        t2.RequireString(e2), r2.get(this).SetTag(e2);
+      }
+      get tag() {
+        return r2.get(this).GetTag();
+      }
+      get isEnabled() {
+        return r2.get(this).IsEnabled();
+      }
+      set isEnabled(e2) {
+        r2.get(this).SetEnabled(e2);
+      }
+    };
+  }
+  {
+    const e = self.C3;
+    e.Behaviors.shadowcaster.Cnds = { IsEnabled() {
+      return this.IsEnabled();
+    }, CompareHeight(t2, s) {
+      return e.compare(this.GetHeight(), t2, s);
+    } };
+  }
+  self.C3.Behaviors.shadowcaster.Acts = { SetEnabled(e) {
+    this.SetEnabled(e);
+  }, SetHeight(e) {
+    this.SetHeight(e);
+  }, SetTag(e) {
+    this.SetTag(e);
+  } };
+  self.C3.Behaviors.shadowcaster.Exps = { Height() {
+    return this.GetHeight();
+  }, Tag() {
+    return this.GetTag();
+  } };
+}
+{
+  {
+    const e = self.C3;
+    e.Behaviors.jumpthru = class extends e.SDKBehaviorBase {
+      constructor(e2) {
+        super(e2);
+      }
+      Release() {
+        super.Release();
+      }
+    };
+  }
+  {
+    const e = self.C3;
+    e.Behaviors.jumpthru.Type = class extends e.SDKBehaviorTypeBase {
+      constructor(e2) {
+        super(e2);
+      }
+      Release() {
+        super.Release();
+      }
+      OnCreate() {
+      }
+    };
+  }
+  {
+    const e = self.C3, s = self.IBehaviorInstance, t2 = 0;
+    e.Behaviors.jumpthru.Instance = class extends e.SDKBehaviorInstanceBase {
+      constructor(e2, s2) {
+        super(e2), this.SetEnabled(true), s2 && this.SetEnabled(s2[t2]);
+      }
+      Release() {
+        super.Release();
+      }
+      SetEnabled(e2) {
+        this._inst._SetJumpthruEnabled(!!e2);
+      }
+      IsEnabled() {
+        return this._inst._IsJumpthruEnabled();
+      }
+      SaveToJson() {
+        return { "e": this.IsEnabled() };
+      }
+      LoadFromJson(e2) {
+        this.SetEnabled(e2["e"]);
+      }
+      GetPropertyValueByIndex(e2) {
+        if (e2 === t2) return this.IsEnabled();
+      }
+      SetPropertyValueByIndex(e2, s2) {
+        if (e2 === t2) this.SetEnabled(s2);
+      }
+      GetDebuggerProperties() {
+        return [{ title: "$" + this.GetBehaviorType().GetName(), properties: [{ name: "behaviors.jumpthru.properties.enabled.name", value: this.IsEnabled(), onedit: (e2) => this.SetEnabled(e2) }] }];
+      }
+      GetScriptInterfaceClass() {
+        return self.IJumpthruBehaviorInstance;
+      }
+    };
+    const r2 = /* @__PURE__ */ new WeakMap();
+    self.IJumpthruBehaviorInstance = class extends s {
+      constructor() {
+        super(), r2.set(this, s._GetInitInst().GetSdkInstance());
+      }
+      set isEnabled(e2) {
+        r2.get(this).SetEnabled(!!e2);
+      }
+      get isEnabled() {
+        return r2.get(this).IsEnabled();
+      }
+    };
+  }
+  self.C3.Behaviors.jumpthru.Cnds = { IsEnabled() {
+    return this.IsEnabled();
+  } };
+  self.C3.Behaviors.jumpthru.Acts = { SetEnabled(e) {
+    this.SetEnabled(e);
+  } };
+  self.C3.Behaviors.jumpthru.Exps = {};
 }
 {
   {
@@ -41166,19 +42142,26 @@ var accelerate2;
     () => 100,
     () => 500,
     () => "PlayerControls",
+    () => "KeyboardAndMouse",
     () => 0,
-    () => 1e-5,
-    () => 8,
-    () => "PlayerMOVEMENT",
-    () => "Walk",
-    () => "Stand",
-    () => "Jump",
-    () => "PlayerATKS",
-    () => "atkBowNArrow",
-    () => "You don't have any arrows!",
+    () => "You do not have the Runic Dictionary!!",
     () => 0.1,
     () => 0.5,
     () => "",
+    () => 1e-5,
+    () => 8,
+    () => "PlayerMOVEMENT",
+    () => "MovementKBM",
+    () => "Walk",
+    () => "Jump",
+    (p2) => {
+      const n0 = p2._GetNode(0);
+      return () => n0.ExpObject();
+    },
+    () => "Stand",
+    () => "PlayerATKS",
+    () => "atkBowNArrow",
+    () => "You don't have any arrows!",
     (p2) => {
       const f0 = p2._GetNode(0).GetBoundMethod();
       return () => f0();
@@ -41227,16 +42210,20 @@ var accelerate2;
     () => 6,
     () => "Attack Type: Insane",
     () => 650,
-    () => "NOR1",
-    () => -100,
-    () => "BOSSTIME",
-    () => 141,
-    () => "NOR2",
-    () => "NOR3",
     () => "PlayerStats",
     (p2) => {
       const n0 = p2._GetNode(0);
       return () => n0.ExpInstVar();
+    },
+    (p2) => {
+      const n0 = p2._GetNode(0);
+      const v1 = p2._GetNode(1).GetVar();
+      return () => and(and("Health ", n0.ExpInstVar()) + "/", v1.GetValue());
+    },
+    (p2) => {
+      const n0 = p2._GetNode(0);
+      const v1 = p2._GetNode(1).GetVar();
+      return () => and(and("Mana ", n0.ExpInstVar()) + "/", v1.GetValue());
     },
     () => "Damaged",
     () => "PlayerStatRestore",
@@ -41357,20 +42344,39 @@ var accelerate2;
     () => "PlayerMP",
     () => "You don't have any of those!",
     () => "Enemies",
-    () => "breakableBlock",
-    () => "breakableBlock1",
-    () => " / 20",
+    () => "catastrophicGlutton",
+    () => 0.65,
+    () => "BOSSWYRMSTART",
+    () => " Catastrophic Devourer: ''You are no deity... but I shall feast upon your essence nonetheless!'' ",
+    () => "Catastrophic Devourer: ",
+    () => "CDcollisons",
+    () => "CDdead",
     (p2) => {
       const n0 = p2._GetNode(0);
-      return () => n0.ExpObject();
+      return () => n0.ExpObject() + 5;
     },
-    () => "breakableBlock2",
-    () => " / 10",
-    () => 273,
-    () => "355",
-    () => 355,
-    () => "Necromancer",
-    () => "NercomancerCollisions",
+    (p2) => {
+      const n0 = p2._GetNode(0);
+      return () => n0.ExpObject() - 5;
+    },
+    () => "DeathAnimeCD",
+    () => " Catastrophic Devourer: ''I WILL NOT DIE!'' ",
+    () => " Catastrophic Devourer: ''I WILL NOT---'' ",
+    () => "CDhealthCode",
+    (p2) => {
+      const n0 = p2._GetNode(0);
+      const n1 = p2._GetNode(1);
+      const n2 = p2._GetNode(2);
+      const n3 = p2._GetNode(3);
+      const n4 = p2._GetNode(4);
+      const n5 = p2._GetNode(5);
+      const n6 = p2._GetNode(6);
+      return () => n0.ExpInstVar() + n1.ExpInstVar() + n2.ExpInstVar() + n3.ExpInstVar() + n4.ExpInstVar() + n5.ExpInstVar() + n6.ExpInstVar();
+    },
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => and("Catastrophic Devourer's HP: ", v0.GetValue()) + "/1000";
+    },
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
       return () => 2 + v0.GetValue();
@@ -41381,7 +42387,7 @@ var accelerate2;
     },
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
-      return () => 14 + v0.GetValue();
+      return () => 21 + v0.GetValue();
     },
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
@@ -41394,6 +42400,42 @@ var accelerate2;
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
       return () => 15 + v0.GetValue();
+    },
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => 24 + v0.GetValue();
+    },
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => 4 + v0.GetValue();
+    },
+    (p2) => {
+      const n0 = p2._GetNode(0);
+      const n1 = p2._GetNode(1);
+      const n2 = p2._GetNode(2);
+      const n3 = p2._GetNode(3);
+      const n4 = p2._GetNode(4);
+      const n5 = p2._GetNode(5);
+      const n6 = p2._GetNode(6);
+      const n7 = p2._GetNode(7);
+      return () => n0.ExpInstVar() + n1.ExpInstVar() + n2.ExpInstVar() + n3.ExpInstVar() + n4.ExpInstVar() + n5.ExpInstVar() + n6.ExpInstVar() + n7.ExpInstVar();
+    },
+    () => "breakableBlock",
+    () => "breakableBlock1",
+    () => " / 20",
+    () => "breakableBlock2",
+    () => " / 10",
+    () => 273,
+    () => "355",
+    () => 548,
+    () => "548",
+    () => 355,
+    () => 538,
+    () => "Necromancer",
+    () => "NercomancerCollisions",
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => 14 + v0.GetValue();
     },
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
@@ -41412,16 +42454,28 @@ var accelerate2;
       const v0 = p2._GetNode(0).GetVar();
       return () => Math.floor(7 - v0.GetValue() * 0.75);
     },
-    (p2) => {
-      const n0 = p2._GetNode(0);
-      return () => n0.ExpObject() + 5;
-    },
-    (p2) => {
-      const n0 = p2._GetNode(0);
-      return () => n0.ExpObject() - 5;
-    },
     () => "SpiritOrb",
     () => "spiritOrbHealth",
+    () => "LVL4",
+    () => 617,
+    () => 616,
+    () => 615,
+    () => 611,
+    () => 614,
+    () => 609,
+    () => 613,
+    () => 608,
+    () => 514,
+    () => 475,
+    () => "LVL3",
+    () => 277,
+    () => 227,
+    () => 605,
+    () => 604,
+    () => 610,
+    () => 603,
+    () => 236,
+    () => 200,
     () => "LVL2",
     () => 177,
     () => 176,
@@ -41440,10 +42494,6 @@ var accelerate2;
     () => "30SOkill",
     () => "10SOkill",
     () => "spiritOrbCollisions",
-    (p2) => {
-      const v0 = p2._GetNode(0).GetVar();
-      return () => 4 + v0.GetValue();
-    },
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
       return () => 3 + v0.GetValue();
@@ -41468,15 +42518,26 @@ var accelerate2;
     () => 147,
     () => 139,
     () => "systemStuff",
+    () => "Portals",
+    () => "NOR1",
+    () => -100,
+    () => "BOSSTIME",
+    () => 141,
+    () => "NOR2",
+    () => "NOR3",
+    () => "Shop",
+    () => "opacity",
+    () => "0",
     () => "LVL1",
-    () => "LVL3",
-    () => "LVL4",
+    () => 228,
+    () => 988,
+    () => "LVL5",
+    () => "EndofGame",
     () => 140,
     () => 144,
     () => 143,
     () => 145,
     () => 142,
-    () => "Shop",
     () => "StartGame",
     () => "IntroMovie",
     () => "StartScreen",
@@ -41527,6 +42588,13 @@ var accelerate2;
       return () => v0.GetValue() + 1;
     },
     () => "  (Current Number -> New)",
+    () => 1500,
+    () => "$1500",
+    () => "It contains strange runes...",
+    () => " A dictionary.",
+    () => 999999999999999,
+    () => "$-----------",
+    () => " You have one already.",
     () => "$650",
     () => "Restores one of the stars stolen from you by the Cursed Dark.",
     () => " Increases max mana by 4.",
@@ -41560,6 +42628,8 @@ var accelerate2;
     () => " more Echoite!",
     () => -30737107967,
     () => "Purchased 6 Arrows",
+    () => "You cannot buy anymore of this!",
+    () => "Purchased Runic Dictionary",
     () => "Purchased 1 Arrow",
     () => "Purchased 1 Heart Container",
     () => "Purchased 1 Mana Container",
@@ -41708,21 +42778,24 @@ self.C3_GetObjectRefTable = function() {
     C3.Plugins.Button,
     C3.Behaviors.Flash,
     C3.Behaviors.skymen_FollowMouse,
+    C3.Behaviors.Bullet,
+    C3.Behaviors.EightDir,
+    C3.Behaviors.wrap,
     C3.Plugins.TiledBg,
     C3.Behaviors.scrollto,
     C3.Plugins.Tilemap,
     C3.Behaviors.solid,
     C3.Behaviors.shadowcaster,
     C3.Behaviors.jumpthru,
-    C3.Behaviors.Bullet,
+    C3.Plugins.Particles,
     C3.Behaviors.Turret,
     C3.Behaviors.Platform,
     C3.Behaviors.TileMovement,
     C3.Behaviors.bound,
-    C3.Plugins.Particles,
     C3.Plugins.shadowlight,
     C3.Plugins.Keyboard,
     C3.Plugins.Mouse,
+    C3.Plugins.gamepad,
     C3.Plugins.Audio,
     C3.Plugins.System.Cnds.IsGroupActive,
     C3.Plugins.Sprite.Cnds.OnCollision,
@@ -41738,7 +42811,11 @@ self.C3_GetObjectRefTable = function() {
     C3.Plugins.System.Cnds.TriggerOnce,
     C3.Plugins.Sprite.Acts.SetOpacity,
     C3.Plugins.Text.Acts.SetOpacity,
+    C3.Plugins.System.Cnds.CompareBoolVar,
     C3.Plugins.Keyboard.Cnds.OnKey,
+    C3.Plugins.Text.Acts.SetText,
+    C3.Plugins.Text.Acts.SetVisible,
+    C3.Behaviors.Flash.Acts.Flash,
     C3.Plugins.Button.Acts.SetVisible,
     C3.Plugins.Button.Acts.SetEnabled,
     C3.Plugins.System.Acts.SetTimescale,
@@ -41753,12 +42830,10 @@ self.C3_GetObjectRefTable = function() {
     C3.Behaviors.Platform.Acts.SimulateControl,
     C3.Plugins.Sprite.Acts.SetAnim,
     C3.Plugins.System.Cnds.Else,
-    C3.Plugins.System.Acts.WaitForPreviousActions,
+    C3.Plugins.System.Cnds.Compare,
+    C3.Plugins.Sprite.Exps.AnimationName,
     C3.Plugins.Mouse.Cnds.OnClick,
     C3.Plugins.System.Cnds.CompareVar,
-    C3.Plugins.Text.Acts.SetText,
-    C3.Plugins.Text.Acts.SetVisible,
-    C3.Behaviors.Flash.Acts.Flash,
     C3.Plugins.Sprite.Acts.SetCollisions,
     C3.Plugins.Sprite.Acts.SetPosToObject,
     C3.Plugins.Sprite.Acts.SetTowardPosition,
@@ -41777,15 +42852,12 @@ self.C3_GetObjectRefTable = function() {
     C3.Plugins.System.Acts.SetVar,
     C3.Behaviors.Bullet.Acts.SetDistanceTravelled,
     C3.Plugins.Audio.Acts.Play,
+    C3.Plugins.System.Acts.WaitForPreviousActions,
     C3.Plugins.Sprite.Acts.SetInstanceVar,
     C3.Behaviors.Bullet.Cnds.CompareTravelled,
-    C3.Behaviors.Turret.Acts.AddTarget,
-    C3.Plugins.progressbar.Acts.SetVisible,
-    C3.Plugins.Audio.Acts.FadeVolume,
-    C3.Plugins.System.Acts.ToggleBoolVar,
-    C3.Plugins.Text.Cnds.PickByUID,
-    C3.Plugins.Text.Acts.Destroy,
     C3.Plugins.System.Cnds.EveryTick,
+    C3.Plugins.progressbar.Acts.SetTooltip,
+    C3.Plugins.Text.Exps.Text,
     C3.Plugins.Sprite.Cnds.OnInstanceSignal,
     C3.Behaviors.Flash.Acts.StopFlashing,
     C3.Plugins.Sprite.Acts.SetAnimFrame,
@@ -41795,39 +42867,52 @@ self.C3_GetObjectRefTable = function() {
     C3.Plugins.System.Cnds.Every,
     C3.Plugins.Mouse.Cnds.IsOverObject,
     C3.Plugins.Particles.Acts.SetVisible,
-    C3.Plugins.progressbar.Acts.SetPosToObject,
+    C3.Plugins.System.Cnds.OnLayoutStart,
+    C3.Plugins.Sprite.Acts.SetScale,
+    C3.Behaviors.Turret.Acts.SetEnabled,
+    C3.Behaviors.Pin.Acts.PinByImagePoint,
+    C3.Plugins.System.Acts.WaitForSignal,
+    C3.Behaviors.Turret.Acts.AddTarget,
+    C3.Plugins.System.Acts.ToggleBoolVar,
+    C3.Plugins.System.Acts.Signal,
+    C3.Plugins.Sprite.Acts.RotateTowardPosition,
+    C3.Plugins.System.Acts.CreateObject,
+    C3.Plugins.Sprite.Exps.LayerName,
+    C3.Plugins.progressbar.Acts.Destroy,
+    C3.Plugins.Text.Acts.Destroy,
+    C3.Plugins.System.Cnds.OnSignal,
     C3.Plugins.progressbar.Acts.SetProgress,
+    C3.Plugins.Sprite.Cnds.IsVisible,
+    C3.Plugins.Particles.Acts.SetPosToObject,
+    C3.Plugins.Particles.Acts.SetRate,
+    C3.Plugins.progressbar.Acts.SetPosToObject,
     C3.Plugins.Text.Acts.AppendText,
-    C3.Plugins.progressbar.Acts.SetTooltip,
     C3.Plugins.Text.Exps.PlainText,
+    C3.Plugins.Particles.Acts.SetPos,
+    C3.Plugins.Sprite.Cnds.PickDistance,
+    C3.Plugins.Sprite.Cnds.PickInstVarHiLow,
     C3.Plugins.progressbar.Acts.SetPos,
     C3.Plugins.Sprite.Cnds.PickByUID,
-    C3.Plugins.System.Acts.Signal,
-    C3.Plugins.System.Cnds.OnSignal,
     C3.Behaviors.jumpthru.Acts.SetEnabled,
-    C3.Plugins.Sprite.Cnds.IsVisible,
     C3.Plugins.Sprite.Acts.InstanceSignal,
     C3.Behaviors.Platform.Acts.SetVectorX,
     C3.Behaviors.Platform.Acts.SetVectorY,
     C3.Plugins.Sprite.Acts.MoveForward,
-    C3.Plugins.System.Acts.CreateObject,
-    C3.Plugins.Sprite.Exps.LayerName,
-    C3.Plugins.progressbar.Acts.Destroy,
     C3.Behaviors.Turret.Cnds.OnShoot,
-    C3.Plugins.System.Cnds.CompareBoolVar,
-    C3.Behaviors.Turret.Acts.SetEnabled,
-    C3.Plugins.System.Cnds.OnLayoutStart,
-    C3.Behaviors.Pin.Acts.PinByImagePoint,
-    C3.Plugins.Sprite.Cnds.PickInstVarHiLow,
+    C3.Plugins.Text.Cnds.PickByUID,
     C3.Plugins.Text.Cnds.PickDistance,
     C3.Plugins.Sprite.Cnds.OnDestroyed,
-    C3.Behaviors.skymen_FollowMouse.Acts.SetEnabled,
-    C3.Behaviors.Platform.Acts.SetCeilingCollision,
-    C3.Plugins.System.Cnds.Compare,
-    C3.Plugins.System.Exps.layoutname,
-    C3.Plugins.Audio.Acts.StopAll,
+    C3.Plugins.progressbar.Acts.SetVisible,
+    C3.Plugins.Audio.Acts.FadeVolume,
     C3.Plugins.Sprite.Exps.Count,
     C3.Plugins.System.Acts.GoToLayoutByName,
+    C3.Plugins.progressbar.Acts.SetCSSStyle,
+    C3.Plugins.progressbar.Acts.SetIndeterminate,
+    C3.Behaviors.skymen_FollowMouse.Acts.SetEnabled,
+    C3.Behaviors.Platform.Acts.SetCeilingCollision,
+    C3.Plugins.System.Exps.layoutname,
+    C3.Plugins.Audio.Acts.StopAll,
+    C3.Plugins.System.Acts.SetBoolVar,
     C3.Plugins.Sprite.Acts.StopAnim,
     C3.Plugins.Sprite.Acts.SetAnimSpeed,
     C3.Plugins.Mouse.Cnds.OnObjectClicked,
@@ -41861,6 +42946,18 @@ self.C3_JsPropNameTable = [
   { ATKtypeText: 0 },
   { blockhptexttest: 0 },
   { SKHPTEXT: 0 },
+  { EXPbarStatic: 0 },
+  { EXPbarVariable: 0 },
+  { CDHPtext: 0 },
+  { CDHPbar: 0 },
+  { bossHPTextTest: 0 },
+  { bossHPTextTest2: 0 },
+  { CDHPtext2: 0 },
+  { CDsegmentHPbar: 0 },
+  { HPbarInfo: 0 },
+  { MPbarInfo: 0 },
+  { MPTEXT2: 0 },
+  { HPTEXT2: 0 },
   { StartBCGRND: 0 },
   { StartGameText: 0 },
   { StartHUD: 0 },
@@ -41872,6 +42969,7 @@ self.C3_JsPropNameTable = [
   { SoundText1: 0 },
   { SoundText2: 0 },
   { VolumeSliderBar: 0 },
+  { CreditsText: 0 },
   { ShopHUDbckgrd: 0 },
   { HeartContainer: 0 },
   { ItemCostDescription: 0 },
@@ -41897,9 +42995,18 @@ self.C3_JsPropNameTable = [
   { inv2: 0 },
   { inv3: 0 },
   { inv4: 0 },
+  { runicDictionary: 0 },
+  { magicPWR: 0 },
+  { arrowPWR: 0 },
+  { atr\u00E9lurnBookHUD: 0 },
+  { atr\u00E9lurnRunes: 0 },
+  { regularRunes: 0 },
   { Flash: 0 },
   { CooldownText: 0 },
   { FollowMouse: 0 },
+  { Bullet: 0 },
+  { "8Direction": 0 },
+  { Wrap: 0 },
   { CursorSprite: 0 },
   { InstructionsText: 0 },
   { InstructionHUDbringup: 0 },
@@ -41909,13 +43016,16 @@ self.C3_JsPropNameTable = [
   { TheVoiceTextSpeak: 0 },
   { TextSpeakCollisionsAppear: 0 },
   { RubyTextSpeak: 0 },
-  { Instructions: 0 },
+  { InstructionsKBM: 0 },
   { bkgrdfix: 0 },
   { ScrollTo: 0 },
   { fullscreenfix: 0 },
   { ToNextLevelButton: 0 },
+  { CatastrophicGluttonTextSpeak: 0 },
+  { InstructionsGamepad: 0 },
+  { InstructionHUDbringup2: 0 },
   { Solid: 0 },
-  { a: 0 },
+  { oldTileMap: 0 },
   { DungeonBackGround: 0 },
   { ShadowCaster: 0 },
   { DungeonTileMap: 0 },
@@ -41928,10 +43038,28 @@ self.C3_JsPropNameTable = [
   { BreakableBlock1hp: 0 },
   { BreakableBlock2: 0 },
   { BreakableBlock2hp: 0 },
-  { Bullet: 0 },
+  { strangeWallSymbols: 0 },
+  { hangingSkeleton: 0 },
+  { treasureChest: 0 },
+  { goldenDoorLVL5: 0 },
+  { breakableBlock1BreakParticles: 0 },
   { NecromancerATKS: 0 },
   { HP: 0 },
+  { catastrophicGluttonBodySegment1: 0 },
   { Turret: 0 },
+  { catastrophicGluttonBodySegment2: 0 },
+  { catastrophicGluttonBodySegment3: 0 },
+  { catastrophicGluttonBodySegment4: 0 },
+  { catastrophicGluttonBodySegment5: 0 },
+  { catastrophicGluttonBodySegment6: 0 },
+  { catastrophicGluttonBodySegmentINBETWEEN1: 0 },
+  { catastrophicGluttonBodySegmentINBETWEEN2: 0 },
+  { catastrophicGluttonBodySegmentINBETWEEN3: 0 },
+  { catastrophicGluttonBodySegmentINBETWEEN4: 0 },
+  { catastrophicGluttonBodySegmentINBETWEEN5: 0 },
+  { catastrophicGluttonHead: 0 },
+  { catastrophicGluttonTail: 0 },
+  { CDSoulBullet: 0 },
   { NecromancerT1: 0 },
   { Sine2: 0 },
   { Sine3: 0 },
@@ -41969,6 +43097,8 @@ self.C3_JsPropNameTable = [
   { tpportalend2a: 0 },
   { tpportalend3a: 0 },
   { TPportal3a: 0 },
+  { LVL4Portal: 0 },
+  { LVL5Portal: 0 },
   { MP: 0 },
   { DEF: 0 },
   { Guarding: 0 },
@@ -41982,6 +43112,7 @@ self.C3_JsPropNameTable = [
   { ShadowLight: 0 },
   { Keyboard: 0 },
   { Mouse: 0 },
+  { Gamepad: 0 },
   { Audio: 0 },
   { background: 0 },
   { DialogueText: 0 },
@@ -41993,7 +43124,7 @@ self.C3_JsPropNameTable = [
   { SplashC3: 0 },
   { SplashPiskel: 0 },
   { SplashKrita: 0 },
-  { aaaaaa: 0 },
+  { chargesForAttack: 0 },
   { Enemies: 0 },
   { ATKcooldown: 0 },
   { ATKanticooldownfix: 0 },
@@ -42014,6 +43145,14 @@ self.C3_JsPropNameTable = [
   { HPpots: 0 },
   { MPpots: 0 },
   { LayoutNext: 0 },
+  { runicDictionaryObtained: 0 },
+  { RubyLVL: 0 },
+  { NecroMancerT1EXP: 0 },
+  { SpiritOrbT1EXP: 0 },
+  { catastropicGluttonFight: 0 },
+  { CDHP: 0 },
+  { runicdictionbugfix: 0 },
+  { CDdeadyn: 0 },
   { IntroMovieTextVariableThingy: 0 },
   { ItemCost: 0 }
 ];
@@ -42052,6 +43191,30 @@ self.InstanceType = {
   },
   SKHPTEXT: class extends self.ITextInstance {
   },
+  EXPbarStatic: class extends self.ISpriteInstance {
+  },
+  EXPbarVariable: class extends self.ISpriteInstance {
+  },
+  CDHPtext: class extends self.ITextInstance {
+  },
+  CDHPbar: class extends self.IProgressBarInstance {
+  },
+  bossHPTextTest: class extends self.ITextInstance {
+  },
+  bossHPTextTest2: class extends self.ITextInstance {
+  },
+  CDHPtext2: class extends self.ITextInstance {
+  },
+  CDsegmentHPbar: class extends self.IProgressBarInstance {
+  },
+  HPbarInfo: class extends self.IProgressBarInstance {
+  },
+  MPbarInfo: class extends self.IProgressBarInstance {
+  },
+  MPTEXT2: class extends self.ITextInstance {
+  },
+  HPTEXT2: class extends self.ITextInstance {
+  },
   StartBCGRND: class extends self.ISpriteInstance {
   },
   StartGameText: class extends self.ITextInstance {
@@ -42071,6 +43234,8 @@ self.InstanceType = {
   SoundText2: class extends self.ITextInstance {
   },
   VolumeSliderBar: class extends self.ISliderBarInstance {
+  },
+  CreditsText: class extends self.ITextInstance {
   },
   ShopHUDbckgrd: class extends self.ISpriteInstance {
   },
@@ -42122,6 +43287,18 @@ self.InstanceType = {
   },
   inv4: class extends self.IButtonInstance {
   },
+  runicDictionary: class extends self.ISpriteInstance {
+  },
+  magicPWR: class extends self.ISpriteInstance {
+  },
+  arrowPWR: class extends self.ISpriteInstance {
+  },
+  atr\u00E9lurnBookHUD: class extends self.ISpriteInstance {
+  },
+  atr\u00E9lurnRunes: class extends self.ITextInstance {
+  },
+  regularRunes: class extends self.ITextInstance {
+  },
   CooldownText: class extends self.ITextInstance {
   },
   CursorSprite: class extends self.ISpriteInstance {
@@ -42142,7 +43319,7 @@ self.InstanceType = {
   },
   RubyTextSpeak: class extends self.ITextInstance {
   },
-  Instructions: class extends self.ISpriteInstance {
+  InstructionsKBM: class extends self.ISpriteInstance {
   },
   bkgrdfix: class extends self.ITiledBackgroundInstance {
   },
@@ -42150,7 +43327,13 @@ self.InstanceType = {
   },
   ToNextLevelButton: class extends self.IButtonInstance {
   },
-  a: class extends self.ITilemapInstance {
+  CatastrophicGluttonTextSpeak: class extends self.ITextInstance {
+  },
+  InstructionsGamepad: class extends self.ISpriteInstance {
+  },
+  InstructionHUDbringup2: class extends self.ISpriteInstance {
+  },
+  oldTileMap: class extends self.ITilemapInstance {
   },
   DungeonBackGround: class extends self.ITiledBackgroundInstance {
   },
@@ -42170,7 +43353,45 @@ self.InstanceType = {
   },
   BreakableBlock2hp: class extends self.IProgressBarInstance {
   },
+  strangeWallSymbols: class extends self.ITextInstance {
+  },
+  hangingSkeleton: class extends self.ISpriteInstance {
+  },
+  treasureChest: class extends self.ISpriteInstance {
+  },
+  goldenDoorLVL5: class extends self.ISpriteInstance {
+  },
+  breakableBlock1BreakParticles: class extends self.IParticlesInstance {
+  },
   NecromancerATKS: class extends self.ISpriteInstance {
+  },
+  catastrophicGluttonBodySegment1: class extends self.ISpriteInstance {
+  },
+  catastrophicGluttonBodySegment2: class extends self.ISpriteInstance {
+  },
+  catastrophicGluttonBodySegment3: class extends self.ISpriteInstance {
+  },
+  catastrophicGluttonBodySegment4: class extends self.ISpriteInstance {
+  },
+  catastrophicGluttonBodySegment5: class extends self.ISpriteInstance {
+  },
+  catastrophicGluttonBodySegment6: class extends self.ISpriteInstance {
+  },
+  catastrophicGluttonBodySegmentINBETWEEN1: class extends self.ISpriteInstance {
+  },
+  catastrophicGluttonBodySegmentINBETWEEN2: class extends self.ISpriteInstance {
+  },
+  catastrophicGluttonBodySegmentINBETWEEN3: class extends self.ISpriteInstance {
+  },
+  catastrophicGluttonBodySegmentINBETWEEN4: class extends self.ISpriteInstance {
+  },
+  catastrophicGluttonBodySegmentINBETWEEN5: class extends self.ISpriteInstance {
+  },
+  catastrophicGluttonHead: class extends self.ISpriteInstance {
+  },
+  catastrophicGluttonTail: class extends self.ISpriteInstance {
+  },
+  CDSoulBullet: class extends self.ISpriteInstance {
   },
   NecromancerT1: class extends self.ISpriteInstance {
   },
@@ -42236,6 +43457,10 @@ self.InstanceType = {
   },
   TPportal3a: class extends self.ISpriteInstance {
   },
+  LVL4Portal: class extends self.ISpriteInstance {
+  },
+  LVL5Portal: class extends self.ISpriteInstance {
+  },
   Ruby: class extends self.ISpriteInstance {
   },
   TorchFlames: class extends self.ISpriteInstance {
@@ -42251,6 +43476,8 @@ self.InstanceType = {
   Keyboard: class extends self.IInstance {
   },
   Mouse: class extends self.IInstance {
+  },
+  Gamepad: class extends self.IInstance {
   },
   Audio: class extends self.IInstance {
   },
@@ -42274,11 +43501,20 @@ self.InstanceType = {
   },
   SplashKrita: class extends self.ISpriteInstance {
   },
-  aaaaaa: class extends self.ISpriteInstance {
+  chargesForAttack: class extends self.ISpriteInstance {
   },
   Enemies: class extends self.ISpriteInstance {
   }
 };
+
+// file-map:scripts/project/javaScriptInEvents.js
+var scriptsInEvents = {
+  async Gameeventsheet_Event32_Act2(runtime, localVars) {
+  },
+  async Gameeventsheet_Event31_Act2(runtime, localVars) {
+  }
+};
+globalThis.C3.JavaScriptInEvents = scriptsInEvents;
 /*!
 @fileoverview gl-matrix - High performance matrix and vector operations
 @author Brandon Jones
