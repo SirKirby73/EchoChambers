@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'MedievalSharp', "Lucida Sans", sans-serif;
+}
+
+.header {
+  background-color: #1a3a52;
+  color: #ffffff;
+  padding: 15px;
+  text-align: center;
+}
+
+body {
+  background-color: #808080;
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  color: #ffffff;
+  padding: 15px;
+  max-width: 900px;
+  margin: auto;
+  line-height: 1.6;
+}
+
+/* --- IMAGE ROW STYLING --- */
+.image-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 16px; /* space between images */
+  flex-wrap: wrap; /* allows wrapping on smaller screens */
+  margin: 20px auto;
+  max-width: 900px;
+}
+
+.image-row img {
+  width: 48%; /* each image takes up 48% of the container */
+  height: 360px; /* equal height */
+  object-fit: cover; /* crop nicely */
+  border-radius: 6px;
+  display: block;
+}
+
+/* On smaller screens, stack the images */
+@media only screen and (max-width: 600px) {
+  .image-row img {
+    width: 100%;
+    height: auto;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Characters</h1>
+</div>
+
+<p>Here are some pictures of characters from the Echo Chambers game.</p>
+<!-- SIDE-BY-SIDE IMAGES -->
+<div class="image-row">
+  <img src="Images/Screenshot 2025-06-10 134900.png" alt="Screenshot 1">
+  <img src="Images/Screenshot 2025-11-12 100624.png" alt="Screenshot 2">
+    <a href="index.html" style="color:#ffffff; text-decoration:underline; font-weight:bold;">Home</a>
+</div>
+
+</body>
+</html>
