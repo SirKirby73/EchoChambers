@@ -102,42 +102,23 @@ html {
 h1 {
   text-align: center;
 }
-/* image row: side-by-side on wider screens, stack on narrow screens */
-.image-row {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  align-items: flex-start;
-  /* prevent wrapping so images stay side-by-side */
-  flex-wrap: nowrap;
-  
-}
-.image-row img {
-  /* Keep both images equal width and taller; do not wrap.
-     min-width prevents them from becoming too narrow on very small screens. */
-  flex: 0 0 50%;
-  width: 50%;
-  min-width: 220px;
-  height: 360px;
-  object-fit: cover;
-  display: block;
-  border-radius: 4px;
-}
 </style>
 </head>
 <body style="background-color: #808080;">
 
 <div class="header">
-  <h1>EC Layout</h1>
+  <h1>Concept Art</h1>
 </div>
-<p>Here is a photo of the echo chambers Layout</p>
+<p>Here are some concept art photos</p>
+<!-- IMAGES -->
 <div class="image-row">
-  <img src="Images/Tennis.jpg" alt="Tennis"> 
-  <img src="Images/Bowlingg.jpg" alt="Bowling">
+  <img src="Images/Screenshot 2026-01-15 092248.png" alt="Concept Art 1">
+  <img src="Images/Screenshot 2026-01-15 092217.png" alt="Concept Art 2">
 </div>
-<!-- navigation link back to homepage (moved below images) -->
-<div style="text-align:center; margin:14px 0;">
-  <a href="index.html" style="color:#ffffff; text-decoration:underline; font-weight:bold;">Home</a>
+<!-- navigation link back to homepage (moved below the text) -->
+<div style="text-align:center; margin:10px 0;">
+  <a href="home.html" style="color:#ffffff; text-decoration:underline; font-weight:bold;">Home</a> | 
+  <a href="../../index.html" style="color:#ffffff; text-decoration:underline; font-weight:bold;">Main Site</a>
 </div>
 </body>
 </html>
