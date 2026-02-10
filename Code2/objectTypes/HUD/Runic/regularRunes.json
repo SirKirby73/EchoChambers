@@ -1,0 +1,16 @@
+{
+	"name": "regularRunes",
+	"plugin-id": "Text",
+	"sid": 667901803518659,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 833445358106895
+		}
+	],
+	"effectTypes": []
+}

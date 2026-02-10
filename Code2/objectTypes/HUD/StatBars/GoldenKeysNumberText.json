@@ -1,0 +1,16 @@
+{
+	"name": "GoldenKeysNumberText",
+	"plugin-id": "Text",
+	"sid": 354769376330467,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 436911420095674
+		}
+	],
+	"effectTypes": []
+}

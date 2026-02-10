@@ -1,0 +1,78 @@
+{
+	"name": "catastrophicGluttonHead",
+	"plugin-id": "Sprite",
+	"sid": 904183387371125,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [
+		{
+			"name": "HP",
+			"type": "number",
+			"desc": "of 1000. Temporarily 325 instead of 200 (125 from the segment6)",
+			"show": true,
+			"sid": 204138085678945
+		}
+	],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Bullet",
+			"name": "Bullet",
+			"sid": 279681930426720
+		}
+	],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 128,
+						"height": 102,
+						"originX": 0.0625,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 9278340,
+						"collisionPoly": {
+							"points": [
+								0.9921875,
+								0.29411764705882354,
+								0.9921875,
+								0.7058823529411765,
+								0.9140625,
+								0.9803921568627451,
+								0.5390625,
+								0.9803921568627451,
+								0.25,
+								0.8921568627450981,
+								0.0078125,
+								0.7549019607843137,
+								0.0078125,
+								0.24509803921568626,
+								0.25,
+								0.10784313725490197,
+								0.5390625,
+								0.0196078431372549,
+								0.890625,
+								0.00980392156862745
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 846606189001239,
+				"name": "Animation 1",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 5
+			}
+		],
+		"subfolders": []
+	}
+}

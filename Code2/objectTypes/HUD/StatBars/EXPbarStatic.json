@@ -1,0 +1,69 @@
+{
+	"name": "EXPbarStatic",
+	"plugin-id": "Sprite",
+	"sid": 111989434183998,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 399572017937093
+		}
+	],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 600,
+						"height": 58,
+						"originX": 0.5,
+						"originY": 0.15625,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 1616581,
+						"collisionPoly": {
+							"points": [
+								0.006153846153846132,
+								0.015625,
+								0.9984615384615385,
+								0.109375,
+								0.96,
+								0.75,
+								0.6615384615384615,
+								0.984375,
+								0.3384615384615385,
+								0.984375,
+								0.013846153846153867,
+								0.625
+							]
+						},
+						"useCollisionPoly": true,
+						"imagePoints": [
+							{
+								"name": "expBarPT",
+								"x": 0.012307692307692308,
+								"y": 0.15625
+							}
+						],
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 669139270976387,
+				"name": "Animation 1",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 5
+			}
+		],
+		"subfolders": []
+	}
+}

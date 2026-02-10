@@ -1,0 +1,23 @@
+{
+	"name": "breakableBlock1BreakParticles",
+	"plugin-id": "Particles",
+	"sid": 291351997326853,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": [],
+	"image": {
+		"width": 10,
+		"height": 10,
+		"originX": 0.5,
+		"originY": 0.5,
+		"originalSource": "",
+		"exportFormat": "lossless",
+		"exportQuality": 0.8,
+		"fileType": "image/png",
+		"imageSpriteId": 4305849,
+		"useCollisionPoly": true,
+		"tag": ""
+	}
+}

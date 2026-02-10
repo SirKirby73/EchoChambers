@@ -1,0 +1,77 @@
+{
+	"name": "catastrophicGluttonBodySegmentINBETWEEN4",
+	"plugin-id": "Sprite",
+	"sid": 987819667609373,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Bullet",
+			"name": "Bullet",
+			"sid": 339514139608099
+		}
+	],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 75,
+						"height": 50,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 9906596,
+						"collisionPoly": {
+							"points": [
+								0.9901960784313726,
+								0.06578947368421051,
+								0.9509803921568627,
+								0.8355263157894737,
+								0.9215686274509803,
+								0.888157894736842,
+								0.8431372549019608,
+								0.993421052631579,
+								0.1568627450980392,
+								0.993421052631579,
+								0.07843137254901966,
+								0.888157894736842,
+								0.0490196078431373,
+								0.8355263157894737,
+								0.009803921568627416,
+								0.06578947368421051,
+								0.11764705882352944,
+								0.006578947368421018,
+								0.8823529411764706,
+								0.006578947368421018
+							]
+						},
+						"useCollisionPoly": true,
+						"imagePoints": [
+							{
+								"name": "Image Point 1",
+								"x": 0,
+								"y": 0.5
+							}
+						],
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 915331327795508,
+				"name": "Animation 1",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 5
+			}
+		],
+		"subfolders": []
+	}
+}

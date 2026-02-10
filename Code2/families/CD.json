@@ -1,0 +1,24 @@
+{
+	"name": "CD",
+	"plugin-id": "Sprite",
+	"sid": 580673865920031,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": [],
+	"members": [
+		"catastrophicGluttonTail",
+		"catastrophicGluttonHead",
+		"catastrophicGluttonBodySegmentINBETWEEN5",
+		"catastrophicGluttonBodySegmentINBETWEEN4",
+		"catastrophicGluttonBodySegmentINBETWEEN3",
+		"catastrophicGluttonBodySegmentINBETWEEN2",
+		"catastrophicGluttonBodySegmentINBETWEEN1",
+		"catastrophicGluttonBodySegment6",
+		"catastrophicGluttonBodySegment5",
+		"catastrophicGluttonBodySegment4",
+		"catastrophicGluttonBodySegment3",
+		"catastrophicGluttonBodySegment2",
+		"catastrophicGluttonBodySegment1",
+		"CDSoulBullet"
+	]
+}

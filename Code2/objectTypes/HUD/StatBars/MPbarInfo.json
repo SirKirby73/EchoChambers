@@ -1,0 +1,15 @@
+{
+	"name": "MPbarInfo",
+	"plugin-id": "progressbar",
+	"sid": 242074778833081,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 835207529838792
+		}
+	]
+}

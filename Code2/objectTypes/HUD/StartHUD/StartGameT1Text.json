@@ -1,0 +1,15 @@
+{
+	"name": "StartGameT1Text",
+	"plugin-id": "Text",
+	"sid": 507985655133041,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": [
+		{
+			"effectId": "sharpen",
+			"name": "Sharpen"
+		}
+	]
+}

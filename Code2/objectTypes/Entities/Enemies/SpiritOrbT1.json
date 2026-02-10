@@ -1,0 +1,178 @@
+{
+	"name": "SpiritOrbT1",
+	"plugin-id": "Sprite",
+	"sid": 307852477911552,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [
+		{
+			"name": "HP",
+			"type": "number",
+			"desc": "Tier1",
+			"show": true,
+			"sid": 587519232525351
+		}
+	],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Sin",
+			"name": "Sine",
+			"sid": 222391524649284
+		},
+		{
+			"behaviorId": "Sin",
+			"name": "Sine2",
+			"sid": 651702431452886
+		},
+		{
+			"behaviorId": "Sin",
+			"name": "Sine3",
+			"sid": 978383303627677
+		},
+		{
+			"behaviorId": "Sin",
+			"name": "Sine4",
+			"sid": 689135936934991
+		}
+	],
+	"effectTypes": [
+		{
+			"effectId": "tint",
+			"name": "Tint"
+		}
+	],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 142,
+						"height": 147,
+						"originX": 0.5070422535211268,
+						"originY": 0.5714285714285714,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 8273039,
+						"collisionPoly": {
+							"points": [
+								1,
+								0,
+								1,
+								0,
+								1,
+								0.35471331389698735,
+								1,
+								0.5620343375445417,
+								1,
+								0.8315516682863622,
+								1,
+								1,
+								1,
+								1,
+								0.9006149573497323,
+								1,
+								0,
+								1,
+								0,
+								1,
+								0,
+								0.800453514739229,
+								0,
+								0.4272756721736314,
+								0,
+								0,
+								0,
+								0,
+								0,
+								0
+							]
+						},
+						"useCollisionPoly": true,
+						"imagePoints": [
+							{
+								"name": "HPpt",
+								"x": 0.5140845070422535,
+								"y": -0.5102040816326531
+							}
+						],
+						"duration": 1,
+						"tag": ""
+					},
+					{
+						"width": 142,
+						"height": 168,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 9876538,
+						"useCollisionPoly": true,
+						"imagePoints": [
+							{
+								"name": "HPpt",
+								"x": 0.5140845070422535,
+								"y": -0.5102040816326531
+							}
+						],
+						"duration": 1,
+						"tag": ""
+					},
+					{
+						"width": 142,
+						"height": 141,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 1826822,
+						"useCollisionPoly": true,
+						"imagePoints": [
+							{
+								"name": "HPpt",
+								"x": 0.5140845070422535,
+								"y": -0.5102040816326531
+							}
+						],
+						"duration": 1,
+						"tag": ""
+					},
+					{
+						"width": 142,
+						"height": 171,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 7975672,
+						"useCollisionPoly": true,
+						"imagePoints": [
+							{
+								"name": "HPpt",
+								"x": 0.5140845070422535,
+								"y": -0.5102040816326531
+							}
+						],
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 605296340991631,
+				"name": "Norm",
+				"isLooping": true,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 3
+			}
+		],
+		"subfolders": []
+	}
+}

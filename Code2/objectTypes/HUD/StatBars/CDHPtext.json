@@ -1,0 +1,16 @@
+{
+	"name": "CDHPtext",
+	"plugin-id": "Text",
+	"sid": 943651407847772,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 244478553317621
+		}
+	],
+	"effectTypes": []
+}

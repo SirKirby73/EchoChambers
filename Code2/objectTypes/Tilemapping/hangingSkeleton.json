@@ -1,0 +1,58 @@
+{
+	"name": "hangingSkeleton",
+	"plugin-id": "Sprite",
+	"sid": 203528200258051,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 206,
+						"height": 744,
+						"originX": 0.45145631067961167,
+						"originY": 0.5053763440860215,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 9514790,
+						"collisionPoly": {
+							"points": [
+								0.5194174757281557,
+								0.005376344086021506,
+								0.7281553398058249,
+								0.09408602150537634,
+								0.9951456310679612,
+								0.29435483870967744,
+								0.6796116504854369,
+								0.9986559139784946,
+								0.3300970873786408,
+								0.9986559139784946,
+								0.0048543689320388345,
+								0.29435483870967744,
+								0.2621359223300971,
+								0.09274193548387097
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 197802869363208,
+				"name": "Animation 1",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 5
+			}
+		],
+		"subfolders": []
+	}
+}

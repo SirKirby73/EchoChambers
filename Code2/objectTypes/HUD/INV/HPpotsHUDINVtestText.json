@@ -1,0 +1,16 @@
+{
+	"name": "HPpotsHUDINVtestText",
+	"plugin-id": "Text",
+	"sid": 568299315050966,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 343926478983495
+		}
+	],
+	"effectTypes": []
+}

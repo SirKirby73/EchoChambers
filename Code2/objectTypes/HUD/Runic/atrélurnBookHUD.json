@@ -1,0 +1,84 @@
+{
+	"name": "atrélurnBookHUD",
+	"plugin-id": "Sprite",
+	"sid": 346961306478689,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 926331998268407
+		}
+	],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 250,
+						"height": 496,
+						"originX": 0.5,
+						"originY": 0.25201612903225806,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 4183774,
+						"collisionPoly": {
+							"points": [
+								0.00277242044358727,
+								0.0025544872122370164,
+								1,
+								0.0025544872122370164,
+								1,
+								0.5014777708522791,
+								0.00277242044358727,
+								0.5014777708522791
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					},
+					{
+						"width": 250,
+						"height": 500,
+						"originX": 0.5,
+						"originY": 0.25,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 3210499,
+						"collisionPoly": {
+							"points": [
+								0,
+								0.001984126984126984,
+								0.9917355371900827,
+								0.001984126984126984,
+								0.9917355371900827,
+								0.498015873015873,
+								0,
+								0.498015873015873
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 118261286307878,
+				"name": "Animation 1",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			}
+		],
+		"subfolders": []
+	}
+}

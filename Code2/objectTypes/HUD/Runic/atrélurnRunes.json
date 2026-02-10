@@ -1,0 +1,16 @@
+{
+	"name": "atrélurnRunes",
+	"plugin-id": "Text",
+	"sid": 944078885408132,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 465286262701132
+		}
+	],
+	"effectTypes": []
+}

@@ -1,0 +1,82 @@
+{
+	"name": "ManaContainer",
+	"plugin-id": "Sprite",
+	"sid": 161238826020913,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 128,
+						"height": 120,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 143285,
+						"collisionPoly": {
+							"points": [
+								0.5,
+								0.008333333333333333,
+								0.9921875,
+								0.38333333333333336,
+								0.8046875,
+								0.9833333333333333,
+								0.1875,
+								0.9916666666666667,
+								0.0078125,
+								0.375
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					},
+					{
+						"width": 128,
+						"height": 120,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 8306918,
+						"collisionPoly": {
+							"points": [
+								0.5,
+								0.008333333333333333,
+								0.9921875,
+								0.38333333333333336,
+								0.8046875,
+								0.9833333333333333,
+								0.1875,
+								0.9916666666666667,
+								0.0078125,
+								0.375
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 777769315112325,
+				"name": "Animation 1",
+				"isLooping": true,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 5
+			}
+		],
+		"subfolders": []
+	}
+}

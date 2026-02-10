@@ -1,0 +1,14 @@
+{
+	"name": "rubyATK",
+	"plugin-id": "Sprite",
+	"sid": 815157796310492,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": [],
+	"members": [
+		"FriendlyArrow",
+		"RubyMelee",
+		"RubyATKS",
+		"RubyMelee2"
+	]
+}

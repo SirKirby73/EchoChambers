@@ -1,0 +1,16 @@
+{
+	"name": "MoneyINVtestText",
+	"plugin-id": "Text",
+	"sid": 703009232837294,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 328598154900717
+		}
+	],
+	"effectTypes": []
+}

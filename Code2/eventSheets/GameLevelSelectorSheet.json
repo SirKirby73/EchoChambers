@@ -1,0 +1,715 @@
+{
+	"name": "GameLevelSelectorSheet",
+	"events": [
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-start-of-layout",
+					"objectClass": "System",
+					"sid": 850760172850855
+				},
+				{
+					"id": "compare-two-values",
+					"objectClass": "System",
+					"sid": 627842225068058,
+					"disabled": true,
+					"parameters": {
+						"first-value": "LayoutName",
+						"comparison": 0,
+						"second-value": "\"StartScreen\"|\"StartScreenSound\"|\"StartScreenControls\"|\"StartScreenControlsGamepad\""
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "stop-all",
+					"objectClass": "Audio",
+					"sid": 917966072487631
+				},
+				{
+					"id": "play",
+					"objectClass": "Audio",
+					"sid": 714618692043505,
+					"parameters": {
+						"audio-file": {
+							"path": "preGame/startScreenMusic"
+						},
+						"loop": "looping",
+						"volume": "0",
+						"stereo-pan": "0",
+						"tag-optional": "\"SSM\""
+					}
+				}
+			],
+			"sid": 142392713613382
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-object-clicked",
+					"objectClass": "Mouse",
+					"sid": 540895014492224,
+					"parameters": {
+						"mouse-button": "left",
+						"click-type": "clicked",
+						"object-clicked": "StartGameT1Text"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "play",
+					"objectClass": "Audio",
+					"sid": 113161507307892,
+					"parameters": {
+						"audio-file": {
+							"path": "menusClick"
+						},
+						"loop": "not-looping",
+						"volume": "0",
+						"stereo-pan": "0",
+						"tag-optional": "\"\""
+					}
+				},
+				{
+					"id": "go-to-layout-by-name",
+					"objectClass": "System",
+					"sid": 829912594042147,
+					"parameters": {
+						"layout": "\"GameLevelSelectorT1\""
+					}
+				}
+			],
+			"sid": 722955583782890
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-object-clicked",
+					"objectClass": "Mouse",
+					"sid": 487617098887376,
+					"parameters": {
+						"mouse-button": "left",
+						"click-type": "clicked",
+						"object-clicked": "StartGameT1Text2"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "play",
+					"objectClass": "Audio",
+					"sid": 558282318434849,
+					"parameters": {
+						"audio-file": {
+							"path": "menusClick"
+						},
+						"loop": "not-looping",
+						"volume": "0",
+						"stereo-pan": "0",
+						"tag-optional": "\"\""
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "CooldownText",
+					"sid": 467083829930941,
+					"parameters": {
+						"text": "\"\""
+					}
+				},
+				{
+					"id": "set-font-color",
+					"objectClass": "CooldownText",
+					"sid": 178915378703121,
+					"parameters": {
+						"color": "rgb(102, 11, 85)"
+					}
+				},
+				{
+					"id": "set-effect-enabled",
+					"objectClass": "CooldownText",
+					"sid": 391930153257221,
+					"parameters": {
+						"mode": "enable",
+						"effect": "\"Sharpen\""
+					}
+				},
+				{
+					"id": "set-position",
+					"objectClass": "CooldownText",
+					"sid": 645224065904992,
+					"parameters": {
+						"x": "300",
+						"y": "180"
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "CooldownText",
+					"sid": 728355297535737,
+					"parameters": {
+						"text": "\"You can still skip the Intro Movie if you choose not to.\""
+					}
+				},
+				{
+					"id": "set-visible",
+					"objectClass": "CooldownText",
+					"sid": 800083764505587,
+					"parameters": {
+						"visibility": "visible"
+					}
+				},
+				{
+					"id": "flash",
+					"objectClass": "CooldownText",
+					"sid": 295320722478447,
+					"behaviorType": "Flash",
+					"parameters": {
+						"on-time": "0.1",
+						"off-time": "0.1",
+						"duration": "0.5"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 650620528509932,
+					"parameters": {
+						"seconds": "1.0",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-visible",
+					"objectClass": "skipIntroMovieNopeInput",
+					"sid": 554092834395523,
+					"parameters": {
+						"visibility": "visible"
+					}
+				},
+				{
+					"id": "set-enabled",
+					"objectClass": "skipIntroMovieNopeInput",
+					"sid": 108712863207676,
+					"parameters": {
+						"mode": "enabled"
+					}
+				},
+				{
+					"id": "set-visible",
+					"objectClass": "skipIntroMovieYepInput",
+					"sid": 389515415515989,
+					"parameters": {
+						"visibility": "visible"
+					}
+				},
+				{
+					"id": "set-enabled",
+					"objectClass": "skipIntroMovieYepInput",
+					"sid": 977200289694116,
+					"parameters": {
+						"mode": "enabled"
+					}
+				}
+			],
+			"sid": 625995174529198
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-clicked",
+					"objectClass": "skipIntroMovieNopeInput",
+					"sid": 839805837665095
+				},
+				{
+					"id": "is-enabled",
+					"objectClass": "skipIntroMovieNopeInput",
+					"sid": 174954846779647
+				}
+			],
+			"actions": [
+				{
+					"id": "play",
+					"objectClass": "Audio",
+					"sid": 785465161576565,
+					"parameters": {
+						"audio-file": {
+							"path": "startGame"
+						},
+						"loop": "not-looping",
+						"volume": "0",
+						"stereo-pan": "0",
+						"tag-optional": "\"\""
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "CooldownText",
+					"sid": 114516010645954,
+					"parameters": {
+						"text": "\"\""
+					}
+				},
+				{
+					"id": "set-position",
+					"objectClass": "CooldownText",
+					"sid": 677765059468267,
+					"parameters": {
+						"x": "300",
+						"y": "180"
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "CooldownText",
+					"sid": 387051350098623,
+					"parameters": {
+						"text": "\"Loading.....\""
+					}
+				},
+				{
+					"id": "set-visible",
+					"objectClass": "CooldownText",
+					"sid": 670895276373590,
+					"parameters": {
+						"visibility": "visible"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 246531183797957,
+					"parameters": {
+						"seconds": "1.0",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "CooldownText",
+					"sid": 714639335685137,
+					"parameters": {
+						"text": "\"\""
+					}
+				},
+				{
+					"id": "go-to-layout-by-name",
+					"objectClass": "System",
+					"sid": 188611461418213,
+					"parameters": {
+						"layout": "\"IntroMovie\""
+					}
+				}
+			],
+			"sid": 854147069149519
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-clicked",
+					"objectClass": "skipIntroMovieYepInput",
+					"sid": 273210096689589
+				},
+				{
+					"id": "is-enabled",
+					"objectClass": "skipIntroMovieYepInput",
+					"sid": 604954620542510
+				}
+			],
+			"actions": [
+				{
+					"id": "play",
+					"objectClass": "Audio",
+					"sid": 738596413409349,
+					"parameters": {
+						"audio-file": {
+							"path": "startGame"
+						},
+						"loop": "not-looping",
+						"volume": "0",
+						"stereo-pan": "0",
+						"tag-optional": "\"\""
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "CooldownText",
+					"sid": 171687721765148,
+					"parameters": {
+						"text": "\"\""
+					}
+				},
+				{
+					"id": "set-position",
+					"objectClass": "CooldownText",
+					"sid": 548968944909284,
+					"parameters": {
+						"x": "300",
+						"y": "180"
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "CooldownText",
+					"sid": 250788274733984,
+					"parameters": {
+						"text": "\"Loading.....\""
+					}
+				},
+				{
+					"id": "set-visible",
+					"objectClass": "CooldownText",
+					"sid": 568053130403987,
+					"parameters": {
+						"visibility": "visible"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 825629310472564,
+					"parameters": {
+						"seconds": "1.0",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "CooldownText",
+					"sid": 323169780066639,
+					"parameters": {
+						"text": "\"\""
+					}
+				},
+				{
+					"id": "go-to-layout-by-name",
+					"objectClass": "System",
+					"sid": 177436188880430,
+					"parameters": {
+						"layout": "\"LVL1\""
+					}
+				}
+			],
+			"sid": 697970415374054
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-object-clicked",
+					"objectClass": "Mouse",
+					"sid": 851952349199327,
+					"parameters": {
+						"mouse-button": "left",
+						"click-type": "clicked",
+						"object-clicked": "StartGameT2Text"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "play",
+					"objectClass": "Audio",
+					"sid": 669405883857769,
+					"parameters": {
+						"audio-file": {
+							"path": "menusClick"
+						},
+						"loop": "not-looping",
+						"volume": "0",
+						"stereo-pan": "0",
+						"tag-optional": "\"\""
+					}
+				},
+				{
+					"id": "shake",
+					"objectClass": "StartBCGRND",
+					"sid": 259084870110102,
+					"behaviorType": "ScrollTo",
+					"parameters": {
+						"magnitude": "20",
+						"duration": "0.1",
+						"mode": "reducing-magnitude"
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "CooldownText",
+					"sid": 651366673471488,
+					"parameters": {
+						"text": "\"\""
+					}
+				},
+				{
+					"id": "set-position",
+					"objectClass": "CooldownText",
+					"sid": 954575814942268,
+					"parameters": {
+						"x": "300",
+						"y": "180"
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "CooldownText",
+					"sid": 647584167556297,
+					"parameters": {
+						"text": "\"This isn't unlocked or available yet!\""
+					}
+				},
+				{
+					"id": "set-visible",
+					"objectClass": "CooldownText",
+					"sid": 500535111071130,
+					"parameters": {
+						"visibility": "visible"
+					}
+				},
+				{
+					"id": "flash",
+					"objectClass": "CooldownText",
+					"sid": 604461002974870,
+					"behaviorType": "Flash",
+					"parameters": {
+						"on-time": "0.1",
+						"off-time": "0.1",
+						"duration": "0.5"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 498868636835989,
+					"parameters": {
+						"seconds": "1.0",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "CooldownText",
+					"sid": 483237876167400,
+					"parameters": {
+						"text": "\"\""
+					}
+				}
+			],
+			"sid": 606548086139159
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-object-clicked",
+					"objectClass": "Mouse",
+					"sid": 103904952398406,
+					"parameters": {
+						"mouse-button": "left",
+						"click-type": "clicked",
+						"object-clicked": "StartGameT3Text"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "play",
+					"objectClass": "Audio",
+					"sid": 293299519644176,
+					"parameters": {
+						"audio-file": {
+							"path": "menusClick"
+						},
+						"loop": "not-looping",
+						"volume": "0",
+						"stereo-pan": "0",
+						"tag-optional": "\"\""
+					}
+				},
+				{
+					"id": "shake",
+					"objectClass": "StartBCGRND",
+					"sid": 496227137692975,
+					"behaviorType": "ScrollTo",
+					"parameters": {
+						"magnitude": "20",
+						"duration": "0.1",
+						"mode": "reducing-magnitude"
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "CooldownText",
+					"sid": 646246344484487,
+					"parameters": {
+						"text": "\"\""
+					}
+				},
+				{
+					"id": "set-position",
+					"objectClass": "CooldownText",
+					"sid": 541516630061889,
+					"parameters": {
+						"x": "300",
+						"y": "180"
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "CooldownText",
+					"sid": 758297687637208,
+					"parameters": {
+						"text": "\"This isn't unlocked or available yet!\""
+					}
+				},
+				{
+					"id": "set-visible",
+					"objectClass": "CooldownText",
+					"sid": 747011135412020,
+					"parameters": {
+						"visibility": "visible"
+					}
+				},
+				{
+					"id": "flash",
+					"objectClass": "CooldownText",
+					"sid": 180424345185149,
+					"behaviorType": "Flash",
+					"parameters": {
+						"on-time": "0.1",
+						"off-time": "0.1",
+						"duration": "0.5"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 548924782216966,
+					"parameters": {
+						"seconds": "1.0",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "CooldownText",
+					"sid": 292754918596304,
+					"parameters": {
+						"text": "\"\""
+					}
+				}
+			],
+			"sid": 148262245090815
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-object-clicked",
+					"objectClass": "Mouse",
+					"sid": 456251083882192,
+					"parameters": {
+						"mouse-button": "left",
+						"click-type": "clicked",
+						"object-clicked": "StartGameT4Text"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "play",
+					"objectClass": "Audio",
+					"sid": 807291736275002,
+					"parameters": {
+						"audio-file": {
+							"path": "menusClick"
+						},
+						"loop": "not-looping",
+						"volume": "0",
+						"stereo-pan": "0",
+						"tag-optional": "\"\""
+					}
+				},
+				{
+					"id": "shake",
+					"objectClass": "StartBCGRND",
+					"sid": 410014210650123,
+					"behaviorType": "ScrollTo",
+					"parameters": {
+						"magnitude": "20",
+						"duration": "0.1",
+						"mode": "reducing-magnitude"
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "CooldownText",
+					"sid": 821178680083133,
+					"parameters": {
+						"text": "\"\""
+					}
+				},
+				{
+					"id": "set-position",
+					"objectClass": "CooldownText",
+					"sid": 870771689459581,
+					"parameters": {
+						"x": "300",
+						"y": "180"
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "CooldownText",
+					"sid": 641581807027070,
+					"parameters": {
+						"text": "\"This isn't unlocked or available yet!\""
+					}
+				},
+				{
+					"id": "set-visible",
+					"objectClass": "CooldownText",
+					"sid": 526188414436163,
+					"parameters": {
+						"visibility": "visible"
+					}
+				},
+				{
+					"id": "flash",
+					"objectClass": "CooldownText",
+					"sid": 407587734060884,
+					"behaviorType": "Flash",
+					"parameters": {
+						"on-time": "0.1",
+						"off-time": "0.1",
+						"duration": "0.5"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 510168941514777,
+					"parameters": {
+						"seconds": "1.0",
+						"use-timescale": true
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "CooldownText",
+					"sid": 558522523884818,
+					"parameters": {
+						"text": "\"\""
+					}
+				}
+			],
+			"sid": 989935205922039
+		}
+	],
+	"sid": 350649346315797
+}

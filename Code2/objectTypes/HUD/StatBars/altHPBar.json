@@ -1,0 +1,15 @@
+{
+	"name": "altHPBar",
+	"plugin-id": "progressbar",
+	"sid": 617967281691892,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 356276662100584
+		}
+	]
+}

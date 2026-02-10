@@ -1,0 +1,9 @@
+{
+	"name": "requestKeyLock",
+	"plugin-id": "Button",
+	"sid": 736324804334205,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": []
+}

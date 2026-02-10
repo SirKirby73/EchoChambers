@@ -1,0 +1,10 @@
+{
+	"name": "bossHPTextTest",
+	"plugin-id": "Text",
+	"sid": 271899995340305,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": []
+}
