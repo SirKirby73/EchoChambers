@@ -237,7 +237,8 @@
 	"objectTypes": {
 		"items": [
 			"chargesForAttack",
-			"requestKeyLock"
+			"requestKeyLock",
+			"cowledWarlock"
 		],
 		"subfolders": [
 			{
@@ -1259,7 +1260,7 @@
 	},
 	"properties": {
 		"description": "",
-		"version": "1.0.0.24",
+		"version": "1.0.0.26",
 		"autoIncrementVersion": true,
 		"author": "Sir_Kirby!",
 		"authorEmail": "",
