@@ -1,33 +1,51 @@
 {
-	"name": "cowledWarlock",
+	"name": "CSInvItem",
 	"plugin-id": "Sprite",
-	"sid": 707391134082865,
+	"sid": 217802501446556,
 	"isGlobal": false,
 	"editorNewInstanceIsReplica": true,
 	"instanceVariables": [],
-	"behaviorTypes": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "Anchor",
+			"name": "Anchor",
+			"sid": 229052464029200
+		}
+	],
 	"effectTypes": [],
 	"animations": {
 		"items": [
 			{
 				"frames": [
 					{
-						"width": 250,
-						"height": 250,
-						"originX": 0.5,
+						"width": 17,
+						"height": 40,
+						"originX": 0.5882352941176471,
 						"originY": 0.5,
 						"originalSource": "",
 						"exportFormat": "lossless",
 						"exportQuality": 0.8,
 						"fileType": "image/png",
-						"imageSpriteId": 4041734,
+						"imageSpriteId": 9592871,
+						"collisionPoly": {
+							"points": [
+								0,
+								1,
+								0,
+								0,
+								1,
+								0,
+								1,
+								1
+							]
+						},
 						"useCollisionPoly": true,
 						"duration": 1,
 						"tag": ""
 					}
 				],
-				"sid": 294201944168597,
-				"name": "Animation 1",
+				"sid": 884423142396957,
+				"name": "1",
 				"isLooping": false,
 				"isPingPong": false,
 				"repeatCount": 1,

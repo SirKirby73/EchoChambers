@@ -1622,7 +1622,7 @@
 					},
 					"effects": {
 						"Tint": {
-							"isEnabled": true,
+							"isEnabled": false,
 							"parameters": {
 								"color": [
 									1,
@@ -1731,7 +1731,7 @@
 					},
 					"effects": {
 						"Tint": {
-							"isEnabled": true,
+							"isEnabled": false,
 							"parameters": {
 								"color": [
 									1,
@@ -1840,7 +1840,7 @@
 					},
 					"effects": {
 						"Tint": {
-							"isEnabled": true,
+							"isEnabled": false,
 							"parameters": {
 								"color": [
 									1,
@@ -1949,7 +1949,7 @@
 					},
 					"effects": {
 						"Tint": {
-							"isEnabled": true,
+							"isEnabled": false,
 							"parameters": {
 								"color": [
 									1,
@@ -2058,7 +2058,7 @@
 					},
 					"effects": {
 						"Tint": {
-							"isEnabled": true,
+							"isEnabled": false,
 							"parameters": {
 								"color": [
 									1,
@@ -2167,7 +2167,7 @@
 					},
 					"effects": {
 						"Tint": {
-							"isEnabled": true,
+							"isEnabled": false,
 							"parameters": {
 								"color": [
 									1,
@@ -6216,7 +6216,7 @@
 						"sid": 692263709096640,
 						"expanded": true
 					},
-					"showing": true,
+					"showing": false,
 					"locked": true,
 					"world": {
 						"x": 442,
@@ -6695,8 +6695,8 @@
 						"sid": 662919380438253,
 						"expanded": true
 					},
-					"showing": false,
-					"locked": true,
+					"showing": true,
+					"locked": false,
 					"world": {
 						"x": 534,
 						"y": 534,
@@ -6742,8 +6742,8 @@
 						"sid": 931925083508473,
 						"expanded": true
 					},
-					"showing": false,
-					"locked": true,
+					"showing": true,
+					"locked": false,
 					"world": {
 						"x": 518,
 						"y": 486,
@@ -6805,8 +6805,8 @@
 						"sid": 439010781199750,
 						"expanded": true
 					},
-					"showing": false,
-					"locked": true,
+					"showing": true,
+					"locked": false,
 					"world": {
 						"x": 518,
 						"y": 498,
@@ -6852,8 +6852,8 @@
 						"sid": 884184979807439,
 						"expanded": true
 					},
-					"showing": false,
-					"locked": true,
+					"showing": true,
+					"locked": false,
 					"world": {
 						"x": 550,
 						"y": 486,
@@ -6915,8 +6915,8 @@
 						"sid": 851431279645019,
 						"expanded": true
 					},
-					"showing": false,
-					"locked": true,
+					"showing": true,
+					"locked": false,
 					"world": {
 						"x": 550,
 						"y": 498,
@@ -6975,8 +6975,8 @@
 						"sid": 131428215122412,
 						"expanded": true
 					},
-					"showing": false,
-					"locked": true,
+					"showing": true,
+					"locked": false,
 					"world": {
 						"x": 582,
 						"y": 486,
@@ -7038,7 +7038,7 @@
 						"sid": 844003640562091,
 						"expanded": true
 					},
-					"showing": false,
+					"showing": true,
 					"locked": true,
 					"world": {
 						"x": 582,
@@ -7085,8 +7085,8 @@
 						"sid": 933467455633818,
 						"expanded": true
 					},
-					"showing": false,
-					"locked": true,
+					"showing": true,
+					"locked": false,
 					"world": {
 						"x": 486,
 						"y": 486,
@@ -7148,8 +7148,8 @@
 						"sid": 411506377619291,
 						"expanded": true
 					},
-					"showing": false,
-					"locked": true,
+					"showing": true,
+					"locked": false,
 					"world": {
 						"x": 484,
 						"y": 498,
@@ -7512,8 +7512,8 @@
 						"sid": 535179764758450,
 						"expanded": true
 					},
-					"showing": true,
-					"locked": false,
+					"showing": false,
+					"locked": true,
 					"world": {
 						"x": 374,
 						"y": 474,
@@ -7575,8 +7575,8 @@
 						"sid": 417848739979360,
 						"expanded": true
 					},
-					"showing": true,
-					"locked": false,
+					"showing": false,
+					"locked": true,
 					"world": {
 						"x": 12,
 						"y": 354,
@@ -7638,8 +7638,8 @@
 						"sid": 145210862747432,
 						"expanded": true
 					},
-					"showing": true,
-					"locked": false,
+					"showing": false,
+					"locked": true,
 					"world": {
 						"x": 272,
 						"y": 354,
@@ -7685,7 +7685,7 @@
 						"sid": 194609018958271,
 						"expanded": true
 					},
-					"showing": false,
+					"showing": true,
 					"locked": true,
 					"world": {
 						"x": 582,
@@ -7732,8 +7732,8 @@
 						"sid": 831640226357344,
 						"expanded": true
 					},
-					"showing": false,
-					"locked": true,
+					"showing": true,
+					"locked": false,
 					"world": {
 						"x": 486,
 						"y": 582,
@@ -7997,8 +7997,8 @@
 						"sid": 606286216806341,
 						"expanded": true
 					},
-					"showing": true,
-					"locked": false,
+					"showing": false,
+					"locked": true,
 					"world": {
 						"x": 334,
 						"y": 526,
@@ -9344,7 +9344,7 @@
 						"expanded": true
 					},
 					"showing": true,
-					"locked": false,
+					"locked": true,
 					"world": {
 						"x": 16,
 						"y": 584,
@@ -9485,8 +9485,8 @@
 						"sid": 849883751310821,
 						"expanded": true
 					},
-					"showing": true,
-					"locked": false,
+					"showing": false,
+					"locked": true,
 					"world": {
 						"x": 260,
 						"y": 378,
@@ -9556,8 +9556,8 @@
 						"sid": 966346402929236,
 						"expanded": true
 					},
-					"showing": true,
-					"locked": false,
+					"showing": false,
+					"locked": true,
 					"world": {
 						"x": 378,
 						"y": 324,
@@ -9627,8 +9627,8 @@
 						"sid": 769308515503769,
 						"expanded": true
 					},
-					"showing": true,
-					"locked": false,
+					"showing": false,
+					"locked": true,
 					"world": {
 						"x": 380,
 						"y": 308,
@@ -9698,8 +9698,8 @@
 						"sid": 437973039095304,
 						"expanded": true
 					},
-					"showing": true,
-					"locked": false,
+					"showing": false,
+					"locked": true,
 					"world": {
 						"x": 380,
 						"y": 292,
@@ -9769,8 +9769,8 @@
 						"sid": 752866777456794,
 						"expanded": true
 					},
-					"showing": true,
-					"locked": false,
+					"showing": false,
+					"locked": true,
 					"world": {
 						"x": 456,
 						"y": 308,
@@ -9840,8 +9840,8 @@
 						"sid": 429359083202215,
 						"expanded": true
 					},
-					"showing": true,
-					"locked": false,
+					"showing": false,
+					"locked": true,
 					"world": {
 						"x": 282,
 						"y": 300,
@@ -9911,8 +9911,8 @@
 						"sid": 624230118280932,
 						"expanded": true
 					},
-					"showing": true,
-					"locked": false,
+					"showing": false,
+					"locked": true,
 					"world": {
 						"x": 284,
 						"y": 330,
@@ -9982,8 +9982,8 @@
 						"sid": 863190709126300,
 						"expanded": true
 					},
-					"showing": true,
-					"locked": false,
+					"showing": false,
+					"locked": true,
 					"world": {
 						"x": 284,
 						"y": 238,
@@ -10053,8 +10053,8 @@
 						"sid": 673062079363134,
 						"expanded": true
 					},
-					"showing": true,
-					"locked": false,
+					"showing": false,
+					"locked": true,
 					"world": {
 						"x": 380,
 						"y": 278,
@@ -10124,8 +10124,8 @@
 						"sid": 467137948036653,
 						"expanded": true
 					},
-					"showing": true,
-					"locked": false,
+					"showing": false,
+					"locked": true,
 					"world": {
 						"x": 286,
 						"y": 268,
@@ -10195,8 +10195,8 @@
 						"sid": 716611380055650,
 						"expanded": true
 					},
-					"showing": true,
-					"locked": false,
+					"showing": false,
+					"locked": true,
 					"world": {
 						"x": 384,
 						"y": 248,
@@ -10266,8 +10266,8 @@
 						"sid": 818655172069573,
 						"expanded": true
 					},
-					"showing": true,
-					"locked": false,
+					"showing": false,
+					"locked": true,
 					"world": {
 						"x": 516,
 						"y": 304,
@@ -10314,7 +10314,7 @@
 						"expanded": true
 					},
 					"showing": true,
-					"locked": false,
+					"locked": true,
 					"world": {
 						"x": 16,
 						"y": 112,
@@ -10377,7 +10377,7 @@
 						"expanded": true
 					},
 					"showing": true,
-					"locked": false,
+					"locked": true,
 					"world": {
 						"x": 50,
 						"y": 114,
@@ -10447,7 +10447,7 @@
 						"sid": 741406851287848,
 						"expanded": true
 					},
-					"showing": true,
+					"showing": false,
 					"locked": false,
 					"world": {
 						"x": 300,
@@ -10509,6 +10509,194 @@
 						"width": 100,
 						"height": 100,
 						"originX": 0,
+						"originY": 0.5,
+						"color": [
+							1,
+							1,
+							1,
+							1
+						],
+						"angle": 0,
+						"zElevation": 0
+					}
+				},
+				{
+					"type": "CSInvItem",
+					"properties": {
+						"initially-visible": true,
+						"initial-animation": "1",
+						"initial-frame": 0,
+						"enable-collisions": true,
+						"live-preview": false
+					},
+					"uid": 667,
+					"sid": 856984209371407,
+					"tags": "",
+					"instanceVariables": {},
+					"behaviors": {
+						"Anchor": {
+							"properties": {
+								"left-edge": "window-left",
+								"top-edge": "window-top",
+								"right-edge": "none",
+								"bottom-edge": "none",
+								"enabled": true
+							}
+						}
+					},
+					"instanceFolderItem": {
+						"sid": 856984209371407,
+						"expanded": true
+					},
+					"showing": true,
+					"locked": false,
+					"world": {
+						"x": 486,
+						"y": 518,
+						"width": 10,
+						"height": 22,
+						"originX": 0.5882352941176471,
+						"originY": 0.5,
+						"color": [
+							1,
+							1,
+							1,
+							1
+						],
+						"angle": 0,
+						"zElevation": 0
+					}
+				},
+				{
+					"type": "PSInvItem",
+					"properties": {
+						"initially-visible": false,
+						"initial-animation": "1",
+						"initial-frame": 0,
+						"enable-collisions": true,
+						"live-preview": false
+					},
+					"uid": 668,
+					"sid": 714691502220531,
+					"tags": "",
+					"instanceVariables": {},
+					"behaviors": {
+						"Anchor": {
+							"properties": {
+								"left-edge": "window-left",
+								"top-edge": "window-top",
+								"right-edge": "none",
+								"bottom-edge": "none",
+								"enabled": true
+							}
+						}
+					},
+					"instanceFolderItem": {
+						"sid": 714691502220531,
+						"expanded": true
+					},
+					"showing": true,
+					"locked": false,
+					"world": {
+						"x": 582,
+						"y": 518,
+						"width": 12,
+						"height": 24,
+						"originX": 0.5,
+						"originY": 0.5,
+						"color": [
+							1,
+							1,
+							1,
+							1
+						],
+						"angle": 0,
+						"zElevation": 0
+					}
+				},
+				{
+					"type": "GSInvItem",
+					"properties": {
+						"initially-visible": false,
+						"initial-animation": "1",
+						"initial-frame": 0,
+						"enable-collisions": true,
+						"live-preview": false
+					},
+					"uid": 669,
+					"sid": 288347972698759,
+					"tags": "",
+					"instanceVariables": {},
+					"behaviors": {
+						"Anchor": {
+							"properties": {
+								"left-edge": "window-left",
+								"top-edge": "window-top",
+								"right-edge": "none",
+								"bottom-edge": "none",
+								"enabled": true
+							}
+						}
+					},
+					"instanceFolderItem": {
+						"sid": 288347972698759,
+						"expanded": true
+					},
+					"showing": true,
+					"locked": false,
+					"world": {
+						"x": 550,
+						"y": 518,
+						"width": 8.823529411764707,
+						"height": 19.25,
+						"originX": 0.5,
+						"originY": 0.5,
+						"color": [
+							1,
+							1,
+							1,
+							1
+						],
+						"angle": 0,
+						"zElevation": 0
+					}
+				},
+				{
+					"type": "ISInvItem",
+					"properties": {
+						"initially-visible": false,
+						"initial-animation": "1",
+						"initial-frame": 0,
+						"enable-collisions": true,
+						"live-preview": false
+					},
+					"uid": 1027,
+					"sid": 259124074568421,
+					"tags": "",
+					"instanceVariables": {},
+					"behaviors": {
+						"Anchor": {
+							"properties": {
+								"left-edge": "window-left",
+								"top-edge": "window-top",
+								"right-edge": "none",
+								"bottom-edge": "none",
+								"enabled": true
+							}
+						}
+					},
+					"instanceFolderItem": {
+						"sid": 259124074568421,
+						"expanded": true
+					},
+					"showing": true,
+					"locked": false,
+					"world": {
+						"x": 518,
+						"y": 520,
+						"width": 10,
+						"height": 22.55,
+						"originX": 0.5,
 						"originY": 0.5,
 						"color": [
 							1,
@@ -11263,6 +11451,22 @@
 			},
 			{
 				"sid": 491418104355526,
+				"expanded": true
+			},
+			{
+				"sid": 856984209371407,
+				"expanded": true
+			},
+			{
+				"sid": 259124074568421,
+				"expanded": true
+			},
+			{
+				"sid": 714691502220531,
+				"expanded": true
+			},
+			{
+				"sid": 288347972698759,
 				"expanded": true
 			}
 		],

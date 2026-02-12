@@ -237,8 +237,7 @@
 	"objectTypes": {
 		"items": [
 			"chargesForAttack",
-			"requestKeyLock",
-			"cowledWarlock"
+			"requestKeyLock"
 		],
 		"subfolders": [
 			{
@@ -358,7 +357,10 @@
 							"ToNormalShop",
 							"ToWeaponryCATatkchargeSHOP",
 							"chargeFragType0",
-							"CSshopItem"
+							"CSshopItem",
+							"ISshopItem",
+							"GSshopItem",
+							"PSshopItem"
 						],
 						"subfolders": [],
 						"name": "ShopHUD"
@@ -384,7 +386,11 @@
 							"ArrowINVtestText",
 							"HPpotsHUDINVtestText",
 							"MoneyINVtestText",
-							"MPpotsHUDINVtestText"
+							"MPpotsHUDINVtestText",
+							"CSInvItem",
+							"ISInvItem",
+							"GSInvItem",
+							"PSInvItem"
 						],
 						"subfolders": [],
 						"name": "INV"
@@ -479,6 +485,13 @@
 									}
 								],
 								"name": "catastropicGlutton"
+							},
+							{
+								"items": [
+									"cowledWarlock"
+								],
+								"subfolders": [],
+								"name": "CowledMagician"
 							}
 						],
 						"name": "Enemies"
@@ -788,6 +801,14 @@
 					"name": "Shop.webm",
 					"type": "audio/webm; codecs=opus",
 					"sid": 836311878437447,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "NowStopAskingWhere_PLACEHOLDERmusic.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 925993255405696,
 					"file-info": {
 						"purpose": "none"
 					}

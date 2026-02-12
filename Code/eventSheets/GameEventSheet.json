@@ -342,6 +342,46 @@
 			"sid": 989319646890726
 		},
 		{
+			"eventType": "variable",
+			"name": "ISobtained",
+			"type": "boolean",
+			"initialValue": "false",
+			"comment": "False = Not obtained. True = Obtained.",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 242498463403943
+		},
+		{
+			"eventType": "variable",
+			"name": "GSobtained",
+			"type": "boolean",
+			"initialValue": "false",
+			"comment": "False = Not obtained. True = Obtained.",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 262068932682480
+		},
+		{
+			"eventType": "variable",
+			"name": "PSobtained",
+			"type": "boolean",
+			"initialValue": "false",
+			"comment": "False = Not obtained. True = Obtained.",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 535653918135918
+		},
+		{
+			"eventType": "variable",
+			"name": "MeleeSStype",
+			"type": "number",
+			"initialValue": "0",
+			"comment": "0 = Copper. 1 = Iron. 2 = Gold. 3 = Platinum",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 966979094337139
+		},
+		{
 			"eventType": "group",
 			"disabled": false,
 			"title": "Player",
@@ -387,10 +427,10 @@
 										{
 											"id": "add-to-eventvar",
 											"objectClass": "System",
-											"sid": 308827555062013,
+											"sid": 133314384334213,
 											"parameters": {
 												"variable": "RubySTRmod",
-												"value": "4"
+												"value": "3"
 											}
 										},
 										{
@@ -444,10 +484,10 @@
 										{
 											"id": "subtract-from-instvar",
 											"objectClass": "Ruby",
-											"sid": 717838886776764,
+											"sid": 676512208032647,
 											"parameters": {
 												"instance-variable": "ShieldEnergy",
-												"value": "2"
+												"value": "4"
 											}
 										},
 										{
@@ -501,10 +541,10 @@
 										{
 											"id": "add-to-eventvar",
 											"objectClass": "System",
-											"sid": 305158218369843,
+											"sid": 118810185934167,
 											"parameters": {
 												"variable": "RubyDEFmod",
-												"value": "4"
+												"value": "3"
 											}
 										},
 										{
@@ -19144,6 +19184,14 @@
 									],
 									"actions": [
 										{
+											"id": "set-collisions-enabled",
+											"objectClass": "CD",
+											"sid": 373829824062859,
+											"parameters": {
+												"collisions": "disabled"
+											}
+										},
+										{
 											"id": "instance-signal",
 											"objectClass": "Ruby",
 											"sid": 402990575381303,
@@ -19154,10 +19202,20 @@
 										{
 											"id": "subtract-from-instvar",
 											"objectClass": "Ruby",
-											"sid": 131323596463012,
+											"sid": 818056428758606,
+											"disabled": true,
 											"parameters": {
 												"instance-variable": "HP",
-												"value": "6-RubyDEFmod"
+												"value": "4-RubyDEFmod"
+											}
+										},
+										{
+											"id": "subtract-from-instvar",
+											"objectClass": "Ruby",
+											"sid": 425885379590076,
+											"parameters": {
+												"instance-variable": "HP",
+												"value": "floor(4-(RubyDEFmod*0.75))"
 											}
 										},
 										{
@@ -19197,11 +19255,19 @@
 										},
 										{
 											"id": "set-collisions-enabled",
+											"objectClass": "CD",
+											"sid": 284462160079507,
+											"parameters": {
+												"collisions": "enabled"
+											}
+										},
+										{
+											"id": "set-collisions-enabled",
 											"objectClass": "catastrophicGluttonHead",
-											"sid": 877432532419978,
+											"sid": 992693415592044,
 											"disabled": true,
 											"parameters": {
-												"collisions": "disabled"
+												"collisions": "enabled"
 											}
 										}
 									],
@@ -19212,8 +19278,8 @@
 									"conditions": [
 										{
 											"id": "on-collision-with-another-object",
-											"objectClass": "NecromancerATKS",
-											"sid": 474297124578477,
+											"objectClass": "CDSoulBullet",
+											"sid": 993908277252739,
 											"parameters": {
 												"object": "Ruby"
 											}
@@ -19222,8 +19288,8 @@
 									"actions": [
 										{
 											"id": "set-position",
-											"objectClass": "NecromancerATKS",
-											"sid": 213575236831728,
+											"objectClass": "CDSoulBullet",
+											"sid": 440653781653189,
 											"parameters": {
 												"x": "-1000",
 												"y": "-1000"
@@ -19231,11 +19297,19 @@
 										},
 										{
 											"id": "set-enabled",
-											"objectClass": "NecromancerATKS",
-											"sid": 413313655919539,
+											"objectClass": "CDSoulBullet",
+											"sid": 737536790887942,
 											"behaviorType": "Bullet",
 											"parameters": {
 												"state": "disabled"
+											}
+										},
+										{
+											"id": "set-collisions-enabled",
+											"objectClass": "CD",
+											"sid": 414547677993245,
+											"parameters": {
+												"collisions": "disabled"
 											}
 										},
 										{
@@ -19249,10 +19323,10 @@
 										{
 											"id": "subtract-from-instvar",
 											"objectClass": "Ruby",
-											"sid": 823360251225197,
+											"sid": 660658681935128,
 											"parameters": {
 												"instance-variable": "HP",
-												"value": "floor(7-(RubyDEFmod*0.75))"
+												"value": "floor(6-(RubyDEFmod*0.75))"
 											}
 										},
 										{
@@ -19288,6 +19362,14 @@
 											"parameters": {
 												"seconds": "2.5",
 												"use-timescale": true
+											}
+										},
+										{
+											"id": "set-collisions-enabled",
+											"objectClass": "CD",
+											"sid": 698188694974567,
+											"parameters": {
+												"collisions": "enabled"
 											}
 										}
 									],

@@ -145,6 +145,129 @@
 				{
 					"id": "cursor-is-over-object",
 					"objectClass": "Mouse",
+					"sid": 734288575150433,
+					"parameters": {
+						"object": "ISshopItem"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "set-eventvar-value",
+					"objectClass": "System",
+					"sid": 387154734698328,
+					"parameters": {
+						"variable": "ItemCost",
+						"value": "250"
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "ItemCostVariable",
+					"sid": 487958850573748,
+					"parameters": {
+						"text": "\"$250\""
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "ItemCostDescription",
+					"sid": 776315223321632,
+					"parameters": {
+						"text": "\"A plain ol' iron shortsword, a little rusty and damaged but usable.\""
+					}
+				}
+			],
+			"sid": 414778120750757
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "cursor-is-over-object",
+					"objectClass": "Mouse",
+					"sid": 737786372667505,
+					"parameters": {
+						"object": "GSshopItem"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "set-eventvar-value",
+					"objectClass": "System",
+					"sid": 806967048936200,
+					"parameters": {
+						"variable": "ItemCost",
+						"value": "750"
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "ItemCostVariable",
+					"sid": 126364890696200,
+					"parameters": {
+						"text": "\"$750\""
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "ItemCostDescription",
+					"sid": 799640694814912,
+					"parameters": {
+						"text": "\"An ornate gold shortsword, adorned with a ruby.\""
+					}
+				}
+			],
+			"sid": 574027623817505
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "cursor-is-over-object",
+					"objectClass": "Mouse",
+					"sid": 859136849298597,
+					"parameters": {
+						"object": "PSshopItem"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "set-eventvar-value",
+					"objectClass": "System",
+					"sid": 254676681177158,
+					"parameters": {
+						"variable": "ItemCost",
+						"value": "1000"
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "ItemCostVariable",
+					"sid": 690786463867949,
+					"parameters": {
+						"text": "\"$1000\""
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "ItemCostDescription",
+					"sid": 769021115798685,
+					"parameters": {
+						"text": "\"An ornate platinum shortsword, adorned with a diamond.\""
+					}
+				}
+			],
+			"sid": 674129758411221
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "cursor-is-over-object",
+					"objectClass": "Mouse",
 					"sid": 125798553500955,
 					"parameters": {
 						"object": "runicDictionary"

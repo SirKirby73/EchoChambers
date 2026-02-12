@@ -678,43 +678,6 @@
 					}
 				},
 				{
-					"type": "CSshopItem",
-					"properties": {
-						"initially-visible": true,
-						"initial-animation": "Animation 1",
-						"initial-frame": 0,
-						"enable-collisions": true,
-						"live-preview": false
-					},
-					"uid": 1027,
-					"sid": 628914771421244,
-					"tags": "",
-					"instanceVariables": {},
-					"behaviors": {},
-					"instanceFolderItem": {
-						"sid": 628914771421244,
-						"expanded": true
-					},
-					"showing": true,
-					"locked": false,
-					"world": {
-						"x": 339.3157524989204,
-						"y": 542.42125384991,
-						"width": 40,
-						"height": 10,
-						"originX": 0.5,
-						"originY": 0.5,
-						"color": [
-							1,
-							1,
-							1,
-							1
-						],
-						"angle": 5.487610051005613,
-						"zElevation": 0
-					}
-				},
-				{
 					"type": "ToNormalShop",
 					"properties": {
 						"type": "button",
@@ -865,6 +828,117 @@
 						"angle": 0.44218830538706877,
 						"zElevation": 0
 					}
+				},
+				{
+					"type": "PSshopItem",
+					"properties": {
+						"initially-visible": true,
+						"initial-animation": "Animation 1",
+						"initial-frame": 0,
+						"enable-collisions": true,
+						"live-preview": false
+					},
+					"uid": 626,
+					"sid": 703187966552567,
+					"tags": "",
+					"instanceVariables": {},
+					"behaviors": {},
+					"instanceFolderItem": {
+						"sid": 703187966552567,
+						"expanded": true
+					},
+					"showing": true,
+					"locked": false,
+					"world": {
+						"x": 454.18194551661117,
+						"y": 415.59713352712663,
+						"width": 31.902111271718198,
+						"height": 87.33856692421212,
+						"originX": 0.48360655737704916,
+						"originY": 0.5149700598802395,
+						"color": [
+							1,
+							1,
+							1,
+							1
+						],
+						"angle": 0.5131657235523195,
+						"zElevation": 0
+					}
+				},
+				{
+					"type": "ISshopItem",
+					"properties": {
+						"initially-visible": true,
+						"initial-animation": "Animation 1",
+						"initial-frame": 0,
+						"enable-collisions": true,
+						"live-preview": false
+					},
+					"uid": 665,
+					"sid": 735978155199354,
+					"tags": "",
+					"instanceVariables": {},
+					"behaviors": {},
+					"instanceFolderItem": {
+						"sid": 735978155199354,
+						"expanded": true
+					},
+					"showing": true,
+					"locked": false,
+					"world": {
+						"x": 563.5950467623197,
+						"y": 532.182749586839,
+						"width": 40,
+						"height": 10,
+						"originX": 0.5,
+						"originY": 0.5,
+						"color": [
+							1,
+							1,
+							1,
+							1
+						],
+						"angle": 5.487610051005613,
+						"zElevation": 0
+					}
+				},
+				{
+					"type": "GSshopItem",
+					"properties": {
+						"initially-visible": true,
+						"initial-animation": "Animation 1",
+						"initial-frame": 0,
+						"enable-collisions": true,
+						"live-preview": false
+					},
+					"uid": 666,
+					"sid": 673860916335033,
+					"tags": "",
+					"instanceVariables": {},
+					"behaviors": {},
+					"instanceFolderItem": {
+						"sid": 673860916335033,
+						"expanded": true
+					},
+					"showing": true,
+					"locked": false,
+					"world": {
+						"x": 558.0101778470553,
+						"y": 413.0444087101863,
+						"width": 40,
+						"height": 10,
+						"originX": 0.5,
+						"originY": 0.5,
+						"color": [
+							1,
+							1,
+							1,
+							1
+						],
+						"angle": 5.487610051005613,
+						"zElevation": 0
+					}
 				}
 			],
 			"sid": 693497996702987,
@@ -956,7 +1030,11 @@
 				"expanded": true
 			},
 			{
-				"sid": 628914771421244,
+				"sid": 735978155199354,
+				"expanded": true
+			},
+			{
+				"sid": 673860916335033,
 				"expanded": true
 			},
 			{
@@ -973,6 +1051,10 @@
 			},
 			{
 				"sid": 374602132842224,
+				"expanded": true
+			},
+			{
+				"sid": 703187966552567,
 				"expanded": true
 			}
 		],

@@ -1,0 +1,56 @@
+{
+	"name": "PSshopItem",
+	"plugin-id": "Sprite",
+	"sid": 334585931176698,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 61,
+						"height": 167,
+						"originX": 0.48360655737704916,
+						"originY": 0.5149700598802395,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 1949152,
+						"collisionPoly": {
+							"points": [
+								0.4262295081967213,
+								0.017964071856287425,
+								0.9836065573770492,
+								0.7664670658682635,
+								0.6557377049180327,
+								0.9940119760479041,
+								0.1147540983606558,
+								0.8802395209580839,
+								0.03278688524590164,
+								0.8383233532934131,
+								0.01639344262295082,
+								0.6586826347305389
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 397650017802621,
+				"name": "Animation 1",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 5
+			}
+		],
+		"subfolders": []
+	}
+}
