@@ -1,9 +1,0 @@
-{
-	"name": "skipIntroMovieButton",
-	"plugin-id": "Button",
-	"sid": 102192919041348,
-	"isGlobal": false,
-	"editorNewInstanceIsReplica": true,
-	"instanceVariables": [],
-	"behaviorTypes": []
-}

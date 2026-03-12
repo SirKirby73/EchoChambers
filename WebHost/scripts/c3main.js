@@ -1919,7 +1919,11 @@ var o3;
     if ("iOS" === C32.Platform.OS) return false;
     const e = document.documentElement;
     return !!(e.requestFullscreen || e.msRequestFullscreen || e.mozRequestFullScreen || e.webkitRequestFullscreen);
-  })(), C32.Supports.ImageDecoder = void 0 !== self["ImageDecoder"], C32.Supports.WebCodecs = !!self["VideoEncoder"], C32.Supports.NativeFileSystemAPI = !!self["showOpenFilePicker"], C32.Supports.QueryLocalFonts = !!self["queryLocalFonts"], C32.Supports.UserActivation = !!navigator["userActivation"], C32.Supports.CanvasToBlobWebP = false, (async () => {
+  })(), C32.Supports.ImageDecoder = void 0 !== self["ImageDecoder"], C32.Supports.WebCodecs = !!self["VideoEncoder"], C32.Supports.NativeFileSystemAPI = !!self["showOpenFilePicker"], C32.Supports.FileInputDirectory = (function() {
+    if ("undefined" == typeof document) return false;
+    const e = document.createElement("input");
+    return e.type = "file", "webkitdirectory" in e || "directory" in e;
+  })(), C32.Supports.QueryLocalFonts = !!self["queryLocalFonts"], C32.Supports.UserActivation = !!navigator["userActivation"], C32.Supports.CanvasToBlobWebP = false, (async () => {
     let e;
     "undefined" == typeof document ? e = new OffscreenCanvas(32, 32) : (e = document.createElement("canvas"), e.width = 32, e.height = 32);
     const t2 = e.getContext("2d");
@@ -1946,6 +1950,15 @@ var o3;
     if (!(t2 instanceof Set)) throw new TypeError("argument must be a Set");
     for (const e of this) if (!t2.has(e)) return false;
     return true;
+  }), Set.prototype.difference || (Set.prototype.difference = function(t2) {
+    if (!(t2 instanceof Set)) throw new TypeError("argument must be a Set");
+    const e = /* @__PURE__ */ new Set();
+    for (const r2 of this) t2.has(r2) || e.add(r2);
+    return e;
+  }), Set.prototype.union || (Set.prototype.union = function(t2) {
+    const e = new Set(this);
+    for (const r2 of t2) e.add(r2);
+    return e;
   }), navigator["storage"] && !navigator["storage"]["estimate"] && navigator["webkitTemporaryStorage"] && navigator["webkitTemporaryStorage"]["queryUsageAndQuota"] && (navigator["storage"]["estimate"] = function() {
     return new Promise((t2, e) => navigator["webkitTemporaryStorage"]["queryUsageAndQuota"]((e2, r2) => t2({ "usage": e2, "quota": r2 }), e));
   });
@@ -1982,6 +1995,8 @@ var assertFail2;
     C32.IsNullOrUndefined(e);
   }, C32.RequireAllFiniteNumber = function(...e) {
     for (let n of e) ;
+  }, C32.IsDataURI = function(e) {
+    return !!C32.IsString(e) && /^data:.+,.+$/i.test(e);
   }, C32.IsString = function(e) {
     return "string" == typeof e;
   }, C32.RequireString = function(e) {
@@ -2279,23 +2294,23 @@ var VerifyObjectPropertiesConsistent2;
   };
   isNegativeZero2 = isNegativeZero;
   const C32 = self.C3, TWO_PI = 2 * Math.PI, D_TO_R = Math.PI / 180, R_TO_D = 180 / Math.PI;
-  C32.wrap = function(t2, n, e) {
+  C32.wrap = function(t2, n, r2) {
     t2 = Math.floor(t2), n = Math.floor(n);
-    const r2 = (e = Math.floor(e)) - n;
-    if (0 === r2) return e;
+    const e = (r2 = Math.floor(r2)) - n;
+    if (0 === e) return r2;
     if (t2 < n) {
-      const a2 = e - (n - t2) % r2;
-      return a2 === e ? 0 : a2;
+      const a2 = r2 - (n - t2) % e;
+      return a2 === r2 ? 0 : a2;
     }
-    return n + (t2 - n) % r2;
-  }, C32.mapToRange = function(t2, n, e, r2, a2) {
-    const o2 = e - n;
-    if (0 === o2 && 0 === r2) return t2;
-    return (t2 - n) * (a2 - r2) / o2 + r2;
-  }, C32.normalize = function(t2, n, e) {
-    return n - e === 0 ? 1 : (t2 - n) / (e - n);
-  }, C32.clamp = function(t2, n, e) {
-    return t2 < n ? n : t2 > e ? e : t2;
+    return n + (t2 - n) % e;
+  }, C32.mapToRange = function(t2, n, r2, e, a2) {
+    const o2 = r2 - n;
+    if (0 === o2 && 0 === e) return t2;
+    return (t2 - n) * (a2 - e) / o2 + e;
+  }, C32.normalize = function(t2, n, r2) {
+    return n - r2 === 0 ? 1 : (t2 - n) / (r2 - n);
+  }, C32.clamp = function(t2, n, r2) {
+    return t2 < n ? n : t2 > r2 ? r2 : t2;
   }, C32.clampAngle = function(t2) {
     return (t2 %= TWO_PI) < 0 && (t2 += TWO_PI), t2;
   }, C32.toRadians = function(t2) {
@@ -2304,50 +2319,55 @@ var VerifyObjectPropertiesConsistent2;
     return t2 * R_TO_D;
   }, C32.hypot2DFast = function(t2, n) {
     return Math.sqrt(t2 * t2 + n * n);
-  }, C32.hypot3DFast = function(t2, n, e) {
-    return Math.sqrt(t2 * t2 + n * n + e * e);
-  }, C32.distanceTo = function(t2, n, e, r2) {
-    return C32.hypot2DFast(e - t2, r2 - n);
-  }, C32.distanceSquared = function(t2, n, e, r2) {
-    const a2 = e - t2, o2 = r2 - n;
+  }, C32.hypot3DFast = function(t2, n, r2) {
+    return Math.sqrt(t2 * t2 + n * n + r2 * r2);
+  }, C32.distanceTo = function(t2, n, r2, e) {
+    return C32.hypot2DFast(r2 - t2, e - n);
+  }, C32.distanceSquared = function(t2, n, r2, e) {
+    const a2 = r2 - t2, o2 = e - n;
     return a2 * a2 + o2 * o2;
-  }, C32.angleTo = function(t2, n, e, r2) {
-    return Math.atan2(r2 - n, e - t2);
+  }, C32.distanceTo3d = function(t2, n, r2, e, a2, o2, c2 = 1) {
+    return C32.hypot3DFast(e - t2, a2 - n, (o2 - r2) * c2);
+  }, C32.distanceSquared3d = function(t2, n, r2, e, a2, o2) {
+    const c2 = e - t2, u2 = a2 - n, i = o2 - r2;
+    return c2 * c2 + u2 * u2 + i * i;
+  }, C32.angleTo = function(t2, n, r2, e) {
+    return Math.atan2(e - n, r2 - t2);
   }, C32.angleDiff = function(t2, n) {
     if (t2 === n) return 0;
-    let e = Math.sin(t2), r2 = Math.cos(t2), a2 = e * Math.sin(n) + r2 * Math.cos(n);
+    let r2 = Math.sin(t2), e = Math.cos(t2), a2 = r2 * Math.sin(n) + e * Math.cos(n);
     return a2 >= 1 ? 0 : a2 <= -1 ? Math.PI : Math.acos(a2);
-  }, C32.angleRotate = function(t2, n, e) {
-    let r2 = Math.sin(t2), a2 = Math.cos(t2), o2 = Math.sin(n), c2 = Math.cos(n);
-    return Math.acos(r2 * o2 + a2 * c2) > e ? a2 * o2 - r2 * c2 > 0 ? C32.clampAngle(t2 + e) : C32.clampAngle(t2 - e) : C32.clampAngle(n);
+  }, C32.angleRotate = function(t2, n, r2) {
+    let e = Math.sin(t2), a2 = Math.cos(t2), o2 = Math.sin(n), c2 = Math.cos(n);
+    return Math.acos(e * o2 + a2 * c2) > r2 ? a2 * o2 - e * c2 > 0 ? C32.clampAngle(t2 + r2) : C32.clampAngle(t2 - r2) : C32.clampAngle(n);
   }, C32.angleClockwise = function(t2, n) {
-    let e = Math.sin(t2);
-    return Math.cos(t2) * Math.sin(n) - e * Math.cos(n) <= 0;
-  }, C32.angleLerp = function(t2, n, e, r2 = 0) {
+    let r2 = Math.sin(t2);
+    return Math.cos(t2) * Math.sin(n) - r2 * Math.cos(n) <= 0;
+  }, C32.angleLerp = function(t2, n, r2, e = 0) {
     let a2 = C32.angleDiff(t2, n);
-    const o2 = TWO_PI * r2;
-    return C32.angleClockwise(n, t2) ? C32.clampAngle(t2 + (a2 + o2) * e) : C32.clampAngle(t2 - (a2 + o2) * e);
-  }, C32.angleLerpClockwise = function(t2, n, e, r2 = 0) {
-    const a2 = C32.angleDiff(t2, n), o2 = TWO_PI * r2;
-    return C32.angleClockwise(n, t2) ? C32.clampAngle(t2 + (a2 + o2) * e) : C32.clampAngle(t2 + (TWO_PI - a2 + o2) * e);
-  }, C32.angleLerpAntiClockwise = function(t2, n, e, r2 = 0) {
-    const a2 = C32.angleDiff(t2, n), o2 = TWO_PI * r2;
-    return C32.angleClockwise(n, t2) ? C32.clampAngle(t2 - (-TWO_PI + a2 - o2) * e) : C32.clampAngle(t2 - (a2 + o2) * e);
+    const o2 = TWO_PI * e;
+    return C32.angleClockwise(n, t2) ? C32.clampAngle(t2 + (a2 + o2) * r2) : C32.clampAngle(t2 - (a2 + o2) * r2);
+  }, C32.angleLerpClockwise = function(t2, n, r2, e = 0) {
+    const a2 = C32.angleDiff(t2, n), o2 = TWO_PI * e;
+    return C32.angleClockwise(n, t2) ? C32.clampAngle(t2 + (a2 + o2) * r2) : C32.clampAngle(t2 + (TWO_PI - a2 + o2) * r2);
+  }, C32.angleLerpAntiClockwise = function(t2, n, r2, e = 0) {
+    const a2 = C32.angleDiff(t2, n), o2 = TWO_PI * e;
+    return C32.angleClockwise(n, t2) ? C32.clampAngle(t2 - (-TWO_PI + a2 - o2) * r2) : C32.clampAngle(t2 - (a2 + o2) * r2);
   }, C32.angleReflect = function(t2, n) {
-    const e = C32.angleDiff(t2, n);
-    return C32.angleClockwise(t2, n) ? C32.clampAngle(n - e) : C32.clampAngle(n + e);
-  }, C32.lerp = function(t2, n, e) {
-    return t2 + e * (n - t2);
-  }, C32.unlerp = function(t2, n, e) {
-    return t2 === n ? 0 : (e - t2) / (n - t2);
-  }, C32.relerp = function(t2, n, e, r2, a2) {
-    return C32.lerp(r2, a2, C32.unlerp(t2, n, e));
-  }, C32.qarp = function(t2, n, e, r2) {
-    return C32.lerp(C32.lerp(t2, n, r2), C32.lerp(n, e, r2), r2);
-  }, C32.cubic = function(t2, n, e, r2, a2) {
-    return C32.lerp(C32.qarp(t2, n, e, a2), C32.qarp(n, e, r2, a2), a2);
-  }, C32.cosp = function(t2, n, e) {
-    return (t2 + n + (t2 - n) * Math.cos(e * Math.PI)) / 2;
+    const r2 = C32.angleDiff(t2, n);
+    return C32.angleClockwise(t2, n) ? C32.clampAngle(n - r2) : C32.clampAngle(n + r2);
+  }, C32.lerp = function(t2, n, r2) {
+    return t2 + r2 * (n - t2);
+  }, C32.unlerp = function(t2, n, r2) {
+    return t2 === n ? 0 : (r2 - t2) / (n - t2);
+  }, C32.relerp = function(t2, n, r2, e, a2) {
+    return C32.lerp(e, a2, C32.unlerp(t2, n, r2));
+  }, C32.qarp = function(t2, n, r2, e) {
+    return C32.lerp(C32.lerp(t2, n, e), C32.lerp(n, r2, e), e);
+  }, C32.cubic = function(t2, n, r2, e, a2) {
+    return C32.lerp(C32.qarp(t2, n, r2, a2), C32.qarp(n, r2, e, a2), a2);
+  }, C32.cosp = function(t2, n, r2) {
+    return (t2 + n + (t2 - n) * Math.cos(r2 * Math.PI)) / 2;
   }, C32.isPOT = function(t2) {
     return t2 > 0 && !(t2 - 1 & t2);
   }, C32.nextHighestPowerOfTwo = function(t2) {
@@ -2360,22 +2380,22 @@ var VerifyObjectPropertiesConsistent2;
     return Math.floor(t2 * n) / n;
   }, C32.roundToDp = function(t2, n) {
     n = Math.max(Math.floor(n), 0);
-    const e = Math.pow(10, n);
-    return Math.round(t2 * e) / e;
+    const r2 = Math.pow(10, n);
+    return Math.round(t2 * r2) / r2;
   }, C32.countDecimals = function(t2) {
     return Math.floor(t2) !== t2 && t2.toString().split(".")[1].length || 0;
   }, C32.toFixed = function(t2, n) {
-    let e = t2.toFixed(n), r2 = e.length - 1;
-    for (; r2 >= 0 && "0" === e.charAt(r2); --r2) ;
-    return r2 >= 0 && "." === e.charAt(r2) && --r2, r2 < 0 ? e : e.substr(0, r2 + 1);
-  }, C32.PackRGB = function(t2, n, e) {
-    return C32.clamp(t2, 0, 255) | C32.clamp(n, 0, 255) << 8 | C32.clamp(e, 0, 255) << 16;
+    let r2 = t2.toFixed(n), e = r2.length - 1;
+    for (; e >= 0 && "0" === r2.charAt(e); --e) ;
+    return e >= 0 && "." === r2.charAt(e) && --e, e < 0 ? r2 : r2.substr(0, e + 1);
+  }, C32.PackRGB = function(t2, n, r2) {
+    return C32.clamp(t2, 0, 255) | C32.clamp(n, 0, 255) << 8 | C32.clamp(r2, 0, 255) << 16;
   };
   const ALPHAEX_SHIFT = 1024, ALPHAEX_MAX = 1023, RGBEX_SHIFT = 16384, RGBEX_MAX = 8191, RGBEX_MIN = -8192;
-  C32.PackRGBAEx = function(t2, n, e, r2) {
-    return (t2 = C32.clamp(Math.floor(1024 * t2), -8192, 8191)) < 0 && (t2 += 16384), (n = C32.clamp(Math.floor(1024 * n), -8192, 8191)) < 0 && (n += 16384), (e = C32.clamp(Math.floor(1024 * e), -8192, 8191)) < 0 && (e += 16384), -(16384 * t2 * 16384 * 1024 + 16384 * n * 1024 + 1024 * e + (r2 = C32.clamp(Math.floor(1023 * r2), 0, 1023)));
-  }, C32.PackRGBEx = function(t2, n, e) {
-    return C32.PackRGBAEx(t2, n, e, 1);
+  C32.PackRGBAEx = function(t2, n, r2, e) {
+    return (t2 = C32.clamp(Math.floor(1024 * t2), -8192, 8191)) < 0 && (t2 += 16384), (n = C32.clamp(Math.floor(1024 * n), -8192, 8191)) < 0 && (n += 16384), (r2 = C32.clamp(Math.floor(1024 * r2), -8192, 8191)) < 0 && (r2 += 16384), -(16384 * t2 * 16384 * 1024 + 16384 * n * 1024 + 1024 * r2 + (e = C32.clamp(Math.floor(1023 * e), 0, 1023)));
+  }, C32.PackRGBEx = function(t2, n, r2) {
+    return C32.PackRGBAEx(t2, n, r2, 1);
   }, C32.GetRValue = function(t2) {
     if (t2 >= 0) return (255 & t2) / 255;
     {
@@ -2400,69 +2420,86 @@ var VerifyObjectPropertiesConsistent2;
     return Math.floor(-t2 % 1024) / 1023;
   }, C32.greatestCommonDivisor = function(t2, n) {
     for (t2 = Math.floor(t2), n = Math.floor(n); 0 !== n; ) {
-      let e = n;
-      n = t2 % n, t2 = e;
+      let r2 = n;
+      n = t2 % n, t2 = r2;
     }
     return t2;
   };
   const COMMON_ASPECT_RATIOS = [[3, 2], [4, 3], [5, 4], [5, 3], [6, 5], [14, 9], [16, 9], [16, 10], [21, 9]];
   C32.getAspectRatio = function(t2, n) {
     if ((t2 = Math.floor(t2)) === (n = Math.floor(n))) return [1, 1];
-    for (let e2 of COMMON_ASPECT_RATIOS) {
-      let r2 = t2 / e2[0] * e2[1];
-      if (Math.abs(n - r2) < 1) return e2.slice(0);
-      if (r2 = t2 / e2[1] * e2[0], Math.abs(n - r2) < 1) return [e2[1], e2[0]];
+    for (let r3 of COMMON_ASPECT_RATIOS) {
+      let e = t2 / r3[0] * r3[1];
+      if (Math.abs(n - e) < 1) return r3.slice(0);
+      if (e = t2 / r3[1] * r3[0], Math.abs(n - e) < 1) return [r3[1], r3[0]];
     }
-    let e = C32.greatestCommonDivisor(t2, n);
-    return [t2 / e, n / e];
-  }, C32.segmentsIntersect = function(t2, n, e, r2, a2, o2, c2, u2) {
-    const i = Math.min(t2, e), l = Math.max(t2, e), s = Math.min(a2, c2), C2 = Math.max(a2, c2);
+    let r2 = C32.greatestCommonDivisor(t2, n);
+    return [t2 / r2, n / r2];
+  }, C32.segmentsIntersect = function(t2, n, r2, e, a2, o2, c2, u2) {
+    const i = Math.min(t2, r2), l = Math.max(t2, r2), s = Math.min(a2, c2), C2 = Math.max(a2, c2);
     if (l < s || i > C2) return false;
-    const f2 = Math.min(n, r2), h2 = Math.max(n, r2), M2 = Math.min(o2, u2), g2 = Math.max(o2, u2);
-    if (h2 < M2 || f2 > g2) return false;
-    const m2 = a2 - t2 + c2 - e, p2 = o2 - n + u2 - r2, I2 = e - t2, T2 = r2 - n, P2 = c2 - a2, A = u2 - o2, _2 = Math.abs(T2 * P2 - A * I2), x2 = P2 * p2 - A * m2;
+    const f2 = Math.min(n, e), h2 = Math.max(n, e), M2 = Math.min(o2, u2), m2 = Math.max(o2, u2);
+    if (h2 < M2 || f2 > m2) return false;
+    const g2 = a2 - t2 + c2 - r2, p2 = o2 - n + u2 - e, T2 = r2 - t2, A = e - n, I2 = c2 - a2, P2 = u2 - o2, _2 = Math.abs(A * I2 - P2 * T2), x2 = I2 * p2 - P2 * g2;
     if (Math.abs(x2) > _2) return false;
-    const O2 = I2 * p2 - T2 * m2;
-    return Math.abs(O2) <= _2;
-  }, C32.segmentsIntersectPreCalc = function(t2, n, e, r2, a2, o2, c2, u2, i, l, s, C2) {
+    const d2 = T2 * p2 - A * g2;
+    return Math.abs(d2) <= _2;
+  }, C32.segmentsIntersectPreCalc = function(t2, n, r2, e, a2, o2, c2, u2, i, l, s, C2) {
     const f2 = Math.min(i, s), h2 = Math.max(i, s);
     if (o2 < f2 || a2 > h2) return false;
-    const M2 = Math.min(l, C2), g2 = Math.max(l, C2);
-    if (u2 < M2 || c2 > g2) return false;
-    const m2 = i - t2 + s - e, p2 = l - n + C2 - r2, I2 = e - t2, T2 = r2 - n, P2 = s - i, A = C2 - l, _2 = Math.abs(T2 * P2 - A * I2), x2 = P2 * p2 - A * m2;
+    const M2 = Math.min(l, C2), m2 = Math.max(l, C2);
+    if (u2 < M2 || c2 > m2) return false;
+    const g2 = i - t2 + s - r2, p2 = l - n + C2 - e, T2 = r2 - t2, A = e - n, I2 = s - i, P2 = C2 - l, _2 = Math.abs(A * I2 - P2 * T2), x2 = I2 * p2 - P2 * g2;
     if (Math.abs(x2) > _2) return false;
-    const O2 = I2 * p2 - T2 * m2;
-    return Math.abs(O2) <= _2;
-  }, C32.segmentIntersectsQuad = function(t2, n, e, r2, a2) {
-    const o2 = Math.min(t2, e), c2 = Math.max(t2, e), u2 = Math.min(n, r2), i = Math.max(n, r2), l = a2.getTlx(), s = a2.getTly(), C2 = a2.getTrx(), f2 = a2.getTry(), h2 = a2.getBrx(), M2 = a2.getBry(), g2 = a2.getBlx(), m2 = a2.getBly();
-    return C32.segmentsIntersectPreCalc(t2, n, e, r2, o2, c2, u2, i, l, s, C2, f2) || C32.segmentsIntersectPreCalc(t2, n, e, r2, o2, c2, u2, i, C2, f2, h2, M2) || C32.segmentsIntersectPreCalc(t2, n, e, r2, o2, c2, u2, i, h2, M2, g2, m2) || C32.segmentsIntersectPreCalc(t2, n, e, r2, o2, c2, u2, i, g2, m2, l, s);
-  }, C32.segmentIntersectsAnyN = function(t2, n, e, r2, a2) {
-    const o2 = Math.min(t2, e), c2 = Math.max(t2, e), u2 = Math.min(n, r2), i = Math.max(n, r2);
+    const d2 = T2 * p2 - A * g2;
+    return Math.abs(d2) <= _2;
+  }, C32.segmentIntersectsQuad = function(t2, n, r2, e, a2) {
+    const o2 = Math.min(t2, r2), c2 = Math.max(t2, r2), u2 = Math.min(n, e), i = Math.max(n, e), l = a2.getTlx(), s = a2.getTly(), C2 = a2.getTrx(), f2 = a2.getTry(), h2 = a2.getBrx(), M2 = a2.getBry(), m2 = a2.getBlx(), g2 = a2.getBly();
+    return C32.segmentsIntersectPreCalc(t2, n, r2, e, o2, c2, u2, i, l, s, C2, f2) || C32.segmentsIntersectPreCalc(t2, n, r2, e, o2, c2, u2, i, C2, f2, h2, M2) || C32.segmentsIntersectPreCalc(t2, n, r2, e, o2, c2, u2, i, h2, M2, m2, g2) || C32.segmentsIntersectPreCalc(t2, n, r2, e, o2, c2, u2, i, m2, g2, l, s);
+  }, C32.segmentIntersectsAnyN = function(t2, n, r2, e, a2) {
+    const o2 = Math.min(t2, r2), c2 = Math.max(t2, r2), u2 = Math.min(n, e), i = Math.max(n, e);
     let l = 0;
-    for (let s = a2.length - 4; l <= s; l += 2) if (C32.segmentsIntersectPreCalc(t2, n, e, r2, o2, c2, u2, i, a2[l], a2[l + 1], a2[l + 2], a2[l + 3])) return true;
-    return C32.segmentsIntersectPreCalc(t2, n, e, r2, o2, c2, u2, i, a2[l], a2[l + 1], a2[0], a2[1]);
+    for (let s = a2.length - 4; l <= s; l += 2) if (C32.segmentsIntersectPreCalc(t2, n, r2, e, o2, c2, u2, i, a2[l], a2[l + 1], a2[l + 2], a2[l + 3])) return true;
+    return C32.segmentsIntersectPreCalc(t2, n, r2, e, o2, c2, u2, i, a2[l], a2[l + 1], a2[0], a2[1]);
   };
   const NO_HIT = 2, PADDING = 1e-6;
-  C32.rayIntersect = function(t2, n, e, r2, a2, o2, c2, u2) {
-    const i = e - t2, l = u2 - o2, s = i * l - (r2 - n) * (c2 - a2);
+  C32.rayIntersect = function(t2, n, r2, e, a2, o2, c2, u2) {
+    const i = r2 - t2, l = u2 - o2, s = i * l - (e - n) * (c2 - a2);
     if (0 === s) return 2;
-    const C2 = ((n - r2) * (c2 - t2) + i * (u2 - n)) / s;
+    const C2 = ((n - e) * (c2 - t2) + i * (u2 - n)) / s;
     return 0 < C2 && C2 < 1.000001 ? (l * (c2 - t2) + (a2 - c2) * (u2 - n)) / s : 2;
-  }, C32.rayIntersectExtended = function(t2, n, e, r2, a2, o2, c2, u2, i) {
+  }, C32.rayIntersectExtended = function(t2, n, r2, e, a2, o2, c2, u2, i) {
     const l = (c2 - a2) * i, s = (u2 - o2) * i;
-    return C32.rayIntersect(t2, n, e, r2, a2 - l, o2 - s, c2 + l, u2 + s);
-  }, C32.isPointInTriangleInclusive = function(t2, n, e, r2, a2, o2, c2, u2) {
-    const i = a2 - e, l = o2 - r2, s = c2 - e, C2 = u2 - r2, f2 = t2 - e, h2 = n - r2, M2 = i * i + l * l, g2 = i * s + l * C2, m2 = i * f2 + l * h2, p2 = s * s + C2 * C2, I2 = s * f2 + C2 * h2, T2 = 1 / (M2 * p2 - g2 * g2), P2 = (p2 * m2 - g2 * I2) * T2, A = (M2 * I2 - g2 * m2) * T2;
-    return P2 >= 0 && A >= 0 && P2 + A <= 1;
-  }, C32.triangleCartesianToBarycentric = function(t2, n, e, r2, a2, o2, c2, u2) {
-    const i = a2 - e, l = o2 - r2, s = c2 - e, C2 = u2 - r2, f2 = t2 - e, h2 = n - r2, M2 = i * i + l * l, g2 = i * s + l * C2, m2 = s * s + C2 * C2, p2 = f2 * i + h2 * l, I2 = f2 * s + h2 * C2, T2 = M2 * m2 - g2 * g2, P2 = (m2 * p2 - g2 * I2) / T2, A = (M2 * I2 - g2 * p2) / T2;
-    return [1 - P2 - A, P2, A];
-  }, C32.triangleBarycentricToCartesian3d = function(t2, n, e, r2, a2, o2, c2, u2, i, l, s, C2) {
-    return [t2 * r2 + n * c2 + e * l, t2 * a2 + n * u2 + e * s, t2 * o2 + n * i + e * C2];
+    return C32.rayIntersect(t2, n, r2, e, a2 - l, o2 - s, c2 + l, u2 + s);
+  }, C32.isPointInTriangleInclusive = function(t2, n, r2, e, a2, o2, c2, u2) {
+    const i = a2 - r2, l = o2 - e, s = c2 - r2, C2 = u2 - e, f2 = t2 - r2, h2 = n - e, M2 = i * i + l * l, m2 = i * s + l * C2, g2 = i * f2 + l * h2, p2 = s * s + C2 * C2, T2 = s * f2 + C2 * h2, A = 1 / (M2 * p2 - m2 * m2), I2 = (p2 * g2 - m2 * T2) * A, P2 = (M2 * T2 - m2 * g2) * A;
+    return I2 >= 0 && P2 >= 0 && I2 + P2 <= 1;
+  }, C32.triangleCartesianToBarycentric = function(t2, n, r2, e, a2, o2, c2, u2) {
+    const i = a2 - r2, l = o2 - e, s = c2 - r2, C2 = u2 - e, f2 = t2 - r2, h2 = n - e, M2 = i * i + l * l, m2 = i * s + l * C2, g2 = s * s + C2 * C2, p2 = f2 * i + h2 * l, T2 = f2 * s + h2 * C2, A = M2 * g2 - m2 * m2, I2 = (g2 * p2 - m2 * T2) / A, P2 = (M2 * T2 - m2 * p2) / A;
+    return [1 - I2 - P2, I2, P2];
+  }, C32.triangleBarycentricToCartesian3d = function(t2, n, r2, e, a2, o2, c2, u2, i, l, s, C2) {
+    return [t2 * e + n * c2 + r2 * l, t2 * a2 + n * u2 + r2 * s, t2 * o2 + n * i + r2 * C2];
+  }, C32.vec3FromArray = function(t2, n, r2 = 0) {
+    return t2[0] = n[r2], t2[1] = n[r2 + 1], t2[2] = n[r2 + 2], t2;
+  }, C32.vec3ToArray = function(t2, n, r2 = 0) {
+    return n[r2] = t2[0], n[r2 + 1] = t2[1], n[r2 + 2] = t2[2], n;
+  }, C32.quatFromArray = function(t2, n, r2 = 0) {
+    return t2[0] = n[r2], t2[1] = n[r2 + 1], t2[2] = n[r2 + 2], t2[3] = n[r2 + 3], t2;
+  }, C32.mat4FromArray = function(t2, n, r2 = 0) {
+    return t2[0] = n[r2], t2[1] = n[r2 + 1], t2[2] = n[r2 + 2], t2[3] = n[r2 + 3], t2[4] = n[r2 + 4], t2[5] = n[r2 + 5], t2[6] = n[r2 + 6], t2[7] = n[r2 + 7], t2[8] = n[r2 + 8], t2[9] = n[r2 + 9], t2[10] = n[r2 + 10], t2[11] = n[r2 + 11], t2[12] = n[r2 + 12], t2[13] = n[r2 + 13], t2[14] = n[r2 + 14], t2[15] = n[r2 + 15], t2;
+  }, C32.makeScaleMatrix = function(t2, n, r2, e, a2) {
+    return t2.identity(n), n[0] = r2, n[5] = e, n[10] = a2, n;
+  }, C32.makeTranslateMatrix = function(t2, n, r2, e, a2) {
+    return t2.identity(n), n[12] = r2, n[13] = e, n[14] = a2, n;
   };
 }
 var isNegativeZero2;
 {
+  let OnTask = function(e) {
+    const t2 = activeTaskIds.get(e);
+    activeTaskIds.delete(e), t2 && t2(performance.now());
+  };
+  OnTask2 = OnTask;
   const C32 = self.C3;
   let mainDocument = null, baseHref = "";
   if ("undefined" != typeof document) {
@@ -2507,11 +2544,11 @@ var isNegativeZero2;
     let t2 = /^\w\:\//.exec(e);
     t2 ? (t2 = t2[0], "/" !== (e = e.slice(3))[0] && (e = "/" + e)) : t2 = "", (e = e.replace(/\/{2,}/g, "/")).length > 1 && "/" === e.slice(-1) && (e = e.slice(0, -1));
     const n = e.lastIndexOf("/") + 1;
-    let r2, a2 = "", o2 = e, s = "";
-    n > 0 && (a2 = e.slice(0, n), o2 = e.slice(n)), r2 = o2;
-    const i = o2.lastIndexOf(".");
-    i > 0 && (s = o2.slice(i), r2 = o2.slice(0, -s.length));
-    return { dir: a2, base: o2, name: r2, root: t2, ext: s, full: t2 + a2 + o2 };
+    let r2, a2 = "", s = e, o2 = "";
+    n > 0 && (a2 = e.slice(0, n), s = e.slice(n)), r2 = s;
+    const i = s.lastIndexOf(".");
+    i > 0 && (o2 = s.slice(i), r2 = s.slice(0, -o2.length));
+    return { dir: a2, base: s, name: r2, root: t2, ext: o2, full: t2 + a2 + s };
   }, C32.Wait = function(e, t2) {
     return new Promise((n, r2) => {
       self.setTimeout(n, e, t2);
@@ -2569,9 +2606,9 @@ var isNegativeZero2;
     return true;
   }, C32.arrayFilterOut = function(e, t2) {
     let n = [], r2 = 0;
-    for (let a2 = 0, o2 = e.length; a2 < o2; ++a2) {
-      let o3 = e[a2];
-      t2(o3) ? n.push(o3) : (e[r2] = o3, ++r2);
+    for (let a2 = 0, s = e.length; a2 < s; ++a2) {
+      let s2 = e[a2];
+      t2(s2) ? n.push(s2) : (e[r2] = s2, ++r2);
     }
     return C32.truncateArray(e, r2), n;
   }, C32.arrayRemoveAllInSet = function(e, t2) {
@@ -2601,14 +2638,16 @@ var isNegativeZero2;
     let t2 = [];
     for (let n of e) t2.push(n.slice());
     return t2;
+  }, C32.toArrayLike = function(e) {
+    return C32.IsArray(e) ? e : e ? (e.length = Object.keys(e).length, e) : void 0;
   }, C32.splitStringAndNormalize = function(e, t2 = " ") {
     return e ? e.split(t2).map((e2) => e2.trim()).filter((e2) => !!e2) : [];
+  }, C32.ensureSet = function(e) {
+    return e instanceof Set ? e : new Set(e);
   }, C32.filterSet = function(e, t2, n) {
     const r2 = /* @__PURE__ */ new Set();
     for (const a2 of e.values()) t2(a2) && (n ? r2.add(n(a2)) : r2.add(a2));
     return r2;
-  }, C32.mergeSets = function(e, t2) {
-    return e["union"] ? e["union"](t2) : /* @__PURE__ */ new Set([...e, ...t2]);
   }, C32.mergeSetsInPlace = function(e, t2) {
     for (const n of t2) e.add(n);
     return e;
@@ -2640,11 +2679,11 @@ var isNegativeZero2;
   }, C32.PromiseAllWithProgress = function(e, t2) {
     return e.length ? new Promise((n, r2) => {
       const a2 = [];
-      let o2 = 0, s = false;
+      let s = 0, o2 = false;
       for (let i = 0, l = e.length; i < l; ++i) a2.push(void 0), e[i].then((r3) => {
-        s || (a2[i] = r3, ++o2, o2 === e.length ? n(a2) : t2(o2, e.length));
+        o2 || (a2[i] = r3, ++s, s === e.length ? n(a2) : t2(s, e.length));
       }).catch((e2) => {
-        s = true, r2(e2);
+        o2 = true, r2(e2);
       });
     }) : Promise.resolve([]);
   };
@@ -2659,13 +2698,11 @@ var isNegativeZero2;
     return Math.floor(e);
   };
   let nextTaskId = 1;
-  const activeTaskIds = /* @__PURE__ */ new Map(), taskMessageChannel = new MessageChannel();
-  taskMessageChannel.port2.onmessage = function(e) {
-    const t2 = e.data, n = activeTaskIds.get(t2);
-    activeTaskIds.delete(t2), n && n(performance.now());
-  }, C32.RequestUnlimitedAnimationFrame = function(e) {
-    const t2 = nextTaskId++;
-    return activeTaskIds.set(t2, e), taskMessageChannel.port1.postMessage(t2), t2;
+  const activeTaskIds = /* @__PURE__ */ new Map();
+  const scheduler = globalThis["scheduler"], taskMessageChannel = new MessageChannel();
+  taskMessageChannel.port2.onmessage = (e) => OnTask(e.data), C32.RequestUnlimitedAnimationFrame = function(e, t2 = "user-visible") {
+    const n = nextTaskId++;
+    return activeTaskIds.set(n, e), scheduler ? scheduler["postTask"](() => OnTask(n), { priority: t2 }) : taskMessageChannel.port1.postMessage(n), n;
   }, C32.CancelUnlimitedAnimationFrame = function(e) {
     activeTaskIds.delete(e);
   }, C32.PostTask = C32.RequestUnlimitedAnimationFrame, C32.WaitForNextTask = function() {
@@ -2681,6 +2718,7 @@ var isNegativeZero2;
     activeRPAFids.has(e) && (self.cancelAnimationFrame(e), activeRPAFids.delete(e));
   };
 }
+var OnTask2;
 {
   const C32 = self.C3;
   C32.IsAbsoluteURL = function(e) {
@@ -2864,7 +2902,7 @@ var isNegativeZero2;
     }
     writeToTypedArrayx4(t2, s) {
       const e = this._r, r2 = this._g, i = this._b, a2 = this._a;
-      for (let h2 = 0; h2 < 4; ++h2) t2[s++] = e, t2[s++] = r2, t2[s++] = i, t2[s++] = a2;
+      t2[s++] = e, t2[s++] = r2, t2[s++] = i, t2[s++] = a2, t2[s++] = e, t2[s++] = r2, t2[s++] = i, t2[s++] = a2, t2[s++] = e, t2[s++] = r2, t2[s++] = i, t2[s++] = a2, t2[s++] = e, t2[s++] = r2, t2[s++] = i, t2[s] = a2;
     }
     writeRGBToTypedArray(t2, s) {
       t2[s++] = this._r, t2[s++] = this._g, t2[s] = this._b;
@@ -3218,24 +3256,27 @@ var hueToRGB2;
 {
   const C32 = self.C3;
   C32.Rect = class {
-    constructor(t2, h2, i, o2) {
-      this._left = NaN, this._top = NaN, this._right = NaN, this._bottom = NaN, this._left = 0, this._top = 0, this._right = 0, this._bottom = 0, t2 instanceof C32.Rect ? this.copy(t2) : this.set(t2 || 0, h2 || 0, i || 0, o2 || 0);
+    constructor(t2, i, h2, o2) {
+      this._left = NaN, this._top = NaN, this._right = NaN, this._bottom = NaN, this._left = 0, this._top = 0, this._right = 0, this._bottom = 0, t2 instanceof C32.Rect ? this.copy(t2) : this.set(t2 || 0, i || 0, h2 || 0, o2 || 0);
     }
-    set(t2, h2, i, o2) {
-      this._left = +t2, this._top = +h2, this._right = +i, this._bottom = +o2;
+    set(t2, i, h2, o2) {
+      this._left = +t2, this._top = +i, this._right = +h2, this._bottom = +o2;
     }
-    setWH(t2, h2, i, o2) {
-      t2 = +t2, h2 = +h2, this._left = t2, this._top = h2, this._right = t2 + +i, this._bottom = h2 + +o2;
+    setWH(t2, i, h2, o2) {
+      t2 = +t2, i = +i, this._left = t2, this._top = i, this._right = t2 + +h2, this._bottom = i + +o2;
     }
     copy(t2) {
       this._left = +t2._left, this._top = +t2._top, this._right = +t2._right, this._bottom = +t2._bottom;
     }
+    setFromAABB3D(t2) {
+      this._left = t2.getLeft(), this._top = t2.getTop(), this._right = t2.getRight(), this._bottom = t2.getBottom();
+    }
     clone() {
       return new C32.Rect(this._left, this._top, this._right, this._bottom);
     }
-    static Merge(t2, h2) {
-      const i = new C32.Rect();
-      return i.setLeft(Math.min(t2._left, h2._left)), i.setTop(Math.min(t2._top, h2._top)), i.setRight(Math.max(t2._right, h2._right)), i.setBottom(Math.max(t2._bottom, h2._bottom)), i;
+    static Merge(t2, i) {
+      const h2 = new C32.Rect();
+      return h2.setLeft(Math.min(t2._left, i._left)), h2.setTop(Math.min(t2._top, i._top)), h2.setRight(Math.max(t2._right, i._right)), h2.setBottom(Math.max(t2._bottom, i._bottom)), h2;
     }
     static FromObject(t2) {
       return new C32.Rect(t2.left, t2.top, t2.right, t2.bottom);
@@ -3243,11 +3284,11 @@ var hueToRGB2;
     equals(t2) {
       return this._left === t2._left && this._top === t2._top && this._right === t2._right && this._bottom === t2._bottom;
     }
-    equalsWH(t2, h2, i, o2) {
-      return this._left === t2 && this._top === h2 && this.width() === i && this.height() === o2;
+    equalsWH(t2, i, h2, o2) {
+      return this._left === t2 && this._top === i && this.width() === h2 && this.height() === o2;
     }
-    equalsF32Array(t2, h2) {
-      return t2[h2] === Math.fround(this._left) && t2[h2 + 1] === Math.fround(this._top) && t2[h2 + 2] === Math.fround(this._right) && t2[h2 + 3] === Math.fround(this._bottom);
+    equalsF32Array(t2, i) {
+      return t2[i] === Math.fround(this._left) && t2[i + 1] === Math.fround(this._top) && t2[i + 2] === Math.fround(this._right) && t2[i + 3] === Math.fround(this._bottom);
     }
     setLeft(t2) {
       this._left = +t2;
@@ -3285,14 +3326,16 @@ var hueToRGB2;
     static fromDOMRect(t2) {
       return C32.New(C32.Rect, t2.left, t2.top, t2.right, t2.bottom);
     }
-    writeToTypedArray(t2, h2) {
-      t2[h2++] = this._left, t2[h2++] = this._top, t2[h2++] = this._right, t2[h2] = this._bottom;
+    writeToTypedArray(t2, i) {
+      t2[i++] = this._left, t2[i++] = this._top, t2[i++] = this._right, t2[i] = this._bottom;
     }
-    writeAsQuadToTypedArray(t2, h2) {
-      t2[h2++] = this._left, t2[h2++] = this._top, t2[h2++] = this._right, t2[h2++] = this._top, t2[h2++] = this._right, t2[h2++] = this._bottom, t2[h2++] = this._left, t2[h2] = this._bottom;
+    writeAsQuadToTypedArray(t2, i) {
+      const h2 = this._left, o2 = this._top, s = this._right, _2 = this._bottom;
+      t2[i++] = h2, t2[i++] = o2, t2[i++] = s, t2[i++] = o2, t2[i++] = s, t2[i++] = _2, t2[i++] = h2, t2[i] = _2;
     }
-    writeAsQuadToTypedArray3D(t2, h2, i) {
-      t2[h2++] = this._left, t2[h2++] = this._top, t2[h2++] = i, t2[h2++] = this._right, t2[h2++] = this._top, t2[h2++] = i, t2[h2++] = this._right, t2[h2++] = this._bottom, t2[h2++] = i, t2[h2++] = this._left, t2[h2++] = this._bottom, t2[h2] = i;
+    writeAsQuadToTypedArray3D(t2, i, h2) {
+      const o2 = this._left, s = this._top, _2 = this._right, e = this._bottom;
+      t2[i++] = o2, t2[i++] = s, t2[i++] = h2, t2[i++] = _2, t2[i++] = s, t2[i++] = h2, t2[i++] = _2, t2[i++] = e, t2[i++] = h2, t2[i++] = o2, t2[i++] = e, t2[i] = h2;
     }
     width() {
       return this._right - this._left;
@@ -3306,8 +3349,8 @@ var hueToRGB2;
     midY() {
       return (this._top + this._bottom) / 2;
     }
-    offset(t2, h2) {
-      t2 = +t2, h2 = +h2, this._left += t2, this._top += h2, this._right += t2, this._bottom += h2;
+    offset(t2, i) {
+      t2 = +t2, i = +i, this._left += t2, this._top += i, this._right += t2, this._bottom += i;
     }
     offsetLeft(t2) {
       this._left += +t2;
@@ -3325,17 +3368,17 @@ var hueToRGB2;
       if ("x" !== t2) throw new Error("invalid axis, only 'x' supported");
       this._top < this._bottom ? this._left < this._right ? this._bottom = this._top + this.width() : this._bottom = this._top - this.width() : this._left < this._right ? this._bottom = this._top - this.width() : this._bottom = this._top + this.width();
     }
-    inflate(t2, h2) {
-      t2 = +t2, h2 = +h2, this._left -= t2, this._top -= h2, this._right += t2, this._bottom += h2;
+    inflate(t2, i) {
+      t2 = +t2, i = +i, this._left -= t2, this._top -= i, this._right += t2, this._bottom += i;
     }
-    deflate(t2, h2) {
-      t2 = +t2, h2 = +h2, this._left += t2, this._top += h2, this._right -= t2, this._bottom -= h2;
+    deflate(t2, i) {
+      t2 = +t2, i = +i, this._left += t2, this._top += i, this._right -= t2, this._bottom -= i;
     }
-    multiply(t2, h2) {
-      this._left *= t2, this._top *= h2, this._right *= t2, this._bottom *= h2;
+    multiply(t2, i) {
+      this._left *= t2, this._top *= i, this._right *= t2, this._bottom *= i;
     }
-    divide(t2, h2) {
-      this._left /= t2, this._top /= h2, this._right /= t2, this._bottom /= h2;
+    divide(t2, i) {
+      this._left /= t2, this._top /= i, this._right /= t2, this._bottom /= i;
     }
     mirrorAround(t2) {
       this._left = +t2 - this._left, this._right = +t2 - this._right;
@@ -3343,9 +3386,9 @@ var hueToRGB2;
     flipAround(t2) {
       this._top = +t2 - this._top, this._bottom = +t2 - this._bottom;
     }
-    rotate90DegreesAround(t2, h2) {
-      const i = this.width(), o2 = this.height(), s = this.getLeft() + i * t2, _2 = this.getTop() + o2 * h2;
-      this.setWH(s - o2 * h2, _2 - i * t2, o2, i);
+    rotate90DegreesAround(t2, i) {
+      const h2 = this.width(), o2 = this.height(), s = this.getLeft() + h2 * t2, _2 = this.getTop() + o2 * i;
+      this.setWH(s - o2 * i, _2 - h2 * t2, o2, h2);
     }
     swapLeftRight() {
       const t2 = this._left;
@@ -3356,8 +3399,8 @@ var hueToRGB2;
       this._top = this._bottom, this._bottom = t2;
     }
     shuntY(t2) {
-      const h2 = this._top;
-      this._top = +t2 - this._bottom, this._bottom = +t2 - h2;
+      const i = this._top;
+      this._top = +t2 - this._bottom, this._bottom = +t2 - i;
     }
     round() {
       this._left = Math.round(this._left), this._top = Math.round(this._top), this._right = Math.round(this._right), this._bottom = Math.round(this._bottom);
@@ -3374,11 +3417,11 @@ var hueToRGB2;
     ceil() {
       this._left = Math.ceil(this._left), this._top = Math.ceil(this._top), this._right = Math.ceil(this._right), this._bottom = Math.ceil(this._bottom);
     }
-    clamp(t2, h2, i, o2) {
-      this._left = Math.max(this._left, +t2), this._top = Math.max(this._top, +h2), this._right = Math.min(this._right, +i), this._bottom = Math.min(this._bottom, +o2);
+    clamp(t2, i, h2, o2) {
+      this._left = Math.max(this._left, +t2), this._top = Math.max(this._top, +i), this._right = Math.min(this._right, +h2), this._bottom = Math.min(this._bottom, +o2);
     }
-    clampBoth(t2, h2, i, o2) {
-      t2 = +t2, h2 = +h2, i = +i, o2 = +o2, this._left = C32.clamp(this._left, t2, i), this._top = C32.clamp(this._top, h2, o2), this._right = C32.clamp(this._right, t2, i), this._bottom = C32.clamp(this._bottom, h2, o2);
+    clampBoth(t2, i, h2, o2) {
+      t2 = +t2, i = +i, h2 = +h2, o2 = +o2, this._left = C32.clamp(this._left, t2, h2), this._top = C32.clamp(this._top, i, o2), this._right = C32.clamp(this._right, t2, h2), this._bottom = C32.clamp(this._bottom, i, o2);
     }
     normalize() {
       this._left > this._right && this.swapLeftRight(), this._top > this._bottom && this.swapTopBottom();
@@ -3386,14 +3429,20 @@ var hueToRGB2;
     intersectsRect(t2) {
       return !(t2._right < this._left || t2._bottom < this._top || t2._left > this._right || t2._top > this._bottom);
     }
-    intersectsRectOffset(t2, h2, i) {
-      return !(t2._right + h2 < this._left || t2._bottom + i < this._top || t2._left + h2 > this._right || t2._top + i > this._bottom);
+    intersectsRectOffset(t2, i, h2) {
+      return !(t2._right + i < this._left || t2._bottom + h2 < this._top || t2._left + i > this._right || t2._top + h2 > this._bottom);
     }
-    containsPoint(t2, h2) {
-      return t2 >= this._left && t2 <= this._right && h2 >= this._top && h2 <= this._bottom;
+    containsPoint(t2, i) {
+      return t2 >= this._left && t2 <= this._right && i >= this._top && i <= this._bottom;
     }
     containsRect(t2) {
       return t2._left >= this._left && t2._top >= this._top && t2._right <= this._right && t2._bottom <= this._bottom;
+    }
+    intersectsAABB3D(t2) {
+      return !(t2.getRight() < this._left || t2.getBottom() < this._top || t2.getLeft() > this._right || t2.getTop() > this._bottom);
+    }
+    containsAABB3D(t2) {
+      return t2.getLeft() >= this._left && t2.getTop() >= this._top && t2.getRight() <= this._right && t2.getBottom() <= this._bottom;
     }
     expandToContain(t2) {
       t2._left < this._left && (this._left = +t2._left), t2._top < this._top && (this._top = +t2._top), t2._right > this._right && (this._right = +t2._right), t2._bottom > this._bottom && (this._bottom = +t2._bottom);
@@ -3405,9 +3454,9 @@ var hueToRGB2;
 }
 {
   const C32 = self.C3;
-  C32.Quad = class {
+  C32.Quad2D = class {
     constructor(t2, s, i, h2, _2, r2, l, e) {
-      this._tlx = NaN, this._tly = NaN, this._trx = NaN, this._try = NaN, this._brx = NaN, this._bry = NaN, this._blx = NaN, this._bly = NaN, this._tlx = 0, this._tly = 0, this._trx = 0, this._try = 0, this._brx = 0, this._bry = 0, this._blx = 0, this._bly = 0, t2 instanceof C32.Quad ? this.copy(t2) : this.set(t2 || 0, s || 0, i || 0, h2 || 0, _2 || 0, r2 || 0, l || 0, e || 0);
+      this._tlx = NaN, this._tly = NaN, this._trx = NaN, this._try = NaN, this._brx = NaN, this._bry = NaN, this._blx = NaN, this._bly = NaN, this._tlx = 0, this._tly = 0, this._trx = 0, this._try = 0, this._brx = 0, this._bry = 0, this._blx = 0, this._bly = 0, t2 instanceof C32.Quad2D ? this.copy(t2) : this.set(t2 || 0, s || 0, i || 0, h2 || 0, _2 || 0, r2 || 0, l || 0, e || 0);
     }
     set(t2, s, i, h2, _2, r2, l, e) {
       this._tlx = +t2, this._tly = +s, this._trx = +i, this._try = +h2, this._brx = +_2, this._bry = +r2, this._blx = +l, this._bly = +e;
@@ -3473,7 +3522,7 @@ var hueToRGB2;
       return new DOMQuad(new DOMPoint(this._tlx, this._tly), new DOMPoint(this._trx, this._try), new DOMPoint(this._brx, this._bry), new DOMPoint(this._blx, this._bly));
     }
     static fromDOMQuad(t2) {
-      return C32.New(C32.Quad, t2.p1.x, t2.p1.y, t2.p2.x, t2.p2.y, t2.p3.x, t2.p3.y, t2.p4.x, t2.p4.y);
+      return C32.New(C32.Quad2D, t2.p1.x, t2.p1.y, t2.p2.x, t2.p2.y, t2.p3.x, t2.p3.y, t2.p4.x, t2.p4.y);
     }
     toArray() {
       return [this._tlx, this._tly, this._trx, this._try, this._brx, this._bry, this._blx, this._bly];
@@ -3501,6 +3550,9 @@ var hueToRGB2;
     }
     setFromRect(t2) {
       this._tlx = t2._left, this._tly = t2._top, this._trx = t2._right, this._try = t2._top, this._brx = t2._right, this._bry = t2._bottom, this._blx = t2._left, this._bly = t2._bottom;
+    }
+    setFromAABB3DIgnoringZ(t2) {
+      this._tlx = t2.getLeft(), this._tly = t2.getTop(), this._trx = t2.getRight(), this._try = t2.getTop(), this._brx = t2.getRight(), this._bry = t2.getBottom(), this._blx = t2.getLeft(), this._bly = t2.getBottom();
     }
     setFromRotatedRect(t2, s) {
       0 === s ? this.setFromRect(t2) : this.setFromRotatedRectPrecalc(t2, Math.sin(s), Math.cos(s));
@@ -3608,10 +3660,163 @@ var hueToRGB2;
     divide(t2, s) {
       this._tlx /= t2, this._tly /= s, this._trx /= t2, this._try /= s, this._brx /= t2, this._bry /= s, this._blx /= t2, this._bly /= s;
     }
+  }, C32.Quad = C32.Quad2D;
+}
+{
+  const C32 = globalThis.C3;
+  C32.AABB3D = class {
+    #t = NaN;
+    #i = NaN;
+    #s = NaN;
+    #h = NaN;
+    #o = NaN;
+    #e = NaN;
+    constructor(t2, i, s, h2, o2, e) {
+      t2 instanceof C32.Rect ? this.copyRect(t2) : t2 instanceof C32.AABB3D ? this.copyAABB3D(t2) : this.set(t2 ?? 0, i ?? 0, s ?? 0, h2 ?? 0, o2 ?? 0, e ?? 0);
+    }
+    set(t2, i, s, h2, o2, e) {
+      this.#t = +t2, this.#i = +i, this.#s = +s, this.#h = +h2, this.#o = +o2, this.#e = +e;
+    }
+    setWHD(t2, i, s, h2, o2, e) {
+      t2 = +t2, i = +i, s = +s, this.#t = t2, this.#i = i, this.#s = s, this.#h = t2 + +h2, this.#o = i + +o2, this.#e = s + +e;
+    }
+    setFromRect(t2, i = 0, s = 0) {
+      this.#t = t2.getLeft(), this.#i = t2.getTop(), this.#s = +i, this.#h = t2.getRight(), this.#o = t2.getBottom(), this.#e = +s;
+    }
+    copy(t2) {
+      if (t2 instanceof C32.Rect) this.copyRect(t2);
+      else {
+        if (!(t2 instanceof C32.AABB3D)) throw new TypeError("expected Rect or AABB3D");
+        this.copyAABB3D(t2);
+      }
+    }
+    copyRect(t2) {
+      this.#t = t2.getLeft(), this.#i = t2.getTop(), this.#s = 0, this.#h = t2.getRight(), this.#o = t2.getBottom(), this.#e = 0;
+    }
+    copyAABB3D(t2) {
+      this.#t = t2.getLeft(), this.#i = t2.getTop(), this.#s = t2.getBack(), this.#h = t2.getRight(), this.#o = t2.getBottom(), this.#e = t2.getFront();
+    }
+    clone() {
+      return new C32.AABB3D(this.#t, this.#i, this.#s, this.#h, this.#o, this.#e);
+    }
+    toRect() {
+      return new C32.Rect(this.#t, this.#i, this.#h, this.#o);
+    }
+    toDOMRect() {
+      return new DOMRect(this.#t, this.#i, this.width(), this.height());
+    }
+    setLeft(t2) {
+      this.#t = +t2;
+    }
+    getLeft() {
+      return this.#t;
+    }
+    setTop(t2) {
+      this.#i = +t2;
+    }
+    getTop() {
+      return this.#i;
+    }
+    setBack(t2) {
+      this.#s = +t2;
+    }
+    getBack() {
+      return this.#s;
+    }
+    setRight(t2) {
+      this.#h = +t2;
+    }
+    getRight() {
+      return this.#h;
+    }
+    setBottom(t2) {
+      this.#o = +t2;
+    }
+    getBottom() {
+      return this.#o;
+    }
+    setFront(t2) {
+      this.#e = +t2;
+    }
+    getFront() {
+      return this.#e;
+    }
+    width() {
+      return this.#h - this.#t;
+    }
+    height() {
+      return this.#o - this.#i;
+    }
+    depth() {
+      return this.#e - this.#s;
+    }
+    midX() {
+      return (this.#t + this.#h) / 2;
+    }
+    midY() {
+      return (this.#i + this.#o) / 2;
+    }
+    midZ() {
+      return (this.#s + this.#e) / 2;
+    }
+    offset(t2, i, s) {
+      t2 = +t2, i = +i, s = +s, this.#t += t2, this.#i += i, this.#s += s, this.#h += t2, this.#o += i, this.#e += s;
+    }
+    offsetLeft(t2) {
+      this.#t += +t2;
+    }
+    offsetTop(t2) {
+      this.#i += +t2;
+    }
+    offsetBack(t2) {
+      this.#s += +t2;
+    }
+    offsetRight(t2) {
+      this.#h += +t2;
+    }
+    offsetBottom(t2) {
+      this.#o += +t2;
+    }
+    offsetFront(t2) {
+      this.#e += +t2;
+    }
+    swapLeftRight() {
+      const t2 = this.#t;
+      this.#t = this.#h, this.#h = t2;
+    }
+    swapTopBottom() {
+      const t2 = this.#i;
+      this.#i = this.#o, this.#o = t2;
+    }
+    swapBackFront() {
+      const t2 = this.#s;
+      this.#s = this.#e, this.#e = t2;
+    }
+    normalize() {
+      this.#t > this.#h && this.swapLeftRight(), this.#i > this.#o && this.swapTopBottom(), this.#s > this.#e && this.swapBackFront();
+    }
+    intersectsRect(t2) {
+      return !(t2.getRight() < this.#t || t2.getBottom() < this.#i || t2.getLeft() > this.#h || t2.getTop() > this.#o);
+    }
+    containsRect(t2) {
+      return t2.getLeft() >= this.#t && t2.getTop() >= this.#i && t2.getRight() <= this.#h && t2.getBottom() <= this.#o;
+    }
+    intersectsAABB3D(t2) {
+      return !(t2.getRight() < this.#t || t2.getBottom() < this.#i || t2.getFront() < this.#s || t2.getLeft() > this.#h || t2.getTop() > this.#o || t2.getBack() > this.#e);
+    }
+    intersectsAABB3DIgnoringZ(t2) {
+      return !(t2.getRight() < this.#t || t2.getBottom() < this.#i || t2.getLeft() > this.#h || t2.getTop() > this.#o);
+    }
+    containsPoint(t2, i, s) {
+      return t2 >= this.#t && t2 <= this.#h && i >= this.#i && i <= this.#o && s >= this.#s && s <= this.#e;
+    }
+    containsPoint2d(t2, i) {
+      return t2 >= this.#t && t2 <= this.#h && i >= this.#i && i <= this.#o;
+    }
   };
 }
 {
-  const C32 = self.C3, assert = self.assert, DEFAULT_POLY_POINTS = [0, 0, 1, 0, 1, 1, 0, 1], tempQuad = C32.New(C32.Quad);
+  const C32 = self.C3, assert = self.assert, DEFAULT_POLY_POINTS = [0, 0, 1, 0, 1, 1, 0, 1], tempQuad = C32.New(C32.Quad2D);
   C32.CollisionPoly = class extends C32.DefendedBase {
     constructor(t2, s = true) {
       super(), t2 || (t2 = DEFAULT_POLY_POINTS), this._ptsArr = Float64Array.from(t2), this._bbox = new C32.Rect(), this._isBboxChanged = true, this._enabled = s;
@@ -4122,151 +4327,153 @@ var RequireStringOrNumber2;
 {
   const C32 = self.C3, assert = self.assert;
   C32.Event.Handler = class extends C32.DefendedBase {
-    constructor(e) {
-      super(), this._type = e, this._captureListeners = [], this._captureListenersSet = /* @__PURE__ */ new Set(), this._listeners = [], this._listenersSet = /* @__PURE__ */ new Set(), this._fireDepth = 0, this._queueModifyListeners = [];
+    #e = null;
+    #s = null;
+    #t = 0;
+    #i = null;
+    constructor() {
+      super();
     }
     Release() {
-      this._fireDepth > 0 || (C32.clearArray(this._captureListeners), this._captureListenersSet.clear(), C32.clearArray(this._listeners), this._listenersSet.clear(), C32.clearArray(this._queueModifyListeners), C32.Release(this));
+      this.#t > 0 || (this.#e && (this.#e.clear(), this.#e = null), this.#s && (this.#s.clear(), this.#s = null), this.#i && (C32.clearArray(this.#i), this.#i = null), C32.Release(this));
     }
-    _AddListener(e, t2) {
-      if (this._IsFiring()) this._queueModifyListeners.push({ op: "add", func: e, capture: t2 });
-      else if (t2) {
-        if (this._captureListenersSet.has(e)) return;
-        this._captureListeners.push(e), this._captureListenersSet.add(e);
-      } else {
-        if (this._listenersSet.has(e)) return;
-        this._listeners.push(e), this._listenersSet.add(e);
-      }
+    _AddListener(e, s) {
+      if (this.#r()) return this.#i || (this.#i = []), void this.#i.push({ op: "add", func: e, capture: s });
+      s ? (this.#e || (this.#e = /* @__PURE__ */ new Set()), this.#e.add(e)) : (this.#s || (this.#s = /* @__PURE__ */ new Set()), this.#s.add(e));
     }
-    _RemoveListener(e, t2) {
-      this._IsFiring() ? this._queueModifyListeners.push({ op: "remove", func: e, capture: t2 }) : t2 ? this._captureListenersSet.has(e) && (this._captureListenersSet.delete(e), C32.arrayFindRemove(this._captureListeners, e)) : this._listenersSet.has(e) && (this._listenersSet.delete(e), C32.arrayFindRemove(this._listeners, e));
+    _RemoveListener(e, s) {
+      if (this.#r()) return this.#i || (this.#i = []), void this.#i.push({ op: "remove", func: e, capture: s });
+      s ? this.#e && (this.#e.delete(e), 0 === this.#e.size && (this.#e = null)) : this.#s && (this.#s.delete(e), 0 === this.#s.size && (this.#s = null));
     }
     _IsEmpty() {
-      return !this._captureListeners.length && !this._listeners.length;
+      return !this.#e && !this.#s;
     }
-    _IsFiring() {
-      return this._fireDepth > 0;
+    #r() {
+      return this.#t > 0;
     }
-    _ProcessQueuedListeners() {
-      const e = /* @__PURE__ */ new Set(), t2 = /* @__PURE__ */ new Set();
-      for (const s of this._queueModifyListeners) if ("add" === s.op) this._AddListener(s.func, s.capture), s.capture ? t2.delete(s.func) : e.delete(s.func);
-      else {
-        if ("remove" !== s.op) throw new Error("invalid op");
-        s.capture ? (this._captureListenersSet.delete(s.func), t2.add(s.func)) : (this._listenersSet.delete(s.func), e.add(s.func));
+    #n() {
+      if (this.#i) {
+        for (const e of this.#i) if ("add" === e.op) this._AddListener(e.func, e.capture);
+        else {
+          if ("remove" !== e.op) throw new Error("invalid op");
+          this._RemoveListener(e.func, e.capture);
+        }
+        C32.clearArray(this.#i), this.#i = null;
       }
-      C32.arrayRemoveAllInSet(this._listeners, e), C32.arrayRemoveAllInSet(this._captureListeners, t2), C32.clearArray(this._queueModifyListeners);
     }
     _FireCancellable(e) {
-      this._IncreaseFireDepth();
-      let t2 = false;
-      for (let s = 0, r2 = this._captureListeners.length; s < r2; ++s) if (this._captureListeners[s](e), e.propagationStopped) {
-        t2 = true;
-        break;
+      this.#h();
+      let s = false;
+      if (this.#e) {
+        for (const t2 of this.#e) if (t2(e), e.propagationStopped) {
+          s = true;
+          break;
+        }
       }
-      if (!t2) for (let t3 = 0, s = this._listeners.length; t3 < s && (this._listeners[t3](e), !e.propagationStopped); ++t3) ;
-      return this._DecreaseFireDepth(), !e.defaultPrevented;
+      if (!s && this.#s) {
+        for (const s2 of this.#s) if (s2(e), e.propagationStopped) break;
+      }
+      return this.#o(), !e.defaultPrevented;
     }
     _FireNonCancellable(e) {
-      this._IncreaseFireDepth();
-      for (let t2 = 0, s = this._captureListeners.length; t2 < s; ++t2) this._captureListeners[t2](e);
-      for (let t2 = 0, s = this._listeners.length; t2 < s; ++t2) this._listeners[t2](e);
-      return this._DecreaseFireDepth(), true;
+      if (this.#h(), this.#e) for (const s of this.#e) s(e);
+      if (this.#s) for (const s of this.#s) s(e);
+      return this.#o(), true;
     }
-    _IncreaseFireDepth() {
-      this._fireDepth++;
+    #h() {
+      this.#t++;
     }
-    _DecreaseFireDepth() {
-      this._fireDepth--, 0 === this._fireDepth && this._queueModifyListeners.length > 0 && this._ProcessQueuedListeners();
+    #o() {
+      this.#t--, 0 === this.#t && this.#i && this.#i.length > 0 && this.#n();
     }
     SetDelayRemoveEventsEnabled(e) {
-      e ? this._IncreaseFireDepth() : this._DecreaseFireDepth();
+      e ? this.#h() : this.#o();
     }
     _FireAsync(e) {
-      let t2 = [];
-      for (let s = 0, r2 = this._captureListeners.length; s < r2; ++s) {
-        let r3 = this._captureListeners[s];
-        t2.push(C32.Asyncify(() => r3(e)));
-      }
-      for (let s = 0, r2 = this._listeners.length; s < r2; ++s) {
-        let r3 = this._listeners[s];
-        t2.push(C32.Asyncify(() => r3(e)));
-      }
-      return Promise.all(t2).then(() => !e.defaultPrevented);
+      let s = [];
+      if (this.#e) for (const t2 of this.#e) s.push(C32.Asyncify(() => t2(e)));
+      if (this.#s) for (const t2 of this.#s) s.push(C32.Asyncify(() => t2(e)));
+      return Promise.all(s).then(() => !e.defaultPrevented);
     }
     _FireAndWait_AsyncOptional(e) {
-      const t2 = [];
-      this._IncreaseFireDepth();
-      for (let s = 0, r2 = this._captureListeners.length; s < r2; ++s) {
-        const r3 = this._captureListeners[s](e);
-        r3 instanceof Promise && t2.push(r3);
+      const s = [];
+      if (this.#h(), this.#e) for (const t2 of this.#e) {
+        const i = t2(e);
+        i instanceof Promise && s.push(i);
       }
-      for (let s = 0, r2 = this._listeners.length; s < r2; ++s) {
-        const r3 = this._listeners[s](e);
-        r3 instanceof Promise && t2.push(r3);
+      if (this.#s) for (const t2 of this.#s) {
+        const i = t2(e);
+        i instanceof Promise && s.push(i);
       }
-      return this._DecreaseFireDepth(), t2.length ? Promise.all(t2).then(() => !e.defaultPrevented) : !e.defaultPrevented;
+      return this.#o(), s.length ? Promise.all(s).then(() => !e.defaultPrevented) : !e.defaultPrevented;
     }
     async _FireAndWaitAsync(e) {
       return await this._FireAndWait_AsyncOptional(e);
     }
     async _FireAndWaitAsyncSequential(e) {
-      this._IncreaseFireDepth();
-      for (let t2 = 0, s = this._captureListeners.length; t2 < s; ++t2) {
-        const s2 = this._captureListeners[t2](e);
-        s2 instanceof Promise && await s2;
+      if (this.#h(), this.#e) for (const s of this.#e) {
+        const t2 = s(e);
+        t2 instanceof Promise && await t2;
       }
-      for (let t2 = 0, s = this._listeners.length; t2 < s; ++t2) {
-        const s2 = this._listeners[t2](e);
-        s2 instanceof Promise && await s2;
+      if (this.#s) for (const s of this.#s) {
+        const t2 = s(e);
+        t2 instanceof Promise && await t2;
       }
-      return this._DecreaseFireDepth(), !e.defaultPrevented;
+      return this.#o(), !e.defaultPrevented;
     }
     *_FireAsGenerator(e) {
-      this._IncreaseFireDepth();
-      for (let t2 = 0, s = this._captureListeners.length; t2 < s; ++t2) {
-        const s2 = this._captureListeners[t2](e);
-        C32.IsIterator(s2) && (yield* s2);
+      if (this.#h(), this.#e) for (const s of this.#e) {
+        const t2 = s(e);
+        C32.IsIterator(t2) && (yield* t2);
       }
-      for (let t2 = 0, s = this._listeners.length; t2 < s; ++t2) {
-        const s2 = this._listeners[t2](e);
-        C32.IsIterator(s2) && (yield* s2);
+      if (this.#s) for (const s of this.#s) {
+        const t2 = s(e);
+        C32.IsIterator(t2) && (yield* t2);
       }
-      this._DecreaseFireDepth();
+      this.#o();
     }
   };
 }
 {
-  const C32 = self.C3;
+  const C32 = self.C3, releasedDispatchers = /* @__PURE__ */ new WeakSet();
   C32.Event.Dispatcher = class extends C32.DefendedBase {
+    #e = null;
     constructor() {
-      super(), this._eventHandlers = /* @__PURE__ */ new Map(), this._dispatcherWasReleased = false;
+      super();
     }
     Release() {
-      if (this._dispatcherWasReleased) throw new Error("already released");
-      this.ClearEvents(), this._dispatcherWasReleased = true, C32.Release(this);
+      if (releasedDispatchers.has(this)) throw new Error("already released");
+      this.ClearEvents(), releasedDispatchers.add(this), C32.Release(this);
     }
     WasReleased() {
-      return this._dispatcherWasReleased;
+      return releasedDispatchers.has(this);
     }
     ClearEvents() {
-      if (this._eventHandlers) {
-        for (let e of this._eventHandlers.values()) e.Release();
-        this._eventHandlers.clear();
+      if (this.#e) {
+        for (const e of this.#e.values()) e.Release();
+        this.#e.clear(), this.#e = null;
       }
     }
     _GetHandlerByType(e, t2) {
-      let n = this._eventHandlers.get(e);
-      return n || (t2 ? (n = C32.New(C32.Event.Handler, e), this._eventHandlers.set(e, n), n) : null);
+      if (this.#e) {
+        const t3 = this.#e.get(e);
+        if (t3) return t3;
+      }
+      if (t2) {
+        const t3 = C32.New(C32.Event.Handler);
+        return this.#e || (this.#e = /* @__PURE__ */ new Map()), this.#e.set(e, t3), t3;
+      }
+      return null;
     }
     HasAnyHandlerFor(e) {
-      return this._eventHandlers.has(e);
+      return this.#e && this.#e.has(e);
     }
     addEventListener(e, t2, n) {
       this._GetHandlerByType(e, true)._AddListener(t2, !!n);
     }
     removeEventListener(e, t2, n) {
-      let s = this._GetHandlerByType(e, false);
-      s && (s._RemoveListener(t2, !!n), s._IsEmpty() && this._eventHandlers.delete(e));
+      const s = this._GetHandlerByType(e, false);
+      s && (s._RemoveListener(t2, !!n), this.#e && s._IsEmpty() && this.#e.delete(e));
     }
     dispatchEvent(e) {
       const t2 = this._GetHandlerByType(e.type, false);
@@ -4279,7 +4486,7 @@ var RequireStringOrNumber2;
     async dispatchEventAndClearAsync(e) {
       const t2 = this._GetHandlerByType(e.type, false);
       if (!t2) return true;
-      this._eventHandlers.delete(e.type), e.isAsync = true;
+      this.#e && this.#e.delete(e.type), e.isAsync = true;
       const n = await t2._FireAsync(e);
       return t2.Release(), n;
     }
@@ -4302,7 +4509,7 @@ var RequireStringOrNumber2;
       return t2._FireAsGenerator(e);
     }
     SetDelayRemoveEventsEnabled(e) {
-      for (const t2 of this._eventHandlers.values()) t2.SetDelayRemoveEventsEnabled(e);
+      if (this.#e) for (const t2 of this.#e.values()) t2.SetDelayRemoveEventsEnabled(e);
     }
   };
 }
@@ -4392,16 +4599,16 @@ var DoNextAsyncifiedJob2;
 var ClearTimeCache2;
 var CheckActiveIdleTimeouts2;
 {
-  const C32 = self.C3;
+  const C32 = self.C3, disposedDisposables = /* @__PURE__ */ new WeakSet();
   C32.Disposable = class s {
     constructor(s2) {
-      this._disposed = false, this._disposeAction = s2;
+      this._disposeAction = s2;
     }
     Dispose() {
-      this._disposed || (this._disposed = true, this._disposeAction && (this._disposeAction(), this._disposeAction = null));
+      disposedDisposables.has(this) || (disposedDisposables.add(this), this._disposeAction && (this._disposeAction(), this._disposeAction = null));
     }
     IsDisposed() {
-      return this._disposed;
+      return disposedDisposables.has(this);
     }
     Release() {
       this.Dispose();
@@ -4428,34 +4635,28 @@ var CheckActiveIdleTimeouts2;
   }, C32.CompositeDisposable = class extends C32.Disposable {
     constructor(...s) {
       super(), this._disposables = /* @__PURE__ */ new Set();
-      for (let e of s) this.Add(e);
+      for (const e of s) this.Add(e);
     }
     Add(...s) {
-      if (this._disposed) throw new Error("already disposed");
-      for (let e of s) this._disposables.add(e);
+      if (this.IsDisposed()) throw new Error("already disposed");
+      for (const e of s) this._disposables.add(e);
     }
     Remove(s) {
-      if (this._disposed) throw new Error("already disposed");
+      if (this.IsDisposed()) throw new Error("already disposed");
       this._disposables.delete(s);
     }
     RemoveAll() {
-      if (this._disposed) throw new Error("already disposed");
+      if (this.IsDisposed()) throw new Error("already disposed");
       if (this._disposables) {
-        for (let s of this._disposables) s.Dispose();
+        for (const s of this._disposables) s.Dispose();
         this._disposables.clear();
       }
     }
-    IsDisposed() {
-      return this._disposed;
-    }
     Dispose() {
-      if (this._disposed) throw new Error("already disposed");
-      this._disposed = true;
-      for (let s of this._disposables) s.Dispose();
+      if (this.IsDisposed()) throw new Error("already disposed");
+      super.Dispose();
+      for (const s of this._disposables) s.Dispose();
       this._disposables.clear(), this._disposables = null;
-    }
-    Release() {
-      this.Dispose();
     }
   };
 }
@@ -5803,10 +6004,10 @@ var IsNewline2;
   let PlaneFromPoints = function(t2, e, r2, n) {
     const a2 = tempVec3c;
     vec3.subtract(tempVec3a, r2, e), vec3.subtract(tempVec3b, t2, e), vec3.cross(a2, tempVec3a, tempVec3b), vec3.normalize(a2, a2), n.set(a2[0], a2[1], a2[2], vec3.dot(t2, a2));
-  }, IsInFrontOfPlane = function(t2, e, r2, n, a2, c2, s) {
-    const o2 = s.x, i = s.y, l = s.z, f2 = s.w, P2 = s.xF, h2 = s.yF, m2 = s.zF, p2 = 1 - P2, v2 = 1 - h2, u2 = 1 - m2;
-    if (o2 * t2 * P2 + o2 * n * p2 + i * e * h2 + i * a2 * v2 + l * r2 * m2 + l * c2 * u2 >= f2) return true;
-    return o2 * n * P2 + o2 * t2 * p2 + i * a2 * h2 + i * e * v2 + l * c2 * m2 + l * r2 * u2 > f2;
+  }, IsInFrontOfPlane = function(t2, e) {
+    const r2 = t2.getLeft(), n = t2.getTop(), a2 = t2.getBack(), c2 = t2.getRight(), s = t2.getBottom(), o2 = t2.getFront(), i = e.x, l = e.y, f2 = e.z, P2 = e.w, h2 = e.xF, m2 = e.yF, p2 = e.zF, v2 = 1 - h2, u2 = 1 - m2, b2 = 1 - p2;
+    if (i * r2 * h2 + i * c2 * v2 + l * n * m2 + l * s * u2 + f2 * a2 * p2 + f2 * o2 * b2 >= P2) return true;
+    return i * c2 * h2 + i * r2 * v2 + l * s * m2 + l * n * u2 + f2 * o2 * p2 + f2 * a2 * b2 > P2;
   }, IsPointInFrontOfPlane = function(t2, e, r2, n) {
     return n.x * t2 + n.y * e + n.z * r2 >= n.w;
   };
@@ -5850,8 +6051,8 @@ var IsNewline2;
       const r2 = unitViewport;
       C32.Gfx.Unproject(0, 1, 0, t2, e, r2, neartl), C32.Gfx.Unproject(1, 1, 0, t2, e, r2, neartr), C32.Gfx.Unproject(0, 0, 0, t2, e, r2, nearbl), C32.Gfx.Unproject(1, 0, 0, t2, e, r2, nearbr), C32.Gfx.Unproject(0, 1, 1, t2, e, r2, fartl), C32.Gfx.Unproject(1, 1, 1, t2, e, r2, fartr), C32.Gfx.Unproject(0, 0, 1, t2, e, r2, farbl), C32.Gfx.Unproject(1, 0, 1, t2, e, r2, farbr), PlaneFromPoints(nearbl, neartl, fartl, this._leftP), PlaneFromPoints(neartl, neartr, fartr, this._topP), PlaneFromPoints(neartr, nearbr, farbr, this._rightP), PlaneFromPoints(nearbr, nearbl, farbl, this._bottomP), PlaneFromPoints(farbl, fartl, fartr, this._farP), PlaneFromPoints(nearbr, neartr, neartl, this._nearP);
     }
-    ContainsAABB(t2, e, r2, n, a2, c2) {
-      return IsInFrontOfPlane(t2, e, r2, n, a2, c2, this._leftP) && IsInFrontOfPlane(t2, e, r2, n, a2, c2, this._topP) && IsInFrontOfPlane(t2, e, r2, n, a2, c2, this._rightP) && IsInFrontOfPlane(t2, e, r2, n, a2, c2, this._bottomP) && IsInFrontOfPlane(t2, e, r2, n, a2, c2, this._nearP) && IsInFrontOfPlane(t2, e, r2, n, a2, c2, this._farP);
+    ContainsAABB(t2) {
+      return IsInFrontOfPlane(t2, this._leftP) && IsInFrontOfPlane(t2, this._topP) && IsInFrontOfPlane(t2, this._rightP) && IsInFrontOfPlane(t2, this._bottomP) && IsInFrontOfPlane(t2, this._nearP) && IsInFrontOfPlane(t2, this._farP);
     }
     IsBehindNearPlane(t2, e, r2) {
       return !IsPointInFrontOfPlane(t2, e, r2, this._nearP);
@@ -5862,13 +6063,15 @@ var PlaneFromPoints2;
 var IsInFrontOfPlane2;
 var IsPointInFrontOfPlane2;
 {
-  const C32 = self.C3, glMatrix = self.glMatrix, vec3 = glMatrix.vec3, vec4 = glMatrix.vec4, mat4 = glMatrix.mat4, tempMat4 = mat4.create(), tmpVec3a = vec3.fromValues(0, 0, 0), tmpVec3b = vec3.fromValues(0, 0, 0), tmpVec3c = vec3.fromValues(0, 0, 0), defaultUpVector = vec3.fromValues(0, 1, 0), tmpVec4 = vec4.fromValues(0, 0, 0, 0), tmpQuad = new C32.Quad(), tmpRect = new C32.Rect(), defaultTexCoordsQuad = new C32.Quad(0, 0, 1, 0, 1, 1, 0, 1), DEFAULT_RENDERERBASE_OPTS = { nearZ: 1, farZ: 1e4 }, matWebGLtoWebGPU = mat4.fromValues(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 1);
+  const C32 = self.C3, glMatrix = self.glMatrix, vec3 = glMatrix.vec3, vec4 = glMatrix.vec4, mat4 = glMatrix.mat4, tempMat4 = mat4.create(), tmpVec3a = vec3.fromValues(0, 0, 0), tmpVec3b = vec3.fromValues(0, 0, 0), tmpVec3c = vec3.fromValues(0, 0, 0), defaultUpVector = vec3.fromValues(0, 1, 0), tmpVec4 = vec4.fromValues(0, 0, 0, 0), tmpQuad = new C32.Quad2D(), tmpRect = new C32.Rect(), defaultTexCoordsQuad = new C32.Quad2D(0, 0, 1, 0, 1, 1, 0, 1), DEFAULT_RENDERERBASE_OPTS = { nearZ: 1, farZ: 1e4 }, matWebGLtoWebGPU = mat4.fromValues(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 1), SAMPLING_MODES = ["auto", "nearest", "bilinear", "trilinear"], SAMPLING_MODE_TO_NUMBER = /* @__PURE__ */ new Map();
+  for (let e = 0, t2 = SAMPLING_MODES.length; e < t2; ++e) SAMPLING_MODE_TO_NUMBER.set(SAMPLING_MODES[e], e);
   C32.Gfx.RendererBase = class {
+    #e = /* @__PURE__ */ new Map();
     constructor(e) {
       e = Object.assign({}, DEFAULT_RENDERERBASE_OPTS, e), this._width = 0, this._height = 0, this._fovY = C32.toRadians(45), this._tan_fovY_2 = Math.tan(this._fovY / 2), this._matP = mat4.create(), this._matMV = mat4.create(), this._zAxisScale = false, this._nearZ = e.nearZ, this._farZ = e.farZ, this._allShaderPrograms = [], this._shaderProgramsByName = /* @__PURE__ */ new Map(), this._spTextureFill = null, this._spPoints = null, this._spTilemapFill = null, this._spTileRandomization = null, this._spColorFill = null, this._spLinearGradientFill = null, this._spPenumbraFill = null, this._spHardEllipseFill = null, this._spHardEllipseOutline = null, this._spSmoothEllipseFill = null, this._spSmoothEllipseOutline = null, this._spSmoothLineFill = null, this._stateGroups = /* @__PURE__ */ new Map(), this._currentStateGroup = null, this._blendModeTable = [], this._namedBlendModeMap = /* @__PURE__ */ new Map(), this._baseZ = 0, this._currentZ = 0, this._lineWidth = 1, this._lineWidthStack = [this._lineWidth], this._lineCap = 1, this._lineCapStack = [this._lineCap], this._lineOffset = 0.5, this._lineOffsetStack = [this._lineOffset], this._frameNumber = 0, this._enableMipmaps = true, this._hasMajorPerformanceCaveat = false;
     }
     _ClearState() {
-      this._baseZ = 0, this._currentZ = 0, this._spTextureFill = null, this._spPoints = null, this._spTilemapFill = null, this._spTileRandomization = null, this._spColorFill = null, this._spLinearGradientFill = null, this._spPenumbraFill = null, this._spHardEllipseFill = null, this._spHardEllipseOutline = null, this._spSmoothEllipseFill = null, this._spSmoothEllipseOutline = null, this._spSmoothLineFill = null, this._ClearAllShaderPrograms();
+      this._baseZ = 0, this._currentZ = 0, this._spTextureFill = null, this._spPoints = null, this._spTilemapFill = null, this._spTileRandomization = null, this._spColorFill = null, this._spLinearGradientFill = null, this._spPenumbraFill = null, this._spHardEllipseFill = null, this._spHardEllipseOutline = null, this._spSmoothEllipseFill = null, this._spSmoothEllipseOutline = null, this._spSmoothLineFill = null, this._ClearAllShaderPrograms(), this.#e.clear();
     }
     InitState() {
       this._ClearState(), this._currentStateGroup = null;
@@ -5937,16 +6140,16 @@ var IsPointInFrontOfPlane2;
       const s = self.devicePixelRatio, r2 = 2 * this.GetDefaultCameraZ(i) * s * this._GetTanFovYDiv2() / i, l = t2 * r2 / (2 * s * a2), n = i * r2 / (2 * s * a2), h2 = -l, o2 = l, p2 = -n, _2 = n;
       this.IsWebGPU() ? mat4.orthoZO(e, h2, o2, p2, _2, this.GetNearZ(), this.GetFarZ()) : mat4.ortho(e, h2, o2, p2, _2, this.GetNearZ(), this.GetFarZ());
     }
-    CalculateLookAtModelView(e, t2, i, a2, s, r2 = 1) {
-      let l = 1;
-      this.IsZAxisScaleNormalized() && (l = 200 * this._GetTanFovYDiv2() / s);
-      const n = tmpVec3c;
-      vec3.set(n, l, -l, 1);
-      const h2 = tmpVec3a, o2 = tmpVec3b;
-      vec3.multiply(h2, t2, n), vec3.multiply(o2, i, n), mat4.lookAt(e, h2, o2, a2 || defaultUpVector), n[2] = r2, mat4.scale(e, e, n);
+    CalculateLookAtModelView(e, t2, i, a2, s) {
+      let r2 = 1;
+      this.IsZAxisScaleNormalized() && (r2 = 200 * this._GetTanFovYDiv2() / s);
+      const l = tmpVec3c;
+      vec3.set(l, r2, -r2, 1);
+      const n = tmpVec3a, h2 = tmpVec3b;
+      vec3.multiply(n, t2, l), vec3.multiply(h2, i, l), mat4.lookAt(e, n, h2, a2 || defaultUpVector), mat4.scale(e, e, l);
     }
-    CalculateLookAtModelView2(e, t2, i, a2, s, r2, l, n) {
-      return vec3.set(tmpVec3a, e, t2, i), vec3.set(tmpVec3b, a2, s, r2), this.CalculateLookAtModelView(tempMat4, tmpVec3a, tmpVec3b, defaultUpVector, l, n), tempMat4;
+    CalculateLookAtModelView2(e, t2, i, a2, s, r2, l) {
+      return vec3.set(tmpVec3a, e, t2, i), vec3.set(tmpVec3b, a2, s, r2), this.CalculateLookAtModelView(tempMat4, tmpVec3a, tmpVec3b, defaultUpVector, l), tempMat4;
     }
     _AddShaderProgram(e) {
       this._allShaderPrograms.push(e), this._shaderProgramsByName.set(e.GetName(), e);
@@ -6033,6 +6236,26 @@ var IsPointInFrontOfPlane2;
       if (void 0 === t2) throw new Error("invalid blend name");
       return t2;
     }
+    _GetSampler(e) {
+      const t2 = e.wrapX ?? "clamp-to-edge", i = e.wrapY ?? "clamp-to-edge", a2 = e.sampling;
+      let s = e.anisotropy ?? 1;
+      "trilinear" !== a2 && (s = 1);
+      const r2 = `${t2},${i},${a2},${s}`;
+      let l = this.#e.get(r2);
+      return l || (l = this._CreateSampler(t2, i, a2, s), this.#e.set(r2, l), l);
+    }
+    static SamplingModeToNumber(e) {
+      const t2 = SAMPLING_MODE_TO_NUMBER.get(e);
+      if ("number" != typeof t2) throw new Error("invalid sampling mode");
+      return t2;
+    }
+    static SamplingNumberToMode(e) {
+      if (e < 0 || e >= SAMPLING_MODES.length) throw new RangeError("invalid sampling number");
+      return SAMPLING_MODES[e];
+    }
+    static IsValidSamplingMode(e) {
+      return SAMPLING_MODE_TO_NUMBER.has(e);
+    }
     SetBaseZ(e) {
       this._baseZ = e;
     }
@@ -6054,32 +6277,32 @@ var IsPointInFrontOfPlane2;
       2 === c2 ? this.LinePreCalc_LineCap2(e, t2, i, a2, s, r2, p2, _2) : 1 === c2 ? this.LinePreCalc_LineCap1(e, t2, i, a2, s, r2, p2, _2) : this.LinePreCalc_LineCap0(e, t2, i, a2, s, r2, p2, _2);
     }
     LinePreCalc_LineCap2(e, t2, i, a2, s, r2, l, n) {
-      const h2 = this._lineOffset, o2 = e + h2 - n, p2 = t2 + h2 - l, _2 = a2 + h2 + n, c2 = s + h2 + l, u2 = 2 * n, C2 = 2 * l, d2 = o2 + l, m2 = p2 - n, L = o2 - l + u2, g2 = p2 + n + C2, S2 = _2 + l, f2 = c2 - n, P2 = _2 - l - u2, T2 = c2 + n - C2;
-      this.Quad3D2(d2, m2, i, S2, f2, r2, P2, T2, r2, L, g2, i, defaultTexCoordsQuad);
+      const h2 = this._lineOffset, o2 = e + h2 - n, p2 = t2 + h2 - l, _2 = a2 + h2 + n, c2 = s + h2 + l, u2 = 2 * n, C2 = 2 * l, d2 = o2 + l, m2 = p2 - n, L = o2 - l + u2, S2 = p2 + n + C2, g2 = _2 + l, f2 = c2 - n, P2 = _2 - l - u2, M2 = c2 + n - C2;
+      this.Quad3D2(d2, m2, i, g2, f2, r2, P2, M2, r2, L, S2, i, defaultTexCoordsQuad);
     }
     LinePreCalc_LineCap1(e, t2, i, a2, s, r2, l, n) {
-      const h2 = this._lineOffset, o2 = e + h2 - n, p2 = t2 + h2 - l, _2 = a2 + h2 + n, c2 = s + h2 + l, u2 = o2 + l, C2 = p2 - n, d2 = o2 - l, m2 = p2 + n, L = _2 + l, g2 = c2 - n, S2 = _2 - l, f2 = c2 + n;
-      this.Quad3D2(u2, C2, i, L, g2, r2, S2, f2, r2, d2, m2, i, defaultTexCoordsQuad);
+      const h2 = this._lineOffset, o2 = e + h2 - n, p2 = t2 + h2 - l, _2 = a2 + h2 + n, c2 = s + h2 + l, u2 = o2 + l, C2 = p2 - n, d2 = o2 - l, m2 = p2 + n, L = _2 + l, S2 = c2 - n, g2 = _2 - l, f2 = c2 + n;
+      this.Quad3D2(u2, C2, i, L, S2, r2, g2, f2, r2, d2, m2, i, defaultTexCoordsQuad);
     }
     LinePreCalc_LineCap0(e, t2, i, a2, s, r2, l, n) {
-      const h2 = this._lineOffset, o2 = e + h2, p2 = t2 + h2, _2 = a2 + h2, c2 = s + h2, u2 = o2 + l, C2 = p2 - n, d2 = o2 - l, m2 = p2 + n, L = _2 + l, g2 = c2 - n, S2 = _2 - l, f2 = c2 + n;
-      this.Quad3D2(u2, C2, i, L, g2, r2, S2, f2, r2, d2, m2, i, defaultTexCoordsQuad);
+      const h2 = this._lineOffset, o2 = e + h2, p2 = t2 + h2, _2 = a2 + h2, c2 = s + h2, u2 = o2 + l, C2 = p2 - n, d2 = o2 - l, m2 = p2 + n, L = _2 + l, S2 = c2 - n, g2 = _2 - l, f2 = c2 + n;
+      this.Quad3D2(u2, C2, i, L, S2, r2, g2, f2, r2, d2, m2, i, defaultTexCoordsQuad);
     }
     TexturedLine(e, t2, i, a2, s, r2) {
       const l = C32.angleTo(e, t2, i, a2), n = Math.sin(l), h2 = Math.cos(l), o2 = 0.5 * this._lineWidth, p2 = n * o2, _2 = h2 * o2, c2 = this._lineCap;
       2 === c2 ? this.TexturedLinePreCalc_LineCap2(e, t2, i, a2, p2, _2, s, r2) : 1 === c2 ? this.TexturedLinePreCalc_LineCap1(e, t2, i, a2, p2, _2, s, r2) : this.TexturedLinePreCalc_LineCap0(e, t2, i, a2, p2, _2, s, r2);
     }
     TexturedLinePreCalc_LineCap2(e, t2, i, a2, s, r2, l, n) {
-      const h2 = this._lineOffset, o2 = e + h2 - r2, p2 = t2 + h2 - s, _2 = i + h2 + r2, c2 = a2 + h2 + s, u2 = 2 * r2, C2 = 2 * s, d2 = o2 + s, m2 = p2 - r2, L = o2 - s + u2, g2 = p2 + r2 + C2, S2 = _2 + s, f2 = c2 - r2, P2 = _2 - s - u2, T2 = c2 + r2 - C2;
-      tmpQuad.set(d2, m2, S2, f2, P2, T2, L, g2), tmpRect.set(l, 0, n, 0), this.Quad3(tmpQuad, tmpRect);
+      const h2 = this._lineOffset, o2 = e + h2 - r2, p2 = t2 + h2 - s, _2 = i + h2 + r2, c2 = a2 + h2 + s, u2 = 2 * r2, C2 = 2 * s, d2 = o2 + s, m2 = p2 - r2, L = o2 - s + u2, S2 = p2 + r2 + C2, g2 = _2 + s, f2 = c2 - r2, P2 = _2 - s - u2, M2 = c2 + r2 - C2;
+      tmpQuad.set(d2, m2, g2, f2, P2, M2, L, S2), tmpRect.set(l, 0, n, 0), this.Quad3(tmpQuad, tmpRect);
     }
     TexturedLinePreCalc_LineCap1(e, t2, i, a2, s, r2, l, n) {
-      const h2 = this._lineOffset, o2 = e + h2 - r2, p2 = t2 + h2 - s, _2 = i + h2 + r2, c2 = a2 + h2 + s, u2 = o2 + s, C2 = p2 - r2, d2 = o2 - s, m2 = p2 + r2, L = _2 + s, g2 = c2 - r2, S2 = _2 - s, f2 = c2 + r2;
-      tmpQuad.set(u2, C2, L, g2, S2, f2, d2, m2), tmpRect.set(l, 0, n, 0), this.Quad3(tmpQuad, tmpRect);
+      const h2 = this._lineOffset, o2 = e + h2 - r2, p2 = t2 + h2 - s, _2 = i + h2 + r2, c2 = a2 + h2 + s, u2 = o2 + s, C2 = p2 - r2, d2 = o2 - s, m2 = p2 + r2, L = _2 + s, S2 = c2 - r2, g2 = _2 - s, f2 = c2 + r2;
+      tmpQuad.set(u2, C2, L, S2, g2, f2, d2, m2), tmpRect.set(l, 0, n, 0), this.Quad3(tmpQuad, tmpRect);
     }
     TexturedLinePreCalc_LineCap0(e, t2, i, a2, s, r2, l, n) {
-      const h2 = this._lineOffset, o2 = e + h2, p2 = t2 + h2, _2 = i + h2, c2 = a2 + h2, u2 = o2 + s, C2 = p2 - r2, d2 = o2 - s, m2 = p2 + r2, L = _2 + s, g2 = c2 - r2, S2 = _2 - s, f2 = c2 + r2;
-      tmpQuad.set(u2, C2, L, g2, S2, f2, d2, m2), tmpRect.set(l, 0, n, 0), this.Quad3(tmpQuad, tmpRect);
+      const h2 = this._lineOffset, o2 = e + h2, p2 = t2 + h2, _2 = i + h2, c2 = a2 + h2, u2 = o2 + s, C2 = p2 - r2, d2 = o2 - s, m2 = p2 + r2, L = _2 + s, S2 = c2 - r2, g2 = _2 - s, f2 = c2 + r2;
+      tmpQuad.set(u2, C2, L, S2, g2, f2, d2, m2), tmpRect.set(l, 0, n, 0), this.Quad3(tmpQuad, tmpRect);
     }
     LineRect(e, t2, i, a2) {
       const s = 0.5 * this._lineWidth, r2 = this._lineCap;
@@ -6171,6 +6394,9 @@ var IsPointInFrontOfPlane2;
       if (this._lineOffsetStack.length <= 1) throw new Error("cannot pop last line offset - check push/pop pairs");
       this._lineOffsetStack.pop(), this._lineOffset = this._lineOffsetStack.at(-1);
     }
+    IsColorDataF16() {
+      return false;
+    }
     ResetCullState() {
       this.SetCullFaceMode(0), this.SetFrontFaceWinding(0);
     }
@@ -6225,6 +6451,8 @@ var IsPointInFrontOfPlane2;
     }
     CreateRendererText() {
       return C32.New(C32.Gfx.RendererText, this);
+    }
+    CreateMeshData(e, t2, i) {
     }
   };
 }
@@ -6323,247 +6551,284 @@ var IsPointInFrontOfPlane2;
 }
 {
   let interpolateQuad = function(t2, e, s) {
-    const i = s.getTlx(), n = s.getTly(), r2 = s.getTrx() - i, h2 = s.getTry() - n;
-    return [i + r2 * t2 + (s.getBlx() - i) * e, n + h2 * t2 + (s.getBly() - n) * e];
+    const i = s.getTlx(), h2 = s.getTly(), a2 = s.getTrx() - i, n = s.getTry() - h2;
+    return [i + a2 * t2 + (s.getBlx() - i) * e, h2 + n * t2 + (s.getBly() - h2) * e];
   };
   interpolateQuad2 = interpolateQuad;
   const C32 = globalThis.C3, assert = globalThis.assert, MAX_VERTICES = 65535;
-  C32.Gfx.MeshPoint = class {
+  C32.Gfx.DeformMeshPoint = class {
+    #t;
+    #e = 0;
+    #s = 0;
+    #i = NaN;
+    #h = NaN;
+    #a = NaN;
+    #n = NaN;
+    #o = NaN;
     constructor(t2, e, s) {
-      this._mesh = t2, this._col = e, this._row = s, this._x = NaN, this._y = NaN, this._zElevation = NaN, this._u = NaN, this._v = NaN, this._x = 0, this._y = 0, this._zElevation = 0, this._u = 0, this._v = 0;
+      this.#t = t2, this.#e = e, this.#s = s, this.#i = 0, this.#h = 0, this.#a = 0, this.#n = 0, this.#o = 0;
     }
     _Init(t2, e, s, i) {
-      this._x = t2, this._y = e, this._u = s, this._v = i;
+      this.#i = t2, this.#h = e, this.#n = s, this.#o = i;
     }
     GetX() {
-      return this._x;
+      return this.#i;
     }
     SetX(t2) {
-      this._x !== t2 && (this._x = t2, this._mesh._SetPointsChanged());
+      this.#i !== t2 && (this.#i = t2, this.#t._SetPointsChanged());
     }
     GetY() {
-      return this._y;
+      return this.#h;
     }
     SetY(t2) {
-      this._y !== t2 && (this._y = t2, this._mesh._SetPointsChanged());
+      this.#h !== t2 && (this.#h = t2, this.#t._SetPointsChanged());
     }
-    GetZElevation() {
-      return this._zElevation;
+    GetZ() {
+      return this.#a;
     }
-    SetZElevation(t2) {
-      this._zElevation !== t2 && (this._zElevation = Math.max(t2, 0), this._mesh._SetPointsChanged());
+    SetZ(t2) {
+      this.#a !== t2 && (this.#a = Math.max(t2, 0), this.#t._SetPointsChanged());
     }
     GetU() {
-      return this._u;
+      return this.#n;
     }
     SetU(t2) {
-      this._u = t2;
+      this.#n = t2;
     }
     GetV() {
-      return this._v;
+      return this.#o;
     }
     SetV(t2) {
-      this._v = t2;
+      this.#o = t2;
     }
     _Interpolate_TexRect(t2, e, s) {
-      [this._x, this._y] = interpolateQuad(t2._x, t2._y, e), this._zElevation = t2._zElevation, this._u = C32.lerp(s.getLeft(), s.getRight(), t2._u), this._v = C32.lerp(s.getTop(), s.getBottom(), t2._v);
+      [this.#i, this.#h] = interpolateQuad(t2.GetX(), t2.GetY(), e), this.#a = t2.GetZ(), this.#n = C32.lerp(s.getLeft(), s.getRight(), t2.GetU()), this.#o = C32.lerp(s.getTop(), s.getBottom(), t2.GetV());
     }
     _Interpolate_TexQuad(t2, e, s) {
-      [this._x, this._y] = interpolateQuad(t2._x, t2._y, e), this._zElevation = t2._zElevation, [this._u, this._v] = interpolateQuad(t2._u, t2._v, s);
+      [this.#i, this.#h] = interpolateQuad(t2.GetX(), t2.GetY(), e), this.#a = t2.GetZ(), [this.#n, this.#o] = interpolateQuad(t2.GetU(), t2.GetV(), s);
     }
     SaveToJson() {
-      return { "x": this.GetX(), "y": this.GetY(), "z": this.GetZElevation(), "u": this.GetU(), "v": this.GetV() };
+      return { "x": this.GetX(), "y": this.GetY(), "z": this.GetZ(), "u": this.GetU(), "v": this.GetV() };
     }
     LoadFromJson(t2) {
-      this.SetX(t2["x"]), this.SetY(t2["y"]), t2.hasOwnProperty("z") && this.SetZElevation(t2["z"]), this.SetU(t2["u"]), this.SetV(t2["v"]);
+      this.SetX(t2["x"]), this.SetY(t2["y"]), t2.hasOwnProperty("z") && this.SetZ(t2["z"]), this.SetU(t2["u"]), this.SetV(t2["v"]);
     }
     GetMesh() {
-      return this._mesh;
+      return this.#t;
     }
     GetColumn() {
-      return this._col;
+      return this.#e;
     }
     GetRow() {
-      return this._row;
+      return this.#s;
     }
-  }, C32.Gfx.Mesh = class {
+  }, C32.Gfx.DeformMesh = class {
+    #r = null;
+    #l = 0;
+    #G = 0;
+    #m = [];
+    #u = 0;
+    #c = 0;
+    #M = 0;
+    #C = 0;
+    #f = 0;
+    #d = 0;
+    #p = false;
+    #g = null;
+    #x = true;
+    #y = 0;
+    #D = new C32.Color(0, 0, 0, 0);
     constructor(t2, e, s) {
       if (t2 < 2 || e < 2) throw new Error("invalid mesh size");
-      this._hsize = t2, this._vsize = e, this._owner = s || null, this._pts = [], this._minX = 0, this._minY = 0, this._maxX = 1, this._maxY = 1, this._maxZ = 0, this._bboxChanged = false, this._meshChunks = [], this._lastZOffset = 0, this._dataArrsChanged = true;
-      const i = t2 - 1, n = e - 1;
+      this.#l = t2, this.#G = e, this.#r = s || null;
+      const i = t2 - 1, h2 = e - 1;
       for (let s2 = 0; s2 < e; ++s2) {
         const e2 = [];
-        for (let r2 = 0; r2 < t2; ++r2) {
-          const t3 = C32.New(C32.Gfx.MeshPoint, this, r2, s2), h2 = r2 / i, o2 = s2 / n;
-          t3._Init(h2, o2, h2, o2), e2.push(t3);
+        for (let a2 = 0; a2 < t2; ++a2) {
+          const t3 = C32.New(C32.Gfx.DeformMeshPoint, this, a2, s2), n = a2 / i, o2 = s2 / h2;
+          t3._Init(n, o2, n, o2), e2.push(t3);
         }
-        this._pts.push(e2);
+        this.#m.push(e2);
       }
     }
     Release() {
-      C32.clearArray(this._pts), C32.clearArray(this._meshChunks);
+      this.#g && (this.#g.Release(), this.#g = null), C32.clearArray(this.#m);
     }
     GetHSize() {
-      return this._hsize;
+      return this.#l;
     }
     GetVSize() {
-      return this._vsize;
+      return this.#G;
     }
     GetOwner() {
-      return this._owner;
+      return this.#r;
     }
     _GetPoints() {
-      return this._pts;
+      return this.#m;
     }
     _SetPointsChanged() {
-      this._bboxChanged = true, this._dataArrsChanged = true;
+      this.#p = true, this.#x = true;
     }
-    _MaybeComputeBounds() {
-      if (!this._bboxChanged) return;
-      let t2 = 1 / 0, e = 1 / 0, s = -1 / 0, i = -1 / 0, n = 0;
-      for (const r2 of this._pts) for (const h2 of r2) {
-        const r3 = h2.GetX(), o2 = h2.GetY();
-        t2 = Math.min(t2, r3), e = Math.min(e, o2), s = Math.max(s, r3), i = Math.max(i, o2), n = Math.max(n, h2.GetZElevation());
+    #z() {
+      if (!this.#p) return;
+      let t2 = 1 / 0, e = 1 / 0, s = 1 / 0, i = -1 / 0, h2 = -1 / 0, a2 = -1 / 0;
+      for (const n of this.#m) for (const o2 of n) {
+        const n2 = o2.GetX(), r2 = o2.GetY(), l = o2.GetZ();
+        t2 = Math.min(t2, n2), e = Math.min(e, r2), s = Math.min(s, l), i = Math.max(i, n2), h2 = Math.max(h2, r2), a2 = Math.max(a2, l);
       }
-      this._minX = t2, this._minY = e, this._maxX = s, this._maxY = i, this._maxZ = n, this._bboxChanged = false;
+      this.#u = t2, this.#c = e, this.#M = s, this.#C = i, this.#f = h2, this.#d = a2, this.#p = false;
     }
     GetMinX() {
-      return this._MaybeComputeBounds(), this._minX;
+      return this.#z(), this.#u;
     }
     GetMinY() {
-      return this._MaybeComputeBounds(), this._minY;
+      return this.#z(), this.#c;
+    }
+    GetMinZ() {
+      return this.#z(), this.#M;
     }
     GetMaxX() {
-      return this._MaybeComputeBounds(), this._maxX;
+      return this.#z(), this.#C;
     }
     GetMaxY() {
-      return this._MaybeComputeBounds(), this._maxY;
+      return this.#z(), this.#f;
     }
     GetMaxZ() {
-      return this._MaybeComputeBounds(), this._maxZ;
+      return this.#z(), this.#d;
     }
     HasAnyZElevation() {
-      return this.GetMaxZ() > 0;
+      return this.GetMinZ() < 0 || this.GetMaxZ() > 0;
     }
     GetMeshPointAt(t2, e) {
-      return t2 = Math.floor(t2), e = Math.floor(e), t2 < 0 || t2 >= this._hsize || e < 0 || e >= this._vsize ? null : this._pts[e][t2];
+      return t2 = Math.floor(t2), e = Math.floor(e), t2 < 0 || t2 >= this.#l || e < 0 || e >= this.#G ? null : this.#m[e][t2];
     }
     CalculateTransformedMesh(t2, e, s) {
       const i = s instanceof C32.Rect;
       if (t2.GetHSize() !== this.GetHSize() || t2.GetVSize() !== this.GetVSize()) throw new Error("source mesh wrong size");
-      const n = t2._pts, r2 = this._pts;
-      for (let t3 = 0, h2 = r2.length; t3 < h2; ++t3) {
-        const h3 = n[t3], o2 = r2[t3];
-        for (let t4 = 0, n2 = o2.length; t4 < n2; ++t4) {
-          const n3 = h3[t4], r3 = o2[t4];
-          i ? r3._Interpolate_TexRect(n3, e, s) : r3._Interpolate_TexQuad(n3, e, s);
+      const h2 = t2._GetPoints(), a2 = this._GetPoints();
+      for (let t3 = 0, n = a2.length; t3 < n; ++t3) {
+        const n2 = h2[t3], o2 = a2[t3];
+        for (let t4 = 0, h3 = o2.length; t4 < h3; ++t4) {
+          const h4 = n2[t4], a3 = o2[t4];
+          i ? a3._Interpolate_TexRect(h4, e, s) : a3._Interpolate_TexQuad(h4, e, s);
         }
       }
-      this._dataArrsChanged = true;
+      this.#x = true;
     }
-    _MaybeUpdateDataArrays(t2) {
-      if (!this._dataArrsChanged && this._lastZOffset === t2) return;
-      const e = this._hsize, s = this._vsize, i = this._meshChunks, n = Math.floor(65535 / e) - 1;
-      if (n <= 0) throw new Error("mesh too large");
-      const r2 = Math.ceil((s - 1) / n);
-      r2 < i.length && (i.length = r2);
-      let h2 = 0;
-      for (let o2 = 0; o2 < r2; ++o2) {
-        const r3 = Math.min(n, s - h2 - 1), a2 = (r3 + 1) * e, l = 3 * a2, _2 = 2 * a2, u2 = (e - 1) * r3 * 6;
-        if (o2 === i.length) i.push({ posArr: new Float32Array(l), uvArr: new Float32Array(_2), indexArr: new Uint16Array(u2) });
-        else {
-          const t3 = i[o2];
-          t3.posArr.length !== l && (t3.posArr = new Float32Array(l)), t3.uvArr.length !== _2 && (t3.uvArr = new Float32Array(_2)), t3.indexArr.length !== u2 && (t3.indexArr = new Uint16Array(u2));
-        }
-        const { posArr: c2, uvArr: G, indexArr: m2 } = i[o2];
-        this._WriteChunkDataArrays(h2, r3, t2, c2, G, m2), h2 += n;
-      }
-      this._lastZOffset = t2, this._dataArrsChanged = false;
+    #S(t2) {
+      if (this.#g) return;
+      const e = this.#l, s = this.#G, i = e * s, h2 = (e - 1) * (s - 1) * 6;
+      this.#g = t2.CreateMeshData(i, h2, { staticIndices: true, debugLabel: "deformmesh" }), this.#g.CreateGPUResources(), this.#b();
     }
-    _WriteChunkDataArrays(t2, e, s, i, n, r2) {
-      const h2 = this._pts, o2 = this._hsize;
-      let a2 = 0, l = 0, _2 = 0;
-      for (let u2 = t2, c2 = t2 + e + 1; u2 < c2; ++u2) {
-        const e2 = h2[u2], G = u2 + 1, m2 = u2 - t2, C2 = m2 * o2, f2 = (m2 + 1) * o2;
-        for (let t3 = 0, h3 = e2.length; t3 < h3; ++t3) {
-          const o3 = e2[t3], u3 = t3 + 1;
-          if (i[a2++] = o3.GetX(), i[a2++] = o3.GetY(), i[a2++] = o3.GetZElevation() + s, n[l++] = o3.GetU(), n[l++] = o3.GetV(), u3 < h3 && G < c2) {
-            const e3 = t3 + C2, s2 = u3 + C2, i2 = u3 + f2, n2 = t3 + f2;
-            r2[_2++] = e3, r2[_2++] = s2, r2[_2++] = i2, r2[_2++] = e3, r2[_2++] = i2, r2[_2++] = n2;
-          }
+    #b() {
+      const t2 = this.#l, e = this.#G, s = this.#g.indices;
+      let i = 0;
+      for (let h2 = 0, a2 = e - 1; h2 < a2; ++h2) {
+        const e2 = h2 * t2, a3 = (h2 + 1) * t2;
+        for (let h3 = 0, n = t2 - 1; h3 < n; ++h3) {
+          const t3 = h3 + 1, n2 = h3 + e2, o2 = t3 + e2, r2 = t3 + a3, l = h3 + a3;
+          s[i++] = n2, s[i++] = o2, s[i++] = r2, s[i++] = n2, s[i++] = r2, s[i++] = l;
         }
       }
+      this.#g.MarkIndexDataChanged();
+    }
+    #P(t2) {
+      if (!this.#x && this.#y === t2) return;
+      const e = this.#m, s = this.#G, i = this.#g.positions, h2 = this.#g.texCoords;
+      let a2 = 0, n = 0, o2 = 0, r2 = -1, l = -1, G = -1, m2 = -1;
+      for (let u2 = 0, c2 = s; u2 < c2; ++u2) {
+        const s2 = e[u2];
+        for (let e2 = 0, u3 = s2.length; e2 < u3; ++e2) {
+          const u4 = s2[e2], c3 = Math.fround(u4.GetX()), M2 = i[a2];
+          i[a2++] = c3;
+          const C2 = Math.fround(u4.GetY()), f2 = i[a2];
+          i[a2++] = C2;
+          const d2 = Math.fround(u4.GetZ() + t2), p2 = i[a2];
+          i[a2++] = d2;
+          const g2 = Math.fround(u4.GetU()), x2 = h2[n];
+          h2[n++] = g2;
+          const y2 = Math.fround(u4.GetV()), D2 = h2[n];
+          h2[n++] = y2, c3 === M2 && C2 === f2 && d2 === p2 || (-1 === r2 ? (r2 = o2, l = o2 + 1) : l = o2 + 1), g2 === x2 && y2 === D2 || (-1 === G ? (G = o2, m2 = o2 + 1) : m2 = o2 + 1), o2++;
+        }
+      }
+      -1 !== r2 && this.#g.MarkDataChanged("positions", r2, l), -1 !== G && this.#g.MarkDataChanged("texCoords", G, m2), this.#x = false, this.#y = t2;
+    }
+    #Z(t2) {
+      if (t2.equals(this.#D)) return;
+      this.#D.set(t2);
+      const e = this.#g.colors, s = t2.getR(), i = t2.getG(), h2 = t2.getB(), a2 = t2.getA();
+      for (let t3 = 0, n = e.length; t3 < n; ) e[t3++] = s, e[t3++] = i, e[t3++] = h2, e[t3++] = a2;
+      this.#g.MarkDataChanged("colors", 0, this.#g.GetVertexCount());
     }
     Draw(t2, e) {
-      this._MaybeUpdateDataArrays(e);
-      for (const { posArr: e2, uvArr: s, indexArr: i } of this._meshChunks) t2.DrawMesh(e2, s, i);
+      this.#S(t2), this.#P(e), this.#Z(t2.GetColor()), t2.DrawMeshData(this.#g);
     }
     Outline(t2, e) {
       e || (e = (t3, e2, s2) => [t3, e2, s2]);
-      const s = this._pts;
+      const s = this.#m;
       let i = s[0];
-      for (let n = 1, r2 = s.length; n < r2; ++n) {
-        const h2 = s[n];
-        let o2 = i[0], a2 = h2[0];
-        for (let s2 = 1, l = h2.length; s2 < l; ++s2) {
-          const _2 = i[s2], u2 = h2[s2], [c2, G, m2] = e(o2.GetX(), o2.GetY(), o2.GetZElevation()), [C2, f2, p2] = e(_2.GetX(), _2.GetY(), _2.GetZElevation()), [g2, y2, d2] = e(u2.GetX(), u2.GetY(), u2.GetZElevation()), [x2, M2, v2] = e(a2.GetX(), a2.GetY(), a2.GetZElevation());
-          t2.Line3D(c2, G, m2, C2, f2, p2), t2.Line3D(c2, G, m2, g2, y2, d2), t2.Line3D(c2, G, m2, x2, M2, v2), s2 === l - 1 && t2.Line3D(C2, f2, p2, g2, y2, d2), n === r2 - 1 && t2.Line3D(x2, M2, v2, g2, y2, d2), o2 = _2, a2 = u2;
+      for (let h2 = 1, a2 = s.length; h2 < a2; ++h2) {
+        const n = s[h2];
+        let o2 = i[0], r2 = n[0];
+        for (let s2 = 1, l = n.length; s2 < l; ++s2) {
+          const G = i[s2], m2 = n[s2], [u2, c2, M2] = e(o2.GetX(), o2.GetY(), o2.GetZ()), [C2, f2, d2] = e(G.GetX(), G.GetY(), G.GetZ()), [p2, g2, x2] = e(m2.GetX(), m2.GetY(), m2.GetZ()), [y2, D2, z] = e(r2.GetX(), r2.GetY(), r2.GetZ());
+          t2.Line3D(u2, c2, M2, C2, f2, d2), t2.Line3D(u2, c2, M2, p2, g2, x2), t2.Line3D(u2, c2, M2, y2, D2, z), s2 === l - 1 && t2.Line3D(C2, f2, d2, p2, g2, x2), h2 === a2 - 1 && t2.Line3D(y2, D2, z, p2, g2, x2), o2 = G, r2 = m2;
         }
-        i = h2;
+        i = n;
       }
     }
     InsertPolyMeshVertices(t2) {
-      const e = 1e-3, s = 0.99999999, i = t2.pointsArr(), n = [], r2 = this.GetHSize() - 1, h2 = this.GetVSize() - 1, o2 = 1 / r2, a2 = 1 / h2, l = r2 - 1, _2 = h2 - 1;
-      let u2 = i[0], c2 = i[1], G = C32.clamp(Math.floor(u2 * r2), 0, l), m2 = C32.clamp(Math.floor(c2 * h2), 0, _2), C2 = true, f2 = 0, p2 = 0, g2 = 0;
-      let y2 = -1;
-      const d2 = () => {
-        u2 = C32.clamp(C32.lerp(u2, f2, g2), 0, 1), c2 = C32.clamp(C32.lerp(c2, p2, g2), 0, 1), n.push(u2, c2);
+      const e = 1e-3, s = 0.99999999, i = t2.pointsArr(), h2 = [], a2 = this.GetHSize() - 1, n = this.GetVSize() - 1, o2 = 1 / a2, r2 = 1 / n, l = a2 - 1, G = n - 1;
+      let m2 = i[0], u2 = i[1], c2 = C32.clamp(Math.floor(m2 * a2), 0, l), M2 = C32.clamp(Math.floor(u2 * n), 0, G), C2 = true, f2 = 0, d2 = 0, p2 = 0;
+      let g2 = -1;
+      const x2 = () => {
+        m2 = C32.clamp(C32.lerp(m2, f2, p2), 0, 1), u2 = C32.clamp(C32.lerp(u2, d2, p2), 0, 1), h2.push(m2, u2);
       };
-      for (let t3 = 0, x2 = i.length; t3 < x2; t3 += 2) {
-        u2 = i[t3], c2 = i[t3 + 1], n.push(u2, c2), G = C32.clamp(Math.floor(u2 * r2), 0, l), m2 = C32.clamp(Math.floor(c2 * h2), 0, _2);
-        const M2 = (t3 + 2) % x2;
-        for (f2 = i[M2], p2 = i[M2 + 1], y2 = -1; ; ) {
-          if (n.length > 1e6) throw new Error("Too many mesh poly points");
-          const t4 = G * o2, i2 = m2 * a2, r3 = (G + 1) * o2, h3 = (m2 + 1) * a2;
-          if (C2 = C32.isPointInTriangleInclusive(u2, c2, t4, i2, r3, i2, r3, h3), 0 !== y2 && (g2 = C32.rayIntersectExtended(u2, c2, f2, p2, t4, i2, r3, h3, -1e-3), g2 >= 0 && g2 <= s)) d2(), C2 = !C2, y2 = 0;
-          else if (m2 > 0 && 2 !== y2 && (g2 = C32.rayIntersectExtended(u2, c2, f2, p2, t4, i2, r3, i2, e), g2 >= 0 && g2 <= s)) d2(), m2--, C2 = false, y2 = 4;
-          else if (G < l && 3 !== y2 && (g2 = C32.rayIntersectExtended(u2, c2, f2, p2, r3, i2, r3, h3, e), g2 >= 0 && g2 <= s)) d2(), G++, C2 = false, y2 = 1;
-          else if (G > 0 && 1 !== y2 && (g2 = C32.rayIntersectExtended(u2, c2, f2, p2, t4, i2, t4, h3, e), g2 >= 0 && g2 <= s)) d2(), G--, C2 = true, y2 = 3;
+      for (let t3 = 0, y2 = i.length; t3 < y2; t3 += 2) {
+        m2 = i[t3], u2 = i[t3 + 1], h2.push(m2, u2), c2 = C32.clamp(Math.floor(m2 * a2), 0, l), M2 = C32.clamp(Math.floor(u2 * n), 0, G);
+        const D2 = (t3 + 2) % y2;
+        for (f2 = i[D2], d2 = i[D2 + 1], g2 = -1; ; ) {
+          if (h2.length > 1e6) throw new Error("Too many mesh poly points");
+          const t4 = c2 * o2, i2 = M2 * r2, a3 = (c2 + 1) * o2, n2 = (M2 + 1) * r2;
+          if (C2 = C32.isPointInTriangleInclusive(m2, u2, t4, i2, a3, i2, a3, n2), 0 !== g2 && (p2 = C32.rayIntersectExtended(m2, u2, f2, d2, t4, i2, a3, n2, -1e-3), p2 >= 0 && p2 <= s)) x2(), C2 = !C2, g2 = 0;
+          else if (M2 > 0 && 2 !== g2 && (p2 = C32.rayIntersectExtended(m2, u2, f2, d2, t4, i2, a3, i2, e), p2 >= 0 && p2 <= s)) x2(), M2--, C2 = false, g2 = 4;
+          else if (c2 < l && 3 !== g2 && (p2 = C32.rayIntersectExtended(m2, u2, f2, d2, a3, i2, a3, n2, e), p2 >= 0 && p2 <= s)) x2(), c2++, C2 = false, g2 = 1;
+          else if (c2 > 0 && 1 !== g2 && (p2 = C32.rayIntersectExtended(m2, u2, f2, d2, t4, i2, t4, n2, e), p2 >= 0 && p2 <= s)) x2(), c2--, C2 = true, g2 = 3;
           else {
-            if (!(m2 < _2 && 4 !== y2 && (g2 = C32.rayIntersectExtended(u2, c2, f2, p2, t4, h3, r3, h3, e), g2 >= 0 && g2 <= s))) break;
-            d2(), m2++, C2 = true, y2 = 2;
+            if (!(M2 < G && 4 !== g2 && (p2 = C32.rayIntersectExtended(m2, u2, f2, d2, t4, n2, a3, n2, e), p2 >= 0 && p2 <= s))) break;
+            x2(), M2++, C2 = true, g2 = 2;
           }
         }
       }
-      return C32.New(C32.CollisionPoly, n);
+      return C32.New(C32.CollisionPoly, h2);
     }
     TransformCollisionPoly(t2, e) {
-      const s = this._TransformPolyPoints(t2);
-      this._SimplifyPoly(s), e.setPoints(s);
+      const s = this.#w(t2);
+      this.#T(s), e.setPoints(s);
     }
-    _TransformPolyPoints(t2) {
+    #w(t2) {
       const e = [], s = t2.pointsArr();
       for (let t3 = 0, i = s.length; t3 < i; t3 += 2) {
-        const i2 = s[t3], n = s[t3 + 1], [r2, h2] = this.TransformPoint(i2, n);
-        e.push(r2, h2);
+        const i2 = s[t3], h2 = s[t3 + 1], [a2, n] = this.TransformPoint(i2, h2);
+        e.push(a2, n);
       }
       return e;
     }
     TransformPoint(t2, e) {
-      const s = this.GetHSize() - 1, i = this.GetVSize() - 1, n = 1 / s, r2 = 1 / i, h2 = C32.clamp(Math.floor(t2 * s), 0, s - 1), o2 = C32.clamp(Math.floor(e * i), 0, i - 1), a2 = h2 * n, l = o2 * r2, _2 = (h2 + 1) * n, u2 = (o2 + 1) * r2, c2 = this.GetMeshPointAt(h2, o2), G = this.GetMeshPointAt(h2 + 1, o2 + 1), m2 = C32.isPointInTriangleInclusive(t2, e, a2, l, _2, l, _2, u2), C2 = m2 ? a2 + n : a2, f2 = m2 ? l : l + r2, p2 = this.GetMeshPointAt(h2 + (m2 ? 1 : 0), o2 + (m2 ? 0 : 1)), [g2, y2, d2] = C32.triangleCartesianToBarycentric(t2, e, a2, l, C2, f2, _2, u2);
-      return C32.triangleBarycentricToCartesian3d(g2, y2, d2, c2.GetX(), c2.GetY(), c2.GetZElevation(), p2.GetX(), p2.GetY(), p2.GetZElevation(), G.GetX(), G.GetY(), G.GetZElevation());
+      const s = this.GetHSize() - 1, i = this.GetVSize() - 1, h2 = 1 / s, a2 = 1 / i, n = C32.clamp(Math.floor(t2 * s), 0, s - 1), o2 = C32.clamp(Math.floor(e * i), 0, i - 1), r2 = n * h2, l = o2 * a2, G = (n + 1) * h2, m2 = (o2 + 1) * a2, u2 = this.GetMeshPointAt(n, o2), c2 = this.GetMeshPointAt(n + 1, o2 + 1), M2 = C32.isPointInTriangleInclusive(t2, e, r2, l, G, l, G, m2), C2 = M2 ? r2 + h2 : r2, f2 = M2 ? l : l + a2, d2 = this.GetMeshPointAt(n + (M2 ? 1 : 0), o2 + (M2 ? 0 : 1)), [p2, g2, x2] = C32.triangleCartesianToBarycentric(t2, e, r2, l, C2, f2, G, m2);
+      return C32.triangleBarycentricToCartesian3d(p2, g2, x2, u2.GetX(), u2.GetY(), u2.GetZ(), d2.GetX(), d2.GetY(), d2.GetZ(), c2.GetX(), c2.GetY(), c2.GetZ());
     }
-    _SimplifyPoly(t2) {
+    #T(t2) {
       const e = [], s = 1e-7;
-      let i = t2[0], n = t2[1], r2 = i - t2.at(-2), h2 = n - t2.at(-1);
-      for (let o2 = 0, a2 = t2.length; o2 < a2; o2 += 2) {
-        const l = (o2 + 2) % a2, _2 = t2[l], u2 = t2[l + 1], c2 = _2 - i, G = u2 - n, m2 = Math.abs(c2) < s && Math.abs(r2) < s && Math.sign(G) === Math.sign(h2), C2 = Math.abs(G) < s && Math.abs(h2) < s && Math.sign(c2) === Math.sign(r2);
-        (!m2 && !C2 && Math.abs(c2 / r2 - G / h2) > 1e-3 || 0 == c2 && 0 === G) && e.push(i, n), i = _2, n = u2, r2 = c2, h2 = G;
+      let i = t2[0], h2 = t2[1], a2 = i - t2.at(-2), n = h2 - t2.at(-1);
+      for (let o2 = 0, r2 = t2.length; o2 < r2; o2 += 2) {
+        const l = (o2 + 2) % r2, G = t2[l], m2 = t2[l + 1], u2 = G - i, c2 = m2 - h2, M2 = Math.abs(u2) < s && Math.abs(a2) < s && Math.sign(c2) === Math.sign(n), C2 = Math.abs(c2) < s && Math.abs(n) < s && Math.sign(u2) === Math.sign(a2);
+        (!M2 && !C2 && Math.abs(u2 / a2 - c2 / n) > 1e-3 || 0 == u2 && 0 === c2) && e.push(i, h2), i = G, h2 = m2, a2 = u2, n = c2;
       }
       e.length >= 6 && e.length < t2.length && C32.shallowAssignArray(t2, e);
     }
     SaveToJson() {
-      return { "cols": this.GetHSize(), "rows": this.GetVSize(), "points": this._pts.map((t2) => t2.map((t3) => t3.SaveToJson())) };
+      return { "cols": this.GetHSize(), "rows": this.GetVSize(), "points": this.#m.map((t2) => t2.map((t3) => t3.SaveToJson())) };
     }
     LoadFromJson(t2) {
       const e = this.GetHSize(), s = this.GetVSize();
@@ -6579,6 +6844,264 @@ var IsPointInFrontOfPlane2;
   };
 }
 var interpolateQuad2;
+{
+  const C32 = globalThis.C3, assert = globalThis.assert, DEFAULT_MESHDATA_OPTS = { staticPositions: false, staticTexCoords: false, staticColors: false, staticIndices: false, texIndices: false, debugLabel: "" }, SMALL_MESH_VERTICES = 128, SMALL_MESH_INDICES = 1024;
+  class PendingBufferUpdate {
+    #e = false;
+    #t = 0;
+    #n = 0;
+    #i = 0;
+    SetMaxSize(e) {
+      this.#i = e;
+    }
+    MarkChanged(e, t2) {
+      if (e < 0 || t2 > this.#i) throw new RangeError(`invalid data range (${e} to ${t2} outside allowed range 0 to ${this.#i})`);
+      this.#e ? (this.#t = Math.min(e, this.#t), this.#n = Math.max(t2, this.#n)) : (this.#e = true, this.#t = e, this.#n = t2);
+    }
+    GetPendingChange() {
+      return this.#e ? { start: this.#t, end: this.#n } : null;
+    }
+    Reset() {
+      this.#e = false;
+    }
+  }
+  C32.Gfx.MeshData = class {
+    positions = null;
+    texCoords = null;
+    texIndices = null;
+    colors = null;
+    indices = null;
+    #s;
+    #a = "";
+    #r = 0;
+    #d = 0;
+    #o = false;
+    #h = 0;
+    #l = new PendingBufferUpdate();
+    #u = new PendingBufferUpdate();
+    #x = null;
+    #C = new PendingBufferUpdate();
+    #c = new PendingBufferUpdate();
+    constructor(e, t2, n, i) {
+      if (t2 = Math.floor(t2), n = Math.floor(n), t2 < 0 || n < 0) throw new Error("invalid count");
+      this.#s = e, this.#r = t2, this.#d = n, i = Object.assign({}, DEFAULT_MESHDATA_OPTS, i), this.#o = i.texIndices, this.#a = i.debugLabel, this.#l.SetMaxSize(t2), this.#u.SetMaxSize(t2), this.#C.SetMaxSize(t2), this.#c.SetMaxSize(n), this.#o && (this.#x = new PendingBufferUpdate(), this.#x.SetMaxSize(t2));
+    }
+    Release() {
+      this.#s._ReleaseMeshData(this), this.ReleaseGPUResources(), this.positions = null, this.texCoords = null, this.texIndices = null, this.colors = null, this.indices = null, this.#s = null;
+    }
+    GetRenderer() {
+      return this.#s;
+    }
+    GetDebugLabel() {
+      return this.#a;
+    }
+    CreateGPUResources() {
+      if (!this.positions) if (this.positions = new Float32Array(3 * this.#r), this.texCoords = new Float32Array(2 * this.#r), this.#o && (this.texIndices = new Uint32Array(this.#r)), this.#s.IsColorDataF16() ? this.colors = new globalThis["Float16Array"](4 * this.#r) : this.colors = new Float32Array(4 * this.#r), this.IsIndexTypeUint16()) {
+        const e = 4 * Math.ceil(this.#d / 2), t2 = new ArrayBuffer(e);
+        this.indices = new Uint16Array(t2, 0, this.#d);
+      } else this.indices = new Uint32Array(this.#d);
+    }
+    WriteGPUData() {
+    }
+    ReleaseGPUResources() {
+      this.positions = null, this.texCoords = null, this.texIndices = null, this.colors = null, this.indices = null, this.#s._GetCurrentMeshData() === this && this.#s.EndBatch();
+    }
+    OnContextLost() {
+    }
+    OnContextRestored() {
+      this.CreateGPUResources(), this.MarkAllVertexDataChanged(), this.MarkIndexDataChanged();
+    }
+    IsIndexTypeUint16() {
+      return this.GetVertexCount() < 65536;
+    }
+    GetVertexCount() {
+      return this.#r;
+    }
+    GetIndexCount() {
+      return this.#d;
+    }
+    IsSmall() {
+      return this.GetVertexCount() < 128 && this.GetIndexCount() < 1024;
+    }
+    GetPendingBufferUpdate(e) {
+      switch (e) {
+        case "positions":
+          return this.#l;
+        case "texCoords":
+          return this.#u;
+        case "texIndices":
+          if (!this.#o) throw new Error("texture indices not enabled");
+          return this.#x;
+        case "colors":
+          return this.#C;
+        case "indices":
+          return this.#c;
+        default:
+          throw new Error(`invalid buffer type '${e}'`);
+      }
+    }
+    MarkDataChanged(e, t2, n) {
+      (t2 = Math.floor(t2)) !== (n = Math.floor(n)) && this.GetPendingBufferUpdate(e).MarkChanged(t2, n);
+    }
+    MarkAllVertexDataChanged(e = 0, t2 = this.GetVertexCount()) {
+      this.MarkDataChanged("positions", e, t2), this.MarkDataChanged("texCoords", e, t2), this.MarkDataChanged("colors", e, t2), this.#o && this.MarkDataChanged("texIndices", e, t2);
+    }
+    MarkPositionDataChanged(e = 0, t2 = this.GetVertexCount()) {
+      this.MarkDataChanged("positions", e, t2);
+    }
+    MarkTexCoordsDataChanged(e = 0, t2 = this.GetVertexCount()) {
+      this.MarkDataChanged("texCoords", e, t2);
+    }
+    MarkColorsDataChanged(e = 0, t2 = this.GetVertexCount()) {
+      this.MarkDataChanged("colors", e, t2);
+    }
+    MarkIndexDataChanged(e = 0, t2 = this.GetIndexCount()) {
+      this.MarkDataChanged("indices", e, t2);
+    }
+    FillColor(e, t2, n, i) {
+      const s = this.colors;
+      for (let a2 = 0, r2 = s.length; a2 < r2; ) s[a2++] = e, s[a2++] = t2, s[a2++] = n, s[a2++] = i;
+    }
+    FillTexIndices(e) {
+      this.#h !== e && (this.#h = e, this.texIndices.fill(e), this.MarkDataChanged("texIndices", 0, this.GetVertexCount()));
+    }
+  };
+}
+{
+  const C32 = globalThis.C3, assert = globalThis.assert, MAX_VERTICES = 65535, MAX_INDICES = 393210, defaultTexCoordsQuad = new C32.Quad2D(0, 0, 1, 0, 1, 1, 0, 1), DEFAULT_DYNAMICMESHDATA_OPTS = { texIndices: false };
+  C32.Gfx.DynamicMeshData = class {
+    #t;
+    #e = 0;
+    #s = 0;
+    #i = null;
+    #r = null;
+    #o = null;
+    #a = null;
+    #n = null;
+    #h = new C32.Color(1, 1, 1, 1);
+    constructor(t2, e) {
+      e = Object.assign({}, DEFAULT_DYNAMICMESHDATA_OPTS, e), this.#t = t2.CreateMeshData(65535, 393210, { texIndices: e.texIndices, debugLabel: "dynamic" });
+    }
+    Release() {
+      this.#t.Release(), this.#t = null, this.#i = null, this.#r = null, this.#o = null, this.#a = null, this.#n = null;
+    }
+    _GetMeshData() {
+      return this.#t;
+    }
+    CreateGPUResources() {
+      this.#t.CreateGPUResources(), this.#i = this.#t.positions, this.#r = this.#t.texCoords, this.#o = this.#t.texIndices, this.#a = this.#t.colors, this.#n = this.#t.indices;
+    }
+    WriteGPUData(t2) {
+      this.#t.MarkAllVertexDataChanged(0, this.#e), this.#t.MarkIndexDataChanged(0, this.#s), this.#t.WriteGPUData(t2), this.#e = 0, this.#s = 0;
+    }
+    ReleaseGPUResources() {
+      this.#t.ReleaseGPUResources(), this.#i = null, this.#r = null, this.#o = null, this.#a = null, this.#n = null;
+    }
+    OnContextLost() {
+      this.#t.OnContextLost();
+    }
+    WebGPUInitRenderPassVertexBuffers(t2) {
+      this.#t.WebGPUInitRenderPassVertexBuffers(t2);
+    }
+    WebGPUInitRenderPassIndexBuffer(t2) {
+      this.#t.WebGPUInitRenderPassIndexBuffer(t2);
+    }
+    CanFit(t2, e) {
+      return this.#e + t2 <= 65535 && this.#s + e <= 393210;
+    }
+    GetVertexPtr() {
+      return this.#e;
+    }
+    GetIndexPtr() {
+      return this.#s;
+    }
+    static GetMaxVertices() {
+      return 65535;
+    }
+    static GetMaxIndices() {
+      return 393210;
+    }
+    GetDefaultColor() {
+      return this.#h;
+    }
+    #d() {
+      const t2 = this.#e;
+      this.#e += 4;
+      let e = this.#s;
+      this.#s += 6;
+      const s = this.#n;
+      return s[e++] = t2, s[e++] = t2 + 1, s[e++] = t2 + 2, s[e++] = t2, s[e++] = t2 + 2, s[e] = t2 + 3, t2;
+    }
+    WriteTexIndicesForQuad(t2, e) {
+      const s = this.#o;
+      s[t2++] = e, s[t2++] = e, s[t2++] = e, s[t2] = e;
+    }
+    FillTexIndices(t2, e, s) {
+      this.#o.fill(s, t2, t2 + e);
+    }
+    WriteQuad(t2, e) {
+      return this.WriteQuad4(t2, e, defaultTexCoordsQuad);
+    }
+    WriteQuad2(t2, e, s, i, r2, o2, a2, n, h2) {
+      const d2 = this.#d(), l = this.#i;
+      let u2 = 3 * d2;
+      return l[u2++] = e, l[u2++] = s, l[u2++] = t2, l[u2++] = i, l[u2++] = r2, l[u2++] = t2, l[u2++] = o2, l[u2++] = a2, l[u2++] = t2, l[u2++] = n, l[u2++] = h2, l[u2] = t2, defaultTexCoordsQuad.writeToTypedArray(this.#r, 2 * d2), this.#h.writeToTypedArrayx4(this.#a, 4 * d2), d2;
+    }
+    WriteQuad3(t2, e, s) {
+      const i = this.#d();
+      return e.writeToTypedArray3D(this.#i, 3 * i, t2), s.writeAsQuadToTypedArray(this.#r, 2 * i), this.#h.writeToTypedArrayx4(this.#a, 4 * i), i;
+    }
+    WriteQuad4(t2, e, s) {
+      const i = this.#d();
+      return e.writeToTypedArray3D(this.#i, 3 * i, t2), s.writeToTypedArray(this.#r, 2 * i), this.#h.writeToTypedArrayx4(this.#a, 4 * i), i;
+    }
+    WriteQuad5(t2, e, s, i) {
+      const r2 = this.#d();
+      return e.writeToTypedArray3D(this.#i, 3 * r2, t2), s.writeToTypedArray(this.#r, 2 * r2), this.#a.set(i, 4 * r2), r2;
+    }
+    WriteQuad3D(t2, e, s, i, r2, o2, a2, n, h2, d2, l, u2, c2, x2) {
+      const T2 = this.#d(), C2 = this.#i;
+      let D2 = 3 * T2;
+      return C2[D2++] = e, C2[D2++] = s, C2[D2++] = i + t2, C2[D2++] = r2, C2[D2++] = o2, C2[D2++] = a2 + t2, C2[D2++] = n, C2[D2++] = h2, C2[D2++] = d2 + t2, C2[D2++] = l, C2[D2++] = u2, C2[D2] = c2 + t2, x2.writeAsQuadToTypedArray(this.#r, 2 * T2), this.#h.writeToTypedArrayx4(this.#a, 4 * T2), T2;
+    }
+    WriteQuad3D2(t2, e, s, i, r2, o2, a2, n, h2, d2, l, u2, c2, x2) {
+      const T2 = this.#d(), C2 = this.#i;
+      let D2 = 3 * T2;
+      return C2[D2++] = e, C2[D2++] = s, C2[D2++] = i + t2, C2[D2++] = r2, C2[D2++] = o2, C2[D2++] = a2 + t2, C2[D2++] = n, C2[D2++] = h2, C2[D2++] = d2 + t2, C2[D2++] = l, C2[D2++] = u2, C2[D2] = c2 + t2, x2.writeToTypedArray(this.#r, 2 * T2), this.#h.writeToTypedArrayx4(this.#a, 4 * T2), T2;
+    }
+    WriteQuad3D3(t2, e, s, i, r2, o2, a2, n, h2, d2, l, u2, c2, x2, T2) {
+      const C2 = this.#d(), D2 = this.#i;
+      let P2 = 3 * C2;
+      return D2[P2++] = e, D2[P2++] = s, D2[P2++] = i + t2, D2[P2++] = r2, D2[P2++] = o2, D2[P2++] = a2 + t2, D2[P2++] = n, D2[P2++] = h2, D2[P2++] = d2 + t2, D2[P2++] = l, D2[P2++] = u2, D2[P2] = c2 + t2, x2.writeToTypedArray(this.#r, 2 * C2), this.#a.set(T2, 4 * C2), this.#h.writeToTypedArrayx4(this.#a, 4 * C2), C2;
+    }
+    WriteMesh(t2, e, s, i, r2 = 0) {
+      const o2 = Math.floor(t2.length / 3), a2 = this.#e;
+      this.#i.set(t2, 3 * a2), this.#r.set(e, 2 * a2);
+      const n = this.#n;
+      if (0 === a2 && 0 === r2) n.set(s, this.#s);
+      else {
+        let t3 = this.#s;
+        for (let e2 = 0, i2 = s.length; e2 < i2; ++e2) n[t3++] = s[e2] + a2 - r2;
+      }
+      const h2 = this.#a;
+      if (i) h2.set(i, 4 * a2);
+      else {
+        const t3 = this.#h, e2 = t3.getR(), s2 = t3.getG(), i2 = t3.getB(), r3 = t3.getA();
+        let n2 = 4 * a2;
+        for (let t4 = 0, a3 = o2; t4 < a3; ++t4) h2[n2++] = e2, h2[n2++] = s2, h2[n2++] = i2, h2[n2++] = r3;
+      }
+      return this.#e += o2, this.#s += s.length, a2;
+    }
+    static CalculatePartialIndexRange(t2, e, s) {
+      let i = t2[e], r2 = t2[e];
+      for (let o2 = e + 1, a2 = e + s; o2 < a2; ++o2) {
+        const e2 = t2[o2];
+        i = Math.min(i, e2), r2 = Math.max(r2, e2);
+      }
+      return { minIndex: i, maxIndex: r2 };
+    }
+  };
+}
 {
   let GetFormatSpecifiers = function(e, t2) {
     let i, r2, a2, s;
@@ -6604,17 +7127,20 @@ var interpolateQuad2;
     return { sizedinternalformat: i, internalformat: r2, format: a2, type: s };
   };
   GetFormatSpecifiers2 = GetFormatSpecifiers;
-  const C32 = self.C3, VALID_PIXEL_FORMATS = /* @__PURE__ */ new Set(["rgba8", "rgb8", "rgba4", "rgb5_a1", "rgb565"]), VALID_SAMPLINGS = /* @__PURE__ */ new Set(["nearest", "bilinear", "trilinear"]), VALID_MIPMAP_QUALITIES = /* @__PURE__ */ new Set(["default", "low", "high"]), VALID_WRAP_MODES = /* @__PURE__ */ new Set(["clamp-to-edge", "repeat", "mirror-repeat"]);
-  const CREATEFROM_DEFAULT_OPTIONS = { wrapX: "clamp-to-edge", wrapY: "clamp-to-edge", sampling: "trilinear", anisotropy: 0, pixelFormat: "rgba8", mipMap: true, mipMapQuality: "default", premultiplyAlpha: true, isSvg: false, width: -1, height: -1 }, UPDATE_DEFAULT_OPTIONS = { premultiplyAlpha: true, flipY: false }, allTextures = /* @__PURE__ */ new Set();
+  const C32 = self.C3, VALID_PIXEL_FORMATS = /* @__PURE__ */ new Set(["rgba8", "rgb8", "rgba4", "rgb5_a1", "rgb565"]), VALID_MIPMAP_QUALITIES = /* @__PURE__ */ new Set(["default", "low", "high"]), VALID_WRAP_MODES = /* @__PURE__ */ new Set(["clamp-to-edge", "repeat", "mirror-repeat"]);
+  const CREATEFROM_DEFAULT_OPTIONS = { wrapX: "clamp-to-edge", wrapY: "clamp-to-edge", defaultSampling: "trilinear", anisotropy: 1, pixelFormat: "rgba8", mipMap: true, mipMapQuality: "default", premultiplyAlpha: true, isSvg: false, width: -1, height: -1 }, UPDATE_DEFAULT_OPTIONS = { premultiplyAlpha: true, flipY: false }, allTextures = /* @__PURE__ */ new Set();
   C32.Gfx.WebGLRendererTexture = class {
+    #e = "trilinear";
+    #t = 2;
+    #i = -1;
+    #r = [null, null, null];
     constructor(e) {
-      this._renderer = e, this._texture = null, this._width = 0, this._height = 0, this._isStatic = true, this._wrapX = "clamp-to-edge", this._wrapY = "clamp-to-edge", this._sampling = "trilinear", this._anisotropy = 0, this._pixelFormat = "rgba8", this._isMipMapped = false, this._mipMapQuality = "default", this._refCount = 0;
+      this._renderer = e, this._texture = null, this._width = 0, this._height = 0, this._isStatic = true, this._wrapX = "clamp-to-edge", this._wrapY = "clamp-to-edge", this._anisotropy = 1, this._pixelFormat = "rgba8", this._isMipMapped = false, this._mipMapQuality = "default", this._refCount = 0;
     }
     _CreateStatic(e, t2) {
       if (!("undefined" != typeof HTMLImageElement && e instanceof HTMLImageElement || "undefined" != typeof HTMLCanvasElement && e instanceof HTMLCanvasElement || "undefined" != typeof ImageBitmap && e instanceof ImageBitmap || "undefined" != typeof OffscreenCanvas && e instanceof OffscreenCanvas || e instanceof ImageData || e instanceof ArrayBuffer)) throw new Error("invalid texture source");
       if (t2 = Object.assign({}, CREATEFROM_DEFAULT_OPTIONS, t2), this._texture) throw new Error("already created texture");
-      if (this._wrapX = t2.wrapX, this._wrapY = t2.wrapY, this._sampling = t2.sampling, this._anisotropy = t2.anisotropy, this._pixelFormat = t2.pixelFormat, this._isMipMapped = !!t2.mipMap && this._renderer.AreMipmapsEnabled(), this._mipMapQuality = t2.mipMapQuality, !VALID_WRAP_MODES.has(this._wrapX) || !VALID_WRAP_MODES.has(this._wrapY)) throw new Error("invalid wrap mode");
-      if (!VALID_SAMPLINGS.has(this._sampling)) throw new Error("invalid sampling");
+      if (this._wrapX = t2.wrapX, this._wrapY = t2.wrapY, this._anisotropy = t2.anisotropy, this._pixelFormat = t2.pixelFormat, this._isMipMapped = !!t2.mipMap && this._renderer.AreMipmapsEnabled(), this._mipMapQuality = t2.mipMapQuality, this.SetDefaultSampling(t2.defaultSampling), !VALID_WRAP_MODES.has(this._wrapX) || !VALID_WRAP_MODES.has(this._wrapY)) throw new Error("invalid wrap mode");
       if (!VALID_PIXEL_FORMATS.has(this._pixelFormat)) throw new Error("invalid pixel format");
       if (!VALID_MIPMAP_QUALITIES.has(this._mipMapQuality)) throw new Error("invalid mipmap quality");
       if (this._isStatic = true, e instanceof ArrayBuffer || null === e || t2.isSvg) {
@@ -6629,11 +7155,11 @@ var interpolateQuad2;
       if (this._width > r2 || this._height > r2) throw new Error("texture data exceeds maximum texture size");
       const a2 = this._renderer.GetContext(), s = this._renderer.GetWebGLVersionNumber();
       this._texture = a2.createTexture(), a2.bindTexture(a2.TEXTURE_2D, this._texture), a2.pixelStorei(a2["UNPACK_PREMULTIPLY_ALPHA_WEBGL"], t2.premultiplyAlpha), a2.pixelStorei(a2["UNPACK_FLIP_Y_WEBGL"], false);
-      const h2 = GetFormatSpecifiers(this._pixelFormat, a2);
+      const n = GetFormatSpecifiers(this._pixelFormat, a2);
       if (this._renderer.SupportsNPOTTextures() || i || !this._IsTiled()) if (s >= 2) {
         let t3;
-        t3 = this._isMipMapped ? Math.floor(Math.log2(Math.max(this._width, this._height)) + 1) : 1, a2.texStorage2D(a2.TEXTURE_2D, t3, h2.sizedinternalformat, this._width, this._height), e instanceof ArrayBuffer ? a2.texSubImage2D(a2.TEXTURE_2D, 0, 0, 0, this._width, this._height, h2.format, h2.type, new Uint8Array(e)) : null !== e && a2.texSubImage2D(a2.TEXTURE_2D, 0, 0, 0, h2.format, h2.type, e);
-      } else e instanceof ArrayBuffer ? a2.texImage2D(a2.TEXTURE_2D, 0, h2.internalformat, this._width, this._height, 0, h2.format, h2.type, new Uint8Array(e)) : null === e ? a2.texImage2D(a2.TEXTURE_2D, 0, h2.internalformat, this._width, this._height, 0, h2.format, h2.type, null) : a2.texImage2D(a2.TEXTURE_2D, 0, h2.internalformat, h2.format, h2.type, e);
+        t3 = this._isMipMapped ? Math.floor(Math.log2(Math.max(this._width, this._height)) + 1) : 1, a2.texStorage2D(a2.TEXTURE_2D, t3, n.sizedinternalformat, this._width, this._height), e instanceof ArrayBuffer ? a2.texSubImage2D(a2.TEXTURE_2D, 0, 0, 0, this._width, this._height, n.format, n.type, new Uint8Array(e)) : null !== e && a2.texSubImage2D(a2.TEXTURE_2D, 0, 0, 0, n.format, n.type, e);
+      } else e instanceof ArrayBuffer ? a2.texImage2D(a2.TEXTURE_2D, 0, n.internalformat, this._width, this._height, 0, n.format, n.type, new Uint8Array(e)) : null === e ? a2.texImage2D(a2.TEXTURE_2D, 0, n.internalformat, this._width, this._height, 0, n.format, n.type, null) : a2.texImage2D(a2.TEXTURE_2D, 0, n.internalformat, n.format, n.type, e);
       else {
         if (null === e) throw new Error("cannot pass null data when creating a NPOT tiled texture without NPOT support");
         if (e instanceof ArrayBuffer && (e = new ImageData(new Uint8ClampedArray(e), this._width, this._height)), e instanceof ImageData) {
@@ -6641,14 +7167,13 @@ var interpolateQuad2;
           t4.getContext("2d").putImageData(e, 0, 0), e = t4;
         }
         const t3 = C32.CreateCanvas(C32.nextHighestPowerOfTwo(this._width), C32.nextHighestPowerOfTwo(this._height)), i2 = t3.getContext("2d");
-        i2.imageSmoothingEnabled = "nearest" !== this._sampling, i2.drawImage(e, 0, 0, this._width, this._height, 0, 0, t3.width, t3.height), a2.texImage2D(a2.TEXTURE_2D, 0, h2.internalformat, h2.format, h2.type, t3);
+        i2.imageSmoothingEnabled = "nearest" !== this.#e, i2.drawImage(e, 0, 0, this._width, this._height, 0, 0, t3.width, t3.height), a2.texImage2D(a2.TEXTURE_2D, 0, n.internalformat, n.format, n.type, t3);
       }
-      null !== e && this._SetTextureParameters(a2), a2.bindTexture(a2.TEXTURE_2D, null), this._renderer._ResetLastTexture(), this._refCount = 1, allTextures.add(this);
+      null !== e && this.#a(a2), s < 2 && this.#s(a2), s >= 2 && !this._isMipMapped && a2.texParameteri(a2.TEXTURE_2D, a2.TEXTURE_MAX_LEVEL, 0), a2.bindTexture(a2.TEXTURE_2D, null), this._renderer._ResetLastTexture(), this._refCount = 1, allTextures.add(this);
     }
     _CreateDynamic(e, t2, i) {
       if (i = Object.assign({}, CREATEFROM_DEFAULT_OPTIONS, i), this._texture) throw new Error("already created texture");
-      if (this._wrapX = i.wrapX, this._wrapY = i.wrapY, this._sampling = i.sampling, this._pixelFormat = i.pixelFormat, this._isMipMapped = !!i.mipMap && this._renderer.AreMipmapsEnabled(), this._mipMapQuality = i.mipMapQuality, !VALID_WRAP_MODES.has(this._wrapX) || !VALID_WRAP_MODES.has(this._wrapY)) throw new Error("invalid wrap mode");
-      if (!VALID_SAMPLINGS.has(this._sampling)) throw new Error("invalid sampling");
+      if (this._wrapX = i.wrapX, this._wrapY = i.wrapY, this._pixelFormat = i.pixelFormat, this._isMipMapped = !!i.mipMap && this._renderer.AreMipmapsEnabled(), this._mipMapQuality = i.mipMapQuality, this.SetDefaultSampling(i.defaultSampling), !VALID_WRAP_MODES.has(this._wrapX) || !VALID_WRAP_MODES.has(this._wrapY)) throw new Error("invalid wrap mode");
       if (!VALID_PIXEL_FORMATS.has(this._pixelFormat)) throw new Error("invalid pixel format");
       if (!VALID_MIPMAP_QUALITIES.has(this._mipMapQuality)) throw new Error("invalid mipmap quality");
       this._isStatic = false, this._width = Math.floor(e), this._height = Math.floor(t2);
@@ -6656,36 +7181,51 @@ var interpolateQuad2;
       if (this._width <= 0 || this._height <= 0) throw new Error("invalid texture size");
       if (this._width > a2 || this._height > a2) throw new Error("texture exceeds maximum texture size");
       if (!this._renderer.SupportsNPOTTextures() && this._IsTiled() && !r2) throw new Error("non-power-of-two tiled textures not supported");
-      const s = this._renderer.GetContext(), h2 = this._renderer.GetWebGLVersionNumber();
+      const s = this._renderer.GetContext(), n = this._renderer.GetWebGLVersionNumber();
       this._texture = s.createTexture(), s.bindTexture(s.TEXTURE_2D, this._texture), s.pixelStorei(s["UNPACK_PREMULTIPLY_ALPHA_WEBGL"], i.premultiplyAlpha), s.pixelStorei(s["UNPACK_FLIP_Y_WEBGL"], false);
-      const n = GetFormatSpecifiers(this._pixelFormat, s), _2 = h2 >= 2 ? n.sizedinternalformat : n.internalformat;
-      s.texImage2D(s.TEXTURE_2D, 0, _2, this._width, this._height, 0, n.format, n.type, null), this._SetTextureParameters(s), s.bindTexture(s.TEXTURE_2D, null), this._renderer._ResetLastTexture(), this._refCount = 1, allTextures.add(this);
+      const h2 = GetFormatSpecifiers(this._pixelFormat, s), _2 = n >= 2 ? h2.sizedinternalformat : h2.internalformat;
+      s.texImage2D(s.TEXTURE_2D, 0, _2, this._width, this._height, 0, h2.format, h2.type, null), this.#a(s), n < 2 && this.#s(s), n >= 2 && !this._isMipMapped && s.texParameteri(s.TEXTURE_2D, s.TEXTURE_MAX_LEVEL, 0), s.bindTexture(s.TEXTURE_2D, null), this._renderer._ResetLastTexture(), this._refCount = 1, allTextures.add(this);
     }
-    _GetMipMapHint(e) {
+    GetDefaultSampling() {
+      return this.#e;
+    }
+    SetDefaultSampling(e) {
+      if (!C32.Gfx.RendererBase.IsValidSamplingMode(e) || "auto" === e) throw new Error("invalid sampling");
+      "trilinear" !== e || this._isMipMapped || (e = "bilinear"), this.#e = e, this.#t = C32.Gfx.RendererBase.SamplingModeToNumber(this.#e) - 1;
+    }
+    _GetDefaultSamplingIndex() {
+      return this.#t;
+    }
+    _IsTiled() {
+      return "clamp-to-edge" !== this._wrapX || "clamp-to-edge" !== this._wrapY;
+    }
+    #n(e) {
       if ("default" === this._mipMapQuality) return this._isStatic ? e.NICEST : e.FASTEST;
       if ("low" === this._mipMapQuality) return e.FASTEST;
       if ("high" === this._mipMapQuality) return e.NICEST;
       throw new Error("invalid mipmap quality");
     }
-    _IsTiled() {
-      return "clamp-to-edge" !== this._wrapX || "clamp-to-edge" !== this._wrapY;
+    #a(e) {
+      (C32.isPOT(this._width) && C32.isPOT(this._height) || this._renderer.SupportsNPOTTextures()) && this._isMipMapped && (e.hint(e.GENERATE_MIPMAP_HINT, this.#n(e)), e.generateMipmap(e.TEXTURE_2D));
     }
-    _GetTextureWrapMode(e, t2) {
-      if ("clamp-to-edge" === t2) return e.CLAMP_TO_EDGE;
-      if ("repeat" === t2) return e.REPEAT;
-      if ("mirror-repeat" === t2) return e.MIRRORED_REPEAT;
-      throw new Error("invalid wrap mode");
+    #s(e) {
+      const t2 = this._renderer;
+      e.texParameteri(e.TEXTURE_2D, e.TEXTURE_WRAP_S, t2._GetTextureWrapMode(this._wrapX)), e.texParameteri(e.TEXTURE_2D, e.TEXTURE_WRAP_T, t2._GetTextureWrapMode(this._wrapY));
     }
-    _SetTextureParameters(e) {
-      const t2 = C32.isPOT(this._width) && C32.isPOT(this._height);
-      if (e.texParameteri(e.TEXTURE_2D, e.TEXTURE_WRAP_S, this._GetTextureWrapMode(e, this._wrapX)), e.texParameteri(e.TEXTURE_2D, e.TEXTURE_WRAP_T, this._GetTextureWrapMode(e, this._wrapY)), "nearest" === this._sampling) e.texParameteri(e.TEXTURE_2D, e.TEXTURE_MAG_FILTER, e.NEAREST), e.texParameteri(e.TEXTURE_2D, e.TEXTURE_MIN_FILTER, e.NEAREST), this._isMipMapped = false;
-      else if (e.texParameteri(e.TEXTURE_2D, e.TEXTURE_MAG_FILTER, e.LINEAR), (t2 || this._renderer.SupportsNPOTTextures()) && this._isMipMapped) {
-        e.hint(e.GENERATE_MIPMAP_HINT, this._GetMipMapHint(e)), e.generateMipmap(e.TEXTURE_2D);
-        const t3 = "trilinear" === this._sampling && !this._renderer.HasMajorPerformanceCaveat();
-        e.texParameteri(e.TEXTURE_2D, e.TEXTURE_MIN_FILTER, t3 ? e.LINEAR_MIPMAP_LINEAR : e.LINEAR_MIPMAP_NEAREST);
-      } else e.texParameteri(e.TEXTURE_2D, e.TEXTURE_MIN_FILTER, e.LINEAR), this._isMipMapped = false;
-      const i = this._renderer._GetAnisotropicExtension();
-      i && this._anisotropy > 0 && "nearest" !== this._sampling && e.texParameterf(e.TEXTURE_2D, i["TEXTURE_MAX_ANISOTROPY_EXT"], Math.min(this._anisotropy, this._renderer._GetMaxAnisotropy()));
+    _WebGL1SetTextureSampling(e, t2) {
+      if (this.#i === t2) return;
+      this.#i = t2;
+      const i = this._renderer;
+      if (0 === t2) e.texParameteri(e.TEXTURE_2D, e.TEXTURE_MAG_FILTER, e.NEAREST), e.texParameteri(e.TEXTURE_2D, e.TEXTURE_MIN_FILTER, e.NEAREST);
+      else {
+        e.texParameteri(e.TEXTURE_2D, e.TEXTURE_MAG_FILTER, e.LINEAR);
+        (C32.isPOT(this._width) && C32.isPOT(this._height) || i.SupportsNPOTTextures()) && this._isMipMapped ? e.texParameteri(e.TEXTURE_2D, e.TEXTURE_MIN_FILTER, 2 === t2 ? e.LINEAR_MIPMAP_LINEAR : e.LINEAR_MIPMAP_NEAREST) : e.texParameteri(e.TEXTURE_2D, e.TEXTURE_MIN_FILTER, e.LINEAR);
+      }
+      const r2 = i._GetAnisotropicExtension();
+      if (r2) {
+        const a2 = 2 === t2 ? this._anisotropy : 1;
+        e.texParameterf(e.TEXTURE_2D, r2["TEXTURE_MAX_ANISOTROPY_EXT"], Math.min(a2, i._GetMaxAnisotropy()));
+      }
     }
     _Update(e, t2) {
       if (!("undefined" != typeof HTMLImageElement && e instanceof HTMLImageElement || "undefined" != typeof HTMLVideoElement && e instanceof HTMLVideoElement || "undefined" != typeof HTMLCanvasElement && e instanceof HTMLCanvasElement || "undefined" != typeof ImageBitmap && e instanceof ImageBitmap || "undefined" != typeof OffscreenCanvas && e instanceof OffscreenCanvas || e instanceof ImageData)) throw new Error("invalid texture source");
@@ -6694,16 +7234,14 @@ var interpolateQuad2;
       t2 = Object.assign({}, UPDATE_DEFAULT_OPTIONS, t2);
       const i = e.width || e.videoWidth, r2 = e.height || e.videoHeight, a2 = this._renderer.GetWebGLVersionNumber(), s = this._renderer.GetContext();
       s.bindTexture(s.TEXTURE_2D, this._texture), s.pixelStorei(s["UNPACK_PREMULTIPLY_ALPHA_WEBGL"], t2.premultiplyAlpha), s.pixelStorei(s["UNPACK_FLIP_Y_WEBGL"], !!t2.flipY);
-      const h2 = GetFormatSpecifiers(this._pixelFormat, s), n = a2 >= 2 ? h2.sizedinternalformat : h2.internalformat;
+      const n = GetFormatSpecifiers(this._pixelFormat, s), h2 = a2 >= 2 ? n.sizedinternalformat : n.internalformat;
       try {
-        if (this._width === i && this._height === r2) {
-          const t3 = C32.isPOT(this._width) && C32.isPOT(this._height);
-          s.texSubImage2D(s.TEXTURE_2D, 0, 0, 0, h2.format, h2.type, e), (t3 || this._renderer.SupportsNPOTTextures()) && this._isMipMapped && (s.hint(s.GENERATE_MIPMAP_HINT, this._GetMipMapHint(s)), s.generateMipmap(s.TEXTURE_2D));
-        } else {
+        if (this._width === i && this._height === r2) s.texSubImage2D(s.TEXTURE_2D, 0, 0, 0, n.format, n.type, e), this.#a();
+        else {
           this._width = i, this._height = r2;
           const t3 = C32.isPOT(this._width) && C32.isPOT(this._height);
           if (!this._renderer.SupportsNPOTTextures() && this._IsTiled() && !t3) throw new Error("non-power-of-two tiled textures not supported");
-          s.texImage2D(s.TEXTURE_2D, 0, n, h2.format, h2.type, e), (t3 || this._renderer.SupportsNPOTTextures()) && this._isMipMapped && (s.hint(s.GENERATE_MIPMAP_HINT, this._GetMipMapHint(s)), s.generateMipmap(s.TEXTURE_2D));
+          s.texImage2D(s.TEXTURE_2D, 0, h2, n.format, n.type, e), this.#a();
         }
       } catch (e2) {
         console.error("Error updating WebGL texture: ", e2);
@@ -6714,7 +7252,13 @@ var interpolateQuad2;
       if (this._refCount > 0) throw new Error("texture still has references");
       if (!this._texture) throw new Error("already deleted texture");
       allTextures.delete(this);
-      this._renderer.GetContext().deleteTexture(this._texture), this._texture = null;
+      this._renderer.GetContext().deleteTexture(this._texture), this._texture = null, this.#r.fill(null);
+    }
+    _GetSampler(e) {
+      return this.#r[e] || (this.#r[e] = this._renderer._GetSampler({ wrapX: this._wrapX, wrapY: this._wrapY, sampling: C32.Gfx.RendererBase.SamplingNumberToMode(e + 1), anisotropy: this._anisotropy })), this.#r[e];
+    }
+    _SetAnisotropy(e) {
+      this._anisotropy = e, this.#r.fill(null), this._renderer.GetWebGLVersionNumber() < 2 && (this.#i = -1);
     }
     IsValid() {
       return !!this._texture;
@@ -6770,38 +7314,39 @@ var interpolateQuad2;
 }
 var GetFormatSpecifiers2;
 {
-  const C32 = self.C3, assert = self.assert, glMatrix = self.glMatrix, vec3 = glMatrix.vec3, mat4 = glMatrix.mat4, VALID_SAMPLINGS = /* @__PURE__ */ new Set(["nearest", "bilinear", "trilinear"]), DEFAULT_RENDERTARGET_OPTIONS = { sampling: "trilinear", alpha: true, depth: false, isSampled: true, isDefaultSize: true, multisampling: 0 }, allRenderTargets = /* @__PURE__ */ new Set();
+  const C32 = self.C3, assert = self.assert, glMatrix = self.glMatrix, vec3 = glMatrix.vec3, mat4 = glMatrix.mat4, DEFAULT_RENDERTARGET_OPTIONS = { defaultSampling: "trilinear", alpha: true, depth: false, isSampled: true, isDefaultSize: true, multisampling: 0 }, allRenderTargets = /* @__PURE__ */ new Set();
   C32.Gfx.WebGLRenderTarget = class {
+    #e = "trilinear";
     constructor(e) {
-      this._renderer = e, this._frameBuffer = null, this._frameBufferNoDepth = null, this._texture = null, this._renderBuffer = null, this._width = 0, this._height = 0, this._isDefaultSize = true, this._sampling = "trilinear", this._alpha = true, this._depth = false, this._isSampled = true, this._multisampling = 0, this._projectionMatrix = mat4.create(), this._lastFov = 0, this._lastNearZ = 0, this._lastFarZ = 0;
+      this._renderer = e, this._frameBuffer = null, this._frameBufferNoDepth = null, this._texture = null, this._renderBuffer = null, this._width = 0, this._height = 0, this._isDefaultSize = true, this._alpha = true, this._depth = false, this._isSampled = true, this._multisampling = 0, this._projectionMatrix = mat4.create(), this._lastFov = 0, this._lastNearZ = 0, this._lastFarZ = 0;
     }
     _Create(e, t2, r2) {
       r2 = Object.assign({}, DEFAULT_RENDERTARGET_OPTIONS, r2);
       const i = this._renderer.GetWebGLVersionNumber();
       if (this._texture || this._renderBuffer) throw new Error("already created render target");
-      if (this._sampling = r2.sampling, this._alpha = !!r2.alpha, this._depth = !!r2.depth, this._isSampled = !!r2.isSampled, this._isDefaultSize = !!r2.isDefaultSize, this._multisampling = r2.multisampling, !VALID_SAMPLINGS.has(this._sampling)) throw new Error("invalid sampling");
+      if (this.#e = r2.defaultSampling, this._alpha = !!r2.alpha, this._depth = !!r2.depth, this._isSampled = !!r2.isSampled, this._isDefaultSize = !!r2.isDefaultSize, this._multisampling = r2.multisampling, !C32.Gfx.RendererBase.IsValidSamplingMode(this.#e) || "auto" === this.#e) throw new Error("invalid sampling");
       if (this._multisampling > 0 && (i < 2 || this._isSampled)) throw new Error("invalid use of multisampling");
       if (i < 2 && (this._isSampled = true), this._width = e, this._height = t2, this._width <= 0 || this._height <= 0) throw new Error("invalid render target size");
       this._CalculateProjection();
-      const s = this._renderer.GetContext();
-      if (this._frameBuffer = s.createFramebuffer(), this._depth && (this._frameBufferNoDepth = s.createFramebuffer()), this._isSampled) {
-        this._texture = this._renderer.CreateDynamicTexture(this._width, this._height, { sampling: this._sampling, pixelFormat: this._alpha ? "rgba8" : "rgb8", mipMap: false });
+      const a2 = this._renderer.GetContext();
+      if (this._frameBuffer = a2.createFramebuffer(), this._depth && (this._frameBufferNoDepth = a2.createFramebuffer()), this._isSampled) {
+        this._texture = this._renderer.CreateDynamicTexture(this._width, this._height, { defaultSampling: this.#e, pixelFormat: this._alpha ? "rgba8" : "rgb8", mipMap: false });
         const e2 = this._texture._GetTexture();
-        s.bindFramebuffer(s.FRAMEBUFFER, this._frameBuffer), s.framebufferTexture2D(s.FRAMEBUFFER, s.COLOR_ATTACHMENT0, s.TEXTURE_2D, e2, 0), this._depth && (s.bindFramebuffer(s.FRAMEBUFFER, this._frameBufferNoDepth), s.framebufferTexture2D(s.FRAMEBUFFER, s.COLOR_ATTACHMENT0, s.TEXTURE_2D, e2, 0));
+        a2.bindFramebuffer(a2.FRAMEBUFFER, this._frameBuffer), a2.framebufferTexture2D(a2.FRAMEBUFFER, a2.COLOR_ATTACHMENT0, a2.TEXTURE_2D, e2, 0), this._depth && (a2.bindFramebuffer(a2.FRAMEBUFFER, this._frameBufferNoDepth), a2.framebufferTexture2D(a2.FRAMEBUFFER, a2.COLOR_ATTACHMENT0, a2.TEXTURE_2D, e2, 0));
       } else {
-        this._renderBuffer = s.createRenderbuffer(), s.bindRenderbuffer(s.RENDERBUFFER, this._renderBuffer);
-        const e2 = this._alpha ? s.RGBA8 : s.RGB8;
+        this._renderBuffer = a2.createRenderbuffer(), a2.bindRenderbuffer(a2.RENDERBUFFER, this._renderBuffer);
+        const e2 = this._alpha ? a2.RGBA8 : a2.RGB8;
         if (this._multisampling > 0) {
-          const t3 = s.getInternalformatParameter(s.RENDERBUFFER, e2, s.SAMPLES);
+          const t3 = a2.getInternalformatParameter(a2.RENDERBUFFER, e2, a2.SAMPLES);
           if (t3 && t3[0]) {
             const e3 = t3[0];
             this._multisampling > e3 && (this._multisampling = e3);
           } else this._multisampling = 0;
         }
-        0 === this._multisampling ? s.renderbufferStorage(s.RENDERBUFFER, e2, this._width, this._height) : s.renderbufferStorageMultisample(s.RENDERBUFFER, this._multisampling, e2, this._width, this._height), s.bindFramebuffer(s.FRAMEBUFFER, this._frameBuffer), s.framebufferRenderbuffer(s.FRAMEBUFFER, s.COLOR_ATTACHMENT0, s.RENDERBUFFER, this._renderBuffer), this._depth && (s.bindFramebuffer(s.FRAMEBUFFER, this._frameBufferNoDepth), s.framebufferRenderbuffer(s.FRAMEBUFFER, s.COLOR_ATTACHMENT0, s.RENDERBUFFER, this._renderBuffer)), s.bindRenderbuffer(s.RENDERBUFFER, null);
+        0 === this._multisampling ? a2.renderbufferStorage(a2.RENDERBUFFER, e2, this._width, this._height) : a2.renderbufferStorageMultisample(a2.RENDERBUFFER, this._multisampling, e2, this._width, this._height), a2.bindFramebuffer(a2.FRAMEBUFFER, this._frameBuffer), a2.framebufferRenderbuffer(a2.FRAMEBUFFER, a2.COLOR_ATTACHMENT0, a2.RENDERBUFFER, this._renderBuffer), this._depth && (a2.bindFramebuffer(a2.FRAMEBUFFER, this._frameBufferNoDepth), a2.framebufferRenderbuffer(a2.FRAMEBUFFER, a2.COLOR_ATTACHMENT0, a2.RENDERBUFFER, this._renderBuffer)), a2.bindRenderbuffer(a2.RENDERBUFFER, null);
       }
-      const h2 = this._renderer._GetDepthBuffer();
-      this._depth && h2 && (s.bindFramebuffer(s.FRAMEBUFFER, this._frameBuffer), this._renderer._CanSampleDepth() ? s.framebufferTexture2D(s.FRAMEBUFFER, s.DEPTH_STENCIL_ATTACHMENT, s.TEXTURE_2D, h2, 0) : s.framebufferRenderbuffer(s.FRAMEBUFFER, s.DEPTH_STENCIL_ATTACHMENT, s.RENDERBUFFER, h2)), s.bindFramebuffer(s.FRAMEBUFFER, null), allRenderTargets.add(this);
+      const s = this._renderer._GetDepthBuffer();
+      this._depth && s && (a2.bindFramebuffer(a2.FRAMEBUFFER, this._frameBuffer), this._renderer._CanSampleDepth() ? a2.framebufferTexture2D(a2.FRAMEBUFFER, a2.DEPTH_STENCIL_ATTACHMENT, a2.TEXTURE_2D, s, 0) : a2.framebufferRenderbuffer(a2.FRAMEBUFFER, a2.DEPTH_STENCIL_ATTACHMENT, a2.RENDERBUFFER, s)), a2.bindFramebuffer(a2.FRAMEBUFFER, null), allRenderTargets.add(this);
     }
     _Resize(e, t2) {
       if (this._width === e && this._height === t2) return;
@@ -6837,9 +7382,6 @@ var GetFormatSpecifiers2;
     GetProjectionMatrix() {
       return this._renderer.GetFovY() === this._lastFov && this._renderer.GetNearZ() === this._lastNearZ && this._renderer.GetFarZ() === this._lastFarZ || this._CalculateProjection(), this._projectionMatrix;
     }
-    IsLinearSampling() {
-      return "nearest" !== this._sampling;
-    }
     HasAlpha() {
       return this._alpha;
     }
@@ -6858,15 +7400,21 @@ var GetFormatSpecifiers2;
     IsDefaultSize() {
       return this._isDefaultSize;
     }
+    SetDefaultSampling(e) {
+      this.#e = e, this._texture && this._texture.SetDefaultSampling(e);
+    }
+    GetDefaultSampling() {
+      return this.#e;
+    }
     GetMultisampling() {
       return this._multisampling;
     }
     GetOptions() {
-      const e = { sampling: this._sampling, alpha: this._alpha, isSampled: this._isSampled };
+      const e = { alpha: this._alpha, isSampled: this._isSampled };
       return this._isDefaultSize || (e.width = this._width, e.height = this._height), e;
     }
     IsCompatibleWithOptions(e) {
-      return "nearest" !== (e = Object.assign({}, DEFAULT_RENDERTARGET_OPTIONS, e)).sampling === this.IsLinearSampling() && (!!e.alpha === this.HasAlpha() && (!!e.depth === this.HasDepthBuffer() && (!(this._renderer.GetWebGLVersionNumber() >= 2 && !!e.isSampled !== this.IsSampled()) && ("number" == typeof e.width || "number" == typeof e.height ? !this.IsDefaultSize() && this.GetWidth() === Math.floor(e.width) && this.GetHeight() === Math.floor(e.height) : this.IsDefaultSize()))));
+      return !!(e = Object.assign({}, DEFAULT_RENDERTARGET_OPTIONS, e)).alpha === this.HasAlpha() && (!!e.depth === this.HasDepthBuffer() && (!(this._renderer.GetWebGLVersionNumber() >= 2 && !!e.isSampled !== this.IsSampled()) && ("number" == typeof e.width || "number" == typeof e.height ? !this.IsDefaultSize() && this.GetWidth() === Math.floor(e.width) && this.GetHeight() === Math.floor(e.height) : this.IsDefaultSize())));
     }
     _GetWebGLTexture() {
       return this._texture ? this._texture._GetTexture() : null;
@@ -6912,8 +7460,8 @@ var GetFormatSpecifiers2;
         const e2 = i.getProgramInfoLog(s);
         throw i.deleteShader(a2), i.deleteShader(l), i.deleteProgram(s), new Error("Error linking shader program: " + e2);
       }
-      const c2 = C32.FilterUnprintableChars(i.getProgramInfoLog(s) || "").trim();
-      return c2 && !C32.IsStringAllWhitespace(c2) && console.info(`[WebGL] Shader program '${n}' compilation log: `, c2), i.deleteShader(a2), i.deleteShader(l), s;
+      const d2 = C32.FilterUnprintableChars(i.getProgramInfoLog(s) || "").trim();
+      return d2 && !C32.IsStringAllWhitespace(d2) && console.info(`[WebGL] Shader program '${n}' compilation log: `, d2), i.deleteShader(a2), i.deleteShader(l), s;
     }
     static async Create(e, t2) {
       const i = await C32.Gfx.WebGLShaderProgram.Compile(e, t2);
@@ -6922,18 +7470,16 @@ var GetFormatSpecifiers2;
     constructor(e, t2, i) {
       super(e, i);
       const r2 = e.GetContext(), o2 = e.GetBatchState();
-      e.EndBatch(), r2.useProgram(t2), this._gl = r2, this._shaderProgram = t2, this._isDeviceTransform = "<default-device-transform>" === i.name;
-      const n = r2.getAttribLocation(t2, "aPos"), a2 = r2.getAttribLocation(t2, "aTex"), l = r2.getAttribLocation(t2, "aColor");
-      this._locAPoints = r2.getAttribLocation(t2, "aPoints"), -1 !== n && (r2.bindBuffer(r2.ARRAY_BUFFER, e._vertexBuffer), r2.vertexAttribPointer(n, 3, r2.FLOAT, false, 0, 0), r2.enableVertexAttribArray(n)), -1 !== a2 && (r2.bindBuffer(r2.ARRAY_BUFFER, e._texcoordBuffer), r2.vertexAttribPointer(a2, 2, r2.FLOAT, false, 0, 0), r2.enableVertexAttribArray(a2)), -1 !== l && (r2.bindBuffer(r2.ARRAY_BUFFER, e._colorBuffer), r2.vertexAttribPointer(l, 4, e.IsColorDataF16() ? r2["HALF_FLOAT"] : r2.FLOAT, false, 0, 0), r2.enableVertexAttribArray(l)), -1 !== this._locAPoints && (r2.bindBuffer(r2.ARRAY_BUFFER, e._pointBuffer), r2.vertexAttribPointer(this._locAPoints, 4, r2.FLOAT, false, 0, 0), r2.enableVertexAttribArray(this._locAPoints)), r2.bindBuffer(r2.ARRAY_BUFFER, null), this._uMatP = new C32.Gfx.WebGLShaderUniform(this, "matP", "mat4"), this._uMatMV = new C32.Gfx.WebGLShaderUniform(this, "matMV", "mat4"), this._uColor = new C32.Gfx.WebGLShaderUniform(this, "color", "vec4"), this._uSamplerFront = new C32.Gfx.WebGLShaderUniform(this, "samplerFront", "sampler"), this._uPointTexStart = new C32.Gfx.WebGLShaderUniform(this, "pointTexStart", "vec2"), this._uPointTexEnd = new C32.Gfx.WebGLShaderUniform(this, "pointTexEnd", "vec2"), this._uZElevation = new C32.Gfx.WebGLShaderUniform(this, "zElevation", "float"), this._uTileSize = new C32.Gfx.WebGLShaderUniform(this, "tileSize", "vec2"), this._uTileSpacing = new C32.Gfx.WebGLShaderUniform(this, "tileSpacing", "vec2"), this._uColor2 = new C32.Gfx.WebGLShaderUniform(this, "color2_", "vec4"), this._uOutlineThickness = new C32.Gfx.WebGLShaderUniform(this, "outlineThickness", "float"), this._uSamplerBack = new C32.Gfx.WebGLShaderUniform(this, "samplerBack", "sampler"), this._uSamplerDepth = new C32.Gfx.WebGLShaderUniform(this, "samplerDepth", "sampler"), this._uDestStart = new C32.Gfx.WebGLShaderUniform(this, "destStart", "vec2"), this._uDestEnd = new C32.Gfx.WebGLShaderUniform(this, "destEnd", "vec2"), this._uSrcStart = new C32.Gfx.WebGLShaderUniform(this, "srcStart", "vec2"), this._uSrcEnd = new C32.Gfx.WebGLShaderUniform(this, "srcEnd", "vec2"), this._uSrcOriginStart = new C32.Gfx.WebGLShaderUniform(this, "srcOriginStart", "vec2"), this._uSrcOriginEnd = new C32.Gfx.WebGLShaderUniform(this, "srcOriginEnd", "vec2"), this._uPixelSize = new C32.Gfx.WebGLShaderUniform(this, "pixelSize", "vec2"), this._uSeconds = new C32.Gfx.WebGLShaderUniform(this, "seconds", "float"), this._uDevicePixelRatio = new C32.Gfx.WebGLShaderUniform(this, "devicePixelRatio", "float"), this._uLayerScale = new C32.Gfx.WebGLShaderUniform(this, "layerScale", "float"), this._uLayerAngle = new C32.Gfx.WebGLShaderUniform(this, "layerAngle", "float"), this._uLayoutStart = new C32.Gfx.WebGLShaderUniform(this, "layoutStart", "vec2"), this._uLayoutEnd = new C32.Gfx.WebGLShaderUniform(this, "layoutEnd", "vec2"), this._uZNear = new C32.Gfx.WebGLShaderUniform(this, "zNear", "float"), this._uZFar = new C32.Gfx.WebGLShaderUniform(this, "zFar", "float"), this._hasAnyOptionalUniforms = !!(this._uPixelSize.IsUsed() || this._uSeconds.IsUsed() || this._uSamplerBack.IsUsed() || this._uDestStart.IsUsed() || this._uDestEnd.IsUsed() || this._uSrcStart.IsUsed() || this._uSrcEnd.IsUsed() || this._uSrcOriginStart.IsUsed() || this._uSrcOriginEnd.IsUsed() || this._uDevicePixelRatio.IsUsed() || this._uLayerScale.IsUsed() || this._uLayerAngle.IsUsed() || this._uLayoutStart.IsUsed() || this._uLayoutEnd.IsUsed());
-      const s = i.parameters || [];
+      e.EndBatch(), r2.useProgram(t2), this._gl = r2, this._shaderProgram = t2, this._isDeviceTransform = "<default-device-transform>" === i.name, this._uMatP = new C32.Gfx.WebGLShaderUniform(this, "matP", "mat4"), this._uMatMV = new C32.Gfx.WebGLShaderUniform(this, "matMV", "mat4"), this._uColor = new C32.Gfx.WebGLShaderUniform(this, "color", "vec4"), this._uSamplerFront = new C32.Gfx.WebGLShaderUniform(this, "samplerFront", "sampler"), this._uPointTexStart = new C32.Gfx.WebGLShaderUniform(this, "pointTexStart", "vec2"), this._uPointTexEnd = new C32.Gfx.WebGLShaderUniform(this, "pointTexEnd", "vec2"), this._uZElevation = new C32.Gfx.WebGLShaderUniform(this, "zElevation", "float"), this._uTileSize = new C32.Gfx.WebGLShaderUniform(this, "tileSize", "vec2"), this._uTileSpacing = new C32.Gfx.WebGLShaderUniform(this, "tileSpacing", "vec2"), this._uColor2 = new C32.Gfx.WebGLShaderUniform(this, "color2_", "vec4"), this._uOutlineThickness = new C32.Gfx.WebGLShaderUniform(this, "outlineThickness", "float"), this._uSamplerBack = new C32.Gfx.WebGLShaderUniform(this, "samplerBack", "sampler"), this._uSamplerDepth = new C32.Gfx.WebGLShaderUniform(this, "samplerDepth", "sampler"), this._uDestStart = new C32.Gfx.WebGLShaderUniform(this, "destStart", "vec2"), this._uDestEnd = new C32.Gfx.WebGLShaderUniform(this, "destEnd", "vec2"), this._uSrcStart = new C32.Gfx.WebGLShaderUniform(this, "srcStart", "vec2"), this._uSrcEnd = new C32.Gfx.WebGLShaderUniform(this, "srcEnd", "vec2"), this._uSrcOriginStart = new C32.Gfx.WebGLShaderUniform(this, "srcOriginStart", "vec2"), this._uSrcOriginEnd = new C32.Gfx.WebGLShaderUniform(this, "srcOriginEnd", "vec2"), this._uPixelSize = new C32.Gfx.WebGLShaderUniform(this, "pixelSize", "vec2"), this._uSeconds = new C32.Gfx.WebGLShaderUniform(this, "seconds", "float"), this._uDevicePixelRatio = new C32.Gfx.WebGLShaderUniform(this, "devicePixelRatio", "float"), this._uLayerScale = new C32.Gfx.WebGLShaderUniform(this, "layerScale", "float"), this._uLayerAngle = new C32.Gfx.WebGLShaderUniform(this, "layerAngle", "float"), this._uLayoutStart = new C32.Gfx.WebGLShaderUniform(this, "layoutStart", "vec2"), this._uLayoutEnd = new C32.Gfx.WebGLShaderUniform(this, "layoutEnd", "vec2"), this._uZNear = new C32.Gfx.WebGLShaderUniform(this, "zNear", "float"), this._uZFar = new C32.Gfx.WebGLShaderUniform(this, "zFar", "float"), this._hasAnyOptionalUniforms = !!(this._uPixelSize.IsUsed() || this._uSeconds.IsUsed() || this._uSamplerBack.IsUsed() || this._uDestStart.IsUsed() || this._uDestEnd.IsUsed() || this._uSrcStart.IsUsed() || this._uSrcEnd.IsUsed() || this._uSrcOriginStart.IsUsed() || this._uSrcOriginEnd.IsUsed() || this._uDevicePixelRatio.IsUsed() || this._uLayerScale.IsUsed() || this._uLayerAngle.IsUsed() || this._uLayoutStart.IsUsed() || this._uLayoutEnd.IsUsed());
+      const n = i.parameters || [];
       this._uCustomParameters = [], this._usesAnySrcRectOrPixelSize = this._uPixelSize.IsUsed() || this._uSrcStart.IsUsed() || this._uSrcEnd.IsUsed() || this._uSrcOriginStart.IsUsed() || this._uSrcOriginEnd.IsUsed(), this._hasCurrentMatP = false, this._hasCurrentMatMV = false, this._uColor.Init4f(1, 1, 1, 1), this._uColor2.Init4f(1, 1, 1, 1), this._uSamplerFront.Init1i(0), this._uSamplerBack.Init1i(1), this._uSamplerDepth.Init1i(2), this._uPointTexStart.Init2f(0, 0), this._uPointTexEnd.Init2f(1, 1), this._uZElevation.Init1f(0), this._uTileSize.Init2f(0, 0), this._uTileSpacing.Init2f(0, 0), this._uDestStart.Init2f(0, 0), this._uDestEnd.Init2f(1, 1), this._uSrcStart.Init2f(0, 0), this._uSrcEnd.Init2f(0, 0), this._uSrcOriginStart.Init2f(0, 0), this._uSrcOriginEnd.Init2f(0, 0), this._uPixelSize.Init2f(0, 0), this._uDevicePixelRatio.Init1f(1), this._uZNear.Init1f(e.GetNearZ()), this._uZFar.Init1f(e.GetFarZ()), this._uLayerScale.Init1f(1), this._uLayerAngle.Init1f(0), this._uSeconds.Init1f(0), this._uLayoutStart.Init2f(0, 0), this._uLayoutEnd.Init2f(0, 0), this._uOutlineThickness.Init1f(1);
-      for (const e2 of s) {
+      for (const e2 of n) {
         const t3 = e2[0], i2 = e2[2], r3 = new C32.Gfx.WebGLShaderUniform(this, t3, i2);
         "color" === i2 ? r3.Init3f(0, 0, 0) : r3.Init1f(0), this._uCustomParameters.push(r3);
       }
       this._isDeviceTransform ? this._UpdateDeviceTransformUniforms(o2.currentMatP) : (this.UpdateMatP(o2.currentMatP, true), this.UpdateMatMV(o2.currentMV, true));
-      const h2 = o2.currentShader;
-      r2.useProgram(h2 ? h2._shaderProgram : null);
+      const a2 = o2.currentShader;
+      r2.useProgram(a2 ? a2._shaderProgram : null);
     }
     Release() {
       this._gl.deleteProgram(this._shaderProgram), this._shaderProgram = null, this._renderer._RemoveShaderProgram(this), this._gl = null, super.Release();
@@ -7295,10 +7841,10 @@ void main(void) {
   };
 }
 {
-  const C32 = self.C3, glMatrix = self.glMatrix, vec4 = glMatrix.vec4, mat4 = glMatrix.mat4, BATCH_NULL = 0, BATCH_DRAW = 1, BATCH_SETTEXTURE = 2, BATCH_SETBLEND = 3, BATCH_SETVIEWPORT = 4, BATCH_SETPROJECTION = 5, BATCH_SETMODELVIEW = 6, BATCH_SETRENDERTARGET = 7, BATCH_CLEARSURFACE = 8, BATCH_POINTS = 9, BATCH_SETPROGRAM = 10, BATCH_SETPROGRAMPARAMETERS = 11, BATCH_SETPROGRAMCUSTOMPARAMETERS = 12, BATCH_INVALIDATEFRAMEBUFFER = 13, BATCH_SETPOINTTEXCOORDS = 14, BATCH_SETTILEMAPINFO = 15, BATCH_BLITFRAMEBUFFER = 16, BATCH_STARTQUERY = 17, BATCH_ENDQUERY = 18, BATCH_SETELLIPSEPARAMS = 19, BATCH_SETGRADIENTCOLOR = 20, BATCH_CLEARDEPTH = 21, BATCH_SETDEPTHENABLED = 22, BATCH_SETDEPTHSAMPLINGENABLED = 23, BATCH_COPLANAR_STARTSTENCILPASS = 24, BATCH_COPLANAR_STARTCOLORPASS = 25, BATCH_COPLANAR_RESTORE = 26, BATCH_SET_SCISSOR = 27, BATCH_SETTILERANDOMIZATIONINFO = 28, BATCH_SETCULLFACEMODE = 29, BATCH_SETFRONTFACEWINDING = 30;
+  const C32 = self.C3, glMatrix = self.glMatrix, vec4 = glMatrix.vec4, mat4 = glMatrix.mat4, BATCH_NULL = 0, BATCH_DRAW = 1, BATCH_SETTEXTURE = 2, BATCH_SETBLEND = 3, BATCH_SETVIEWPORT = 4, BATCH_SETPROJECTION = 5, BATCH_SETMODELVIEW = 6, BATCH_SETRENDERTARGET = 7, BATCH_CLEARSURFACE = 8, BATCH_POINTS = 9, BATCH_SETPROGRAM = 10, BATCH_SETPROGRAMPARAMETERS = 11, BATCH_SETPROGRAMCUSTOMPARAMETERS = 12, BATCH_INVALIDATEFRAMEBUFFER = 13, BATCH_SETPOINTTEXCOORDS = 14, BATCH_SETTILEMAPINFO = 15, BATCH_BLITFRAMEBUFFER = 16, BATCH_STARTQUERY = 17, BATCH_ENDQUERY = 18, BATCH_SETELLIPSEPARAMS = 19, BATCH_SETGRADIENTCOLOR = 20, BATCH_CLEARDEPTH = 21, BATCH_SETDEPTHENABLED = 22, BATCH_SETDEPTHSAMPLINGENABLED = 23, BATCH_COPLANAR_STARTSTENCILPASS = 24, BATCH_COPLANAR_STARTCOLORPASS = 25, BATCH_COPLANAR_RESTORE = 26, BATCH_SET_SCISSOR = 27, BATCH_SETTILERANDOMIZATIONINFO = 28, BATCH_SETCULLFACEMODE = 29, BATCH_SETFRONTFACEWINDING = 30, BATCH_SETCURRENTMESHDATA = 31;
   C32.Gfx.BatchState = class {
     constructor(t2) {
-      this.renderer = t2, this.currentMV = mat4.create(), this.currentMatP = mat4.create(), this.currentFramebuffer = null, this.currentFramebufferNoDepth = null, this.isDepthSamplingEnabled = false, this.currentShader = null, this.pointTexCoords = new C32.Rect(), this.clearColor = C32.New(C32.Color, 0, 0, 0, 0);
+      this.renderer = t2, this.currentMV = mat4.create(), this.currentMatP = mat4.create(), this.currentFramebuffer = null, this.currentFramebufferNoDepth = null, this.isDepthSamplingEnabled = false, this.currentShader = null, this.currentMeshData = t2._GetCurrentMeshData(), this.currentSampler0 = null, this.currentSampler1 = null, this.pointTexCoords = new C32.Rect(), this.clearColor = C32.New(C32.Color, 0, 0, 0, 0);
     }
   }, C32.Gfx.WebGLBatchJob = class {
     constructor(t2) {
@@ -7309,15 +7855,16 @@ void main(void) {
       this._type = 1, this._startIndex = t2, this._indexCount = e;
     }
     DoDraw() {
-      const t2 = this._gl;
-      t2.drawElements(t2.TRIANGLES, this._indexCount, t2.UNSIGNED_SHORT, this._startIndex);
+      const t2 = this._gl, e = this._batchState.currentMeshData;
+      t2.drawElements(t2.TRIANGLES, this._indexCount, e.IsIndexTypeUint16() ? t2.UNSIGNED_SHORT : t2.UNSIGNED_INT, this._startIndex);
     }
-    InitSetTexture(t2) {
-      this._type = 2, this._texParam = t2;
+    InitSetTexture(t2, e) {
+      this._type = 2, this._texParam = t2, this._startIndex = e;
     }
     DoSetTexture() {
-      const t2 = this._gl, e = this._texParam;
-      t2.bindTexture(t2.TEXTURE_2D, e ? e._GetTexture() : null);
+      const t2 = this._gl, e = this._texParam, r2 = this._startIndex, a2 = this._batchState, s = a2.renderer.GetWebGLVersionNumber();
+      let i = null;
+      e ? (t2.bindTexture(t2.TEXTURE_2D, e._GetTexture()), s < 2 ? e._WebGL1SetTextureSampling(t2, r2) : i = e._GetSampler(r2)) : t2.bindTexture(t2.TEXTURE_2D, null), s >= 2 && a2.currentSampler0 !== i && (t2.bindSampler(0, i), a2.currentSampler0 = i);
     }
     InitSetGradientColor(t2) {
       this._type = 20, t2.writeToTypedArray(this._colorParam, 0);
@@ -7398,16 +7945,16 @@ void main(void) {
       this._type = 9, this._startIndex = t2, this._indexCount = 1, this._mat4param[0] = e, r2.writeToTypedArray(this._colorParam, 0);
     }
     DoPoints() {
-      const t2 = this._gl, e = this._batchState, r2 = e.renderer._spPoints;
-      t2.useProgram(r2._shaderProgram), r2.UpdateMatP(e.currentMatP, false), r2.UpdateMatMV(e.currentMV, false);
-      const a2 = e.pointTexCoords;
-      r2._uPointTexStart.IsUsed() && r2._uPointTexStart.Update2f(a2.getLeft(), a2.getTop()), r2._uPointTexEnd.IsUsed() && r2._uPointTexEnd.Update2f(a2.getRight(), a2.getBottom());
-      const s = this._mat4param[0];
-      if (r2._uZElevation.IsUsed() && r2._uZElevation.Update1f(s), r2._uColor.IsUsed()) {
+      const t2 = this._gl, e = this._batchState, r2 = e.renderer, a2 = r2._spPoints;
+      t2.useProgram(a2._shaderProgram), r2._BindVAO(null), a2.UpdateMatP(e.currentMatP, false), a2.UpdateMatMV(e.currentMV, false);
+      const s = e.pointTexCoords;
+      a2._uPointTexStart.IsUsed() && a2._uPointTexStart.Update2f(s.getLeft(), s.getTop()), a2._uPointTexEnd.IsUsed() && a2._uPointTexEnd.Update2f(s.getRight(), s.getBottom());
+      const i = this._mat4param[0];
+      if (a2._uZElevation.IsUsed() && a2._uZElevation.Update1f(i), a2._uColor.IsUsed()) {
         const t3 = this._colorParam;
-        r2._uColor.Update4f(t3[0], t3[1], t3[2], t3[3]);
+        a2._uColor.Update4f(t3[0], t3[1], t3[2], t3[3]);
       }
-      t2.drawArrays(t2.POINTS, this._startIndex / 4, this._indexCount), t2.useProgram(e.currentShader._shaderProgram);
+      t2.drawArrays(t2.POINTS, this._startIndex / 4, this._indexCount), t2.useProgram(e.currentShader._shaderProgram), r2._BindVAO(e.currentMeshData._GetVAO());
     }
     InitSetProgram(t2) {
       this._type = 10, this._texParam = t2;
@@ -7420,12 +7967,15 @@ void main(void) {
       this._type = 11;
     }
     DoSetProgramParameters() {
-      const t2 = this._batchState.currentShader, e = this._gl, r2 = this._mat4param, a2 = this._colorParam, s = this._srcOriginRect;
-      if (t2._uSamplerBack.IsUsed()) {
-        const t3 = this._batchState.renderer, r3 = this._texParam;
-        t3._lastTexture1 !== r3 && (e.activeTexture(e.TEXTURE1), e.bindTexture(e.TEXTURE_2D, r3 ? r3._GetTexture() : null), t3._lastTexture1 = r3, e.activeTexture(e.TEXTURE0));
+      const t2 = this._batchState, e = t2.currentShader, r2 = this._gl, a2 = this._mat4param, s = this._colorParam, i = this._srcOriginRect;
+      if (e._uSamplerBack.IsUsed()) {
+        const e2 = t2.renderer, a3 = this._texParam;
+        if (e2._lastTexture1 !== a3 && (r2.activeTexture(r2.TEXTURE1), r2.bindTexture(r2.TEXTURE_2D, a3 ? a3._GetTexture() : null), e2._lastTexture1 = a3, r2.activeTexture(r2.TEXTURE0)), a3) if (e2.GetWebGLVersionNumber() >= 2) {
+          const s2 = e2._GetSampler({ sampling: a3.GetDefaultSampling() });
+          t2.currentSampler1 !== s2 && (r2.bindSampler(1, s2), t2.currentSampler1 = s2);
+        } else r2.activeTexture(r2.TEXTURE1), a3._WebGL1SetTextureSampling(r2, C32.Gfx.RendererBase.SamplingModeToNumber(a3.GetDefaultSampling()) - 1), r2.activeTexture(r2.TEXTURE0);
       }
-      t2._uPixelSize.IsUsed() && t2._uPixelSize.Update2f(r2[0], r2[1]), t2._uDestStart.IsUsed() && t2._uDestStart.Update2f(r2[2], r2[3]), t2._uDestEnd.IsUsed() && t2._uDestEnd.Update2f(r2[4], r2[5]), t2._uDevicePixelRatio.IsUsed() && t2._uDevicePixelRatio.Update1f(this._indexCount), t2._uLayerScale.IsUsed() && t2._uLayerScale.Update1f(r2[6]), t2._uLayerAngle.IsUsed() && t2._uLayerAngle.Update1f(r2[7]), t2._uSrcStart.IsUsed() && t2._uSrcStart.Update2f(r2[12], r2[13]), t2._uSrcEnd.IsUsed() && t2._uSrcEnd.Update2f(r2[14], r2[15]), t2._uSrcOriginStart.IsUsed() && t2._uSrcOriginStart.Update2f(s[0], s[1]), t2._uSrcOriginEnd.IsUsed() && t2._uSrcOriginEnd.Update2f(s[2], s[3]), t2._uLayoutStart.IsUsed() && t2._uLayoutStart.Update2f(a2[0], a2[1]), t2._uLayoutEnd.IsUsed() && t2._uLayoutEnd.Update2f(a2[2], a2[3]), t2._uSeconds.IsUsed() && t2._uSeconds.Update1f(this._startIndex);
+      e._uPixelSize.IsUsed() && e._uPixelSize.Update2f(a2[0], a2[1]), e._uDestStart.IsUsed() && e._uDestStart.Update2f(a2[2], a2[3]), e._uDestEnd.IsUsed() && e._uDestEnd.Update2f(a2[4], a2[5]), e._uDevicePixelRatio.IsUsed() && e._uDevicePixelRatio.Update1f(this._indexCount), e._uLayerScale.IsUsed() && e._uLayerScale.Update1f(a2[6]), e._uLayerAngle.IsUsed() && e._uLayerAngle.Update1f(a2[7]), e._uSrcStart.IsUsed() && e._uSrcStart.Update2f(a2[12], a2[13]), e._uSrcEnd.IsUsed() && e._uSrcEnd.Update2f(a2[14], a2[15]), e._uSrcOriginStart.IsUsed() && e._uSrcOriginStart.Update2f(i[0], i[1]), e._uSrcOriginEnd.IsUsed() && e._uSrcOriginEnd.Update2f(i[2], i[3]), e._uLayoutStart.IsUsed() && e._uLayoutStart.Update2f(s[0], s[1]), e._uLayoutEnd.IsUsed() && e._uLayoutEnd.Update2f(s[2], s[3]), e._uSeconds.IsUsed() && e._uSeconds.Update1f(this._startIndex);
     }
     InitSetProgramCustomParameters() {
       this._type = 12;
@@ -7447,13 +7997,13 @@ void main(void) {
     InitBlitFramebuffer(t2, e, r2) {
       this._type = 16;
       const a2 = this._mat4param, s = this._batchState.renderer;
-      a2[0] = t2.GetWidth(), a2[1] = t2.GetHeight(), a2[2] = e ? e.GetWidth() : s.GetWidth(), a2[3] = e ? e.GetHeight() : s.GetHeight(), a2[4] = t2.IsLinearSampling() ? 1 : 0, a2[5] = "stretch" === r2;
+      a2[0] = t2.GetWidth(), a2[1] = t2.GetHeight(), a2[2] = e ? e.GetWidth() : s.GetWidth(), a2[3] = e ? e.GetHeight() : s.GetHeight(), a2[4] = "nearest" !== t2.GetDefaultSampling() ? 1 : 0, a2[5] = "stretch" === r2;
       const i = this._shaderParams;
       C32.clearArray(i), i.push(t2._GetFramebuffer()), i.push(e ? e._GetFramebuffer() : null);
     }
     DoBlitFramebuffer() {
-      const t2 = this._mat4param, e = this._shaderParams, r2 = this._gl, a2 = t2[0], s = t2[1], i = t2[2], n = t2[3], o2 = 0 !== t2[4], _2 = 0 !== t2[5], h2 = e[0], d2 = e[1];
-      if (r2.bindFramebuffer(r2.READ_FRAMEBUFFER, h2), r2.bindFramebuffer(r2.DRAW_FRAMEBUFFER, d2), _2) r2.blitFramebuffer(0, 0, a2, s, 0, 0, i, n, r2.COLOR_BUFFER_BIT, o2 ? r2.LINEAR : r2.NEAREST);
+      const t2 = this._mat4param, e = this._shaderParams, r2 = this._gl, a2 = t2[0], s = t2[1], i = t2[2], n = t2[3], o2 = 0 !== t2[4], _2 = 0 !== t2[5], h2 = e[0], u2 = e[1];
+      if (r2.bindFramebuffer(r2.READ_FRAMEBUFFER, h2), r2.bindFramebuffer(r2.DRAW_FRAMEBUFFER, u2), _2) r2.blitFramebuffer(0, 0, a2, s, 0, 0, i, n, r2.COLOR_BUFFER_BIT, o2 ? r2.LINEAR : r2.NEAREST);
       else {
         const t3 = Math.min(a2, i), e2 = Math.min(s, n), o3 = Math.max(s - n, 0), _3 = Math.max(n - s, 0);
         r2.blitFramebuffer(0, o3, t3, e2 + o3, 0, _3, t3, e2 + _3, r2.COLOR_BUFFER_BIT, r2.NEAREST);
@@ -7563,6 +8113,13 @@ void main(void) {
       const t2 = this._gl;
       t2.frontFace(0 === this._startIndex ? t2.CW : t2.CCW);
     }
+    InitSetCurrentMeshData(t2) {
+      this._type = 31, this._texParam = t2;
+    }
+    DoSetCurrentMeshData() {
+      const t2 = this._batchState, e = t2.renderer, r2 = this._texParam;
+      e._BindVAO(r2._GetVAO()), t2.currentMeshData = r2;
+    }
     Run() {
       switch (this._type) {
         case 1:
@@ -7625,6 +8182,8 @@ void main(void) {
           return void this.DoSetCullFaceMode();
         case 30:
           return void this.DoSetFrontFaceWinding();
+        case 31:
+          return void this.DoSetCurrentMeshData();
       }
     }
   };
@@ -7648,7 +8207,7 @@ void main(void) {
   let didCheckFoundBoundingBoxSupport = false, supportsFontBoundingBoxMeasurements = false;
   C32.Gfx.RendererText = class {
     constructor(t2, e) {
-      e = Object.assign({}, DEFAULT_OPTS, e), this._renderer = t2, this._fontName = "Arial", this._fontSize = 16, this._fontSizeScale = 1, this._lineHeight = 0, this._isBold = false, this._isItalic = false, this._colorStr = "black", this._isBBcodeEnabled = false, this._iconSet = null, this._iconSmoothing = true, this.onloadfont = null, this._alreadyLoadedFonts = /* @__PURE__ */ new Set(), this._horizontalAlign = "left", this._verticalAlign = "top", this._text = "", this._bbString = null, this._wrappedText = C32.New(C32.WordWrap), this._wrapMode = "word", this._textDirection = "ltr", this._wordWrapChanged = false, this._textLayoutChanged = false, this._drawChanged = false, this._forceRecreateTexture = false, this._drawMaxCharCount = -1, this._drawCharCount = 0, this._cssWidth = 0, this._cssHeight = 0, this._width = 0, this._height = 0, this._zoom = 1, this._textCanvas = null, this._textContext = null, this._measureContext = null, this._measureContextTop = null, this._lastCanvasWidth = -1, this._lastCanvasHeight = -1, this._lastTextCanvasFont = "", this._lastMeasureCanvasFont = "", this._lastTextCanvasFillStyle = "", this._lastTextCanvasOpacity = 1, this._lastTextCanvasLineWidth = 1, this._measureTextCallback = (t3) => this._MeasureText(t3), this._measurementCache = /* @__PURE__ */ new Map(), this._measurementCacheIdleTimeout = new C32.IdleTimeout(() => this._ClearMeasurementCache(true), 2), this._texture = null, this._enableMipMap = true, this._rcTex = new C32.Rect(), this._scaleFactor = 1, this._textureTimeout = new C32.IdleTimeout(() => {
+      e = Object.assign({}, DEFAULT_OPTS, e), this._renderer = t2, this._fontName = "Arial", this._fontSize = 16, this._fontSizeScale = 1, this._lineHeight = 0, this._isBold = false, this._isItalic = false, this._colorStr = "black", this._isBBcodeEnabled = false, this._iconSet = null, this._iconSmoothing = true, this.onloadfont = null, this._alreadyLoadedFonts = /* @__PURE__ */ new Set(), this._horizontalAlign = "left", this._verticalAlign = "top", this._text = "", this._bbString = null, this._wrappedText = C32.New(C32.WordWrap), this._wrapMode = "word", this._textDirection = "ltr", this._wordWrapChanged = false, this._textLayoutChanged = false, this._drawChanged = false, this._canvasContentChanged = false, this._forceRecreateTexture = false, this._drawMaxCharCount = -1, this._drawCharCount = 0, this._cssWidth = 0, this._cssHeight = 0, this._width = 0, this._height = 0, this._zoom = 1, this._textCanvas = null, this._textContext = null, this._measureContext = null, this._measureContextTop = null, this._lastCanvasWidth = -1, this._lastCanvasHeight = -1, this._lastTextCanvasFont = "", this._lastMeasureCanvasFont = "", this._lastTextCanvasFillStyle = "", this._lastTextCanvasOpacity = 1, this._lastTextCanvasLineWidth = 1, this._measureTextCallback = (t3) => this._MeasureText(t3), this._measurementCache = /* @__PURE__ */ new Map(), this._measurementCacheIdleTimeout = new C32.IdleTimeout(() => this._ClearMeasurementCache(true), 2), this._texture = null, this._enableMipMap = true, this._rcTex = new C32.Rect(), this._scaleFactor = 1, this._textureTimeout = new C32.IdleTimeout(() => {
         this.ReleaseTexture(), this._SetTextCanvasSize(8, 8), this._SetDrawChanged();
       }, e.timeout), this.ontextureupdate = null, this._wasReleased = false, allRendererTexts.add(this);
     }
@@ -7808,9 +8367,6 @@ void main(void) {
       for (const e of this._wrappedText.GetLines()) for (const i of e.fragments()) t2 += i.GetLength();
       return t2;
     }
-    GetTexture() {
-      return this._textureTimeout.Reset(), this._MaybeUpdate(), this._texture;
-    }
     HitTestFragment(t2, e) {
       this._UpdateTextMeasurements();
       const i = this.GetDrawScale(), s = this._wrappedText.GetLines();
@@ -7842,11 +8398,14 @@ void main(void) {
       for (const i of this.fragmentsWithTag(t2)) ++e;
       return e;
     }
-    _MaybeUpdate() {
-      (!this._texture || this._drawChanged || this._textLayoutChanged || this._wordWrapChanged || this._forceRecreateTexture) && (this._wasReleased || this._width <= 0 || this._height <= 0 || this._DoUpdate());
+    MaybeUpdateCanvas() {
+      return !(this._textContext && !this._drawChanged && !this._textLayoutChanged && !this._wordWrapChanged) && (!(this._wasReleased || this._width <= 0 || this._height <= 0) && (this._UpdateTextMeasurements(), this._DrawTextToCanvas(), true));
     }
-    _DoUpdate() {
-      this._wasReleased || (this._UpdateTextMeasurements(), this._DrawTextToCanvas(), this._UpdateTexture(), this._textureTimeout.Reset());
+    _MaybeUpdateTexture() {
+      this._wasReleased || this._width <= 0 || this._height <= 0 || (this.MaybeUpdateCanvas(), (!this._texture || this._forceRecreateTexture || this._canvasContentChanged) && this._UpdateTexture());
+    }
+    GetTexture() {
+      return this._textureTimeout.Reset(), this._MaybeUpdateTexture(), this._texture;
     }
     _SetTextCanvasSize(t2, e) {
       this._textCanvas || (this._textCanvas = C32.CreateCanvas(16, 16));
@@ -7958,7 +8517,7 @@ void main(void) {
       this._SetTextCanvasSize(Math.max(C32.nextHighestPowerOfTwo(Math.ceil(this._width)), 128), Math.max(C32.nextHighestPowerOfTwo(Math.ceil(this._height)), 64)), this._textContext.imageSmoothingEnabled = this._iconSmoothing, this._textContext.imageSmoothingQuality = "high", this._drawCharCount = 0;
       const t2 = this.GetDrawScale(), e = this._wrappedText.GetLines();
       for (const i of e) this._DrawTextLine(i, t2);
-      this._drawChanged = false;
+      this._drawChanged = false, this._canvasContentChanged = true;
     }
     _DrawTextLine(t2, e) {
       const i = t2.GetPosX(), s = t2.GetPosY();
@@ -7975,19 +8534,19 @@ void main(void) {
         if (this._drawCharCount >= this._drawMaxCharCount) return;
         t2.IsText() && this._drawCharCount + d2.length > this._drawMaxCharCount && (d2 = d2.slice(0, this._drawMaxCharCount - this._drawCharCount), r2 = this._MeasureText(t2).width * e), this._drawCharCount += t2.GetLength();
       }
-      const x2 = t2.GetStyleTag("background"), C2 = t2.HasStyleTag("u"), u2 = t2.HasStyleTag("s");
-      if (t2.IsText() && C32.IsCharArrayAllWhitespace(d2) && !x2 && !C2 && !u2 || t2.HasStyleTag("hide")) return;
+      const C2 = t2.GetStyleTag("background"), x2 = t2.HasStyleTag("u"), u2 = t2.HasStyleTag("s");
+      if (t2.IsText() && C32.IsCharArrayAllWhitespace(d2) && !C2 && !x2 && !u2 || t2.HasStyleTag("hide")) return;
       const c2 = t2.GetStyleTag("color"), g2 = t2.GetStyleTag("opacity");
-      this._SetDrawCanvasOpacity(g2 ? parseFloat(g2.param) / 100 : 1), x2 && (this._SetDrawCanvasColor(x2.param), s.fillRect(a2, n - o2, r2, o2 + l));
-      const S2 = t2.GetStyleTag("linethickness"), T2 = S2 ? parseFloat(S2.param) : 1, m2 = t2.HasStyleTag("stroke");
-      if (m2 && this._SetDrawCanvasLineWith(0.5 * _2 * T2 * this.GetDrawScale()), t2.IsText()) {
+      this._SetDrawCanvasOpacity(g2 ? parseFloat(g2.param) / 100 : 1), C2 && (this._SetDrawCanvasColor(C2.param), s.fillRect(a2, n - o2, r2, o2 + l));
+      const S2 = t2.GetStyleTag("linethickness"), T2 = S2 ? parseFloat(S2.param) : 1, p2 = t2.HasStyleTag("stroke");
+      if (p2 && this._SetDrawCanvasLineWith(0.5 * _2 * T2 * this.GetDrawScale()), t2.IsText()) {
         const e2 = d2.join("");
-        if (this._SetDrawFontString(this._GetFontString(false, t2)), !m2) {
+        if (this._SetDrawFontString(this._GetFontString(false, t2)), !p2) {
           this._SetDrawCanvasLineWith(0.5 * _2 * T2 * this.GetDrawScale());
           const i2 = t2.GetStyleTag("outlineback");
           i2 && (this._SetDrawCanvasColor(i2.param), this._FillOrStrokeText(true, e2, a2, n, r2));
         }
-        if (this._SetDrawCanvasColor(c2 ? c2.param : this._colorStr), this._FillOrStrokeText(m2, e2, a2, n, r2), !m2) {
+        if (this._SetDrawCanvasColor(c2 ? c2.param : this._colorStr), this._FillOrStrokeText(p2, e2, a2, n, r2), !p2) {
           this._SetDrawCanvasLineWith(0.5 * _2 * T2 * this.GetDrawScale());
           const i2 = t2.GetStyleTag("outline");
           i2 && (this._SetDrawCanvasColor(i2.param), this._FillOrStrokeText(true, e2, a2, n, r2));
@@ -7996,7 +8555,7 @@ void main(void) {
         const e2 = t2.GetDrawable(this._iconSet);
         e2 && s.drawImage(e2, a2, n - o2, r2, o2);
       }
-      if (this._SetDrawCanvasColor(c2 ? c2.param : this._colorStr), C2 && fillOrStrokeRect(s, m2, a2, n + e * h2, r2, e * h2 * T2), u2) {
+      if (this._SetDrawCanvasColor(c2 ? c2.param : this._colorStr), x2 && fillOrStrokeRect(s, p2, a2, n + e * h2, r2, e * h2 * T2), u2) {
         const t3 = e * _2, i2 = n - o2 / 4 + t3 / 2;
         s.fillRect(a2, i2 - t3 * T2 / 2, r2, t3 * T2);
       }
@@ -8005,7 +8564,7 @@ void main(void) {
       "rtl" === this._textDirection && (i += a2), t2 ? "Gecko" === C32.Platform.BrowserEngine ? this._textContext.strokeText(e, i, s, a2) : this._textContext.strokeText(e, i, s) : "Gecko" === C32.Platform.BrowserEngine ? this._textContext.fillText(e, i, s, a2) : this._textContext.fillText(e, i, s);
     }
     _UpdateTexture() {
-      this._renderer.IsContextLost() || (this._texture && !this._forceRecreateTexture || (this.ReleaseTexture(), this._texture = this._renderer.CreateDynamicTexture(this._textCanvas.width, this._textCanvas.height, { mipMap: this._enableMipMap, mipMapQuality: "high" }), this._forceRecreateTexture = false), this._renderer.UpdateTexture(this._textCanvas, this._texture), this._rcTex.set(0, 0, this._width / this._texture.GetWidth(), this._height / this._texture.GetHeight()), this.ontextureupdate && this.ontextureupdate());
+      this._renderer.IsContextLost() || (this._texture && !this._forceRecreateTexture || (this.ReleaseTexture(), this._texture = this._renderer.CreateDynamicTexture(this._textCanvas.width, this._textCanvas.height, { mipMap: this._enableMipMap, mipMapQuality: "high", isWebGPUFastUpdate: !this._enableMipMap }), this._forceRecreateTexture = false), this._renderer.UpdateTexture(this._textCanvas, this._texture), this._rcTex.set(0, 0, this._width / this._texture.GetWidth(), this._height / this._texture.GetHeight()), this._canvasContentChanged = false, this.ontextureupdate && this.ontextureupdate());
     }
     GetTexRect() {
       return this._rcTex;
@@ -8149,28 +8708,77 @@ var getOffsetParam2;
   };
 }
 {
-  let CheckPendingPolls = function() {
-    pollRafId = -1;
-    for (const t2 of pendingPolls) t2.checkFunc() && (t2.resolve(), pendingPolls.delete(t2));
-    pendingPolls.size > 0 && (pollRafId = self.requestAnimationFrame(CheckPendingPolls));
+  const C32 = globalThis.C3, assert = globalThis.assert, SIZEOF_F32 = 4, SIZEOF_F16 = 2, SIZEOF_U32 = 4, SIZEOF_U16 = 2;
+  C32.Gfx.MeshDataWebGL = class extends C32.Gfx.MeshData {
+    #e = null;
+    #t = null;
+    #s = null;
+    #r = null;
+    #i = null;
+    #o = false;
+    #f = false;
+    #n = false;
+    #a = false;
+    constructor(e, t2, s, r2) {
+      super(e, t2, s, r2), this.#o = !!r2.staticPositions, this.#f = !!r2.staticTexCoords, this.#n = !!r2.staticColors, this.#a = !!r2.staticIndices;
+    }
+    CreateGPUResources() {
+      if (super.CreateGPUResources(), this.IsSmall()) return;
+      const e = this.GetRenderer(), t2 = e.GetContext();
+      e.GetWebGLVersionNumber() < 2 ? this.#i = e._GetVAOExtension()["createVertexArrayOES"]() : this.#i = t2.createVertexArray(), e._BindVAO(this.#i), this.#e = t2.createBuffer(), t2.bindBuffer(t2.ARRAY_BUFFER, this.#e), t2.bufferData(t2.ARRAY_BUFFER, this.positions.byteLength, this.#o ? t2.STATIC_DRAW : t2.DYNAMIC_DRAW), t2.enableVertexAttribArray(0), t2.vertexAttribPointer(0, 3, t2.FLOAT, false, 0, 0), this.#t = t2.createBuffer(), t2.bindBuffer(t2.ARRAY_BUFFER, this.#t), t2.bufferData(t2.ARRAY_BUFFER, this.texCoords.byteLength, this.#f ? t2.STATIC_DRAW : t2.DYNAMIC_DRAW), t2.enableVertexAttribArray(1), t2.vertexAttribPointer(1, 2, t2.FLOAT, false, 0, 0), this.#s = t2.createBuffer(), t2.bindBuffer(t2.ARRAY_BUFFER, this.#s), t2.bufferData(t2.ARRAY_BUFFER, this.colors.byteLength, this.#n ? t2.STATIC_DRAW : t2.DYNAMIC_DRAW), t2.enableVertexAttribArray(2), t2.vertexAttribPointer(2, 4, e.IsColorDataF16() ? t2["HALF_FLOAT"] : t2.FLOAT, false, 0, 0), this.#r = t2.createBuffer(), t2.bindBuffer(t2.ELEMENT_ARRAY_BUFFER, this.#r), t2.bufferData(t2.ELEMENT_ARRAY_BUFFER, this.indices.byteLength, this.#a ? t2.STATIC_DRAW : t2.DYNAMIC_DRAW), e._BindVAO(null);
+    }
+    WriteGPUData() {
+      const e = this.GetRenderer(), t2 = e.GetContext();
+      let s = false, r2 = this.GetPendingBufferUpdate("positions"), i = r2.GetPendingChange();
+      if (i && (t2.bindBuffer(t2.ARRAY_BUFFER, this.#e), t2.bufferSubData(t2.ARRAY_BUFFER, 3 * i.start * 4, this.positions.subarray(3 * i.start, 3 * i.end)), r2.Reset()), r2 = this.GetPendingBufferUpdate("texCoords"), i = r2.GetPendingChange(), i && (t2.bindBuffer(t2.ARRAY_BUFFER, this.#t), t2.bufferSubData(t2.ARRAY_BUFFER, 2 * i.start * 4, this.texCoords.subarray(2 * i.start, 2 * i.end)), r2.Reset()), r2 = this.GetPendingBufferUpdate("colors"), i = r2.GetPendingChange(), i) {
+        const s2 = e.IsColorDataF16() ? 2 : 4;
+        t2.bindBuffer(t2.ARRAY_BUFFER, this.#s), t2.bufferSubData(t2.ARRAY_BUFFER, 4 * i.start * s2, this.colors.subarray(4 * i.start, 4 * i.end)), r2.Reset();
+      }
+      if (r2 = this.GetPendingBufferUpdate("indices"), i = r2.GetPendingChange(), i) {
+        e._BindVAO(this.#i), s = true;
+        const o2 = this.IsIndexTypeUint16() ? 2 : 4;
+        t2.bufferSubData(t2.ELEMENT_ARRAY_BUFFER, i.start * o2, this.indices.subarray(i.start, i.end)), r2.Reset();
+      }
+      return s;
+    }
+    _GetVAO() {
+      return this.#i;
+    }
+    ReleaseGPUResources() {
+      super.ReleaseGPUResources();
+      const e = this.GetRenderer(), t2 = e.GetContext();
+      this.#i && (e.GetWebGLVersionNumber() < 2 ? e._GetVAOExtension()["deleteVertexArrayOES"](this.#i) : t2.deleteVertexArray(this.#i), this.#i = null), this.#e && (t2.deleteBuffer(this.#e), this.#e = null), this.#t && (t2.deleteBuffer(this.#t), this.#t = null), this.#s && (t2.deleteBuffer(this.#s), this.#s = null), this.#r && (t2.deleteBuffer(this.#r), this.#r = null);
+    }
+    OnContextLost() {
+      this.#e = null, this.#t = null, this.#s = null, this.#r = null, this.#i = null;
+    }
   };
-  CheckPendingPolls2 = CheckPendingPolls;
-  const C32 = self.C3, assert = self.assert, glMatrix = self.glMatrix, vec3 = glMatrix.vec3, vec4 = glMatrix.vec4, mat4 = glMatrix.mat4, DEFAULT_WEBGLRENDERER_OPTS = { powerPreference: "default", enableGpuProfiling: true, alpha: false, depth: false, canSampleDepth: false, maxWebGLVersion: 2, failIfMajorPerformanceCaveat: false }, VALID_POWER_PREFERENCES = /* @__PURE__ */ new Set(["default", "low-power", "high-performance"]), MAX_VERTICES = 65535, MAX_INDICES = 393210, MAX_POINTS = 8e3, LAST_POINT = 7996, defaultTexCoordsQuad = new C32.Quad(0, 0, 1, 0, 1, 1, 0, 1), tmpProjection = mat4.create(), tmpModelView = mat4.create(), tmpQuad = new C32.Quad(), tmpRect = new C32.Rect();
+}
+{
+  const C32 = self.C3, assert = self.assert, glMatrix = self.glMatrix, vec3 = glMatrix.vec3, vec4 = glMatrix.vec4, mat4 = glMatrix.mat4, DEFAULT_WEBGLRENDERER_OPTS = { powerPreference: "default", enableGpuProfiling: true, alpha: false, depth: false, canSampleDepth: false, maxWebGLVersion: 2, failIfMajorPerformanceCaveat: false }, VALID_POWER_PREFERENCES = /* @__PURE__ */ new Set(["default", "low-power", "high-performance"]), MAX_POINTS = 8e3, LAST_POINT = 7996, defaultTexCoordsQuad = new C32.Quad2D(0, 0, 1, 0, 1, 1, 0, 1), tmpProjection = mat4.create(), tmpModelView = mat4.create(), tmpQuad = new C32.Quad2D(), tmpRect = new C32.Rect();
   let loseContextExtension = null;
   C32.isDebug && (self.debug_lose_webgl_context = function() {
     loseContextExtension ? loseContextExtension.loseContext() : console.warn("WEBGL_lose_context not supported");
   }, self.debug_restore_webgl_context = function() {
     loseContextExtension ? loseContextExtension.restoreContext() : console.warn("WEBGL_lose_context not supported");
-  });
-  const pendingPolls = /* @__PURE__ */ new Set();
-  let pollRafId = -1;
-  C32.Gfx.WebGLRenderer = class extends C32.Gfx.RendererBase {
+  }), C32.Gfx.WebGLRenderer = class extends C32.Gfx.RendererBase {
+    #t = /* @__PURE__ */ new Set();
+    #e = new C32.Gfx.DynamicMeshData(this);
+    #i = this.#e._GetMeshData();
+    #r = this.#i;
+    #s = null;
+    #a = /* @__PURE__ */ new Set();
+    #h = false;
+    #n = 0;
+    #o = /* @__PURE__ */ new Set();
+    #l = -1;
+    #u = 0;
     constructor(t2, e) {
       if (super(e), e = Object.assign({}, DEFAULT_WEBGLRENDERER_OPTS, e), !VALID_POWER_PREFERENCES.has(e.powerPreference)) throw new Error("invalid power preference");
-      const r2 = { "alpha": !!e.alpha, "depth": false, "antialias": false, "powerPreference": e.powerPreference, "failIfMajorPerformanceCaveat": !!e.failIfMajorPerformanceCaveat };
-      let i = null, s = 0;
-      if (e.maxWebGLVersion >= 2 && (i = t2.getContext("webgl2", r2), s = 2), i || (i = t2.getContext("webgl", r2), s = 1), !i) throw new Error("renderer-unavailable (could not get WebGL context)");
-      this._gl = i, this._attribs = i.getContextAttributes(), this._versionString = i.getParameter(i.VERSION), this._version = s, this._viewport = vec4.create(), this._didChangeTransform = false, this._bbProjectionMatrix = mat4.create(), this._usesDepthBuffer = !!e.depth, this._canSampleDepth = !(!e.depth || !e.canSampleDepth), this._isDepthEnabled = this._usesDepthBuffer, this._isDepthSamplingEnabled = false, this._depthBuffer = null, this._isAutoSizeDepthBuffer = true, this._depthBufferWidth = 0, this._depthBufferHeight = 0, this._vertexBuffer = null, this._texcoordBuffer = null, this._colorBuffer = null, this._indexBuffer = null, this._pointBuffer = null, this._isColorDataF16 = this._version >= 2 && void 0 !== globalThis["Float16Array"], this._vertexData = new Float32Array(196605), this._indexData = new Uint16Array(393210), this._texcoordData = new Float32Array(131070), this._colorData = this._isColorDataF16 ? new globalThis["Float16Array"](262140) : new Float32Array(262140), this._pointData = new Float32Array(32e3), this._vertexPtr = 0, this._indexPtr = 0, this._pointPtr = 0, this._lastProgram = null, this._spDeviceTransformTextureFill = null, this._batch = [], this._batchPtr = 0, this._topOfBatch = 0, this._currentRenderTarget = null, this._lastPointZ = 0, this._batchState = C32.New(C32.Gfx.BatchState, this), this._lastColor = C32.New(C32.Color, 1, 1, 1, 1), this._lastTexture0 = null, this._lastTexture1 = null, this._lastBlendMode = 0, this._lastPointTexCoords = new C32.Rect(), this._lastScissorRect = C32.New(C32.Rect, 0, 0, -1, -1), this._coplanarMode = 0, this._lastCullFace = 0, this._lastFrontFaceWinding = 0, this._maxTextureSize = -1, this._minPointSize = 0, this._maxPointSize = 0, this._unmaskedVendor = "(unavailable)", this._unmaskedRenderer = "(unavailable)", this._extensions = [], this._isInitialisingAfterContextRestored = false, this._parallelShaderCompileExt = null, this._anisotropicExt = null, this._conservativeDepthExt = null, this._depthTextureExt = null, this._fragDepthExt = null, this._stdDerivativesExt = null, this._textureLodExt = null, this._blendMinMaxExt = null, this._maxAnisotropy = 0, this._isGpuProfilingEnabled = !!e.enableGpuProfiling, this._timerExt = null, this._allQueryResultBuffers = /* @__PURE__ */ new Set(), this._timeQueryStack = [];
+      const i = { "alpha": !!e.alpha, "depth": false, "antialias": false, "powerPreference": e.powerPreference, "failIfMajorPerformanceCaveat": !!e.failIfMajorPerformanceCaveat };
+      let r2 = null, s = 0;
+      if (e.maxWebGLVersion >= 2 && (r2 = t2.getContext("webgl2", i), s = 2), r2 || (r2 = t2.getContext("webgl", i), s = 1), !r2) throw new Error("renderer-unavailable (could not get WebGL context)");
+      this._gl = r2, this._attribs = r2.getContextAttributes(), this._versionString = r2.getParameter(r2.VERSION), this._version = s, this._viewport = vec4.create(), this._didChangeTransform = false, this._bbProjectionMatrix = mat4.create(), this._usesDepthBuffer = !!e.depth, this._canSampleDepth = !(!e.depth || !e.canSampleDepth), this._isDepthEnabled = this._usesDepthBuffer, this._isDepthSamplingEnabled = false, this._depthBuffer = null, this._isAutoSizeDepthBuffer = true, this._depthBufferWidth = 0, this._depthBufferHeight = 0, this.#h = this._version >= 2 && void 0 !== globalThis["Float16Array"], this._pointBuffer = null, this._pointData = new Float32Array(32e3), this._pointPtr = 0, this._lastProgram = null, this._spDeviceTransformTextureFill = null, this._batch = [], this._batchPtr = 0, this._topOfBatch = 0, this._currentRenderTarget = null, this._lastPointZ = 0, this._batchState = C32.New(C32.Gfx.BatchState, this), this._lastColor = this.#e.GetDefaultColor(), this._lastTexture0 = null, this._lastTexture1 = null, this._lastBlendMode = 0, this._lastPointTexCoords = new C32.Rect(), this._lastScissorRect = C32.New(C32.Rect, 0, 0, -1, -1), this._coplanarMode = 0, this._lastCullFace = 0, this._lastFrontFaceWinding = 0, this._maxTextureSize = -1, this._minPointSize = 0, this._maxPointSize = 0, this._unmaskedVendor = "(unavailable)", this._unmaskedRenderer = "(unavailable)", this._extensions = [], this._isInitialisingAfterContextRestored = false, this._parallelShaderCompileExt = null, this._anisotropicExt = null, this._conservativeDepthExt = null, this._depthTextureExt = null, this._fragDepthExt = null, this._stdDerivativesExt = null, this._textureLodExt = null, this._blendMinMaxExt = null, this._maxAnisotropy = 0, this._isGpuProfilingEnabled = !!e.enableGpuProfiling, this._timerExt = null, this._allQueryResultBuffers = /* @__PURE__ */ new Set(), this._timeQueryStack = [];
     }
     IsWebGL() {
       return true;
@@ -8178,19 +8786,19 @@ var getOffsetParam2;
     async InitState() {
       super.InitState();
       const t2 = this._gl;
-      this._lastColor.setRgba(1, 1, 1, 1), this._lastTexture0 = null, this._lastTexture1 = null, this._vertexPtr = 0, this._indexPtr = 0, this._pointPtr = 0, C32.clearArray(this._batch), this._batchPtr = 0, this._topOfBatch = 0, this._lastProgram = null, this._currentRenderTarget = null, this._lastPointTexCoords.set(0, 0, 1, 1), this._lastPointZ = 0;
+      this._lastColor.setRgba(1, 1, 1, 1), this._lastTexture0 = null, this._lastTexture1 = null, this._pointPtr = 0, C32.clearArray(this._batch), this._batchPtr = 0, this._topOfBatch = 0, this._lastProgram = null, this._currentRenderTarget = null, this._lastPointTexCoords.set(0, 0, 1, 1), this._lastPointZ = 0;
       const e = this._batchState;
-      e.currentShader = null, e.currentFramebuffer = null, e.currentFramebufferNoDepth = null, e.clearColor.setRgba(0, 0, 0, 0), e.pointTexCoords.set(0, 0, 1, 1), t2.clearColor(0, 0, 0, 0), t2.clear(t2.COLOR_BUFFER_BIT), t2.enable(t2.BLEND), t2.blendFunc(t2.ONE, t2.ONE_MINUS_SRC_ALPHA), t2.blendEquationSeparate(t2.FUNC_ADD, t2.FUNC_ADD), this._lastBlendMode = 0, 1 === this._version ? this._blendMinMaxExt = t2.getExtension("EXT_blend_minmax") : this._blendMinMaxExt = null, this._InitBlendModes(t2), t2.cullFace(t2.BACK), t2.disable(t2.CULL_FACE), this._lastCullFace = 0, t2.frontFace(t2.CW), this._lastFrontFaceWinding = 0, t2.disable(t2.STENCIL_TEST), t2.disable(t2.DITHER), this._usesDepthBuffer ? (t2.enable(t2.DEPTH_TEST), t2.depthMask(true), t2.depthFunc(t2.LEQUAL)) : (t2.disable(t2.DEPTH_TEST), t2.depthMask(false)), this._isDepthEnabled = this._usesDepthBuffer, this._isDepthSamplingEnabled = false, this._pointBuffer = t2.createBuffer(), t2.bindBuffer(t2.ARRAY_BUFFER, this._pointBuffer), t2.bufferData(t2.ARRAY_BUFFER, this._pointData.byteLength, t2.DYNAMIC_DRAW), this._vertexBuffer = t2.createBuffer(), t2.bindBuffer(t2.ARRAY_BUFFER, this._vertexBuffer), t2.bufferData(t2.ARRAY_BUFFER, this._vertexData.byteLength, t2.DYNAMIC_DRAW), this._texcoordBuffer = t2.createBuffer(), t2.bindBuffer(t2.ARRAY_BUFFER, this._texcoordBuffer), t2.bufferData(t2.ARRAY_BUFFER, this._texcoordData.byteLength, t2.DYNAMIC_DRAW), this._colorBuffer = t2.createBuffer(), t2.bindBuffer(t2.ARRAY_BUFFER, this._colorBuffer), t2.bufferData(t2.ARRAY_BUFFER, this._colorData.byteLength, t2.DYNAMIC_DRAW), this._indexBuffer = t2.createBuffer(), t2.bindBuffer(t2.ELEMENT_ARRAY_BUFFER, this._indexBuffer), t2.bufferData(t2.ELEMENT_ARRAY_BUFFER, this._indexData.byteLength, t2.DYNAMIC_DRAW), t2.activeTexture(t2.TEXTURE0), t2.bindTexture(t2.TEXTURE_2D, null), this._maxTextureSize = t2.getParameter(t2.MAX_TEXTURE_SIZE);
-      const r2 = t2.getParameter(t2.ALIASED_POINT_SIZE_RANGE);
-      this._minPointSize = r2[0], this._maxPointSize = r2[1], this._maxPointSize > 2048 && (this._maxPointSize = 2048), this._extensions = t2.getSupportedExtensions();
-      const i = t2.getExtension("WEBGL_debug_renderer_info");
-      if (i && (this._unmaskedVendor = t2.getParameter(i["UNMASKED_VENDOR_WEBGL"]), this._unmaskedRenderer = t2.getParameter(i["UNMASKED_RENDERER_WEBGL"])), this._parallelShaderCompileExt = t2.getExtension("KHR_parallel_shader_compile"), this._version >= 2 && ("Chromium" !== C32.Platform.BrowserEngine || C32.Platform.BrowserVersionNumber >= 135) && (this._conservativeDepthExt = t2.getExtension("EXT_conservative_depth")), C32.isDebug && (loseContextExtension = t2.getExtension("WEBGL_lose_context")), this._isGpuProfilingEnabled && (1 === this.GetWebGLVersionNumber() ? this._timerExt = t2.getExtension("EXT_disjoint_timer_query") : this._timerExt = t2.getExtension("EXT_disjoint_timer_query_webgl2") || t2.getExtension("EXT_disjoint_timer_query")), this._anisotropicExt = t2.getExtension("EXT_texture_filter_anisotropic"), this._anisotropicExt ? this._maxAnisotropy = t2.getParameter(this._anisotropicExt["MAX_TEXTURE_MAX_ANISOTROPY_EXT"]) : this._maxAnisotropy = 0, this.GetWebGLVersionNumber() < 2 && this._usesDepthBuffer && this._canSampleDepth && (this._depthTextureExt = t2.getExtension("WEBGL_depth_texture"), !this._depthTextureExt)) throw new Error("no depth texture support");
-      this.GetWebGLVersionNumber() < 2 && (this._fragDepthExt = t2.getExtension("EXT_frag_depth"), this._stdDerivativesExt = t2.getExtension("OES_standard_derivatives"), this._textureLodExt = t2.getExtension("EXT_shader_texture_lod"));
+      e.currentShader = null, e.currentFramebuffer = null, e.currentFramebufferNoDepth = null, e.clearColor.setRgba(0, 0, 0, 0), e.pointTexCoords.set(0, 0, 1, 1), e.currentSampler0 = null, e.currentSampler1 = null, t2.clearColor(0, 0, 0, 0), t2.clear(t2.COLOR_BUFFER_BIT), t2.enable(t2.BLEND), t2.blendFunc(t2.ONE, t2.ONE_MINUS_SRC_ALPHA), t2.blendEquationSeparate(t2.FUNC_ADD, t2.FUNC_ADD), this._lastBlendMode = 0, 1 === this._version ? this._blendMinMaxExt = t2.getExtension("EXT_blend_minmax") : this._blendMinMaxExt = null, this._InitBlendModes(t2), t2.cullFace(t2.BACK), t2.disable(t2.CULL_FACE), this._lastCullFace = 0, t2.frontFace(t2.CW), this._lastFrontFaceWinding = 0, t2.disable(t2.STENCIL_TEST), t2.disable(t2.DITHER), this._usesDepthBuffer ? (t2.enable(t2.DEPTH_TEST), t2.depthMask(true), t2.depthFunc(t2.LEQUAL)) : (t2.disable(t2.DEPTH_TEST), t2.depthMask(false)), this.GetWebGLVersionNumber() >= 2 ? this.#u = t2.getParameter(t2["MAX_CLIENT_WAIT_TIMEOUT_WEBGL"]) : this.#u = 0, this._isDepthEnabled = this._usesDepthBuffer, this._isDepthSamplingEnabled = false, this.GetWebGLVersionNumber() < 2 && (this.#s = t2.getExtension("OES_vertex_array_object"), t2.getExtension("OES_element_index_uint"), this._fragDepthExt = t2.getExtension("EXT_frag_depth"), this._stdDerivativesExt = t2.getExtension("OES_standard_derivatives"), this._textureLodExt = t2.getExtension("EXT_shader_texture_lod")), this.#e.CreateGPUResources(), this._BindVAO(null);
+      this._pointBuffer = t2.createBuffer(), t2.bindBuffer(t2.ARRAY_BUFFER, this._pointBuffer), t2.bufferData(t2.ARRAY_BUFFER, this._pointData.byteLength, t2.DYNAMIC_DRAW), t2.enableVertexAttribArray(3), t2.vertexAttribPointer(3, 4, t2.FLOAT, false, 0, 0), this._BindVAO(this.#i._GetVAO()), t2.activeTexture(t2.TEXTURE0), t2.bindTexture(t2.TEXTURE_2D, null), this._maxTextureSize = t2.getParameter(t2.MAX_TEXTURE_SIZE);
+      const i = t2.getParameter(t2.ALIASED_POINT_SIZE_RANGE);
+      this._minPointSize = i[0], this._maxPointSize = i[1], this._maxPointSize > 2048 && (this._maxPointSize = 2048), this._extensions = t2.getSupportedExtensions();
+      const r2 = t2.getExtension("WEBGL_debug_renderer_info");
+      if (r2 && (this._unmaskedVendor = t2.getParameter(r2["UNMASKED_VENDOR_WEBGL"]), this._unmaskedRenderer = t2.getParameter(r2["UNMASKED_RENDERER_WEBGL"])), this._parallelShaderCompileExt = t2.getExtension("KHR_parallel_shader_compile"), this._version >= 2 && ("Chromium" !== C32.Platform.BrowserEngine || C32.Platform.BrowserVersionNumber >= 135) && (this._conservativeDepthExt = t2.getExtension("EXT_conservative_depth")), C32.isDebug && (loseContextExtension = t2.getExtension("WEBGL_lose_context")), this._isGpuProfilingEnabled && (1 === this.GetWebGLVersionNumber() ? this._timerExt = t2.getExtension("EXT_disjoint_timer_query") : this._timerExt = t2.getExtension("EXT_disjoint_timer_query_webgl2") || t2.getExtension("EXT_disjoint_timer_query")), this._anisotropicExt = t2.getExtension("EXT_texture_filter_anisotropic"), this._anisotropicExt ? this._maxAnisotropy = t2.getParameter(this._anisotropicExt["MAX_TEXTURE_MAX_ANISOTROPY_EXT"]) : this._maxAnisotropy = 0, this.GetWebGLVersionNumber() < 2 && this._usesDepthBuffer && this._canSampleDepth && (this._depthTextureExt = t2.getExtension("WEBGL_depth_texture"), !this._depthTextureExt)) throw new Error("no depth texture support");
       const s = C32.Gfx.WebGLShaderProgram, a2 = s.GetDefaultVertexShaderSource(false);
-      let h2 = s.GetTextureFillFragmentShaderSource_WebGL1_NoFragDepth(), n = a2, o2 = s.GetPointFragmentShaderSource_WebGL1_NoFragDepth(), l = s.GetPointVertexShaderSource_WebGL1(), _2 = s.GetTilemapFragmentShaderSource_WebGL1_NoFragDepth(), u2 = s.GetDefaultVertexShaderSource(true), d2 = false;
-      this._usesDepthBuffer && (this.GetWebGLVersionNumber() < 2 ? this._fragDepthExt && (h2 = s.GetTextureFillFragmentShaderSource_WebGL1_FragDepthEXT(), o2 = s.GetPointFragmentShaderSource_WebGL1_FragDepthEXT(), _2 = s.GetTilemapFragmentShaderSource_WebGL1_FragDepthEXT(), d2 = true) : (n = s.GetDefaultVertexShaderSource_WebGL2(), h2 = s.GetTextureFillFragmentShaderSource_WebGL2(this._SupportsConservativeDepth()), o2 = s.GetPointFragmentShaderSource_WebGL2(this._SupportsConservativeDepth()), l = s.GetPointVertexShaderSource_WebGL2(), _2 = s.GetTilemapFragmentShaderSource_WebGL2(this._SupportsConservativeDepth()), u2 = s.GetDefaultVertexShaderSource_WebGL2(true)));
-      const c2 = s.GetTileRandomizationFragmentShaderSource(this.GetWebGLVersionNumber(), d2, this._stdDerivativesExt && this._textureLodExt, this._SupportsConservativeDepth()), f2 = this.GetWebGLVersionNumber() >= 2 ? s.GetDefaultVertexShaderSource_WebGL2() : a2, p2 = [[h2, n, "<default>"], [h2, n, "<default-device-transform>"], [o2, l, "<point>"], [s.GetColorFillFragmentShaderSource(), a2, "<fill>"], [s.GetLinearGradientFillFragmentShaderSource(), a2, "<lineargradient>"], [s.GetPenumbraFillFragmentShaderSource(), a2, "<penumbra>"], [s.GetHardEllipseFillFragmentShaderSource(), a2, "<hardellipse>"], [s.GetHardEllipseOutlineFragmentShaderSource(), a2, "<hardellipseoutline>"], [s.GetSmoothEllipseFillFragmentShaderSource(), a2, "<smoothellipse>"], [s.GetSmoothEllipseOutlineFragmentShaderSource(), a2, "<smoothellipseoutline>"], [s.GetSmoothLineFillFragmentShaderSource(), a2, "<smoothline>"], [_2, u2, "<tilemap>"], [c2, f2, "<tilerandomization>"]], x2 = await Promise.all(p2.map((t3) => this.CreateShaderProgram({ src: t3[0], vertexSrc: t3[1], name: t3[2] })));
-      this._spTextureFill = x2[0], this._spDeviceTransformTextureFill = x2[1], this._spPoints = x2[2], this._spColorFill = x2[3], this._spLinearGradientFill = x2[4], this._spPenumbraFill = x2[5], this._spHardEllipseFill = x2[6], this._spHardEllipseOutline = x2[7], this._spSmoothEllipseFill = x2[8], this._spSmoothEllipseOutline = x2[9], this._spSmoothLineFill = x2[10], this._spTilemapFill = x2[11], this._spTileRandomization = x2[12], this.SetTextureFillMode();
+      let h2 = s.GetTextureFillFragmentShaderSource_WebGL1_NoFragDepth(), n = a2, o2 = s.GetPointFragmentShaderSource_WebGL1_NoFragDepth(), l = s.GetPointVertexShaderSource_WebGL1(), u2 = s.GetTilemapFragmentShaderSource_WebGL1_NoFragDepth(), _2 = s.GetDefaultVertexShaderSource(true), d2 = false;
+      this._usesDepthBuffer && (this.GetWebGLVersionNumber() < 2 ? this._fragDepthExt && (h2 = s.GetTextureFillFragmentShaderSource_WebGL1_FragDepthEXT(), o2 = s.GetPointFragmentShaderSource_WebGL1_FragDepthEXT(), u2 = s.GetTilemapFragmentShaderSource_WebGL1_FragDepthEXT(), d2 = true) : (n = s.GetDefaultVertexShaderSource_WebGL2(), h2 = s.GetTextureFillFragmentShaderSource_WebGL2(this._SupportsConservativeDepth()), o2 = s.GetPointFragmentShaderSource_WebGL2(this._SupportsConservativeDepth()), l = s.GetPointVertexShaderSource_WebGL2(), u2 = s.GetTilemapFragmentShaderSource_WebGL2(this._SupportsConservativeDepth()), _2 = s.GetDefaultVertexShaderSource_WebGL2(true)));
+      const c2 = s.GetTileRandomizationFragmentShaderSource(this.GetWebGLVersionNumber(), d2, this._stdDerivativesExt && this._textureLodExt, this._SupportsConservativeDepth()), p2 = this.GetWebGLVersionNumber() >= 2 ? s.GetDefaultVertexShaderSource_WebGL2() : a2, f2 = [[h2, n, "<default>"], [h2, n, "<default-device-transform>"], [o2, l, "<point>"], [s.GetColorFillFragmentShaderSource(), a2, "<fill>"], [s.GetLinearGradientFillFragmentShaderSource(), a2, "<lineargradient>"], [s.GetPenumbraFillFragmentShaderSource(), a2, "<penumbra>"], [s.GetHardEllipseFillFragmentShaderSource(), a2, "<hardellipse>"], [s.GetHardEllipseOutlineFragmentShaderSource(), a2, "<hardellipseoutline>"], [s.GetSmoothEllipseFillFragmentShaderSource(), a2, "<smoothellipse>"], [s.GetSmoothEllipseOutlineFragmentShaderSource(), a2, "<smoothellipseoutline>"], [s.GetSmoothLineFillFragmentShaderSource(), a2, "<smoothline>"], [u2, _2, "<tilemap>"], [c2, p2, "<tilerandomization>"]], E2 = await Promise.all(f2.map((t3) => this.CreateShaderProgram({ src: t3[0], vertexSrc: t3[1], name: t3[2] })));
+      this._spTextureFill = E2[0], this._spDeviceTransformTextureFill = E2[1], this._spPoints = E2[2], this._spColorFill = E2[3], this._spLinearGradientFill = E2[4], this._spPenumbraFill = E2[5], this._spHardEllipseFill = E2[6], this._spHardEllipseOutline = E2[7], this._spSmoothEllipseFill = E2[8], this._spSmoothEllipseOutline = E2[9], this._spSmoothLineFill = E2[10], this._spTilemapFill = E2[11], this._spTileRandomization = E2[12], this.SetTextureFillMode();
     }
     async CreateShaderProgram(t2) {
       const e = await C32.Gfx.WebGLShaderProgram.Create(this, t2);
@@ -8199,15 +8807,15 @@ var getOffsetParam2;
     ResetLastProgram() {
       this._lastProgram = null;
     }
-    SetSize(t2, e, r2) {
-      if (this._width === t2 && this._height === e && !r2) return;
+    SetSize(t2, e, i) {
+      if (this._width === t2 && this._height === e && !i) return;
       this.EndBatch();
-      const i = this._gl, s = this._batchState;
-      this._width = t2, this._height = e, this._SetViewport(0, 0, t2, e), this.CalculatePerspectiveMatrix(this._bbProjectionMatrix, t2 / e), this.SetProjectionMatrix(this._bbProjectionMatrix), this._spDeviceTransformTextureFill && (i.useProgram(this._spDeviceTransformTextureFill.GetShaderProgram()), this._spDeviceTransformTextureFill._UpdateDeviceTransformUniforms(this._matP), this._lastProgram = this._spDeviceTransformTextureFill, this._batchState.currentShader = this._spDeviceTransformTextureFill), i.bindTexture(i.TEXTURE_2D, null), i.activeTexture(i.TEXTURE1), i.bindTexture(i.TEXTURE_2D, null), i.activeTexture(i.TEXTURE0), this._lastTexture0 = null, this._lastTexture1 = null, this._usesDepthBuffer && this._isAutoSizeDepthBuffer && this._SetDepthBufferSize(this._width, this._height), this._currentRenderTarget && this._currentRenderTarget._Resize(this._width, this._height), i.bindFramebuffer(i.FRAMEBUFFER, null), this._currentRenderTarget = null, s.currentFramebuffer = null, s.currentFramebufferNoDepth = null;
+      const r2 = this._gl, s = this._batchState;
+      this._width = t2, this._height = e, this._SetViewport(0, 0, t2, e), this.CalculatePerspectiveMatrix(this._bbProjectionMatrix, t2 / e), this.SetProjectionMatrix(this._bbProjectionMatrix), this._spDeviceTransformTextureFill && (r2.useProgram(this._spDeviceTransformTextureFill.GetShaderProgram()), this._spDeviceTransformTextureFill._UpdateDeviceTransformUniforms(this._matP), this._lastProgram = this._spDeviceTransformTextureFill, this._batchState.currentShader = this._spDeviceTransformTextureFill), r2.bindTexture(r2.TEXTURE_2D, null), r2.activeTexture(r2.TEXTURE1), r2.bindTexture(r2.TEXTURE_2D, null), r2.activeTexture(r2.TEXTURE0), this._lastTexture0 = null, this._lastTexture1 = null, this._usesDepthBuffer && this._isAutoSizeDepthBuffer && this._SetDepthBufferSize(this._width, this._height), this._currentRenderTarget && this._currentRenderTarget._Resize(this._width, this._height), r2.bindFramebuffer(r2.FRAMEBUFFER, null), this._currentRenderTarget = null, s.currentFramebuffer = null, s.currentFramebufferNoDepth = null;
     }
     _SetDepthBufferSize(t2, e) {
-      const r2 = this._gl;
-      this._depthBuffer && this._depthBufferWidth === t2 && this._depthBufferHeight === e || (this._canSampleDepth ? (this._depthBuffer && r2.deleteTexture(this._depthBuffer), this._depthBuffer = r2.createTexture(), r2.bindTexture(r2.TEXTURE_2D, this._depthBuffer), r2.texParameteri(r2.TEXTURE_2D, r2.TEXTURE_MAG_FILTER, r2.NEAREST), r2.texParameteri(r2.TEXTURE_2D, r2.TEXTURE_MIN_FILTER, r2.NEAREST), r2.texParameteri(r2.TEXTURE_2D, r2.TEXTURE_WRAP_S, r2.CLAMP_TO_EDGE), r2.texParameteri(r2.TEXTURE_2D, r2.TEXTURE_WRAP_T, r2.CLAMP_TO_EDGE), this.GetWebGLVersionNumber() >= 2 ? r2.texImage2D(r2.TEXTURE_2D, 0, r2.DEPTH24_STENCIL8, t2, e, 0, r2.DEPTH_STENCIL, r2.UNSIGNED_INT_24_8, null) : this._depthTextureExt && r2.texImage2D(r2.TEXTURE_2D, 0, r2.DEPTH_STENCIL, t2, e, 0, r2.DEPTH_STENCIL, this._depthTextureExt["UNSIGNED_INT_24_8_WEBGL"], null), r2.bindTexture(r2.TEXTURE_2D, null)) : (this._depthBuffer && r2.deleteRenderbuffer(this._depthBuffer), this._depthBuffer = r2.createRenderbuffer(), r2.bindRenderbuffer(r2.RENDERBUFFER, this._depthBuffer), r2.renderbufferStorage(r2.RENDERBUFFER, this._version >= 2 ? r2.DEPTH24_STENCIL8 : r2.DEPTH_STENCIL, t2, e), r2.bindRenderbuffer(r2.RENDERBUFFER, null)), this._depthBufferWidth = t2, this._depthBufferHeight = e);
+      const i = this._gl;
+      this._depthBuffer && this._depthBufferWidth === t2 && this._depthBufferHeight === e || (this._canSampleDepth ? (this._depthBuffer && i.deleteTexture(this._depthBuffer), this._depthBuffer = i.createTexture(), i.bindTexture(i.TEXTURE_2D, this._depthBuffer), i.texParameteri(i.TEXTURE_2D, i.TEXTURE_MAG_FILTER, i.NEAREST), i.texParameteri(i.TEXTURE_2D, i.TEXTURE_MIN_FILTER, i.NEAREST), i.texParameteri(i.TEXTURE_2D, i.TEXTURE_WRAP_S, i.CLAMP_TO_EDGE), i.texParameteri(i.TEXTURE_2D, i.TEXTURE_WRAP_T, i.CLAMP_TO_EDGE), this.GetWebGLVersionNumber() >= 2 ? i.texImage2D(i.TEXTURE_2D, 0, i.DEPTH24_STENCIL8, t2, e, 0, i.DEPTH_STENCIL, i.UNSIGNED_INT_24_8, null) : this._depthTextureExt && i.texImage2D(i.TEXTURE_2D, 0, i.DEPTH_STENCIL, t2, e, 0, i.DEPTH_STENCIL, this._depthTextureExt["UNSIGNED_INT_24_8_WEBGL"], null), i.bindTexture(i.TEXTURE_2D, null)) : (this._depthBuffer && i.deleteRenderbuffer(this._depthBuffer), this._depthBuffer = i.createRenderbuffer(), i.bindRenderbuffer(i.RENDERBUFFER, this._depthBuffer), i.renderbufferStorage(i.RENDERBUFFER, this._version >= 2 ? i.DEPTH24_STENCIL8 : i.DEPTH_STENCIL, t2, e), i.bindRenderbuffer(i.RENDERBUFFER, null)), this._depthBufferWidth = t2, this._depthBufferHeight = e);
     }
     SetFixedSizeDepthBuffer(t2, e) {
       this._usesDepthBuffer && (this._isAutoSizeDepthBuffer = false, this._SetDepthBufferSize(t2, e));
@@ -8215,10 +8823,10 @@ var getOffsetParam2;
     SetAutoSizeDepthBuffer() {
       this._usesDepthBuffer && (this._isAutoSizeDepthBuffer = true, this._SetDepthBufferSize(this._width, this._height));
     }
-    _SetViewport(t2, e, r2, i) {
+    _SetViewport(t2, e, i, r2) {
       const s = this._viewport;
-      if (s[0] === t2 && s[1] === e && s[2] === r2 && s[3] === i) return;
-      this.PushBatch().InitSetViewport(t2, e, r2, i), vec4.set(s, t2, e, r2, i), this._topOfBatch = 0;
+      if (s[0] === t2 && s[1] === e && s[2] === i && s[3] === r2) return;
+      this.PushBatch().InitSetViewport(t2, e, i, r2), vec4.set(s, t2, e, i, r2), this._topOfBatch = 0;
     }
     SetFovY(t2) {
       super.SetFovY(t2), this.CalculatePerspectiveMatrix(this._bbProjectionMatrix, this._width / this._height);
@@ -8234,9 +8842,9 @@ var getOffsetParam2;
       this.PushBatch().InitSetProjection(t2), mat4.copy(this._matP, t2), this._topOfBatch = 0, this._didChangeTransform = true;
     }
     SetDefaultRenderTargetProjectionState() {
-      let t2, e, r2;
-      const i = this._currentRenderTarget;
-      null === i ? (t2 = this._bbProjectionMatrix, e = this.GetWidth(), r2 = this.GetHeight()) : (t2 = i.GetProjectionMatrix(), e = i.GetWidth(), r2 = i.GetHeight()), this.SetProjectionMatrix(t2), this._SetViewport(0, 0, e, r2);
+      let t2, e, i;
+      const r2 = this._currentRenderTarget;
+      null === r2 ? (t2 = this._bbProjectionMatrix, e = this.GetWidth(), i = this.GetHeight()) : (t2 = r2.GetProjectionMatrix(), e = r2.GetWidth(), i = r2.GetHeight()), this.SetProjectionMatrix(t2), this._SetViewport(0, 0, e, i);
     }
     SetModelViewMatrix(t2) {
       if (mat4.exactEquals(this._matMV, t2)) return;
@@ -8256,22 +8864,26 @@ var getOffsetParam2;
       return this._batchPtr === t2.length && t2.push(new C32.Gfx.WebGLBatchJob(this._batchState)), t2[this._batchPtr++];
     }
     EndBatch() {
-      0 !== this._batchPtr && (this.IsContextLost() || (this._WriteBuffers(), this._ExecuteBatch(), this._batchPtr = 0, this._vertexPtr = 0, this._indexPtr = 0, this._pointPtr = 0, this._topOfBatch = 0));
+      0 !== this._batchPtr && (this.IsContextLost() || (this._WriteBuffers(), this._ExecuteBatch(), this._batchPtr = 0, this._pointPtr = 0, this._topOfBatch = 0));
     }
     _WriteBuffers() {
       const t2 = this._gl;
-      this._vertexPtr > 0 && (t2.bindBuffer(t2.ARRAY_BUFFER, this._vertexBuffer), t2.bufferSubData(t2.ARRAY_BUFFER, 0, this._vertexData.subarray(0, 3 * this._vertexPtr)), t2.bindBuffer(t2.ARRAY_BUFFER, this._texcoordBuffer), t2.bufferSubData(t2.ARRAY_BUFFER, 0, this._texcoordData.subarray(0, 2 * this._vertexPtr)), t2.bindBuffer(t2.ARRAY_BUFFER, this._colorBuffer), t2.bufferSubData(t2.ARRAY_BUFFER, 0, this._colorData.subarray(0, 4 * this._vertexPtr))), this._indexPtr > 0 && (t2.bindBuffer(t2.ELEMENT_ARRAY_BUFFER, this._indexBuffer), t2.bufferSubData(t2.ELEMENT_ARRAY_BUFFER, 0, this._indexData.subarray(0, this._indexPtr))), this._pointPtr > 0 && (t2.bindBuffer(t2.ARRAY_BUFFER, this._pointBuffer), t2.bufferSubData(t2.ARRAY_BUFFER, 0, this._pointData.subarray(0, this._pointPtr)));
+      this.#e.WriteGPUData(), this._pointPtr > 0 && (t2.bindBuffer(t2.ARRAY_BUFFER, this._pointBuffer), t2.bufferSubData(t2.ARRAY_BUFFER, 0, this._pointData.subarray(0, this._pointPtr)));
+      const e = this._GetCurrentBoundVAO();
+      let i = false;
+      for (const t3 of this.#a) t3 !== this.#i && t3.WriteGPUData() && (i = true);
+      this.#a.clear(), i && this._BindVAO(e);
     }
     _ExecuteBatch() {
       const t2 = this._batch;
-      for (let e = 0, r2 = this._batchPtr; e < r2; ++e) t2[e].Run();
+      for (let e = 0, i = this._batchPtr; e < i; ++e) t2[e].Run();
     }
     GetOpacity() {
       return this._lastColor.getA();
     }
-    SetColorRgba(t2, e, r2, i) {
+    SetColorRgba(t2, e, i, r2) {
       const s = this._lastColor;
-      s.equalsRgba(t2, e, r2, i) || (s.setRgba(t2, e, r2, i), this._currentStateGroup = null, 2 === this._topOfBatch && (this._topOfBatch = 0));
+      s.equalsRgba(t2, e, i, r2) || (s.setRgba(t2, e, i, r2), this._currentStateGroup = null, 2 === this._topOfBatch && (this._topOfBatch = 0));
     }
     SetOpacity(t2) {
       const e = this._lastColor;
@@ -8287,9 +8899,10 @@ var getOffsetParam2;
     GetColor() {
       return this._lastColor;
     }
-    SetTexture(t2) {
-      if (t2 === this._lastTexture0) return;
-      this.PushBatch().InitSetTexture(t2), this._lastTexture0 = t2, this._topOfBatch = 0;
+    SetTexture(t2, e = 0) {
+      const i = 0 === e ? t2 ? t2._GetDefaultSamplingIndex() : 2 : e - 1;
+      if (t2 === this._lastTexture0 && i === this.#n) return;
+      this.PushBatch().InitSetTexture(t2, i), this._lastTexture0 = t2, this.#n = i, this._topOfBatch = 0;
     }
     _ResetLastTexture() {
       this._lastTexture0 = null;
@@ -8329,103 +8942,49 @@ var getOffsetParam2;
     Rect(t2) {
       this.Rect2(t2.getLeft(), t2.getTop(), t2.getRight(), t2.getBottom());
     }
-    Rect2(t2, e, r2, i) {
-      this.Quad2(t2, e, r2, e, r2, i, t2, i);
+    Rect2(t2, e, i, r2) {
+      this.Quad2(t2, e, i, e, i, r2, t2, r2);
     }
-    _AddToDrawBatch(t2, e) {
-      if ((this._vertexPtr + t2 > 65535 || this._indexPtr + e > 393210) && this.EndBatch(), 1 === this._topOfBatch) this._batch[this._batchPtr - 1]._indexCount += e;
+    #_(t2, e) {
+      this.#d();
+      const i = this.#e;
+      if (i.CanFit(t2, e) || this.EndBatch(), 1 === this._topOfBatch) this._batch[this._batchPtr - 1]._indexCount += e;
       else {
-        this.PushBatch().InitDraw(2 * this._indexPtr, e), this._topOfBatch = 1;
+        this.PushBatch().InitDraw(2 * i.GetIndexPtr(), e), this._topOfBatch = 1;
       }
-    }
-    _AddIndicesForQuad() {
-      const t2 = this._vertexPtr;
-      let e = this._indexPtr;
-      this._indexPtr += 6;
-      const r2 = this._indexData;
-      r2[e++] = t2, r2[e++] = t2 + 1, r2[e++] = t2 + 2, r2[e++] = t2, r2[e++] = t2 + 2, r2[e] = t2 + 3;
     }
     Quad(t2) {
       this.Quad4(t2, defaultTexCoordsQuad);
     }
-    Quad2(t2, e, r2, i, s, a2, h2, n) {
-      this._AddToDrawBatch(4, 6), this._AddIndicesForQuad();
-      const o2 = this._vertexData, l = this._vertexPtr;
-      this._vertexPtr += 4;
-      let _2 = 3 * l;
-      const u2 = this._baseZ + this._currentZ;
-      o2[_2++] = t2, o2[_2++] = e, o2[_2++] = u2, o2[_2++] = r2, o2[_2++] = i, o2[_2++] = u2, o2[_2++] = s, o2[_2++] = a2, o2[_2++] = u2, o2[_2++] = h2, o2[_2++] = n, o2[_2] = u2, defaultTexCoordsQuad.writeToTypedArray(this._texcoordData, 2 * l), this._lastColor.writeToTypedArrayx4(this._colorData, 4 * l);
+    Quad2(t2, e, i, r2, s, a2, h2, n) {
+      this.#_(4, 6), this.#e.WriteQuad2(this._baseZ + this._currentZ, t2, e, i, r2, s, a2, h2, n);
     }
     Quad3(t2, e) {
-      this._AddToDrawBatch(4, 6), this._AddIndicesForQuad();
-      const r2 = this._vertexPtr;
-      this._vertexPtr += 4, t2.writeToTypedArray3D(this._vertexData, 3 * r2, this._baseZ + this._currentZ), e.writeAsQuadToTypedArray(this._texcoordData, 2 * r2), this._lastColor.writeToTypedArrayx4(this._colorData, 4 * r2);
+      this.#_(4, 6), this.#e.WriteQuad3(this._baseZ + this._currentZ, t2, e);
     }
     Quad4(t2, e) {
-      this._AddToDrawBatch(4, 6), this._AddIndicesForQuad();
-      const r2 = this._vertexPtr;
-      this._vertexPtr += 4, t2.writeToTypedArray3D(this._vertexData, 3 * r2, this._baseZ + this._currentZ), e.writeToTypedArray(this._texcoordData, 2 * r2), this._lastColor.writeToTypedArrayx4(this._colorData, 4 * r2);
+      this.#_(4, 6), this.#e.WriteQuad4(this._baseZ + this._currentZ, t2, e);
     }
-    Quad5(t2, e, r2) {
-      this._AddToDrawBatch(4, 6), this._AddIndicesForQuad();
-      const i = this._vertexPtr;
-      this._vertexPtr += 4, t2.writeToTypedArray3D(this._vertexData, 3 * i, this._baseZ + this._currentZ), e.writeToTypedArray(this._texcoordData, 2 * i), this._colorData.set(r2, 4 * i);
+    Quad5(t2, e, i) {
+      this.#_(4, 6), this.#e.WriteQuad5(this._baseZ + this._currentZ, t2, e, i);
     }
-    Quad3D(t2, e, r2, i, s, a2, h2, n, o2, l, _2, u2, d2) {
-      this._AddToDrawBatch(4, 6), this._AddIndicesForQuad();
-      const c2 = this._vertexData, f2 = this._vertexPtr;
-      this._vertexPtr += 4;
-      let p2 = 3 * f2;
-      const x2 = this._baseZ + this._currentZ;
-      c2[p2++] = t2, c2[p2++] = e, c2[p2++] = x2 + r2, c2[p2++] = i, c2[p2++] = s, c2[p2++] = x2 + a2, c2[p2++] = h2, c2[p2++] = n, c2[p2++] = x2 + o2, c2[p2++] = l, c2[p2++] = _2, c2[p2] = x2 + u2, d2.writeAsQuadToTypedArray(this._texcoordData, 2 * f2), this._lastColor.writeToTypedArrayx4(this._colorData, 4 * f2);
+    Quad3D(t2, e, i, r2, s, a2, h2, n, o2, l, u2, _2, d2) {
+      this.#_(4, 6), this.#e.WriteQuad3D(this._baseZ + this._currentZ, t2, e, i, r2, s, a2, h2, n, o2, l, u2, _2, d2);
     }
-    Quad3D2(t2, e, r2, i, s, a2, h2, n, o2, l, _2, u2, d2) {
-      this._AddToDrawBatch(4, 6), this._AddIndicesForQuad();
-      const c2 = this._vertexData, f2 = this._vertexPtr;
-      this._vertexPtr += 4;
-      let p2 = 3 * f2;
-      const x2 = this._baseZ + this._currentZ;
-      c2[p2++] = t2, c2[p2++] = e, c2[p2++] = x2 + r2, c2[p2++] = i, c2[p2++] = s, c2[p2++] = x2 + a2, c2[p2++] = h2, c2[p2++] = n, c2[p2++] = x2 + o2, c2[p2++] = l, c2[p2++] = _2, c2[p2] = x2 + u2, d2.writeToTypedArray(this._texcoordData, 2 * f2), this._lastColor.writeToTypedArrayx4(this._colorData, 4 * f2);
+    Quad3D2(t2, e, i, r2, s, a2, h2, n, o2, l, u2, _2, d2) {
+      this.#_(4, 6), this.#e.WriteQuad3D2(this._baseZ + this._currentZ, t2, e, i, r2, s, a2, h2, n, o2, l, u2, _2, d2);
     }
-    Quad3D3(t2, e, r2, i, s, a2, h2, n, o2, l, _2, u2, d2, c2) {
-      this._AddToDrawBatch(4, 6), this._AddIndicesForQuad();
-      const f2 = this._vertexData, p2 = this._vertexPtr;
-      this._vertexPtr += 4;
-      let x2 = 3 * p2;
-      const E2 = this._baseZ + this._currentZ;
-      f2[x2++] = t2, f2[x2++] = e, f2[x2++] = E2 + r2, f2[x2++] = i, f2[x2++] = s, f2[x2++] = E2 + a2, f2[x2++] = h2, f2[x2++] = n, f2[x2++] = E2 + o2, f2[x2++] = l, f2[x2++] = _2, f2[x2] = E2 + u2, d2.writeToTypedArray(this._texcoordData, 2 * p2), this._colorData.set(c2, 4 * p2);
-    }
-    DrawMesh(t2, e, r2, i) {
-      if (t2.length % 3 != 0) throw new Error("vertex buffer length not multiple of 3");
-      if (t2.length > 196605) throw new Error(`too many vertices (${t2.length / 3}, limit 65535)`);
-      if (r2.length % 3 != 0) throw new Error("index buffer length not multiple of 3");
-      if (r2.length > 393210) throw new Error(`too many indices (${r2.length}, limit 393210)`);
-      this._AddToDrawBatch(t2.length, r2.length);
-      const s = this._vertexPtr;
-      this._vertexData.set(t2, 3 * s), this._texcoordData.set(e, 2 * s);
-      const a2 = this._indexData;
-      if (0 === s) a2.set(r2, this._indexPtr);
-      else {
-        let t3 = this._indexPtr;
-        for (let e2 = 0, i2 = r2.length; e2 < i2; ++e2) a2[t3++] = r2[e2] + s;
-      }
-      const h2 = this._colorData;
-      if (null != i) h2.set(i, 4 * s);
-      else {
-        const e2 = this._lastColor, r3 = e2.getR(), i2 = e2.getG(), a3 = e2.getB(), n = e2.getA();
-        let o2 = 4 * s;
-        for (let e3 = 0, s2 = t2.length; e3 < s2; ++e3) h2[o2++] = r3, h2[o2++] = i2, h2[o2++] = a3, h2[o2++] = n;
-      }
-      this._vertexPtr += t2.length / 3, this._indexPtr += r2.length;
+    Quad3D3(t2, e, i, r2, s, a2, h2, n, o2, l, u2, _2, d2, c2) {
+      this.#_(4, 6), this.#e.WriteQuad3D3(this._baseZ + this._currentZ, t2, e, i, r2, s, a2, h2, n, o2, l, u2, _2, d2, c2);
     }
     FullscreenQuad(t2, e) {
       this.SetCurrentZ(0), mat4.copy(tmpProjection, this._matP), mat4.copy(tmpModelView, this._matMV), this.SetDefaultRenderTargetProjectionState();
-      const [r2, i] = this.GetRenderTargetSize(this._currentRenderTarget), s = this.CalculateLookAtModelView2(0, 0, this.GetDefaultCameraZ(i), 0, 0, 0, i);
+      const [i, r2] = this.GetRenderTargetSize(this._currentRenderTarget), s = this.CalculateLookAtModelView2(0, 0, this.GetDefaultCameraZ(r2), 0, 0, 0, r2);
       if (this.SetModelViewMatrix(s), "crop" === t2 && this._currentRenderTarget && e) {
-        const t3 = this._width / 2, r3 = this._height / 2, i2 = e.GetWidth(), s2 = e.GetHeight(), a2 = this._currentRenderTarget.GetWidth(), h2 = this._currentRenderTarget.GetHeight(), n = Math.min(a2, i2), o2 = Math.min(h2, s2), l = Math.max(s2 - h2, 0), _2 = Math.max(h2 - s2, 0);
-        tmpRect.set(-t3, r3 - _2, -t3 + n, r3 - o2 - _2), tmpQuad.setFromRect(tmpRect), tmpRect.set(0, l, n, o2 + l), tmpRect.divide(i2, s2), this.Quad3(tmpQuad, tmpRect);
+        const t3 = this._width / 2, i2 = this._height / 2, r3 = e.GetWidth(), s2 = e.GetHeight(), a2 = this._currentRenderTarget.GetWidth(), h2 = this._currentRenderTarget.GetHeight(), n = Math.min(a2, r3), o2 = Math.min(h2, s2), l = Math.max(s2 - h2, 0), u2 = Math.max(h2 - s2, 0);
+        tmpRect.set(-t3, i2 - u2, -t3 + n, i2 - o2 - u2), tmpQuad.setFromRect(tmpRect), tmpRect.set(0, l, n, o2 + l), tmpRect.divide(r3, s2), this.Quad3(tmpQuad, tmpRect);
       } else {
-        const t3 = r2 / 2, e2 = i / 2;
+        const t3 = i / 2, e2 = r2 / 2;
         this.Rect2(-t3, e2, t3, -e2);
       }
       this.SetProjectionMatrix(tmpProjection), this.SetModelViewMatrix(tmpModelView);
@@ -8437,7 +8996,7 @@ var getOffsetParam2;
     }
     FinishRenderingPoints() {
     }
-    Point(t2, e, r2, i) {
+    Point(t2, e, i, r2) {
       this._pointPtr >= 7996 && this.EndBatch();
       let s = this._pointPtr;
       const a2 = this._baseZ + this._currentZ;
@@ -8446,7 +9005,51 @@ var getOffsetParam2;
         this.PushBatch().InitPoints(s, a2, this._lastColor), this._topOfBatch = 2, this._lastPointZ = a2;
       }
       const h2 = this._pointData;
-      h2[s++] = t2, h2[s++] = e, h2[s++] = r2, h2[s++] = i, this._pointPtr = s;
+      h2[s++] = t2, h2[s++] = e, h2[s++] = i, h2[s++] = r2, this._pointPtr = s;
+    }
+    CreateMeshData(t2, e, i) {
+      const r2 = new C32.Gfx.MeshDataWebGL(this, t2, e, i);
+      return this.#t.add(r2), r2;
+    }
+    _ReleaseMeshData(t2) {
+      this.EndBatch(), this.#t.delete(t2);
+    }
+    DrawMesh(t2, e, i, r2) {
+      const s = C32.Gfx.DynamicMeshData.GetMaxVertices(), a2 = C32.Gfx.DynamicMeshData.GetMaxIndices();
+      if (t2.length % 3 != 0) throw new Error("vertex buffer length not multiple of 3");
+      if (t2.length > 3 * s) throw new Error(`too many vertices (${t2.length / 3}, limit ${s})`);
+      if (i.length % 3 != 0) throw new Error("index buffer length not multiple of 3");
+      if (i.length > a2) throw new Error(`too many indices (${i.length}, limit ${a2})`);
+      this.#_(t2.length, i.length), this.#e.WriteMesh(t2, e, i, r2);
+    }
+    DrawMeshData(t2, e = 0, i = t2.GetIndexCount()) {
+      if (t2.IsSmall()) if (0 === e && i === t2.GetIndexCount()) this.#_(t2.GetVertexCount(), t2.GetIndexCount()), this.#e.WriteMesh(t2.positions, t2.texCoords, t2.indices, t2.colors);
+      else {
+        const { minIndex: r2, maxIndex: s } = C32.Gfx.DynamicMeshData.CalculatePartialIndexRange(t2.indices, e, i), a2 = r2, h2 = s + 1;
+        this.#_(h2 - a2, i), this.#e.WriteMesh(t2.positions.subarray(3 * a2, 3 * h2), t2.texCoords.subarray(2 * a2, 2 * h2), t2.indices.subarray(e, e + i), t2.colors.subarray(4 * a2, 4 * h2), r2);
+      }
+      else {
+        this.#c(t2), this.#a.add(t2);
+        const r2 = t2.IsIndexTypeUint16() ? 2 : 4;
+        this.PushBatch().InitDraw(e * r2, i), this._topOfBatch = 0;
+      }
+    }
+    #d() {
+      this.#c(this.#i);
+    }
+    #c(t2) {
+      if (this.#r === t2) return;
+      this.PushBatch().InitSetCurrentMeshData(t2), this.#r = t2, this._topOfBatch = 0;
+    }
+    _GetCurrentMeshData() {
+      return this.#r;
+    }
+    _BindVAO(t2) {
+      this.GetWebGLVersionNumber() < 2 ? this.#s["bindVertexArrayOES"](t2) : this._gl.bindVertexArray(t2);
+    }
+    _GetCurrentBoundVAO() {
+      const t2 = this._gl;
+      return this.GetWebGLVersionNumber() < 2 ? t2.getParameter(this.#s["VERTEX_ARRAY_BINDING_OES"]) : t2.getParameter(t2.VERTEX_ARRAY_BINDING);
     }
     SetProgram(t2) {
       if (this._lastProgram === t2) return;
@@ -8461,37 +9064,37 @@ var getOffsetParam2;
     SetGradientColor(t2) {
       this.PushBatch().InitSetGradientColor(t2), this._topOfBatch = 0;
     }
-    SetEllipseParams(t2, e, r2 = 1) {
-      this.PushBatch().InitSetEllipseParams(t2, e, r2), this._topOfBatch = 0;
+    SetEllipseParams(t2, e, i = 1) {
+      this.PushBatch().InitSetEllipseParams(t2, e, i), this._topOfBatch = 0;
     }
-    SetTilemapInfo(t2, e, r2, i, s, a2, h2) {
+    SetTilemapInfo(t2, e, i, r2, s, a2, h2) {
       if (this._lastProgram !== this._spTilemapFill) throw new Error("must set tilemap fill mode first");
-      this.PushBatch().InitSetTilemapInfo(t2, e, r2, i, s, a2, h2), this._topOfBatch = 0;
+      this.PushBatch().InitSetTilemapInfo(t2, e, i, r2, s, a2, h2), this._topOfBatch = 0;
     }
-    SetTileRandomizationInfo(t2, e, r2, i, s, a2, h2) {
+    SetTileRandomizationInfo(t2, e, i, r2, s, a2, h2) {
       if (this._lastProgram !== this._spTileRandomization) throw new Error("must set tile randomization mode first");
-      this.PushBatch().InitSetTileRandomizationInfo(t2, e, r2, i, s, a2, h2), this._topOfBatch = 0;
+      this.PushBatch().InitSetTileRandomizationInfo(t2, e, i, r2, s, a2, h2), this._topOfBatch = 0;
     }
-    SetProgramParameters(t2, e, r2, i, s, a2, h2, n, o2, l, _2) {
-      const u2 = this._lastProgram;
-      if (_2 %= 10800, !u2._hasAnyOptionalUniforms || u2.AreOptionalUniformsAlreadySetInBatch(e, r2, i, s, a2, h2, n, o2, l, _2)) return;
+    SetProgramParameters(t2, e, i, r2, s, a2, h2, n, o2, l, u2) {
+      const _2 = this._lastProgram;
+      if (u2 %= 10800, !_2._hasAnyOptionalUniforms || _2.AreOptionalUniformsAlreadySetInBatch(e, i, r2, s, a2, h2, n, o2, l, u2)) return;
       const d2 = this.PushBatch();
-      d2.InitSetProgramParameters(), u2.SetOptionalUniformsInBatch(e, r2, i, s, a2, h2, n, o2, l, _2);
+      d2.InitSetProgramParameters(), _2.SetOptionalUniformsInBatch(e, i, r2, s, a2, h2, n, o2, l, u2);
       const c2 = d2._mat4param;
-      c2[0] = a2, c2[1] = h2, e.writeToTypedArray(c2, 2), c2[6] = o2, c2[7] = l, r2.writeToTypedArray(c2, 12);
-      const f2 = d2._colorParam;
-      s.writeToTypedArray(f2, 0);
-      const p2 = f2[1];
-      f2[1] = f2[3], f2[3] = p2, i.writeToTypedArray(d2._srcOriginRect, 0), d2._startIndex = _2, d2._indexCount = n, u2._uSamplerBack.IsUsed() ? d2._texParam = t2 ? t2.GetTexture() : null : d2._texParam = null, this._topOfBatch = 0;
+      c2[0] = a2, c2[1] = h2, e.writeToTypedArray(c2, 2), c2[6] = o2, c2[7] = l, i.writeToTypedArray(c2, 12);
+      const p2 = d2._colorParam;
+      s.writeToTypedArray(p2, 0);
+      const f2 = p2[1];
+      p2[1] = p2[3], p2[3] = f2, r2.writeToTypedArray(d2._srcOriginRect, 0), d2._startIndex = u2, d2._indexCount = n, _2._uSamplerBack.IsUsed() ? d2._texParam = t2 ? t2.GetTexture() : null : d2._texParam = null, this._topOfBatch = 0;
     }
     SetProgramCustomParameters(t2) {
       const e = this._lastProgram;
       if (0 === t2.length || e.AreCustomParametersAlreadySetInBatch(t2)) return;
-      const r2 = this.PushBatch();
-      r2.InitSetProgramCustomParameters(), e.SetCustomParametersInBatch(t2), C32.shallowAssignArray(r2._shaderParams, t2), this._topOfBatch = 0;
+      const i = this.PushBatch();
+      i.InitSetProgramCustomParameters(), e.SetCustomParametersInBatch(t2), C32.shallowAssignArray(i._shaderParams, t2), this._topOfBatch = 0;
     }
-    ClearRgba(t2, e, r2, i) {
-      this.PushBatch().InitClearSurface2(t2, e, r2, i), this._topOfBatch = 0;
+    ClearRgba(t2, e, i, r2) {
+      this.PushBatch().InitClearSurface2(t2, e, i, r2), this._topOfBatch = 0;
     }
     Clear(t2) {
       this.PushBatch().InitClearSurface(t2), this._topOfBatch = 0;
@@ -8527,11 +9130,11 @@ var getOffsetParam2;
       this._isDepthSamplingEnabled = t2;
       this.PushBatch().InitSetDepthSamplingEnabled(t2), this._topOfBatch = 0;
     }
-    SetScissorRect(t2, e, r2, i, s = 0) {
-      if (t2 = Math.floor(t2), e = Math.floor(e), r2 = Math.floor(r2), i = Math.floor(i), this._lastScissorRect.equalsWH(t2, e, r2, i)) return;
-      this._lastScissorRect.setWH(t2, e, r2, i);
-      e = (s || this.GetRenderTargetSize(this.GetRenderTarget())[1]) - e - i;
-      this.PushBatch().InitSetScissor(true, t2, e, r2, i), this._topOfBatch = 0;
+    SetScissorRect(t2, e, i, r2, s = 0) {
+      if (t2 = Math.floor(t2), e = Math.floor(e), i = Math.floor(i), r2 = Math.floor(r2), this._lastScissorRect.equalsWH(t2, e, i, r2)) return;
+      this._lastScissorRect.setWH(t2, e, i, r2);
+      e = (s || this.GetRenderTargetSize(this.GetRenderTarget())[1]) - e - r2;
+      this.PushBatch().InitSetScissor(true, t2, e, i, r2), this._topOfBatch = 0;
     }
     RemoveScissorRect() {
       if (-1 === this._lastScissorRect.getRight()) return;
@@ -8547,26 +9150,29 @@ var getOffsetParam2;
     OnContextLost() {
       super.OnDeviceOrContextLost(), C32.Gfx.WebGLRendererTexture.OnContextLost(), C32.Gfx.WebGLRenderTarget.OnContextLost(), C32.Gfx.RendererText.OnContextLost();
       for (const t2 of this._allQueryResultBuffers) t2.Clear();
-      this._extensions = [], this._timerExt = null, this._parallelShaderCompileExt = null, this._conservativeDepthExt = null, this._anisotropicExt = null, this._depthTextureExt = null, this._fragDepthExt = null, this._stdDerivativesExt = null, this._textureLodExt = null, this._maxAnisotropy = 0, this._unmaskedVendor = "(unavailable)", this._unmaskedRenderer = "(unavailable)", this._lastProgram = null, this._spDeviceTransformTextureFill = null, this._depthBuffer = null;
+      this.#e.OnContextLost();
+      for (const t2 of this.#t) t2 !== this.#i && t2.OnContextLost();
+      this._extensions = [], this.#s = null, this._timerExt = null, this._parallelShaderCompileExt = null, this._conservativeDepthExt = null, this._anisotropicExt = null, this._depthTextureExt = null, this._fragDepthExt = null, this._stdDerivativesExt = null, this._textureLodExt = null, this._maxAnisotropy = 0, this._unmaskedVendor = "(unavailable)", this._unmaskedRenderer = "(unavailable)", this._lastProgram = null, this._spDeviceTransformTextureFill = null, this._depthBuffer = null;
       for (const t2 of this._stateGroups.values()) t2.OnContextLost();
     }
     async OnContextRestored() {
       this._isInitialisingAfterContextRestored = true, await this.InitState(), this._isInitialisingAfterContextRestored = false;
       for (const t2 of this._stateGroups.values()) t2.OnContextRestored(this);
+      for (const t2 of this.#t) t2 !== this.#i && t2.OnContextRestored();
       this.SetSize(this._width, this._height, true);
     }
     CreateStaticTexture(t2, e) {
       if (this.IsContextLost()) throw new Error("context lost");
       this.EndBatch();
-      const r2 = C32.New(C32.Gfx.WebGLRendererTexture, this);
-      return r2._CreateStatic(t2, e), r2;
+      const i = C32.New(C32.Gfx.WebGLRendererTexture, this);
+      return i._CreateStatic(t2, e), i;
     }
     async CreateStaticTextureAsync(t2, e) {
       if (this.IsContextLost()) throw new Error("context lost");
       if (e = Object.assign({}, e), C32.Supports.ImageBitmapOptions) {
-        let r2 = await createImageBitmap(t2, { "premultiplyAlpha": "premultiply" });
-        const i = e.wrapX && "clamp-to-edge" !== e.wrapX || e.wrapY && "clamp-to-edge" !== e.wrapY, s = C32.isPOT(r2.width) && C32.isPOT(r2.height);
-        return this.SupportsNPOTTextures() || s || !i ? e.premultiplyAlpha = false : C32.Supports.ImageBitmapOptionsResize ? (r2 = await createImageBitmap(t2, { "premultiplyAlpha": "premultiply", "resizeWidth": C32.nextHighestPowerOfTwo(r2.width), "resizeHeight": C32.nextHighestPowerOfTwo(r2.height) }), e.premultiplyAlpha = false) : r2 = await createImageBitmap(t2, { "premultiplyAlpha": "none" }), await C32.Asyncify(() => this.CreateStaticTexture(r2, e));
+        let i = await createImageBitmap(t2, { "premultiplyAlpha": "premultiply" });
+        const r2 = e.wrapX && "clamp-to-edge" !== e.wrapX || e.wrapY && "clamp-to-edge" !== e.wrapY, s = C32.isPOT(i.width) && C32.isPOT(i.height);
+        return this.SupportsNPOTTextures() || s || !r2 ? e.premultiplyAlpha = false : C32.Supports.ImageBitmapOptionsResize ? (i = await createImageBitmap(t2, { "premultiplyAlpha": "premultiply", "resizeWidth": C32.nextHighestPowerOfTwo(i.width), "resizeHeight": C32.nextHighestPowerOfTwo(i.height) }), e.premultiplyAlpha = false) : i = await createImageBitmap(t2, { "premultiplyAlpha": "none" }), await C32.Asyncify(() => this.CreateStaticTexture(i, e));
       }
       if (t2 instanceof Blob) {
         if ("undefined" == typeof Image) throw new Error("texture upload variant not supported in worker");
@@ -8575,28 +9181,51 @@ var getOffsetParam2;
       }
       return await C32.Asyncify(() => this.CreateStaticTexture(t2, e));
     }
-    CreateDynamicTexture(t2, e, r2) {
+    CreateDynamicTexture(t2, e, i) {
       this.EndBatch();
-      const i = C32.New(C32.Gfx.WebGLRendererTexture, this);
-      return i._CreateDynamic(t2, e, r2), i;
+      const r2 = C32.New(C32.Gfx.WebGLRendererTexture, this);
+      return r2._CreateDynamic(t2, e, i), r2;
     }
-    UpdateTexture(t2, e, r2) {
-      this.EndBatch(), e._Update(t2, r2);
+    UpdateTexture(t2, e, i) {
+      this.EndBatch(), e._Update(t2, i);
     }
     DeleteTexture(t2) {
       t2 && (t2.SubtractReference(), t2.GetReferenceCount() > 0 || (this.EndBatch(), t2 === this._lastTexture0 && (this._gl.bindTexture(this._gl.TEXTURE_2D, null), this._lastTexture0 = null), t2 === this._lastTexture1 && (this._gl.activeTexture(this._gl.TEXTURE1), this._gl.bindTexture(this._gl.TEXTURE_2D, null), this._gl.activeTexture(this._gl.TEXTURE0), this._lastTexture1 = null), t2._Delete()));
     }
+    _GetTextureWrapMode(t2) {
+      const e = this._gl;
+      if ("clamp-to-edge" === t2) return e.CLAMP_TO_EDGE;
+      if ("repeat" === t2) return e.REPEAT;
+      if ("mirror-repeat" === t2) return e.MIRRORED_REPEAT;
+      throw new Error("invalid wrap mode");
+    }
+    _CreateSampler(t2, e, i, r2) {
+      if (this.GetWebGLVersionNumber() < 2) throw new Error("not supported");
+      const s = this._gl, a2 = s.createSampler();
+      if (s.samplerParameteri(a2, s.TEXTURE_WRAP_S, this._GetTextureWrapMode(t2)), s.samplerParameteri(a2, s.TEXTURE_WRAP_T, this._GetTextureWrapMode(e)), "nearest" === i) s.samplerParameteri(a2, s.TEXTURE_MIN_FILTER, s.NEAREST), s.samplerParameteri(a2, s.TEXTURE_MAG_FILTER, s.NEAREST);
+      else if ("bilinear" === i) s.samplerParameteri(a2, s.TEXTURE_MIN_FILTER, s.LINEAR_MIPMAP_NEAREST), s.samplerParameteri(a2, s.TEXTURE_MAG_FILTER, s.LINEAR);
+      else if ("trilinear" === i) {
+        s.samplerParameteri(a2, s.TEXTURE_MIN_FILTER, s.LINEAR_MIPMAP_LINEAR), s.samplerParameteri(a2, s.TEXTURE_MAG_FILTER, s.LINEAR);
+        const t3 = this._GetAnisotropicExtension();
+        t3 && r2 > 1 && s.samplerParameteri(a2, t3["TEXTURE_MAX_ANISOTROPY_EXT"], Math.min(r2, this._GetMaxAnisotropy()));
+      }
+      return a2;
+    }
+    SetTexturesAnisotropy(t2, e) {
+      e || (e = C32.Gfx.WebGLRendererTexture.allTextures()), this.EndBatch();
+      for (const i of e) i._SetAnisotropy(t2);
+    }
     CreateRenderTarget(t2) {
-      let e = this._width, r2 = this._height, i = true;
-      if (t2 && ("number" == typeof t2.width && (e = Math.floor(t2.width), i = false), "number" == typeof t2.height && (r2 = Math.floor(t2.height), i = false)), e <= 0 || r2 <= 0) throw new Error("invalid size");
+      let e = this._width, i = this._height, r2 = true;
+      if (t2 && ("number" == typeof t2.width && (e = Math.floor(t2.width), r2 = false), "number" == typeof t2.height && (i = Math.floor(t2.height), r2 = false)), e <= 0 || i <= 0) throw new Error("invalid size");
       this.EndBatch();
       const s = C32.New(C32.Gfx.WebGLRenderTarget, this);
-      return s._Create(e, r2, Object.assign({ isDefaultSize: i }, t2)), this._currentRenderTarget = null, this._batchState.currentFramebuffer = null, this._batchState.currentFramebufferNoDepth = null, s;
+      return s._Create(e, i, Object.assign({ isDefaultSize: r2 }, t2)), this._currentRenderTarget = null, this._batchState.currentFramebuffer = null, this._batchState.currentFramebufferNoDepth = null, s;
     }
     SetRenderTarget(t2, e = true) {
       if (t2 === this._currentRenderTarget) return;
       t2 && t2.IsDefaultSize() && t2._Resize(this._width, this._height);
-      this.PushBatch().InitSetRenderTarget(t2), this._currentRenderTarget = t2, this._topOfBatch = 0, e && this.SetDefaultRenderTargetProjectionState();
+      this.PushBatch().InitSetRenderTarget(t2), this._currentRenderTarget = t2, this._topOfBatch = 0, e && this.SetDefaultRenderTargetProjectionState(), t2 && this._lastTexture0 === t2.GetTexture() && this.SetTexture(null);
     }
     GetRenderTarget() {
       return this._currentRenderTarget;
@@ -8611,9 +9240,9 @@ var getOffsetParam2;
       }
     }
     DrawRenderTarget(t2, e = "stretch") {
-      const r2 = t2.GetTexture();
-      if (!r2) throw new Error("not a texture-backed render target");
-      this.SetTexture(r2), this.FullscreenQuad(e, r2);
+      const i = t2.GetTexture();
+      if (!i) throw new Error("not a texture-backed render target");
+      this.SetTexture(i), this.FullscreenQuad(e, i);
     }
     InvalidateRenderTarget(t2) {
       if (this._version < 2) return;
@@ -8624,32 +9253,30 @@ var getOffsetParam2;
       const e = t2.GetTexture();
       e === this._lastTexture0 && (this._gl.bindTexture(this._gl.TEXTURE_2D, null), this._lastTexture0 = null), e === this._lastTexture1 && (this._gl.activeTexture(this._gl.TEXTURE1), this._gl.bindTexture(this._gl.TEXTURE_2D, null), this._gl.activeTexture(this._gl.TEXTURE0), this._lastTexture1 = null), t2._Delete();
     }
-    async ReadBackRenderTargetToImageData(t2, e, r2) {
+    async ReadBackRenderTargetToImageData(t2, e, i) {
       this.EndBatch();
-      const i = this._currentRenderTarget;
+      const r2 = this._currentRenderTarget;
       let s, a2, h2;
       t2 ? (s = t2.GetWidth(), a2 = t2.GetHeight(), h2 = t2._GetFramebuffer()) : (s = this.GetWidth(), a2 = this.GetHeight(), h2 = null);
-      let n = 0, o2 = 0, l = s, _2 = a2;
-      if (r2) {
-        n = C32.clamp(Math.floor(r2.getLeft()), 0, s - 1), o2 = C32.clamp(Math.floor(r2.getTop()), 0, a2 - 1);
-        let t3 = r2.width();
+      let n = 0, o2 = 0, l = s, u2 = a2;
+      if (i) {
+        n = C32.clamp(Math.floor(i.getLeft()), 0, s - 1), o2 = C32.clamp(Math.floor(i.getTop()), 0, a2 - 1);
+        let t3 = i.width();
         t3 = 0 === t3 ? s - n : C32.clamp(Math.floor(t3), 0, s - n);
-        let e2 = r2.height();
-        e2 = 0 === e2 ? a2 - o2 : C32.clamp(Math.floor(e2), 0, a2 - o2), l = t3, _2 = e2, o2 = a2 - (o2 + _2);
+        let e2 = i.height();
+        e2 = 0 === e2 ? a2 - o2 : C32.clamp(Math.floor(e2), 0, a2 - o2), l = t3, u2 = e2, o2 = a2 - (o2 + u2);
       }
-      const u2 = this._gl;
-      u2.bindFramebuffer(u2.FRAMEBUFFER, h2);
+      const _2 = this._gl;
+      _2.bindFramebuffer(_2.FRAMEBUFFER, h2);
       const d2 = () => {
-        u2.bindFramebuffer(u2.FRAMEBUFFER, null), this._currentRenderTarget = null, this._batchState.currentFramebuffer = null, this._batchState.currentFramebufferNoDepth = null, this.SetRenderTarget(i);
+        _2.bindFramebuffer(_2.FRAMEBUFFER, null), this._currentRenderTarget = null, this._batchState.currentFramebuffer = null, this._batchState.currentFramebufferNoDepth = null, this.SetRenderTarget(r2);
       };
       let c2;
       if (!e && this.GetWebGLVersionNumber() >= 2) {
-        u2.bindFramebuffer(u2.READ_FRAMEBUFFER, h2);
-        const t3 = u2.createBuffer(), e2 = l * _2 * 4, r3 = u2["PIXEL_PACK_BUFFER"];
-        u2.bindBuffer(r3, t3), u2.bufferData(r3, e2, u2["STREAM_READ"]), u2.readPixels(n, o2, l, _2, u2.RGBA, u2.UNSIGNED_BYTE, 0), u2.bindFramebuffer(u2.READ_FRAMEBUFFER, null), u2.bindBuffer(r3, null), d2();
-        const i2 = u2["fenceSync"](u2["SYNC_GPU_COMMANDS_COMPLETE"], 0);
-        await this._WaitForObjectReady(() => u2["getSyncParameter"](i2, u2["SYNC_STATUS"]) === u2["SIGNALED"]), u2["deleteSync"](i2), c2 = new ImageData(l, _2), u2.bindBuffer(r3, t3), u2["getBufferSubData"](r3, 0, new Uint8Array(c2.data.buffer), 0, e2), u2.bindBuffer(r3, null), u2.deleteBuffer(t3);
-      } else c2 = new ImageData(l, _2), u2.readPixels(n, o2, l, _2, u2.RGBA, u2.UNSIGNED_BYTE, new Uint8Array(c2.data.buffer)), d2();
+        _2.bindFramebuffer(_2.READ_FRAMEBUFFER, h2);
+        const t3 = _2.createBuffer(), e2 = l * u2 * 4, i2 = _2["PIXEL_PACK_BUFFER"];
+        _2.bindBuffer(i2, t3), _2.bufferData(i2, e2, _2["STREAM_READ"]), _2.readPixels(n, o2, l, u2, _2.RGBA, _2.UNSIGNED_BYTE, 0), _2.bindFramebuffer(_2.READ_FRAMEBUFFER, null), _2.bindBuffer(i2, null), d2(), await this.WaitForSubmittedWorkDone(), c2 = new ImageData(l, u2), _2.bindBuffer(i2, t3), _2["getBufferSubData"](i2, 0, new Uint8Array(c2.data.buffer), 0, e2), _2.bindBuffer(i2, null), _2.deleteBuffer(t3);
+      } else c2 = new ImageData(l, u2), _2.readPixels(n, o2, l, u2, _2.RGBA, _2.UNSIGNED_BYTE, new Uint8Array(c2.data.buffer)), d2();
       return c2;
     }
     CoplanarStartStencilPass() {
@@ -8675,9 +9302,23 @@ var getOffsetParam2;
       if (!this.SupportsGPUProfiling()) return;
       this.PushBatch().InitEndQuery(t2), this._topOfBatch = 0;
     }
+    async WaitForSubmittedWorkDone() {
+      if (this.GetWebGLVersionNumber() < 2) return;
+      const t2 = this._gl, e = t2["fenceSync"](t2["SYNC_GPU_COMMANDS_COMPLETE"], 0);
+      await this._WaitForObjectReady(() => {
+        const i = t2["clientWaitSync"](e, t2["SYNC_FLUSH_COMMANDS_BIT"], Math.min(1e6, this.#u));
+        return i === t2["ALREADY_SIGNALED"] || i === t2["CONDITION_SATISFIED"];
+      }), t2["deleteSync"](e);
+    }
     _WaitForObjectReady(t2) {
-      const e = new Promise((e2) => pendingPolls.add({ resolve: e2, checkFunc: t2 }));
-      return -1 === pollRafId && (pollRafId = self.requestAnimationFrame(CheckPendingPolls)), e;
+      const e = new Promise((e2) => this.#o.add({ resolve: e2, checkFunc: t2 }));
+      return -1 === this.#l && (this.#l = self.requestAnimationFrame(() => this.#p())), e;
+    }
+    #p() {
+      this.#l = -1, this._CheckPendingPolls(), this.#o.size > 0 && (this.#l = self.requestAnimationFrame(() => this.#p()));
+    }
+    _CheckPendingPolls() {
+      for (const t2 of this.#o) t2.checkFunc() && (t2.resolve(), this.#o.delete(t2));
     }
     GetEstimatedBackBufferMemoryUsage() {
       return this._width * this._height * (this._attribs["alpha"] ? 4 : 3);
@@ -8699,7 +9340,7 @@ var getOffsetParam2;
       return this._version;
     }
     IsColorDataF16() {
-      return this._isColorDataF16;
+      return this.#h;
     }
     GetDisplayName() {
       return "webgl" + this.GetWebGLVersionNumber();
@@ -8732,6 +9373,9 @@ var getOffsetParam2;
     GetExtensions() {
       return this._extensions;
     }
+    _GetVAOExtension() {
+      return this.#s;
+    }
     SupportsGPUProfiling() {
       return !!this._timerExt;
     }
@@ -8763,20 +9407,34 @@ var getOffsetParam2;
       return this._gl;
     }
     _InitBlendModes(t2) {
-      let e = t2.FUNC_ADD, r2 = t2.FUNC_ADD;
-      this._version >= 2 ? (e = t2.MAX, r2 = t2.MIN) : this._blendMinMaxExt && (e = this._blendMinMaxExt["MAX_EXT"], r2 = this._blendMinMaxExt["MIN_EXT"]), this._InitBlendModeData([["normal", [t2.ONE, t2.ONE_MINUS_SRC_ALPHA]], ["additive", [t2.ONE, t2.ONE]], ["xor", [t2.ONE, t2.ONE_MINUS_SRC_ALPHA]], ["copy", [t2.ONE, t2.ZERO]], ["destination-over", [t2.ONE_MINUS_DST_ALPHA, t2.ONE]], ["source-in", [t2.DST_ALPHA, t2.ZERO]], ["destination-in", [t2.ZERO, t2.SRC_ALPHA]], ["source-out", [t2.ONE_MINUS_DST_ALPHA, t2.ZERO]], ["destination-out", [t2.ZERO, t2.ONE_MINUS_SRC_ALPHA]], ["source-atop", [t2.DST_ALPHA, t2.ONE_MINUS_SRC_ALPHA]], ["destination-atop", [t2.ONE_MINUS_DST_ALPHA, t2.SRC_ALPHA]], ["lighten", [t2.ONE, t2.ONE, t2.ONE, t2.ONE, e, e]], ["darken", [t2.ONE, t2.ONE, t2.ONE, t2.ONE, r2, r2]], ["multiply", [t2.DST_COLOR, t2.ONE_MINUS_SRC_ALPHA, t2.ONE, t2.ONE_MINUS_SRC_ALPHA]], ["screen", [t2.ONE, t2.ONE_MINUS_SRC_COLOR, t2.ONE, t2.ONE_MINUS_SRC_ALPHA]]]);
+      let e = t2.FUNC_ADD, i = t2.FUNC_ADD;
+      this._version >= 2 ? (e = t2.MAX, i = t2.MIN) : this._blendMinMaxExt && (e = this._blendMinMaxExt["MAX_EXT"], i = this._blendMinMaxExt["MIN_EXT"]), this._InitBlendModeData([["normal", [t2.ONE, t2.ONE_MINUS_SRC_ALPHA]], ["additive", [t2.ONE, t2.ONE]], ["xor", [t2.ONE, t2.ONE_MINUS_SRC_ALPHA]], ["copy", [t2.ONE, t2.ZERO]], ["destination-over", [t2.ONE_MINUS_DST_ALPHA, t2.ONE]], ["source-in", [t2.DST_ALPHA, t2.ZERO]], ["destination-in", [t2.ZERO, t2.SRC_ALPHA]], ["source-out", [t2.ONE_MINUS_DST_ALPHA, t2.ZERO]], ["destination-out", [t2.ZERO, t2.ONE_MINUS_SRC_ALPHA]], ["source-atop", [t2.DST_ALPHA, t2.ONE_MINUS_SRC_ALPHA]], ["destination-atop", [t2.ONE_MINUS_DST_ALPHA, t2.SRC_ALPHA]], ["lighten", [t2.ONE, t2.ONE, t2.ONE, t2.ONE, e, e]], ["darken", [t2.ONE, t2.ONE, t2.ONE, t2.ONE, i, i]], ["multiply", [t2.DST_COLOR, t2.ONE_MINUS_SRC_ALPHA, t2.ONE, t2.ONE_MINUS_SRC_ALPHA]], ["screen", [t2.ONE, t2.ONE_MINUS_SRC_COLOR, t2.ONE, t2.ONE_MINUS_SRC_ALPHA]]]);
     }
     CreateWebGLText() {
       return this.CreateRendererText();
     }
   };
 }
-var CheckPendingPolls2;
 {
-  const C32 = self.C3, glMatrix = self.glMatrix, vec3 = glMatrix.vec3, mat4 = glMatrix.mat4, assert = self.assert, GPUBufferUsage = self["GPUBufferUsage"], GPUShaderStage = self["GPUShaderStage"], GPUMapMode = self["GPUMapMode"], GPUTextureUsage = self["GPUTextureUsage"], DEFAULT_WEBGPURENDERER_OPTS = { powerPreference: "default", depth: false, failIfMajorPerformanceCaveat: false, canSampleBackbuffer: false, backTextureSampling: "bilinear", usesBackgroundBlending: false, canSampleDepth: false, isMultiTexturingAllowed: true }, MAX_VERTICES = 65535, MAX_INDICES = 393210, MAX_POINTS = Math.floor(65535 / 4), MAX_COLORS = 65535, LAST_POINT_PTR = 4 * MAX_POINTS - 16, FLAG_IN_DRAW = 1, FLAG_DRAWING_POINTS = 2, FLAG_SCISSOR_ENABLED = 4, FLAG_SCISSOR_CHANGED = 8, FLAG_DRAW_STATE_CHANGED = 16, FLAG_PIPELINE_CHANGED = 32, FLAG_TEX_BINDGROUP_CHANGED = 64, FLAG_BACKTEX_BINDGROUP_CHANGED = 128, FLAG_DEPTHTEX_BINDGROUP_CHANGED = 256, FLAG_TRANSFORM_CHANGED = 512, FLAG_VERTEX_UNIFORM_CHANGED = 1024, FLAG_FRAG_UNIFORM_CHANGED = 2048, FLAG_FRAG_C3PARAMS_CHANGED = 4096, FLAG_BUFFER_BINDGROUP_CHANGED = 8192, FLAG_DID_ADD_COMMAND = 16384, FLAG_CONTEXT_LOST = 32768, FLAG_MULTITEXTURE_ALLOWED = 65536, FLAG_MULTITEXTURE_ENABLED = 1 << 17, FLAG_MULTITEXTURE_ACTIVE = 1 << 18, FLAG_USE_DEPTH_BUFFER = 1 << 19, FLAG_DEPTH_ENABLED = 1 << 20, FLAG_RENDERTARGET_HAS_DEPTH = 1 << 21, FLAG_CLEAR_DEPTH = 1 << 22, FLAG_COPLANAR_STENCIL_PASS = 1 << 23, FLAG_COPLANAR_COLOR_PASS = 1 << 24, FLAG_CLEAR_STENCIL = 1 << 25, FLAG_AUTOSIZE_DEPTH_BUFFER = 1 << 26, FLAG_SUPPORTS_TIMESTAMP_QUERY = 1 << 27, FLAG_SUPPORTS_F16 = 1 << 28, FLAG_COLOR_DATA_F16 = 1 << 29, FLAG_USE_NORMALIZED_COORDS = 1 << 30, FLAG_DID_CHANGE_TRANSFORM = 1, CHANGED_FLAGS_MASK = 8688, END_DRAW_FLAGS_MASK = 8697, NEW_RENDERPASS_FLAGS = 25072, CHANGED_UNIFORM_BUFFER_MASK = 7680, SIZEOF_U16 = 2, SIZEOF_U32 = 4, SIZEOF_F16 = 2, SIZEOF_F32 = 4, defaultTexCoordsQuad = new C32.Quad(0, 0, 1, 0, 1, 1, 0, 1), tempVec2 = C32.New(C32.Vector2), tempRect = C32.New(C32.Rect), tempRect2 = C32.New(C32.Rect), tempQuad = C32.New(C32.Quad);
+  const C32 = globalThis.C3, glMatrix = globalThis.glMatrix, vec3 = glMatrix.vec3, mat4 = glMatrix.mat4, assert = globalThis.assert, GPUBufferUsage = globalThis["GPUBufferUsage"], GPUShaderStage = globalThis["GPUShaderStage"], GPUMapMode = globalThis["GPUMapMode"], GPUTextureUsage = globalThis["GPUTextureUsage"], DEFAULT_WEBGPURENDERER_OPTS = { powerPreference: "default", depth: false, failIfMajorPerformanceCaveat: false, canSampleBackbuffer: false, usesBackgroundBlending: false, canSampleDepth: false, isMultiTexturingAllowed: true }, MAX_POINTS = 16384, LAST_POINT_PTR = 65520, FLAG_IN_DRAW = 1, FLAG_DRAWING_POINTS = 2, FLAG_SCISSOR_ENABLED = 4, FLAG_SCISSOR_CHANGED = 8, FLAG_DRAW_STATE_CHANGED = 16, FLAG_BUFFERS_CHANGED = 32, FLAG_PIPELINE_CHANGED = 64, FLAG_TEX_BINDGROUP_CHANGED = 128, FLAG_BACKTEX_BINDGROUP_CHANGED = 256, FLAG_DEPTHTEX_BINDGROUP_CHANGED = 512, FLAG_TRANSFORM_CHANGED = 1024, FLAG_VERTEX_UNIFORM_CHANGED = 2048, FLAG_FRAG_UNIFORM_CHANGED = 4096, FLAG_FRAG_C3PARAMS_CHANGED = 8192, FLAG_BUFFER_BINDGROUP_CHANGED = 16384, FLAG_DID_ADD_COMMAND = 32768, FLAG_CONTEXT_LOST = 65536, FLAG_MULTITEXTURE_ALLOWED = 1 << 17, FLAG_MULTITEXTURE_ENABLED = 1 << 18, FLAG_MULTITEXTURE_ACTIVE = 1 << 19, FLAG_USE_DEPTH_BUFFER = 1 << 20, FLAG_DEPTH_ENABLED = 1 << 21, FLAG_RENDERTARGET_HAS_DEPTH = 1 << 22, FLAG_CLEAR_DEPTH = 1 << 23, FLAG_COPLANAR_STENCIL_PASS = 1 << 24, FLAG_COPLANAR_COLOR_PASS = 1 << 25, FLAG_CLEAR_STENCIL = 1 << 26, FLAG_AUTOSIZE_DEPTH_BUFFER = 1 << 27, FLAG_SUPPORTS_TIMESTAMP_QUERY = 1 << 28, FLAG_SUPPORTS_F16 = 1 << 29, FLAG_COLOR_DATA_F16 = 1 << 30, FLAG_USE_NORMALIZED_COORDS = 1, FLAG_DID_CHANGE_TRANSFORM = 2, CHANGED_FLAGS_MASK = 17392, END_DRAW_FLAGS_MASK = 17401, NEW_RENDERPASS_FLAGS = 50160, CHANGED_UNIFORM_BUFFER_MASK = 15360, SIZEOF_U32 = 4, SIZEOF_F32 = 4, defaultTexCoordsQuad = new C32.Quad2D(0, 0, 1, 0, 1, 1, 0, 1), tempVec2 = C32.New(C32.Vector2), tempRect = C32.New(C32.Rect), tempRect2 = C32.New(C32.Rect), tempQuad = C32.New(C32.Quad2D);
   C32.Gfx.WebGPURenderer = class extends C32.Gfx.RendererBase {
+    #e = /* @__PURE__ */ new Set();
+    #t = new C32.Gfx.DynamicMeshData(this, { texIndices: true });
+    #r = this.#t._GetMeshData();
+    #i = this.#r;
+    #a = /* @__PURE__ */ new Set();
+    #s = null;
+    #n = false;
+    #u = -1;
+    #h = -1;
+    #o = /* @__PURE__ */ new Set();
+    #l = /* @__PURE__ */ new Set();
+    #d = 0;
+    #f = 0;
     constructor(e) {
-      super(e), this._adapterOpts = null, this._adapter = null, this._adapterInfo = null, this._device = null, this._canvas = null, this._presentCtx = null, this._swapChainFormat = "", this._swapChainTexture = null, this._swapChainTexView = null, this._viewportWidth = 0, this._viewportHeight = 0, this._matTransform = mat4.create(), this._depthBuffer = null, this._nullDepthBuffer = null, this._depthBufferView = null, this._nullDepthBufferView = null, this._depthBufferBindGroup = null, this._nullDepthBufferBindGroup = null, this._depthBufferWidth = 0, this._depthBufferHeight = 0, this._vertexUniformBuffer = null, this._fragmentUniformBuffer = null, this._fragmentC3ParamsBuffer = null, this._fragmentDefaultCustomParamsBuffer = null, this._vertexBuffer = null, this._texcoordBuffer = null, this._texIndexBuffer = null, this._colorBuffer = null, this._indexBuffer = null, this._pointsIndexBuffer = null, this._pointBuffer = null, this._vertexUniformBufferLayout = C32.Gfx.WebGPUShaderProgram.GetVertexUniformBufferLayout(), this._vertexUniformBufferSize = C32.Gfx.WebGPUShaderProgram.GetVertexUniformBufferSize(), this._vertexUniformArrayBuffer = null, this._vertexUniformf32 = null, this._fragUniformBufferLayout = C32.Gfx.WebGPUShaderProgram.GetFragmentUniformBufferLayout(), this._fragUniformBufferSize = C32.Gfx.WebGPUShaderProgram.GetFragmentUniformBufferSize(), this._fragUniformArrayBuffer = null, this._fragUniformf32 = null, this._fragC3ParamsLayout = C32.Gfx.WebGPUShaderProgram.GetFragmentC3ParamsBufferLayout(), this._fragC3ParamsSize = C32.Gfx.WebGPUShaderProgram.GetFragmentC3ParamsBufferSize(), this._fragC3ParamsArrayBuffer = null, this._fragC3Paramsf32 = null, this._fragC3Paramsu32 = null, this._vertexData = new Float32Array(196605), this._texcoordData = new Float32Array(131070), this._texIndexData = new Uint32Array(65535), this._colorData = null, this._indexData = new Uint16Array(393210), this._pointData = new Float32Array(4 * MAX_POINTS), this._vertexPtr = 0, this._indexPtr = 0, this._currentMultiTextureIndex = 0, this._currentColor = C32.New(C32.Color, 1, 1, 1, 1), this._pointPtr = 0, this._bufferManager = C32.New(C32.Gfx.WebGPUBufferManager, this), this._flags = 32768, this._flags2 = 0, this._drawFirstIndex = 0, this._drawIndexCount = 0, this._vertexUniformUpdateStart = 0, this._vertexUniformUpdateEnd = 0, this._fragUniformUpdateStart = 0, this._fragUniformUpdateEnd = 0, this._fragC3ParamsUpdateStart = 0, this._fragC3ParamsUpdateEnd = 0, this._scissorRect = C32.New(C32.Rect, 0, 0, 0, 0), this._currentColor2 = C32.New(C32.Color, 1, 1, 1, 1), this._currentPointColor = C32.New(C32.Color, 1, 1, 1, 1), this._currentPointTexCoords = C32.New(C32.Rect, 0, 0, 0, 0), this._currentVertexZElevation = 0, this._textureFormat = "", this._bufferBindGroupLayout = null, this._defaultBufferBindGroup = null, this._textureBindGroupLayout = null, this._backTextureBindGroupLayout = null, this._depthTextureBindGroupLayout = null, this._nullTexture = null, this._currentTexture = null, this._currentTextureBindGroup = null, this._currentBackTexture = null, this._currentBackTextureBindGroup = null, this._currentDepthTextureBindGroup = null, this._currentBufferBindGroup = null, this._mipmapGeneratorPipeline = null, this._availableMultiTextures = /* @__PURE__ */ new Set(), this._nonFullMultiTexGroups = /* @__PURE__ */ new Set(), this._maxTextureSize = 8192, this._pipelineLayout = null, this._defaultVertexModule = null, this._normVertexModule = null, this._currentProgram = null, this._currentBlendMode = 0, this._currentMultisampleCount = 0, this._currentCullFace = 0, this._currentFrontFaceWinding = 0, this._mipmapGeneratorProgram = null, this._spSingleTextureFill = null, this._samplerMap = /* @__PURE__ */ new Map(), this._commandEncoder = null, this._currentRenderPass = null, this._commandBuffers = [], this._backbufferRenderTarget = null, this._currentRenderTarget = null, this._canSampleBackbuffer = false, this._backTextureSampling = "bilinear", this._usesBackgroundBlending = false, this._canSampleDepth = false, this._frameTimeQuerySet = null, this._timestampIsMeasuring = false, this._timestampStartIndex = -1, this._timestampEndIndex = -1, this._timestampStartedIndices = /* @__PURE__ */ new Set(), this.ondevicelost = null, this.ondevicerestored = null, this._InitBlendModes();
+      super(e), this._adapterOpts = null, this._adapter = null, this._adapterInfo = null, this._device = null, this._canvas = null, this._presentCtx = null, this._swapChainFormat = "", this._swapChainTexture = null, this._swapChainTexView = null, this._viewportWidth = 0, this._viewportHeight = 0, this._matTransform = mat4.create(), this._depthBuffer = null, this._nullDepthBuffer = null, this._depthBufferView = null, this._nullDepthBufferView = null, this._depthBufferBindGroup = null, this._nullDepthBufferBindGroup = null, this._depthBufferWidth = 0, this._depthBufferHeight = 0, this._vertexUniformBuffer = null, this._fragmentUniformBuffer = null, this._fragmentC3ParamsBuffer = null, this._fragmentDefaultCustomParamsBuffer = null, this._pointsIndexBuffer = null, this._pointBuffer = null, this._vertexUniformBufferLayout = C32.Gfx.WebGPUShaderProgram.GetVertexUniformBufferLayout(), this._vertexUniformBufferSize = C32.Gfx.WebGPUShaderProgram.GetVertexUniformBufferSize(), this._vertexUniformArrayBuffer = null, this._vertexUniformf32 = null, this._fragUniformBufferLayout = C32.Gfx.WebGPUShaderProgram.GetFragmentUniformBufferLayout(), this._fragUniformBufferSize = C32.Gfx.WebGPUShaderProgram.GetFragmentUniformBufferSize(), this._fragUniformArrayBuffer = null, this._fragUniformf32 = null, this._fragC3ParamsLayout = C32.Gfx.WebGPUShaderProgram.GetFragmentC3ParamsBufferLayout(), this._fragC3ParamsSize = C32.Gfx.WebGPUShaderProgram.GetFragmentC3ParamsBufferSize(), this._fragC3ParamsArrayBuffer = null, this._fragC3Paramsf32 = null, this._fragC3Paramsu32 = null;
+      C32.Gfx.DynamicMeshData.GetMaxVertices();
+      this._pointData = new Float32Array(65536), this._currentMultiTextureIndex = 0, this._currentColor = this.#t.GetDefaultColor(), this._pointPtr = 0, this._bufferManager = C32.New(C32.Gfx.WebGPUBufferManager, this), this._flags = 65536, this._flags2 = 0, this._drawFirstIndex = 0, this._drawIndexCount = 0, this._vertexUniformUpdateStart = 0, this._vertexUniformUpdateEnd = 0, this._fragUniformUpdateStart = 0, this._fragUniformUpdateEnd = 0, this._fragC3ParamsUpdateStart = 0, this._fragC3ParamsUpdateEnd = 0, this._scissorRect = C32.New(C32.Rect, 0, 0, 0, 0), this._currentColor2 = C32.New(C32.Color, 1, 1, 1, 1), this._currentPointColor = C32.New(C32.Color, 1, 1, 1, 1), this._currentPointTexCoords = C32.New(C32.Rect, 0, 0, 0, 0), this._currentVertexZElevation = 0, this._textureFormat = "", this._bufferBindGroupLayout = null, this._defaultBufferBindGroup = null, this._textureBindGroupLayout = null, this._backTextureBindGroupLayout = null, this._depthTextureBindGroupLayout = null, this._nullTexture = null, this._currentTexture = null, this._currentTextureBindGroup = null, this._currentBackTexture = null, this._currentBackTextureBindGroup = null, this._currentDepthTextureBindGroup = null, this._currentBufferBindGroup = null, this._mipmapGeneratorPipeline = null, this._availableMultiTextures = /* @__PURE__ */ new Set(), this._nonFullMultiTexGroups = /* @__PURE__ */ new Set(), this._maxTextureSize = 8192, this._pipelineLayout = null, this._defaultVertexModule = null, this._normVertexModule = null, this._currentProgram = null, this._currentBlendMode = 0, this._currentMultisampleCount = 0, this._currentCullFace = 0, this._currentFrontFaceWinding = 0, this._mipmapGeneratorProgram = null, this._spSingleTextureFill = null, this._commandEncoder = null, this._currentRenderPass = null, this._commandBuffers = [], this._backbufferRenderTarget = null, this._currentRenderTarget = null, this._canSampleBackbuffer = false, this._usesBackgroundBlending = false, this._canSampleDepth = false, this.ondevicelost = null, this.ondevicerestored = null, this._InitBlendModes();
     }
     IsWebGPU() {
       return true;
@@ -8796,7 +9454,7 @@ var CheckPendingPolls2;
     async Create(e, t2) {
       if (t2 = Object.assign({}, DEFAULT_WEBGPURENDERER_OPTS, t2), !navigator["gpu"]) throw new Error("renderer-unavailable (WebGPU not supported)");
       if ("Safari" === C32.Platform.Browser || "iOS" === C32.Platform.OS) throw new Error("WebGPU is currently disabled in Safari - see https://bugs.webkit.org/show_bug.cgi?id=301627");
-      t2.depth && (this._flags |= 524288), t2.isMultiTexturingAllowed && (this._flags |= 65536), this._canSampleBackbuffer = !!t2.canSampleBackbuffer, this._backTextureSampling = t2.backTextureSampling, this._usesBackgroundBlending = !!t2.usesBackgroundBlending, this._adapterOpts = {}, this._canSampleDepth = !(!t2.depth || !t2.canSampleDepth), "default" !== t2.powerPreference && (this._adapterOpts["powerPreference"] = t2.powerPreference), this._canvas = e, await this._InitDevice(t2.failIfMajorPerformanceCaveat);
+      t2.depth && (this._flags |= 1048576), t2.isMultiTexturingAllowed && (this._flags |= 131072), this._canSampleBackbuffer = !!t2.canSampleBackbuffer, this._usesBackgroundBlending = !!t2.usesBackgroundBlending, this._adapterOpts = {}, this._canSampleDepth = !(!t2.depth || !t2.canSampleDepth), "default" !== t2.powerPreference && (this._adapterOpts["powerPreference"] = t2.powerPreference), this._canvas = e, await this._InitDevice(t2.failIfMajorPerformanceCaveat);
     }
     async _InitDevice(e) {
       for (this._device = null, await this._TryGetDeviceOnCurrentAdapter(e); !this._device; ) this._adapter = null, await this._TryGetDeviceOnCurrentAdapter(e);
@@ -8808,17 +9466,20 @@ var CheckPendingPolls2;
         const t3 = this._adapter["info"];
         if (e && t3["isFallbackAdapter"]) throw new Error("renderer-unavailable (WebGPU provided fallback adapter)");
         if ("adreno-7xx" === t3["architecture"]) throw new Error("WebGPU disabled on adreno-7xx devices - see https://issues.chromium.org/issues/329702056");
-        if ("intel" === t3["vendor"] && ("gen-7" === t3["architecture"] || "gen7" === t3["architecture"])) throw new Error("WebGPU disabled on Intel Gen7 GPUs - see https://issues.chromium.org/issues/462468373");
+        if ("intel" === t3["vendor"] && ("gen-7" === t3["architecture"] || "gen7" === t3["architecture"] || "gen-9" === t3["architecture"] || "gen9" === t3["architecture"])) throw new Error("WebGPU disabled on Intel Gen7 and Gen9 GPUs - see https://issues.chromium.org/issues/462468373");
       }
       const t2 = [];
       if (this._adapter["features"].has("timestamp-query") && t2.push("timestamp-query"), this._adapter["features"].has("shader-f16") && t2.push("shader-f16"), this._device = await this._adapter["requestDevice"]({ "requiredFeatures": t2, "requiredLimits": { "maxTextureDimension2D": this._adapter["limits"]["maxTextureDimension2D"] } }), !this._device) return null;
-      this._maxTextureSize = this._device["limits"]["maxTextureDimension2D"], this._SetFlag(134217728, this._device["features"].has("timestamp-query")), this._SetFlag(268435456, this._device["features"].has("shader-f16")), this._SetFlag(536870912, this._IsFlagSet(268435456) && void 0 !== globalThis["Float16Array"]), this._device["lost"].then((e2) => this._OnDeviceLost(e2)), this._SetFlag(32768, false);
+      this._maxTextureSize = this._device["limits"]["maxTextureDimension2D"], this._SetFlag(268435456, this._device["features"].has("timestamp-query")), this._SetFlag(536870912, this._device["features"].has("shader-f16")), this._SetFlag(1073741824, this._IsFlagSet(536870912) && void 0 !== globalThis["Float16Array"]), this._device["lost"].then((e2) => this._OnDeviceLost(e2)), this._SetFlag(65536, false);
     }
     async _OnDeviceLost(e) {
-      console.log("[WebGPU] Device lost: ", e), super.OnDeviceOrContextLost(), this._bufferManager.OnContextLost(), C32.Gfx.WebGPURendererTexture.OnContextLost(), C32.Gfx.WebGPURenderTarget.OnContextLost(), C32.Gfx.RendererText.OnContextLost(), this._swapChainFormat = "", this._swapChainTexture = null, this._swapChainTexView = null, this._depthBuffer = null, this._depthBufferView = null, this._nullDepthBuffer = null, this._nullDepthBufferView = null, this._depthBufferBindGroup = null, this._nullDepthBufferBindGroup = null, this._vertexBuffer = null, this._texcoordBuffer = null, this._texIndexBuffer = null, this._colorBuffer = null, this._indexBuffer = null, this._pointsIndexBuffer = null, this._pointBuffer = null, this._vertexUniformBuffer = null, this._fragmentUniformBuffer = null, this._fragmentC3ParamsBuffer = null, this._fragmentDefaultCustomParamsBuffer = null, this._defaultBufferBindGroup = null, this._bufferBindGroupLayout = null, this._currentBufferBindGroup = null, this._textureBindGroupLayout = null, this._backTextureBindGroupLayout = null, this._depthTextureBindGroupLayout = null, this._pipelineLayout = null, this._currentProgram = null, this._nullTexture = null, this._currentTexture = null, this._currentTextureBindGroup = null, this._currentBackTexture = null, this._currentBackTextureBindGroup = null, this._currentDepthTextureBindGroup = null, this._defaultVertexModule = null, this._normVertexModule = null, this._backbufferRenderTarget = null, this._currentRenderTarget = null, this._mipmapGeneratorPipeline = null, this._frameTimeQuerySet = null, this._mipmapGeneratorProgram = null, this._spSingleTextureFill = null, this._availableMultiTextures.clear(), this._nonFullMultiTexGroups.clear(), this._samplerMap.clear();
+      console.log("[WebGPU] Device lost: ", e), super.OnDeviceOrContextLost(), this._bufferManager.OnContextLost(), C32.Gfx.WebGPURendererTexture.OnContextLost(), C32.Gfx.WebGPURenderTarget.OnContextLost(), C32.Gfx.RendererText.OnContextLost(), this.#t.OnContextLost();
+      for (const e2 of this.#e) e2 !== this.#r && e2.OnContextLost();
+      this._swapChainFormat = "", this._swapChainTexture = null, this._swapChainTexView = null, this._depthBuffer = null, this._depthBufferView = null, this._nullDepthBuffer = null, this._nullDepthBufferView = null, this._depthBufferBindGroup = null, this._nullDepthBufferBindGroup = null, this._pointsIndexBuffer = null, this._pointBuffer = null, this._vertexUniformBuffer = null, this._fragmentUniformBuffer = null, this._fragmentC3ParamsBuffer = null, this._fragmentDefaultCustomParamsBuffer = null, this._defaultBufferBindGroup = null, this._bufferBindGroupLayout = null, this._currentBufferBindGroup = null, this._textureBindGroupLayout = null, this._backTextureBindGroupLayout = null, this._depthTextureBindGroupLayout = null, this._pipelineLayout = null, this._currentProgram = null, this._nullTexture = null, this._currentTexture = null, this._currentTextureBindGroup = null, this._currentBackTexture = null, this._currentBackTextureBindGroup = null, this._currentDepthTextureBindGroup = null, this._defaultVertexModule = null, this._normVertexModule = null, this._backbufferRenderTarget = null, this._currentRenderTarget = null, this._mipmapGeneratorPipeline = null, this.#s = null, this._mipmapGeneratorProgram = null, this._spSingleTextureFill = null, this._availableMultiTextures.clear(), this._nonFullMultiTexGroups.clear();
       for (const e2 of this._stateGroups.values()) e2.OnContextLost();
-      this._device = null, this._adapter = null, this._adapterInfo = null, this._flags |= 32768, this.ondevicelost && this.ondevicelost(), await this._InitDevice();
+      this._device = null, this._adapter = null, this._adapterInfo = null, this._flags |= 65536, this.ondevicelost && this.ondevicelost(), await this._InitDevice();
       for (const e2 of this._stateGroups.values()) e2.OnContextRestored(this);
+      for (const e2 of this.#e) e2 !== this.#r && e2.OnContextRestored();
       this.SetSize(this._width, this._height, true), this.ondevicerestored && this.ondevicerestored();
     }
     async InitState() {
@@ -8826,20 +9487,20 @@ var CheckPendingPolls2;
       const e = this._device;
       this._swapChainFormat = navigator["gpu"]["getPreferredCanvasFormat"](), this._swapChainTexture = null, this._swapChainTexView = null;
       let t2 = GPUTextureUsage["RENDER_ATTACHMENT"];
-      this._canSampleBackbuffer && (t2 |= GPUTextureUsage["TEXTURE_BINDING"]), this._usesBackgroundBlending && (t2 |= GPUTextureUsage["COPY_SRC"]), this._swapChainFormat.startsWith("rgba8") || this._swapChainFormat.startsWith("bgra8") ? this._textureFormat = this._swapChainFormat : this._textureFormat = "rgba8unorm", this._flags &= 940113920, this._flags |= 7680, this._flags2 = 0, this._IsFlagSet(524288) && (this._flags |= 70254592), this._vertexPtr = 0, this._indexPtr = 0, this._currentBlendMode = 0, this._currentCullFace = 0, this._currentFrontFaceWinding = 0, this._currentMultisampleCount = 0, this._currentColor.setRgba(1, 1, 1, 1), this._currentColor2.setRgba(1, 1, 1, 1), this._currentPointColor.setRgba(1, 1, 1, 1), this._colorData = this.IsColorDataF16() ? new globalThis["Float16Array"](262140) : new Float32Array(262140), this._vertexUniformArrayBuffer = new ArrayBuffer(this._vertexUniformBufferSize), this._vertexUniformf32 = new Float32Array(this._vertexUniformArrayBuffer), this._fragUniformArrayBuffer = new ArrayBuffer(this._fragUniformBufferSize), this._fragUniformf32 = new Float32Array(this._fragUniformArrayBuffer), this._fragC3ParamsArrayBuffer = new ArrayBuffer(this._fragC3ParamsSize), this._fragC3Paramsf32 = new Float32Array(this._fragC3ParamsArrayBuffer), this._fragC3Paramsu32 = new Uint32Array(this._fragC3ParamsArrayBuffer), this._vertexBuffer = e["createBuffer"]({ "label": "vertexbuffer", "size": this._vertexData.byteLength, "usage": GPUBufferUsage["VERTEX"] | GPUBufferUsage["COPY_DST"] }), this._texcoordBuffer = e["createBuffer"]({ "label": "texcoordbuffer", "size": this._texcoordData.byteLength, "usage": GPUBufferUsage["VERTEX"] | GPUBufferUsage["COPY_DST"] }), this._texIndexBuffer = e["createBuffer"]({ "label": "texindexbuffer", "size": this._texIndexData.byteLength, "usage": GPUBufferUsage["VERTEX"] | GPUBufferUsage["COPY_DST"] }), this._colorBuffer = e["createBuffer"]({ "label": "colorbuffer", "size": this._colorData.byteLength, "usage": GPUBufferUsage["VERTEX"] | GPUBufferUsage["COPY_DST"] }), this._indexBuffer = e["createBuffer"]({ "label": "indexbuffer", "size": this._indexData.byteLength, "usage": GPUBufferUsage["INDEX"] | GPUBufferUsage["COPY_DST"] }), this._pointsIndexBuffer = e["createBuffer"]({ "label": "pointsindexbuffer", "size": 6 * MAX_POINTS * 2, "usage": GPUBufferUsage["INDEX"], "mappedAtCreation": true });
+      this._canSampleBackbuffer && (t2 |= GPUTextureUsage["TEXTURE_BINDING"]), this._usesBackgroundBlending && (t2 |= GPUTextureUsage["COPY_SRC"]), this._swapChainFormat.startsWith("rgba8") || this._swapChainFormat.startsWith("bgra8") ? this._textureFormat = this._swapChainFormat : this._textureFormat = "rgba8unorm", this._flags &= 1880227840, this._flags |= 15360, this._flags2 = 0, this.SupportsGPUProfiling() && (this.#s = new C32.Gfx.WebGPUTimeQuerySet(this)), this._IsFlagSet(1048576) && (this._flags |= 140509184), this._currentBlendMode = 0, this._currentCullFace = 0, this._currentFrontFaceWinding = 0, this._currentMultisampleCount = 0, this._currentColor.setRgba(1, 1, 1, 1), this._currentColor2.setRgba(1, 1, 1, 1), this._currentPointColor.setRgba(1, 1, 1, 1), this._vertexUniformArrayBuffer = new ArrayBuffer(this._vertexUniformBufferSize), this._vertexUniformf32 = new Float32Array(this._vertexUniformArrayBuffer), this._fragUniformArrayBuffer = new ArrayBuffer(this._fragUniformBufferSize), this._fragUniformf32 = new Float32Array(this._fragUniformArrayBuffer), this._fragC3ParamsArrayBuffer = new ArrayBuffer(this._fragC3ParamsSize), this._fragC3Paramsf32 = new Float32Array(this._fragC3ParamsArrayBuffer), this._fragC3Paramsu32 = new Uint32Array(this._fragC3ParamsArrayBuffer), this.#t.CreateGPUResources(), this._pointsIndexBuffer = e["createBuffer"]({ "label": "pointsindexbuffer", "size": 196608, "usage": GPUBufferUsage["INDEX"], "mappedAtCreation": true });
       const r2 = this._pointsIndexBuffer["getMappedRange"]();
       this._FillPointsIndexBuffer(r2), this._pointsIndexBuffer["unmap"](), this._pointBuffer = e["createBuffer"]({ "label": "pointbuffer", "size": this._pointData.byteLength, "usage": GPUBufferUsage["VERTEX"] | GPUBufferUsage["STORAGE"] | GPUBufferUsage["COPY_DST"] }), this._bufferBindGroupLayout = e["createBindGroupLayout"]({ "label": "bufferbindgrouplayout", "entries": [{ "binding": 0, "visibility": GPUShaderStage["VERTEX"], "buffer": { "type": "uniform", "minBindingSize": this._vertexUniformBufferSize } }, { "binding": 1, "visibility": GPUShaderStage["FRAGMENT"], "buffer": { "type": "uniform", "minBindingSize": this._fragUniformBufferSize } }, { "binding": 3, "visibility": GPUShaderStage["VERTEX"], "buffer": { "type": "read-only-storage", "minBindingSize": this._pointData.byteLength } }, { "binding": 4, "visibility": GPUShaderStage["FRAGMENT"], "buffer": { "type": "uniform", "minBindingSize": this._fragC3ParamsSize } }, { "binding": 5, "visibility": GPUShaderStage["FRAGMENT"], "buffer": { "type": "uniform" } }] });
       const i = [], a2 = C32.Gfx.WebGPUMultiTextureGroup.GetMultiTextureLimit();
       for (let e2 = 0; e2 < a2; ++e2) i.push({ "binding": 2 * e2, "visibility": GPUShaderStage["FRAGMENT"], "sampler": { "type": "filtering" } }, { "binding": 2 * e2 + 1, "visibility": GPUShaderStage["FRAGMENT"], "texture": { "sampleType": "float", "viewDimension": "2d" } });
-      this._textureBindGroupLayout = e["createBindGroupLayout"]({ "label": "texturebindgrouplayout", "entries": i }), this._backTextureBindGroupLayout = e["createBindGroupLayout"]({ "label": "backtexturebindgrouplayout", "entries": [{ "binding": 0, "visibility": GPUShaderStage["FRAGMENT"], "sampler": { "type": "nearest" === this._backTextureSampling ? "non-filtering" : "filtering" } }, { "binding": 1, "visibility": GPUShaderStage["FRAGMENT"], "texture": { "sampleType": "float", "viewDimension": "2d" } }] }), this._depthTextureBindGroupLayout = e["createBindGroupLayout"]({ "label": "depthtexturebindgrouplayout", "entries": [{ "binding": 0, "visibility": GPUShaderStage["FRAGMENT"], "sampler": { "type": "non-filtering" } }, { "binding": 1, "visibility": GPUShaderStage["FRAGMENT"], "texture": { "sampleType": "depth", "viewDimension": "2d" } }] }), this._pipelineLayout = e["createPipelineLayout"]({ "bindGroupLayouts": [this._bufferBindGroupLayout, this._textureBindGroupLayout, this._backTextureBindGroupLayout, this._depthTextureBindGroupLayout] });
+      this._textureBindGroupLayout = e["createBindGroupLayout"]({ "label": "texturebindgrouplayout", "entries": i }), this._backTextureBindGroupLayout = e["createBindGroupLayout"]({ "label": "backtexturebindgrouplayout", "entries": [{ "binding": 0, "visibility": GPUShaderStage["FRAGMENT"], "sampler": { "type": "filtering" } }, { "binding": 1, "visibility": GPUShaderStage["FRAGMENT"], "texture": { "sampleType": "float", "viewDimension": "2d" } }] }), this._depthTextureBindGroupLayout = e["createBindGroupLayout"]({ "label": "depthtexturebindgrouplayout", "entries": [{ "binding": 0, "visibility": GPUShaderStage["FRAGMENT"], "sampler": { "type": "non-filtering" } }, { "binding": 1, "visibility": GPUShaderStage["FRAGMENT"], "texture": { "sampleType": "depth", "viewDimension": "2d" } }] }), this._pipelineLayout = e["createPipelineLayout"]({ "bindGroupLayouts": [this._bufferBindGroupLayout, this._textureBindGroupLayout, this._backTextureBindGroupLayout, this._depthTextureBindGroupLayout] });
       const s = C32.Gfx.WebGPUShaderProgram, n = this.SupportsF16(), u2 = this.IsColorDataF16();
       this._defaultVertexModule = e["createShaderModule"]({ "label": "<default vertex module>", "code": s._PreprocessVertexShaderCode(s.GetDefaultVertexShaderSource(u2), n) }), this._defaultVertexModule["getCompilationInfo"]().then((e2) => s.ReportShaderCompilationInfo("<default>", "vertex", e2)), this._normVertexModule = e["createShaderModule"]({ "label": "<normalized vertex module>", "code": s._PreprocessVertexShaderCode(s.GetNormalizedVertexShaderSource(u2), n) }), this._normVertexModule["getCompilationInfo"]().then((e2) => s.ReportShaderCompilationInfo("<normalized>", "vertex", e2));
       const h2 = await Promise.all([s.Create(this, { name: "<default>", src: s.GetMultiTextureFillFragmentShaderSource(false, u2), srcFragDepth: s.GetMultiTextureFillFragmentShaderSource(true, u2), vertexSrc: s.GetTextureFillVertexShaderSource(u2), normVertexSrc: s.GetNormalizedTextureFillVertexShaderSource(u2) }), s.Create(this, { name: "<single-texture-fill>", src: s.GetSingleTextureFillFragmentShaderSource(false, u2), srcFragDepth: s.GetSingleTextureFillFragmentShaderSource(true, u2), vertexSrc: s.GetTextureFillVertexShaderSource(u2), normVertexSrc: s.GetNormalizedTextureFillVertexShaderSource(u2) }), s.Create(this, { name: "<generate-mipmap>", src: s._GetMipmapGeneratorFragmentSource(), vertexSrc: s._GetMipmapGeneratorVertexSource() }), s.Create(this, { name: "<point>", src: s._GetPointFragmentSource(false), srcFragDepth: s._GetPointFragmentSource(true), vertexSrc: s._GetPointVertexSource() }), s.Create(this, { name: "<tilemap>", src: s._GetTilemapFragmentShaderSource(false), srcFragDepth: s._GetTilemapFragmentShaderSource(true) }), s.Create(this, { name: "<fill>", src: s._GetColorFillFragmentShaderSource() }), s.Create(this, { name: "<lineargradient>", src: s._GetLinearGradientFillFragmentShaderSource() }), s.Create(this, { name: "<penumbra>", src: s._GetPenumbraFillFragmentShaderSource() }), s.Create(this, { name: "<hardellipse>", src: s._GetHardEllipseFillFragmentShaderSource() }), s.Create(this, { name: "<hardellipseoutline>", src: s._GetHardEllipseOutlineFragmentShaderSource() }), s.Create(this, { name: "<smoothellipse>", src: s._GetSmoothEllipseFillFragmentShaderSource() }), s.Create(this, { name: "<smoothellipseoutline>", src: s._GetSmoothEllipseOutlineFragmentShaderSource() }), s.Create(this, { name: "<tilerandomization>", src: s.GetTileRandomizationFragmentShaderSource(false), srcFragDepth: s.GetTileRandomizationFragmentShaderSource(true) }), s.Create(this, { name: "<smoothline>", src: s._GetSmoothLineFillFragmentShaderSource() })]);
       this._spTextureFill = h2[0], this._spSingleTextureFill = h2[1], this._mipmapGeneratorProgram = h2[2], this._spPoints = h2[3], this._spTilemapFill = h2[4], this._spColorFill = h2[5], this._spLinearGradientFill = h2[6], this._spPenumbraFill = h2[7], this._spHardEllipseFill = h2[8], this._spHardEllipseOutline = h2[9], this._spSmoothEllipseFill = h2[10], this._spSmoothEllipseOutline = h2[11], this._spTileRandomization = h2[12], this._spSmoothLineFill = h2[13];
       for (const e2 of h2) this._AddShaderProgram(e2);
-      65536 & this._flags ? (this._flags |= 393216, this._currentProgram = this._spTextureFill) : this._currentProgram = this._spSingleTextureFill, this._mipmapGeneratorPipeline = this._mipmapGeneratorProgram._GetMipmapGeneratorPipeline(), this._vertexUniformBuffer = e["createBuffer"]({ "label": "vertexuniformbuffer", "size": this._vertexUniformBufferSize, "usage": GPUBufferUsage["UNIFORM"] | GPUBufferUsage["COPY_DST"] }), this._fragmentUniformBuffer = e["createBuffer"]({ "label": "fragmentuniformbuffer", "size": this._fragUniformBufferSize, "usage": GPUBufferUsage["UNIFORM"] | GPUBufferUsage["COPY_DST"] }), this._fragmentC3ParamsBuffer = e["createBuffer"]({ "label": "fragmentc3paramsuniformbuffer", "size": this._fragC3ParamsSize, "usage": GPUBufferUsage["UNIFORM"] | GPUBufferUsage["COPY_DST"] }), this._fragmentDefaultCustomParamsBuffer = e["createBuffer"]({ "label": "fragmentdefaultcustomparamsbuffer", "size": 16, "usage": GPUBufferUsage["UNIFORM"] | GPUBufferUsage["COPY_DST"] }), this._vertexUniformUpdateStart = 0, this._vertexUniformUpdateEnd = this._vertexUniformBufferSize, this._UpdateTransformUniform(), this._UpdatePointTexCoordsUniform(), this._UpdateZElevationUniform(), this._fragUniformUpdateStart = 0, this._fragUniformUpdateEnd = this._fragUniformBufferSize, this._UpdateColor2Uniform(), this._UpdatePointColorUniform(), this._defaultBufferBindGroup = this._CreateBufferBindGroup(this._fragmentDefaultCustomParamsBuffer), this._currentBufferBindGroup = this._defaultBufferBindGroup;
+      131072 & this._flags ? (this._flags |= 786432, this._currentProgram = this._spTextureFill) : this._currentProgram = this._spSingleTextureFill, this._mipmapGeneratorPipeline = this._mipmapGeneratorProgram._GetMipmapGeneratorPipeline(), this._vertexUniformBuffer = e["createBuffer"]({ "label": "vertexuniformbuffer", "size": this._vertexUniformBufferSize, "usage": GPUBufferUsage["UNIFORM"] | GPUBufferUsage["COPY_DST"] }), this._fragmentUniformBuffer = e["createBuffer"]({ "label": "fragmentuniformbuffer", "size": this._fragUniformBufferSize, "usage": GPUBufferUsage["UNIFORM"] | GPUBufferUsage["COPY_DST"] }), this._fragmentC3ParamsBuffer = e["createBuffer"]({ "label": "fragmentc3paramsuniformbuffer", "size": this._fragC3ParamsSize, "usage": GPUBufferUsage["UNIFORM"] | GPUBufferUsage["COPY_DST"] }), this._fragmentDefaultCustomParamsBuffer = e["createBuffer"]({ "label": "fragmentdefaultcustomparamsbuffer", "size": 16, "usage": GPUBufferUsage["UNIFORM"] | GPUBufferUsage["COPY_DST"] }), this._vertexUniformUpdateStart = 0, this._vertexUniformUpdateEnd = this._vertexUniformBufferSize, this._UpdateTransformUniform(), this._UpdatePointTexCoordsUniform(), this._UpdateZElevationUniform(), this._fragUniformUpdateStart = 0, this._fragUniformUpdateEnd = this._fragUniformBufferSize, this._UpdateColor2Uniform(), this._UpdatePointColorUniform(), this._defaultBufferBindGroup = this._CreateBufferBindGroup(this._fragmentDefaultCustomParamsBuffer), this._currentBufferBindGroup = this._defaultBufferBindGroup;
       const o2 = C32.CreateCanvas(32, 32);
-      o2.getContext("2d"), this._nullTexture = await this.CreateStaticTextureAsync(o2), this._currentTexture = null, this._currentTextureBindGroup = this._nullTexture._GetOwnTextureBindGroup(), this._currentMultiTextureIndex = 0, this._currentBackTexture = null, this._currentBackTextureBindGroup = this._nullTexture._GetBackTextureBindGroup(), this._nullTexture._DisableMultiTexture(), this._nullDepthBuffer = this._device["createTexture"]({ "label": "nulldepthbuffer", "size": [8, 8, 1], "format": this._GetDepthBufferFormat(), "usage": GPUTextureUsage["TEXTURE_BINDING"] }), this._nullDepthBufferView = this._nullDepthBuffer["createView"]({ "label": "nulldepthbufferview", "aspect": "depth-only" }), this._nullDepthBufferBindGroup = this._device["createBindGroup"]({ "label": "nulldepthbufferbindgroup", "layout": this._depthTextureBindGroupLayout, "entries": [{ "binding": 0, "resource": this._GetSampler({ sampling: "nearest" }) }, { "binding": 1, "resource": this._nullDepthBufferView }] }), this._currentDepthTextureBindGroup = this._nullDepthBufferBindGroup, this._backbufferRenderTarget = C32.New(C32.Gfx.WebGPURenderTarget, this, true), this._backbufferRenderTarget.GetTexture()._BackbufferTextureSetProperties(t2, this._swapChainFormat), this._currentRenderTarget = this._backbufferRenderTarget, this._CreateCommandEncoder(), this._adapterInfo = this._adapter["info"], this._presentCtx || (this._presentCtx = this._canvas.getContext("webgpu")), this._presentCtx["configure"]({ "device": e, "format": this._swapChainFormat, "usage": t2, "alphaMode": "premultiplied" });
+      o2.getContext("2d"), this._nullTexture = await this.CreateStaticTextureAsync(o2), this._currentTexture = null, this._currentTextureBindGroup = this._nullTexture._GetOwnTextureBindGroup(0), this._currentMultiTextureIndex = 0, this._currentBackTexture = null, this._currentBackTextureBindGroup = this._nullTexture._GetBackTextureBindGroup(0), this._nullTexture._DisableMultiTexture(), this._nullDepthBuffer = this._device["createTexture"]({ "label": "nulldepthbuffer", "size": [8, 8, 1], "format": this._GetDepthBufferFormat(), "usage": GPUTextureUsage["TEXTURE_BINDING"] }), this._nullDepthBufferView = this._nullDepthBuffer["createView"]({ "label": "nulldepthbufferview", "aspect": "depth-only" }), this._nullDepthBufferBindGroup = this._device["createBindGroup"]({ "label": "nulldepthbufferbindgroup", "layout": this._depthTextureBindGroupLayout, "entries": [{ "binding": 0, "resource": this._GetSampler({ sampling: "nearest" }) }, { "binding": 1, "resource": this._nullDepthBufferView }] }), this._currentDepthTextureBindGroup = this._nullDepthBufferBindGroup, this._backbufferRenderTarget = C32.New(C32.Gfx.WebGPURenderTarget, this, true), this._backbufferRenderTarget.GetTexture()._BackbufferTextureSetProperties(t2, this._swapChainFormat), this._currentRenderTarget = this._backbufferRenderTarget, this._CreateCommandEncoder(), this._adapterInfo = this._adapter["info"], this._presentCtx || (this._presentCtx = this._canvas.getContext("webgpu")), this._presentCtx["configure"]({ "device": e, "format": this._swapChainFormat, "usage": t2, "alphaMode": "premultiplied" });
     }
     _CreateBufferBindGroup(e) {
       return this._device["createBindGroup"]({ "layout": this._bufferBindGroupLayout, "entries": [{ "binding": 0, "resource": { "buffer": this._vertexUniformBuffer } }, { "binding": 1, "resource": { "buffer": this._fragmentUniformBuffer } }, { "binding": 3, "resource": { "buffer": this._pointBuffer } }, { "binding": 4, "resource": { "buffer": this._fragmentC3ParamsBuffer } }, { "binding": 5, "resource": { "buffer": e } }] });
@@ -8892,9 +9553,6 @@ var CheckPendingPolls2;
     _GetBackTextureBindGroupLayout() {
       return this._backTextureBindGroupLayout;
     }
-    _GetBackTextureSampling() {
-      return this._backTextureSampling;
-    }
     GetTextureFormat() {
       return this._textureFormat;
     }
@@ -8902,16 +9560,16 @@ var CheckPendingPolls2;
       return this._maxTextureSize;
     }
     IsContextLost() {
-      return this._IsFlagSet(32768);
+      return this._IsFlagSet(65536);
     }
     SupportsGPUProfiling() {
-      return this._IsFlagSet(134217728);
-    }
-    SupportsF16() {
       return this._IsFlagSet(268435456);
     }
-    IsColorDataF16() {
+    SupportsF16() {
       return this._IsFlagSet(536870912);
+    }
+    IsColorDataF16() {
+      return this._IsFlagSet(1073741824);
     }
     GetEstimatedBackBufferMemoryUsage() {
       const e = this.GetWidth() * this.GetHeight();
@@ -8935,7 +9593,7 @@ var CheckPendingPolls2;
       return this._bufferManager;
     }
     SetSize(e, t2, r2) {
-      (this._width !== e || this._height !== t2 || r2) && (this.EndBatch(), this._width = e, this._height = t2, this._viewportWidth = e, this._viewportHeight = t2, this._backbufferRenderTarget._CalculateProjection(), this.SetProjectionMatrix(this._backbufferRenderTarget.GetProjectionMatrix()), this._currentRenderTarget && this._currentRenderTarget._Resize(this._width, this._height), this._IsFlagSet(524288) && this._IsFlagSet(67108864) && this._SetDepthBufferSize(e, t2));
+      (this._width !== e || this._height !== t2 || r2) && (this.EndBatch(), this._width = e, this._height = t2, this._viewportWidth = e, this._viewportHeight = t2, this._backbufferRenderTarget._CalculateProjection(), this.SetProjectionMatrix(this._backbufferRenderTarget.GetProjectionMatrix()), this._currentRenderTarget && this._currentRenderTarget._Resize(this._width, this._height), this._IsFlagSet(1048576) && this._IsFlagSet(134217728) && this._SetDepthBufferSize(e, t2));
     }
     _SetDepthBufferSize(e, t2) {
       if (this._depthBuffer) {
@@ -8946,10 +9604,10 @@ var CheckPendingPolls2;
       this._canSampleDepth && (r2 |= GPUTextureUsage["TEXTURE_BINDING"]), this._depthBuffer = this._device["createTexture"]({ "label": "depthbuffer", "size": [e, t2, 1], "format": this._GetDepthBufferFormat(), "usage": r2 }), this._depthBufferView = this._depthBuffer["createView"]({ "label": "depthbufferview" }), this._canSampleDepth && (this._depthBufferBindGroup = this._device["createBindGroup"]({ "label": "depthbufferbindgroup", "layout": this._depthTextureBindGroupLayout, "entries": [{ "binding": 0, "resource": this._GetSampler({ sampling: "nearest" }) }, { "binding": 1, "resource": this._depthBuffer["createView"]({ "label": "depthbufferview", "aspect": "depth-only" }) }] })), this._depthBufferWidth = e, this._depthBufferHeight = t2;
     }
     SetFixedSizeDepthBuffer(e, t2) {
-      this.UsesDepthBuffer() && (this._SetFlag(67108864, false), this._SetDepthBufferSize(e, t2));
+      this.UsesDepthBuffer() && (this._SetFlag(134217728, false), this._SetDepthBufferSize(e, t2));
     }
     SetAutoSizeDepthBuffer() {
-      this.UsesDepthBuffer() && (this._SetFlag(67108864, true), this._SetDepthBufferSize(this._width, this._height));
+      this.UsesDepthBuffer() && (this._SetFlag(134217728, true), this._SetDepthBufferSize(this._width, this._height));
     }
     SetProjectionMatrix(e) {
       mat4.exactEquals(this._matP, e) || (mat4.copy(this._matP, e), this._UpdateTransformUniform());
@@ -8961,10 +9619,10 @@ var CheckPendingPolls2;
       mat4.exactEquals(this._matMV, e) || (mat4.copy(this._matMV, e), this._UpdateTransformUniform());
     }
     ResetDidChangeTransformFlag() {
-      this._SetFlag2(1, false);
+      this._SetFlag2(2, false);
     }
     DidChangeTransform() {
-      return this._IsFlagSet2(1);
+      return this._IsFlagSet2(2);
     }
     CreateStaticTexture(e, t2) {
       if (e && !C32.Gfx.WebGPURendererTexture.IsGPUImageCopyExternalImageSource(e)) {
@@ -8983,15 +9641,14 @@ var CheckPendingPolls2;
         return this.CreateStaticTexture(r2, t2);
       }
     }
-    _GetSampler(e) {
-      const t2 = e.wrapX || "clamp-to-edge", r2 = e.wrapY || "clamp-to-edge", i = e.sampling;
-      let a2 = e.anisotropy || 0;
-      "trilinear" !== i && (a2 = 0);
-      const s = `${t2},${r2},${i},${a2}`;
-      let n = this._samplerMap.get(s);
-      if (n) return n;
-      const u2 = { "addressModeU": t2, "addressModeV": r2, "magFilter": "nearest", "minFilter": "nearest", "mipmapFilter": "nearest" };
-      return "bilinear" !== i && "trilinear" !== i || (u2["magFilter"] = "linear", u2["minFilter"] = "linear"), "trilinear" === i && (u2["mipmapFilter"] = "linear", a2 > 1 && (u2["maxAnisotropy"] = a2)), n = this._device["createSampler"](u2), this._samplerMap.set(s, n), n;
+    _CreateSampler(e, t2, r2, i) {
+      const a2 = { "addressModeU": e, "addressModeV": t2, "magFilter": "nearest", "minFilter": "nearest", "mipmapFilter": "nearest" };
+      return "bilinear" !== r2 && "trilinear" !== r2 || (a2["magFilter"] = "linear", a2["minFilter"] = "linear"), "trilinear" === r2 && (a2["mipmapFilter"] = "linear", i > 1 && (a2["maxAnisotropy"] = i)), this._device["createSampler"](a2);
+    }
+    SetTexturesAnisotropy(e, t2) {
+      t2 || (t2 = C32.Gfx.WebGPURendererTexture.allTextures()), this.EndBatch();
+      for (const r2 of t2) r2._SetAnisotropy(e);
+      for (const e2 of C32.Gfx.WebGPUMultiTextureGroup.all()) e2.DeleteBindGroups();
     }
     _GetMipmapGeneratorPipeline() {
       return this._mipmapGeneratorPipeline;
@@ -9022,8 +9679,8 @@ var CheckPendingPolls2;
       }
       t2.length < 2 || C32.New(C32.Gfx.WebGPUMultiTextureGroup, this, t2);
     }
-    Start() {
-      this._UpdateSwapChainTexture();
+    Start(e = "bilinear") {
+      this._backbufferRenderTarget.SetDefaultSampling(e), this._UpdateSwapChainTexture();
     }
     Restart() {
       this._UpdateSwapChainTexture();
@@ -9035,52 +9692,49 @@ var CheckPendingPolls2;
       null === this._currentRenderPass && this._backbufferRenderTarget._IsAwaitingClear() && this._BeginRenderPass(), super.Finish(), this._bufferManager.MaybeCollectUnusedBuffers(this._frameNumber), this._backbufferRenderTarget.GetTexture()._BackbufferTextureEndFrame(), this._swapChainTexture = null, this._swapChainTexView = null;
     }
     _CreateCommandEncoder() {
-      this._commandEncoder = this._device["createCommandEncoder"](), this._flags &= -16385;
+      this._commandEncoder = this._device["createCommandEncoder"](), this._flags &= -32769;
     }
     StartFrameTiming(e) {
       if (!this.SupportsGPUProfiling()) throw new Error("GPU profiling not supported");
-      if (this._frameTimeQuerySet) throw new Error("already started frame timing");
-      return this._timestampIsMeasuring = false, this._timestampStartedIndices.clear(), this._frameTimeQuerySet = C32.New(C32.Gfx.WebGPUTimeQuerySet, this, e), this._frameTimeQuerySet;
+      this.#n = false, this.#o.clear(), this.#l.clear(), this.#s.SetQueryCount(e);
+    }
+    FinishFrameTiming() {
+      return this.#s.GetResult(/* @__PURE__ */ new Set([...this.#l]));
     }
     StartMeasuringRenderPassTime(e, t2) {
       if (this.SupportsGPUProfiling()) {
-        if (!this._frameTimeQuerySet) throw new Error("not started frame timing");
         if (e < 0 || t2 < 0 || e === t2) throw new Error("invalid timestamp index");
-        this._MaybeEndRenderPass(), this._timestampIsMeasuring = true, this._timestampStartIndex = e, this._timestampEndIndex = t2;
+        this._MaybeEndRenderPass(), this.#n = true, this.#u = e, this.#h = t2;
       }
     }
     StopMeasuringRenderPassTime() {
-      this._timestampIsMeasuring && (this._MaybeEndRenderPass(), this._timestampIsMeasuring = false);
+      this.#n && (this._MaybeEndRenderPass(), this.#n = false);
     }
-    _AddToDrawBatch(e, t2) {
-      if (this._vertexPtr + e > 65535 || this._indexPtr + t2 > 393210) this.EndBatch();
-      else if (1 & this._flags) return void (this._drawIndexCount += t2);
-      null === this._currentRenderPass && this._BeginRenderPass(), this._flags |= 1, this._drawFirstIndex = this._indexPtr, this._drawIndexCount = t2;
-    }
-    _AddIndicesForQuad() {
-      const e = this._vertexPtr;
-      let t2 = this._indexPtr;
-      this._indexPtr += 6;
-      const r2 = this._indexData;
-      r2[t2++] = e, r2[t2++] = e + 1, r2[t2++] = e + 2, r2[t2++] = e, r2[t2++] = e + 2, r2[t2] = e + 3;
+    #_(e, t2) {
+      this.#c();
+      const r2 = this.#t;
+      if (r2.CanFit(e, t2)) {
+        if (1 & this._flags) return void (this._drawIndexCount += t2);
+      } else this.EndBatch();
+      null === this._currentRenderPass && this._BeginRenderPass(), this._flags |= 1, this._drawFirstIndex = r2.GetIndexPtr(), this._drawIndexCount = t2;
     }
     _MaybeEndDrawBatch() {
-      const e = this._flags;
+      const e = this._flags, t2 = this._flags2;
       if (!(1 & e)) return;
-      const t2 = this._currentRenderPass;
+      const r2 = this._currentRenderPass;
       if (16 & e) {
-        const r2 = this._currentRenderTarget;
-        t2["setViewport"](0, 0, r2.GetWidth(), r2.GetHeight(), 0, 1), 2 & e ? t2["setIndexBuffer"](this._pointsIndexBuffer, "uint16") : t2["setIndexBuffer"](this._indexBuffer, "uint16"), t2["setVertexBuffer"](0, this._vertexBuffer), t2["setVertexBuffer"](1, this._texcoordBuffer), t2["setVertexBuffer"](2, this._colorBuffer), t2["setVertexBuffer"](3, this._texIndexBuffer), 25165824 & e && t2["setStencilReference"](1), 4 & e && this._DoSetRenderPassScissorRect(t2, this._scissorRect, r2);
+        const t3 = this._currentRenderTarget;
+        r2["setViewport"](0, 0, t3.GetWidth(), t3.GetHeight(), 0, 1), 50331648 & e && r2["setStencilReference"](1), 4 & e && this._DoSetRenderPassScissorRect(r2, this._scissorRect, t3);
       }
-      if (32 & e) {
-        let r2 = 0;
-        1073741824 & e ? r2 = 4 : 8388608 & e ? r2 = 2 : 16777216 & e ? r2 = 3 : 3145728 & ~e || (r2 = 1), t2["setPipeline"](this._currentProgram.GetRenderPipelineForState(this._currentBlendMode, r2, this._currentCullFace, this._currentFrontFaceWinding, this._currentMultisampleCount));
+      if (32 & e && (2 & e ? r2["setIndexBuffer"](this._pointsIndexBuffer, "uint16") : this.#i.WebGPUInitRenderPassIndexBuffer(r2), this.#i.WebGPUInitRenderPassVertexBuffers(r2)), 64 & e) {
+        let i = 0;
+        1 & t2 ? i = 4 : 16777216 & e ? i = 2 : 33554432 & e ? i = 3 : 6291456 & ~e || (i = 1), r2["setPipeline"](this._currentProgram.GetRenderPipelineForState(this._currentBlendMode, i, this._currentCullFace, this._currentFrontFaceWinding, this._currentMultisampleCount));
       }
-      if (8192 & e && t2["setBindGroup"](0, this._currentBufferBindGroup), 64 & e && t2["setBindGroup"](1, this._currentTextureBindGroup), 128 & e && t2["setBindGroup"](2, this._currentBackTextureBindGroup), 256 & e && t2["setBindGroup"](3, this._currentDepthTextureBindGroup), 8 & e) {
-        const r2 = this._currentRenderTarget;
-        4 & e ? this._DoSetRenderPassScissorRect(t2, this._scissorRect, r2) : t2["setScissorRect"](0, 0, r2.GetWidth(), r2.GetHeight());
+      if (16384 & e && r2["setBindGroup"](0, this._currentBufferBindGroup), 128 & e && r2["setBindGroup"](1, this._currentTextureBindGroup), 256 & e && r2["setBindGroup"](2, this._currentBackTextureBindGroup), 512 & e && r2["setBindGroup"](3, this._currentDepthTextureBindGroup), 8 & e) {
+        const t3 = this._currentRenderTarget;
+        4 & e ? this._DoSetRenderPassScissorRect(r2, this._scissorRect, t3) : r2["setScissorRect"](0, 0, t3.GetWidth(), t3.GetHeight());
       }
-      t2["drawIndexed"](this._drawIndexCount, 1, this._drawFirstIndex, 0, 0), this._flags &= -8698;
+      r2["drawIndexed"](this._drawIndexCount, 1, this._drawFirstIndex, 0, 0), this._flags &= -17402;
     }
     _DoSetRenderPassScissorRect(e, t2, r2) {
       const i = r2.GetWidth(), a2 = r2.GetHeight();
@@ -9089,50 +9743,49 @@ var CheckPendingPolls2;
     }
     _BeginRenderPass() {
       const e = this._flags;
-      7680 & e && this._WriteUniformBuffers();
+      15360 & e && this._WriteUniformBuffers();
       let t2 = null;
-      t2 = 8388608 & e ? this._GetCoplanarStencilRenderPassOpts() : 16777216 & e ? this._GetCoplanarColorRenderPassOpts() : this._GetStandardRenderPassOpts(), this._currentRenderPass = this._commandEncoder["beginRenderPass"](t2), this._flags |= 25072;
+      t2 = 16777216 & e ? this._GetCoplanarStencilRenderPassOpts() : 33554432 & e ? this._GetCoplanarColorRenderPassOpts() : this._GetStandardRenderPassOpts(), this._currentRenderPass = this._commandEncoder["beginRenderPass"](t2), this._flags |= 50160;
     }
     _GetStandardRenderPassOpts() {
       const e = this._flags, t2 = this._currentRenderTarget, r2 = { "colorAttachments": [{ "view": t2._GetTextureView(), "loadOp": t2._IsAwaitingClear() ? "clear" : "load", "clearValue": t2._GetClearColor().toJSON(), "storeOp": "store" }] };
-      return this._MaybeSetTimestampRenderPassOption(r2), t2._SetIsAwaitingClear(false), 3145728 & ~e || (r2["depthStencilAttachment"] = { "view": this._depthBufferView, "depthLoadOp": 4194304 & e ? "clear" : "load", "depthClearValue": 1, "depthStoreOp": "store", "stencilLoadOp": "clear", "stencilClearValue": 0, "stencilStoreOp": "discard" }, this._flags &= -4194305), r2;
+      return this._MaybeSetTimestampRenderPassOption(r2), t2._SetIsAwaitingClear(false), 6291456 & ~e || (r2["depthStencilAttachment"] = { "view": this._depthBufferView, "depthLoadOp": 8388608 & e ? "clear" : "load", "depthClearValue": 1, "depthStoreOp": "store", "stencilLoadOp": "clear", "stencilClearValue": 0, "stencilStoreOp": "discard" }, this._flags &= -8388609), r2;
     }
     _GetCoplanarStencilRenderPassOpts() {
-      const e = this._flags, t2 = { "colorAttachments": [], "depthStencilAttachment": { "view": this._depthBufferView, "depthLoadOp": 4194304 & e ? "clear" : "load", "depthClearValue": 1, "depthStoreOp": "store", "stencilLoadOp": 33554432 & e ? "clear" : "load", "stencilClearValue": 0, "stencilStoreOp": "store" } };
-      return this._MaybeSetTimestampRenderPassOption(t2), this._flags &= -37748737, t2;
+      const e = this._flags, t2 = { "colorAttachments": [], "depthStencilAttachment": { "view": this._depthBufferView, "depthLoadOp": 8388608 & e ? "clear" : "load", "depthClearValue": 1, "depthStoreOp": "store", "stencilLoadOp": 67108864 & e ? "clear" : "load", "stencilClearValue": 0, "stencilStoreOp": "store" } };
+      return this._MaybeSetTimestampRenderPassOption(t2), this._flags &= -75497473, t2;
     }
     _GetCoplanarColorRenderPassOpts() {
       const e = this._currentRenderTarget, t2 = { "colorAttachments": [{ "view": e._GetTextureView(), "loadOp": e._IsAwaitingClear() ? "clear" : "load", "clearValue": e._GetClearColor().toJSON(), "storeOp": "store" }], "depthStencilAttachment": { "view": this._depthBufferView, "depthReadOnly": true, "stencilReadOnly": true } };
       return this._MaybeSetTimestampRenderPassOption(t2), e._SetIsAwaitingClear(false), t2;
     }
     _MaybeSetTimestampRenderPassOption(e) {
-      if (!this._timestampIsMeasuring) return;
-      const t2 = { "querySet": this._frameTimeQuerySet._GetQuerySet(), "endOfPassWriteIndex": this._timestampEndIndex };
-      this._timestampStartedIndices.has(this._timestampStartIndex) || (t2["beginningOfPassWriteIndex"] = this._timestampStartIndex, this._timestampStartedIndices.add(this._timestampStartIndex)), e["timestampWrites"] = t2;
+      if (!this.#n) return;
+      const t2 = { "querySet": this.#s._GetQuerySet(), "endOfPassWriteIndex": this.#h };
+      this.#l.add(this.#h), this.#o.has(this.#u) || (t2["beginningOfPassWriteIndex"] = this.#u, this.#o.add(this.#u), this.#l.add(this.#u)), e["timestampWrites"] = t2;
     }
     _MaybeDoPendingClearRenderPass(e) {
       if (!e._IsAwaitingClear()) return;
       this._MaybeEndRenderPass();
-      this._commandEncoder["beginRenderPass"]({ "colorAttachments": [{ "view": e._GetTextureView(), "loadOp": "clear", "clearValue": e._GetClearColor().toJSON(), "storeOp": "store" }] })["end"](), this._flags |= 16384, e._SetIsAwaitingClear(false);
+      this._commandEncoder["beginRenderPass"]({ "colorAttachments": [{ "view": e._GetTextureView(), "loadOp": "clear", "clearValue": e._GetClearColor().toJSON(), "storeOp": "store" }] })["end"](), this._flags |= 32768, e._SetIsAwaitingClear(false);
     }
     _MaybeEndRenderPass() {
       null !== this._currentRenderPass && (this._MaybeEndDrawBatch(), this._currentRenderPass["end"](), this._currentRenderPass = null);
     }
     EndBatch(e = false) {
-      this._MaybeEndRenderPass(), this._frameTimeQuerySet && e && (this._frameTimeQuerySet.Resolve(this._commandEncoder), this._flags |= 16384), 16384 & this._flags && (this._commandBuffers.push(this._commandEncoder["finish"]()), this._CreateCommandEncoder()), 0 !== this._commandBuffers.length && (this._WriteBuffers(), this._device["queue"]["submit"](this._commandBuffers), C32.clearArray(this._commandBuffers), this._bufferManager.AfterSubmit(), this._frameTimeQuerySet && e && (this._frameTimeQuerySet.ReadResult(), this._frameTimeQuerySet = null));
+      this._MaybeEndRenderPass(), this.#s && this.#s.GetQueryCount() > 0 && e && (this.#s.Resolve(this._commandEncoder), this._flags |= 32768), 32768 & this._flags && (this._commandBuffers.push(this._commandEncoder["finish"]()), this._CreateCommandEncoder()), 0 !== this._commandBuffers.length && (this._WriteBuffers(), this._device["queue"]["submit"](this._commandBuffers), C32.clearArray(this._commandBuffers), this._bufferManager.AfterSubmit());
+    }
+    WaitForSubmittedWorkDone() {
+      return this._device ? this._device["queue"]["onSubmittedWorkDone"]() : Promise.resolve();
     }
     _WriteBuffers() {
-      const e = this._device["queue"];
-      if (this._vertexPtr > 0) {
-        const t2 = this._vertexPtr;
-        e["writeBuffer"](this._vertexBuffer, 0, this._vertexData.buffer, 0, 3 * t2 * 4), e["writeBuffer"](this._texcoordBuffer, 0, this._texcoordData.buffer, 0, 2 * t2 * 4), 65536 & this._flags && e["writeBuffer"](this._texIndexBuffer, 0, this._texIndexData.buffer, 0, 4 * t2);
-        const r2 = this.IsColorDataF16() ? 2 : 4;
-        e["writeBuffer"](this._colorBuffer, 0, this._colorData.buffer, 0, 4 * t2 * r2), this._vertexPtr = 0;
-      }
-      this._indexPtr > 0 && (this._indexPtr % 2 != 0 && (this._indexData[this._indexPtr++] = 0), e["writeBuffer"](this._indexBuffer, 0, this._indexData.buffer, 0, 2 * this._indexPtr), this._indexPtr = 0), this._pointPtr > 0 && (e["writeBuffer"](this._pointBuffer, 0, this._pointData.buffer, 0, 4 * this._pointPtr), this._pointPtr = 0);
+      const e = this._device["queue"], t2 = !!(131072 & this._flags);
+      this.#t.WriteGPUData(t2), this._pointPtr > 0 && (e["writeBuffer"](this._pointBuffer, 0, this._pointData.buffer, 0, 4 * this._pointPtr), this._pointPtr = 0);
+      for (const e2 of this.#a) e2 !== this.#r && e2.WriteGPUData(t2);
+      this.#a.clear();
     }
     _UpdateTransformUniform() {
-      this._flags |= 512, this._flags2 |= 1, this._MarkVertexUniformBufferRangeChanged(this._vertexUniformBufferLayout.transform);
+      this._flags |= 1024, this._flags2 |= 2, this._MarkVertexUniformBufferRangeChanged(this._vertexUniformBufferLayout.transform);
     }
     _UpdatePointTexCoordsUniform() {
       const e = this._vertexUniformBufferLayout.pointTex;
@@ -9144,7 +9797,7 @@ var CheckPendingPolls2;
     }
     _MarkVertexUniformBufferRangeChanged(e) {
       const t2 = e.offset, r2 = e.end;
-      1024 & this._flags ? (this._vertexUniformUpdateStart = Math.min(this._vertexUniformUpdateStart, t2), this._vertexUniformUpdateEnd = Math.max(this._vertexUniformUpdateEnd, r2)) : (this._flags |= 1024, this._vertexUniformUpdateStart = t2, this._vertexUniformUpdateEnd = r2, this._MaybeEndRenderPass());
+      2048 & this._flags ? (this._vertexUniformUpdateStart = Math.min(this._vertexUniformUpdateStart, t2), this._vertexUniformUpdateEnd = Math.max(this._vertexUniformUpdateEnd, r2)) : (this._flags |= 2048, this._vertexUniformUpdateStart = t2, this._vertexUniformUpdateEnd = r2, this._MaybeEndRenderPass());
     }
     _UpdateColor2Uniform() {
       this._UpdateFragmentUniformColor(this._currentColor2, this._fragUniformBufferLayout.color2);
@@ -9160,7 +9813,7 @@ var CheckPendingPolls2;
     }
     _MarkFragUniformBufferRangeChanged(e) {
       const t2 = e.offset, r2 = e.end;
-      2048 & this._flags ? (this._fragUniformUpdateStart = Math.min(this._fragUniformUpdateStart, t2), this._fragUniformUpdateEnd = Math.max(this._fragUniformUpdateEnd, r2)) : (this._flags |= 2048, this._fragUniformUpdateStart = t2, this._fragUniformUpdateEnd = r2, this._MaybeEndRenderPass());
+      4096 & this._flags ? (this._fragUniformUpdateStart = Math.min(this._fragUniformUpdateStart, t2), this._fragUniformUpdateEnd = Math.max(this._fragUniformUpdateEnd, r2)) : (this._flags |= 4096, this._fragUniformUpdateStart = t2, this._fragUniformUpdateEnd = r2, this._MaybeEndRenderPass());
     }
     _MaybeUpdateFragmentC3ParamsFloat(e, t2) {
       this._fragC3Paramsf32[t2.offset / 4] !== Math.fround(e) && (this._fragC3Paramsf32[t2.offset / 4] = e, this._MarkFragC3ParamsRangeChanged(t2));
@@ -9173,11 +9826,11 @@ var CheckPendingPolls2;
     }
     _MarkFragC3ParamsRangeChanged(e) {
       const t2 = e.offset, r2 = e.end;
-      4096 & this._flags ? (this._fragC3ParamsUpdateStart = Math.min(this._fragC3ParamsUpdateStart, t2), this._fragC3ParamsUpdateEnd = Math.max(this._fragC3ParamsUpdateEnd, r2)) : (this._flags |= 4096, this._fragC3ParamsUpdateStart = t2, this._fragC3ParamsUpdateEnd = r2, this._MaybeEndRenderPass());
+      8192 & this._flags ? (this._fragC3ParamsUpdateStart = Math.min(this._fragC3ParamsUpdateStart, t2), this._fragC3ParamsUpdateEnd = Math.max(this._fragC3ParamsUpdateEnd, r2)) : (this._flags |= 8192, this._fragC3ParamsUpdateStart = t2, this._fragC3ParamsUpdateEnd = r2, this._MaybeEndRenderPass());
     }
     _WriteUniformBuffers() {
       const e = this._flags;
-      512 & e && (mat4.multiply(this._matTransform, this._matP, this._matMV), this._vertexUniformf32.set(this._matTransform, this._vertexUniformBufferLayout.transform.offset / 4)), 1024 & e && this._bufferManager.UpdateBufferSubData(this._commandEncoder, this._vertexUniformBuffer, this._vertexUniformArrayBuffer, this._vertexUniformUpdateStart, this._vertexUniformUpdateEnd - this._vertexUniformUpdateStart), 2048 & e && this._bufferManager.UpdateBufferSubData(this._commandEncoder, this._fragmentUniformBuffer, this._fragUniformArrayBuffer, this._fragUniformUpdateStart, this._fragUniformUpdateEnd - this._fragUniformUpdateStart), 4096 & e && this._bufferManager.UpdateBufferSubData(this._commandEncoder, this._fragmentC3ParamsBuffer, this._fragC3ParamsArrayBuffer, this._fragC3ParamsUpdateStart, this._fragC3ParamsUpdateEnd - this._fragC3ParamsUpdateStart), this._flags = -7681 & e | 16384;
+      1024 & e && (mat4.multiply(this._matTransform, this._matP, this._matMV), this._vertexUniformf32.set(this._matTransform, this._vertexUniformBufferLayout.transform.offset / 4)), 2048 & e && this._bufferManager.UpdateBufferSubData(this._commandEncoder, this._vertexUniformBuffer, this._vertexUniformArrayBuffer, this._vertexUniformUpdateStart, this._vertexUniformUpdateEnd - this._vertexUniformUpdateStart), 4096 & e && this._bufferManager.UpdateBufferSubData(this._commandEncoder, this._fragmentUniformBuffer, this._fragUniformArrayBuffer, this._fragUniformUpdateStart, this._fragUniformUpdateEnd - this._fragUniformUpdateStart), 8192 & e && this._bufferManager.UpdateBufferSubData(this._commandEncoder, this._fragmentC3ParamsBuffer, this._fragC3ParamsArrayBuffer, this._fragC3ParamsUpdateStart, this._fragC3ParamsUpdateEnd - this._fragC3ParamsUpdateStart), this._flags = -15361 & e | 32768;
     }
     CreateRenderTarget(e) {
       let t2 = this._width, r2 = this._height, i = true;
@@ -9187,7 +9840,7 @@ var CheckPendingPolls2;
       return a2._Create(t2, r2, Object.assign({ isDefaultSize: i }, e)), a2;
     }
     SetRenderTarget(e, t2 = true) {
-      null === e && (e = this._backbufferRenderTarget), this._currentRenderTarget !== e && (this._MaybeEndRenderPass(), this._currentRenderTarget = e, this._SetFlag(2097152, e.HasDepthBuffer()), e.IsDefaultSize() && !e.IsBackBuffer() && e._Resize(this._width, this._height), t2 && this.SetDefaultRenderTargetProjectionState());
+      null === e && (e = this._backbufferRenderTarget), this._currentRenderTarget !== e && (this._MaybeEndRenderPass(), this._currentRenderTarget = e, this._SetFlag(4194304, e.HasDepthBuffer()), e.IsDefaultSize() && !e.IsBackBuffer() && e._Resize(this._width, this._height), t2 && this.SetDefaultRenderTargetProjectionState(), this._currentTexture === e.GetTexture() && this.SetTexture(null));
     }
     InvalidateRenderTarget(e) {
     }
@@ -9216,47 +9869,47 @@ var CheckPendingPolls2;
         let t3 = r2.height();
         t3 = 0 === t3 ? s - u2 : C32.clamp(Math.floor(t3), 0, s - u2), h2 = e2, o2 = t3;
       }
-      const l = i["createCommandEncoder"](), _2 = e.GetTexture();
-      let f2 = _2._GetTexture(), d2 = null;
-      "rgba8unorm" === _2._GetFormat() ? _2.CanReadPixels() || C32.NotYetImplemented() : (d2 = this._ConvertTextureFormat(_2, "rgba8unorm", l), f2 = d2);
+      const l = i["createCommandEncoder"](), d2 = e.GetTexture();
+      let f2 = d2._GetTexture(), _2 = null;
+      "rgba8unorm" === d2._GetFormat() ? d2.CanReadPixels() || C32.NotYetImplemented() : (_2 = this._ConvertTextureFormat(d2, "rgba8unorm", l), f2 = _2);
       const c2 = 4 * h2, p2 = 256 * Math.ceil(c2 / 256), m2 = i["createBuffer"]({ "size": p2 * o2, "usage": GPUBufferUsage["MAP_READ"] | GPUBufferUsage["COPY_DST"] });
       l["copyTextureToBuffer"]({ "texture": f2, "origin": [n, u2, 0] }, { "buffer": m2, "bytesPerRow": p2 }, [h2, o2, 1]);
       const g2 = l["finish"]();
-      i["queue"]["submit"]([g2]), d2 && d2["destroy"](), await m2["mapAsync"](self["GPUMapMode"]["READ"]);
+      i["queue"]["submit"]([g2]), _2 && _2["destroy"](), await m2["mapAsync"](self["GPUMapMode"]["READ"]);
       const x2 = m2["getMappedRange"]().slice(0);
-      let T2;
-      if (p2 === c2) T2 = new ImageData(new Uint8ClampedArray(x2), h2, o2);
+      let G;
+      if (p2 === c2) G = new ImageData(new Uint8ClampedArray(x2), h2, o2);
       else {
         const e2 = new ArrayBuffer(c2 * o2), t3 = new Uint8Array(e2);
         for (let e3 = 0; e3 < o2; ++e3) {
           const r3 = e3 * p2, i2 = e3 * c2;
           t3.set(new Uint8Array(x2, r3, c2), i2);
         }
-        T2 = new ImageData(new Uint8ClampedArray(e2), h2, o2);
+        G = new ImageData(new Uint8ClampedArray(e2), h2, o2);
       }
-      return m2["destroy"](), T2;
+      return m2["destroy"](), G;
     }
     _ConvertTextureFormat(e, t2, r2) {
       const i = this._device, a2 = e.GetWidth(), s = e.GetHeight();
       if (e._GetFormat() === t2) throw new Error("no conversion necessary");
       e.IsSampled() || C32.NotYetImplemented();
-      const n = i["createTexture"]({ "size": [a2, s, 1], "format": t2, "usage": GPUTextureUsage["COPY_SRC"] | GPUTextureUsage["RENDER_ATTACHMENT"] }), u2 = this._mipmapGeneratorProgram._GetMipmapGeneratorPipeline(t2), h2 = u2["getBindGroupLayout"](0), o2 = this._GetSampler({ sampling: "nearest" }), l = e._GetTexture()["createView"]({ "baseMipLevel": 0, "mipLevelCount": 1 }), _2 = n["createView"]({ "baseMipLevel": 0, "mipLevelCount": 1 }), f2 = r2["beginRenderPass"]({ "colorAttachments": [{ "view": _2, "loadOp": "clear", "clearValue": [0, 0, 0, 0], "storeOp": "store" }] }), d2 = i["createBindGroup"]({ "layout": h2, "entries": [{ "binding": 0, "resource": o2 }, { "binding": 1, "resource": l }] });
-      return f2["setPipeline"](u2), f2["setBindGroup"](0, d2), f2["draw"](4), f2["end"](), n;
+      const n = i["createTexture"]({ "size": [a2, s, 1], "format": t2, "usage": GPUTextureUsage["COPY_SRC"] | GPUTextureUsage["RENDER_ATTACHMENT"] }), u2 = this._mipmapGeneratorProgram._GetMipmapGeneratorPipeline(t2), h2 = u2["getBindGroupLayout"](0), o2 = this._GetSampler({ sampling: "nearest" }), l = e._GetTexture()["createView"]({ "baseMipLevel": 0, "mipLevelCount": 1 }), d2 = n["createView"]({ "baseMipLevel": 0, "mipLevelCount": 1 }), f2 = r2["beginRenderPass"]({ "colorAttachments": [{ "view": d2, "loadOp": "clear", "clearValue": [0, 0, 0, 0], "storeOp": "store" }] }), _2 = i["createBindGroup"]({ "layout": h2, "entries": [{ "binding": 0, "resource": o2 }, { "binding": 1, "resource": l }] });
+      return f2["setPipeline"](u2), f2["setBindGroup"](0, _2), f2["draw"](4), f2["end"](), n;
     }
     SetDepthEnabled(e) {
-      524288 & this._flags && (e = !!e, !!(1048576 & this._flags) !== e && (2097152 & this._flags && this._MaybeEndRenderPass(), this._SetFlag(1048576, e)));
+      1048576 & this._flags && (e = !!e, !!(2097152 & this._flags) !== e && (4194304 & this._flags && this._MaybeEndRenderPass(), this._SetFlag(2097152, e)));
     }
     IsDepthEnabled() {
-      return this._IsFlagSet(1048576);
+      return this._IsFlagSet(2097152);
     }
     UsesDepthBuffer() {
-      return this._IsFlagSet(524288);
+      return this._IsFlagSet(1048576);
     }
     SetDepthSamplingEnabled(e) {
       if (!this._canSampleDepth) return;
       if (e && this.IsDepthEnabled()) throw new Error("depth still enabled");
       const t2 = e ? this._depthBufferBindGroup : this._nullDepthBufferBindGroup;
-      this._currentDepthTextureBindGroup !== t2 && (this._MaybeEndDrawBatch(), this._currentDepthTextureBindGroup = t2, this._flags |= 256);
+      this._currentDepthTextureBindGroup !== t2 && (this._MaybeEndDrawBatch(), this._currentDepthTextureBindGroup = t2, this._flags |= 512);
     }
     Clear(e) {
       this._MaybeEndRenderPass(), this._currentRenderTarget._SetIsAwaitingClear(true), this._currentRenderTarget._GetClearColor().set(e);
@@ -9265,7 +9918,7 @@ var CheckPendingPolls2;
       this._MaybeEndRenderPass(), this._currentRenderTarget._SetIsAwaitingClear(true), this._currentRenderTarget._GetClearColor().setRgba(e, t2, r2, i);
     }
     ClearDepth() {
-      2621440 & ~this._flags || (this._MaybeEndRenderPass(), this._flags |= 4194304);
+      5242880 & ~this._flags || (this._MaybeEndRenderPass(), this._flags |= 8388608);
     }
     SetScissorRect(e, t2, r2, i) {
       e = Math.floor(e), t2 = Math.floor(t2), r2 = Math.floor(r2), i = Math.floor(i), 4 & this._flags && this._scissorRect.equalsWH(e, t2, r2, i) || (this._MaybeEndDrawBatch(), this._flags |= 12, this._scissorRect.setWH(e, t2, r2, i));
@@ -9274,59 +9927,61 @@ var CheckPendingPolls2;
       4 & this._flags && (this._MaybeEndDrawBatch(), this._flags &= -5, this._flags |= 8);
     }
     GetTextureFillShaderProgram() {
-      return 65536 & this._flags ? this._spTextureFill : this._spSingleTextureFill;
+      return 131072 & this._flags ? this._spTextureFill : this._spSingleTextureFill;
     }
     SetTextureFillMode() {
       this.SetProgram(this.GetTextureFillShaderProgram());
     }
     SetProgram(e) {
       if (this._currentProgram !== e) {
-        if (e === this._spTextureFill && !(65536 & this._flags)) throw new Error("cannot set multitexture fill program when multitexturing not allowed");
-        this._MaybeEndDrawBatch(), this._currentProgram = e, this._currentStateGroup = null, this._flags |= 32, this._SetMultiTexturingEnabled(e === this._spTextureFill);
+        if (e === this._spTextureFill && !(131072 & this._flags)) throw new Error("cannot set multitexture fill program when multitexturing not allowed");
+        this._MaybeEndDrawBatch(), this._currentProgram = e, this._currentStateGroup = null, this._flags |= 64, this._SetMultiTexturingEnabled(e === this._spTextureFill);
       }
     }
     GetProgram() {
       return this._currentProgram;
     }
     _SetMultiTexturingEnabled(e) {
-      if (e = !!e, !!(131072 & this._flags) === e) return;
-      this._SetFlag(131072, e);
+      if (e = !!e, !!(262144 & this._flags) === e) return;
+      this._SetFlag(262144, e);
       const t2 = null === this._currentTexture ? this._nullTexture : this._currentTexture;
-      this._ApplyTextureBindGroup(t2);
+      this._ApplyTextureBindGroup(t2, this.#d);
     }
     _SetMultiTexturingActive(e) {
-      e = !!e, !!(262144 & this._flags) !== e && (this._MaybeEndDrawBatch(), this._SetFlag(262144, e), this._SetFlag(32, true));
+      e = !!e, !!(524288 & this._flags) !== e && (this._MaybeEndDrawBatch(), this._SetFlag(524288, e), this._SetFlag(64, true));
     }
     SetNormalizedCoordsProgramVariant(e) {
-      e = !!e, !!(1073741824 & this._flags) !== e && (this._MaybeEndDrawBatch(), this._SetFlag(1073741824, e), this._flags |= 32);
+      e = !!e, !!(1 & this._flags2) !== e && (this._MaybeEndDrawBatch(), this._SetFlag2(1, e), this._flags |= 64);
     }
     IsNormalizedCoordsProgramVariant() {
-      return this._IsFlagSet(1073741824);
+      return this._IsFlagSet2(1);
     }
-    SetTexture(e) {
-      e !== this._currentTexture && (this._currentTexture = e, null === e && (e = this._nullTexture), this._ApplyTextureBindGroup(e));
+    SetTexture(e, t2 = 0) {
+      const r2 = null === e ? this._nullTexture : e, i = 0 === t2 ? r2._GetDefaultSamplingIndex() : t2 - 1;
+      e === this._currentTexture && i === this.#d || (this._currentTexture = e, this.#d = i, this._ApplyTextureBindGroup(r2, i));
     }
-    _ApplyTextureBindGroup(e) {
-      if (131072 & this._flags) {
-        const t2 = e._GetMultiTextureBindGroup();
-        if (null !== t2) return this._SetTextureBindGroup(t2), this._currentMultiTextureIndex = e._GetMultiTextureIndex(), void this._SetMultiTexturingActive(true);
+    _ApplyTextureBindGroup(e, t2) {
+      if (262144 & this._flags) {
+        const r2 = e._GetMultiTextureBindGroup(t2);
+        if (null !== r2) return this._SetTextureBindGroup(r2), this._currentMultiTextureIndex = e._GetMultiTextureIndex(), void this._SetMultiTexturingActive(true);
       }
-      this._SetTextureBindGroup(e._GetOwnTextureBindGroup()), this._currentMultiTextureIndex = 0, this._SetMultiTexturingActive(false);
+      this._SetTextureBindGroup(e._GetOwnTextureBindGroup(t2)), this._currentMultiTextureIndex = 0, this._SetMultiTexturingActive(false);
     }
     _SetTextureBindGroup(e) {
-      e !== this._currentTextureBindGroup && (this._MaybeEndDrawBatch(), this._currentTextureBindGroup = e, this._flags |= 64);
+      e !== this._currentTextureBindGroup && (this._MaybeEndDrawBatch(), this._currentTextureBindGroup = e, this._flags |= 128);
     }
     _OnTextureBindGroupChanged(e) {
-      this._currentTexture === e && (this._MaybeEndDrawBatch(), this._currentTextureBindGroup = e._GetOwnTextureBindGroup(), this._flags |= 64);
+      this._currentTexture === e && (this._MaybeEndDrawBatch(), this._currentTextureBindGroup = e._GetOwnTextureBindGroup(this.#d), this._flags |= 128);
     }
     _OnMultiTextureBindGroupReleased(e) {
       if (this._currentTextureBindGroup !== e) return;
       this._MaybeEndDrawBatch();
       const t2 = null === this._currentTexture ? this._nullTexture : this._currentTexture;
-      this._currentTextureBindGroup = t2._GetOwnTextureBindGroup(), this._currentMultiTextureIndex = 0, this._flags |= 64;
+      this._currentTextureBindGroup = t2._GetOwnTextureBindGroup(this.#d), this._currentMultiTextureIndex = 0, this._flags |= 128;
     }
-    SetBackTexture(e) {
-      e !== this._currentBackTexture && (this._currentBackTexture = e, null === e && (e = this._nullTexture), this._MaybeEndDrawBatch(), this._currentBackTextureBindGroup = e._GetBackTextureBindGroup(), this._flags |= 128);
+    SetBackTexture(e, t2 = 0) {
+      const r2 = null === e ? this._nullTexture : e, i = 0 === t2 ? r2._GetDefaultSamplingIndex() : t2 - 1;
+      e === this._currentBackTexture && i === this.#f || (this._currentBackTexture = e, this.#f = i, this._MaybeEndDrawBatch(), this._currentBackTextureBindGroup = r2._GetBackTextureBindGroup(i), this._flags |= 256);
     }
     CopyTextureToTexture(e, t2, r2, i, a2, s) {
       const n = e._GetUsage(), u2 = t2._GetUsage();
@@ -9334,16 +9989,16 @@ var CheckPendingPolls2;
       if (0 === (u2 & GPUTextureUsage["COPY_DST"])) throw new Error("destination texture missing COPY_DST usage");
       if (e === t2) throw new Error("invalid destination");
       const h2 = Math.min(e.GetWidth(), t2.GetWidth()), o2 = Math.min(e.GetHeight(), t2.GetHeight());
-      a2 = Math.min(a2, h2 - r2), s = Math.min(s, o2 - i), a2 <= 0 || s <= 0 || (this._MaybeEndRenderPass(), this._commandEncoder["copyTextureToTexture"]({ "texture": e._GetTexture(), "origin": [r2, i] }, { "texture": t2._GetTexture(), "origin": [r2, i] }, [a2, s]), this._flags |= 16384);
+      a2 = Math.min(a2, h2 - r2), s = Math.min(s, o2 - i), a2 <= 0 || s <= 0 || (this._MaybeEndRenderPass(), this._commandEncoder["copyTextureToTexture"]({ "texture": e._GetTexture(), "origin": [r2, i] }, { "texture": t2._GetTexture(), "origin": [r2, i] }, [a2, s]), this._flags |= 32768);
     }
     _ClampToSupportedMultisampleValues(e) {
       return e >= 2 ? 4 : 1;
     }
     SetRenderingToMultisampleCount(e) {
-      e = this._ClampToSupportedMultisampleValues(e), this._currentMultisampleCount !== e && (this._MaybeEndDrawBatch(), this._currentMultisampleCount = e, this._flags |= 32);
+      e = this._ClampToSupportedMultisampleValues(e), this._currentMultisampleCount !== e && (this._MaybeEndDrawBatch(), this._currentMultisampleCount = e, this._flags |= 64);
     }
     SetBlendMode(e) {
-      e !== this._currentBlendMode && (this._MaybeEndDrawBatch(), this._currentBlendMode = e, this._currentStateGroup = null, this._flags |= 32);
+      e !== this._currentBlendMode && (this._MaybeEndDrawBatch(), this._currentBlendMode = e, this._currentStateGroup = null, this._flags |= 64);
     }
     SetNamedBlendMode(e) {
       this.SetBlendMode(this.NamedBlendToNumber(e));
@@ -9376,13 +10031,13 @@ var CheckPendingPolls2;
       return this._currentColor;
     }
     SetCullFaceMode(e) {
-      e !== this._currentCullFace && (this._MaybeEndDrawBatch(), this._currentCullFace = e, this._currentStateGroup = null, this._flags |= 32);
+      e !== this._currentCullFace && (this._MaybeEndDrawBatch(), this._currentCullFace = e, this._currentStateGroup = null, this._flags |= 64);
     }
     GetCullFaceMode() {
       return this._currentCullFace;
     }
     SetFrontFaceWinding(e) {
-      e !== this._currentFrontFaceWinding && (this._MaybeEndDrawBatch(), this._currentFrontFaceWinding = e, this._currentStateGroup = null, this._flags |= 32);
+      e !== this._currentFrontFaceWinding && (this._MaybeEndDrawBatch(), this._currentFrontFaceWinding = e, this._currentStateGroup = null, this._flags |= 64);
     }
     GetFrontFaceWinding() {
       return this._currentFrontFaceWinding;
@@ -9393,94 +10048,95 @@ var CheckPendingPolls2;
     Rect2(e, t2, r2, i) {
       this.Quad2(e, t2, r2, t2, r2, i, e, i);
     }
-    _WriteQuadTexIndices(e) {
-      const t2 = this._texIndexData, r2 = this._currentMultiTextureIndex;
-      t2[e++] = r2, t2[e++] = r2, t2[e++] = r2, t2[e] = r2;
-    }
     Quad(e) {
       this.Quad4(e, defaultTexCoordsQuad);
     }
     Quad2(e, t2, r2, i, a2, s, n, u2) {
-      this._AddToDrawBatch(4, 6), this._AddIndicesForQuad();
-      const h2 = this._vertexData, o2 = this._vertexPtr;
-      this._vertexPtr += 4;
-      let l = 3 * o2;
-      const _2 = this._baseZ + this._currentZ;
-      h2[l++] = e, h2[l++] = t2, h2[l++] = _2, h2[l++] = r2, h2[l++] = i, h2[l++] = _2, h2[l++] = a2, h2[l++] = s, h2[l++] = _2, h2[l++] = n, h2[l++] = u2, h2[l] = _2, defaultTexCoordsQuad.writeToTypedArray(this._texcoordData, 2 * o2), 262144 & this._flags && this._WriteQuadTexIndices(o2), this._currentColor.writeToTypedArrayx4(this._colorData, 4 * o2);
+      this.#_(4, 6);
+      const h2 = this.#t.WriteQuad2(this._baseZ + this._currentZ, e, t2, r2, i, a2, s, n, u2);
+      524288 & this._flags && this.#t.WriteTexIndicesForQuad(h2, this._currentMultiTextureIndex);
     }
     Quad3(e, t2) {
-      this._AddToDrawBatch(4, 6), this._AddIndicesForQuad();
-      const r2 = this._vertexPtr;
-      this._vertexPtr += 4, e.writeToTypedArray3D(this._vertexData, 3 * r2, this._baseZ + this._currentZ), t2.writeAsQuadToTypedArray(this._texcoordData, 2 * r2), 262144 & this._flags && this._WriteQuadTexIndices(r2), this._currentColor.writeToTypedArrayx4(this._colorData, 4 * r2);
+      this.#_(4, 6);
+      const r2 = this.#t.WriteQuad3(this._baseZ + this._currentZ, e, t2);
+      524288 & this._flags && this.#t.WriteTexIndicesForQuad(r2, this._currentMultiTextureIndex);
     }
     Quad4(e, t2) {
-      this._AddToDrawBatch(4, 6), this._AddIndicesForQuad();
-      const r2 = this._vertexPtr;
-      this._vertexPtr += 4, e.writeToTypedArray3D(this._vertexData, 3 * r2, this._baseZ + this._currentZ), t2.writeToTypedArray(this._texcoordData, 2 * r2), 262144 & this._flags && this._WriteQuadTexIndices(r2), this._currentColor.writeToTypedArrayx4(this._colorData, 4 * r2);
+      this.#_(4, 6);
+      const r2 = this.#t.WriteQuad4(this._baseZ + this._currentZ, e, t2);
+      524288 & this._flags && this.#t.WriteTexIndicesForQuad(r2, this._currentMultiTextureIndex);
     }
     Quad5(e, t2, r2) {
-      this._AddToDrawBatch(4, 6), this._AddIndicesForQuad();
-      const i = this._vertexPtr;
-      this._vertexPtr += 4, e.writeToTypedArray3D(this._vertexData, 3 * i, this._baseZ + this._currentZ), t2.writeToTypedArray(this._texcoordData, 2 * i), 262144 & this._flags && this._WriteQuadTexIndices(i), this._colorData.set(r2, 4 * i);
+      this.#_(4, 6);
+      const i = this.#t.WriteQuad5(this._baseZ + this._currentZ, e, t2, r2);
+      524288 & this._flags && this.#t.WriteTexIndicesForQuad(i, this._currentMultiTextureIndex);
     }
-    Quad3D(e, t2, r2, i, a2, s, n, u2, h2, o2, l, _2, f2) {
-      this._AddToDrawBatch(4, 6), this._AddIndicesForQuad();
-      const d2 = this._vertexData, c2 = this._vertexPtr;
-      this._vertexPtr += 4;
-      let p2 = 3 * c2;
-      const m2 = this._baseZ + this._currentZ;
-      d2[p2++] = e, d2[p2++] = t2, d2[p2++] = m2 + r2, d2[p2++] = i, d2[p2++] = a2, d2[p2++] = m2 + s, d2[p2++] = n, d2[p2++] = u2, d2[p2++] = m2 + h2, d2[p2++] = o2, d2[p2++] = l, d2[p2] = m2 + _2, f2.writeAsQuadToTypedArray(this._texcoordData, 2 * c2), 262144 & this._flags && this._WriteQuadTexIndices(c2), this._currentColor.writeToTypedArrayx4(this._colorData, 4 * c2);
+    Quad3D(e, t2, r2, i, a2, s, n, u2, h2, o2, l, d2, f2) {
+      this.#_(4, 6);
+      const _2 = this.#t.WriteQuad3D(this._baseZ + this._currentZ, e, t2, r2, i, a2, s, n, u2, h2, o2, l, d2, f2);
+      524288 & this._flags && this.#t.WriteTexIndicesForQuad(_2, this._currentMultiTextureIndex);
     }
-    Quad3D2(e, t2, r2, i, a2, s, n, u2, h2, o2, l, _2, f2) {
-      this._AddToDrawBatch(4, 6), this._AddIndicesForQuad();
-      const d2 = this._vertexData, c2 = this._vertexPtr;
-      this._vertexPtr += 4;
-      let p2 = 3 * c2;
-      const m2 = this._baseZ + this._currentZ;
-      d2[p2++] = e, d2[p2++] = t2, d2[p2++] = m2 + r2, d2[p2++] = i, d2[p2++] = a2, d2[p2++] = m2 + s, d2[p2++] = n, d2[p2++] = u2, d2[p2++] = m2 + h2, d2[p2++] = o2, d2[p2++] = l, d2[p2] = m2 + _2, f2.writeToTypedArray(this._texcoordData, 2 * c2), 262144 & this._flags && this._WriteQuadTexIndices(c2), this._currentColor.writeToTypedArrayx4(this._colorData, 4 * c2);
+    Quad3D2(e, t2, r2, i, a2, s, n, u2, h2, o2, l, d2, f2) {
+      this.#_(4, 6);
+      const _2 = this.#t.WriteQuad3D2(this._baseZ + this._currentZ, e, t2, r2, i, a2, s, n, u2, h2, o2, l, d2, f2);
+      524288 & this._flags && this.#t.WriteTexIndicesForQuad(_2, this._currentMultiTextureIndex);
     }
-    Quad3D3(e, t2, r2, i, a2, s, n, u2, h2, o2, l, _2, f2, d2) {
-      this._AddToDrawBatch(4, 6), this._AddIndicesForQuad();
-      const c2 = this._vertexData, p2 = this._vertexPtr;
-      this._vertexPtr += 4;
-      let m2 = 3 * p2;
-      const g2 = this._baseZ + this._currentZ;
-      c2[m2++] = e, c2[m2++] = t2, c2[m2++] = g2 + r2, c2[m2++] = i, c2[m2++] = a2, c2[m2++] = g2 + s, c2[m2++] = n, c2[m2++] = u2, c2[m2++] = g2 + h2, c2[m2++] = o2, c2[m2++] = l, c2[m2] = g2 + _2, f2.writeToTypedArray(this._texcoordData, 2 * p2), 262144 & this._flags && this._WriteQuadTexIndices(p2), this._colorData.set(d2, 4 * p2);
+    Quad3D3(e, t2, r2, i, a2, s, n, u2, h2, o2, l, d2, f2, _2) {
+      this.#_(4, 6);
+      const c2 = this.#t.WriteQuad3D3(this._baseZ + this._currentZ, e, t2, r2, i, a2, s, n, u2, h2, o2, l, d2, f2, _2);
+      524288 & this._flags && this.#t.WriteTexIndicesForQuad(c2, this._currentMultiTextureIndex);
+    }
+    CreateMeshData(e, t2, r2) {
+      r2 = Object.assign({}, r2, { texIndices: true });
+      const i = new C32.Gfx.MeshDataWebGPU(this, e, t2, r2);
+      return this.#e.add(i), i;
+    }
+    _ReleaseMeshData(e) {
+      this.EndBatch(), this.#e.delete(e);
     }
     DrawMesh(e, t2, r2, i) {
+      const a2 = C32.Gfx.DynamicMeshData.GetMaxVertices(), s = C32.Gfx.DynamicMeshData.GetMaxIndices();
       if (e.length % 3 != 0) throw new Error("vertex buffer length not multiple of 3");
-      if (e.length > 196605) throw new Error(`too many vertices (${e.length / 3}, limit 65535)`);
+      if (e.length > 3 * a2) throw new Error(`too many vertices (${e.length / 3}, limit ${a2})`);
       if (r2.length % 3 != 0) throw new Error("index buffer length not multiple of 3");
-      if (r2.length > 393210) throw new Error(`too many indices (${r2.length}, limit 393210)`);
-      this._AddToDrawBatch(e.length, r2.length);
-      const a2 = this._vertexPtr;
-      this._vertexData.set(e, 3 * a2), this._texcoordData.set(t2, 2 * a2), 262144 & this._flags && this._texIndexData.fill(this._currentMultiTextureIndex, a2, a2 + e.length);
-      const s = this._indexData;
-      if (0 === a2) s.set(r2, this._indexPtr);
-      else {
-        let e2 = this._indexPtr;
-        for (let t3 = 0, i2 = r2.length; t3 < i2; ++t3) s[e2++] = r2[t3] + a2;
+      if (r2.length > s) throw new Error(`too many indices (${r2.length}, limit ${s})`);
+      this.#_(e.length, r2.length);
+      const n = this.#t.WriteMesh(e, t2, r2, i);
+      524288 & this._flags && this.#t.FillTexIndices(n, Math.floor(e.length / 3), this._currentMultiTextureIndex);
+    }
+    DrawMeshData(e, t2 = 0, r2 = e.GetIndexCount()) {
+      if (e.IsSmall()) if (0 === t2 && r2 === e.GetIndexCount()) {
+        this.#_(e.GetVertexCount(), e.GetIndexCount());
+        const t3 = this.#t.WriteMesh(e.positions, e.texCoords, e.indices, e.colors);
+        524288 & this._flags && this.#t.FillTexIndices(t3, e.GetVertexCount(), this._currentMultiTextureIndex);
+      } else {
+        const { minIndex: i, maxIndex: a2 } = C32.Gfx.DynamicMeshData.CalculatePartialIndexRange(e.indices, t2, r2), s = i, n = a2 + 1, u2 = n - s;
+        this.#_(u2, r2);
+        const h2 = this.#t.WriteMesh(e.positions.subarray(3 * s, 3 * n), e.texCoords.subarray(2 * s, 2 * n), e.indices.subarray(t2, t2 + r2), e.colors.subarray(4 * s, 4 * n), i);
+        524288 & this._flags && this.#t.FillTexIndices(h2, u2, this._currentMultiTextureIndex);
       }
-      const n = this._colorData;
-      if (null != i) n.set(i, 4 * a2);
-      else {
-        const t3 = this._currentColor, r3 = t3.getR(), i2 = t3.getG(), s2 = t3.getB(), u2 = t3.getA();
-        let h2 = 4 * a2;
-        for (let t4 = 0, a3 = e.length; t4 < a3; ++t4) n[h2++] = r3, n[h2++] = i2, n[h2++] = s2, n[h2++] = u2;
-      }
-      this._vertexPtr += e.length / 3, this._indexPtr += r2.length;
+      else 524288 & this._flags && e.FillTexIndices(this._currentMultiTextureIndex), this.#p(e), this.#a.add(e), null === this._currentRenderPass && this._BeginRenderPass(), this._flags |= 1, this._drawFirstIndex = t2, this._drawIndexCount = r2, this._MaybeEndDrawBatch();
+    }
+    #c() {
+      this.#p(this.#r);
+    }
+    #p(e) {
+      this.#i !== e && (this._MaybeEndDrawBatch(), this.#i = e, this._flags |= 32);
+    }
+    _GetCurrentMeshData() {
+      return this.#i;
     }
     StartRenderingPoints(e) {
       this._currentPointTexCoords.equals(e) || (this._currentPointTexCoords.copy(e), this._UpdatePointTexCoordsUniform());
       const t2 = this._baseZ + this._currentZ;
-      this._currentVertexZElevation !== t2 && (this._currentVertexZElevation = t2, this._UpdateZElevationUniform()), this._currentPointColor.equals(this._currentColor) || (this._currentPointColor.copy(this._currentColor), this._UpdatePointColorUniform()), this.SetProgram(this.GetPointsRenderingProgram()), this._drawIndexCount = 0, this._flags |= 18;
+      this._currentVertexZElevation !== t2 && (this._currentVertexZElevation = t2, this._UpdateZElevationUniform()), this._currentPointColor.equals(this._currentColor) || (this._currentPointColor.copy(this._currentColor), this._UpdatePointColorUniform()), this.SetProgram(this.GetPointsRenderingProgram()), this._drawIndexCount = 0, this._flags |= 34;
     }
     FinishRenderingPoints() {
-      this._drawIndexCount > 0 && this._MaybeEndDrawBatch(), this._flags &= -3, this._flags |= 16;
+      this._drawIndexCount > 0 && this._MaybeEndDrawBatch(), this._flags &= -3, this._flags |= 32;
     }
     Point(e, t2, r2, i) {
       let a2 = this._pointPtr;
-      a2 > LAST_POINT_PTR && (this.EndBatch(), a2 = 0), 1 & this._flags ? this._drawIndexCount += 6 : (null === this._currentRenderPass && this._BeginRenderPass(), this._flags |= 1, this._drawFirstIndex = a2 / 4 * 6, this._drawIndexCount = 6);
+      a2 > 65520 && (this.EndBatch(), a2 = 0), 1 & this._flags ? this._drawIndexCount += 6 : (null === this._currentRenderPass && this._BeginRenderPass(), this._flags |= 1, this._drawFirstIndex = a2 / 4 * 6, this._drawIndexCount = 6);
       const s = this._pointData;
       s[a2++] = e, s[a2++] = t2, s[a2++] = r2, s[a2++] = i, this._pointPtr = a2;
     }
@@ -9500,8 +10156,8 @@ var CheckPendingPolls2;
       tempVec2.set(r2, i), tempVec2.equalsF32Array(h2, u2.tileSize.offset / 4) || this._UpdateFragmentUniformVec2(tempVec2, u2.tileSize), h2[u2.outlineThickness.offset / 4] !== Math.fround(a2) && (h2[u2.outlineThickness.offset / 4] = a2, this._MarkFragUniformBufferRangeChanged(u2.outlineThickness)), tempVec2.set(s, n), tempVec2.equalsF32Array(h2, u2.tileSpacing.offset / 4) || this._UpdateFragmentUniformVec2(tempVec2, u2.tileSpacing);
     }
     SetProgramParameters(e, t2, r2, i, a2, s, n, u2, h2, o2, l) {
-      const _2 = this._fragC3ParamsLayout, f2 = this._currentProgram;
-      l %= 10800, f2.BlendsBackground() && this.SetBackTexture(e), f2.UsesAnyC3ParamRect() && (this._MaybeUpdateFragmentC3ParamsRect(t2, _2.destRect), this._MaybeUpdateFragmentC3ParamsRect(r2, _2.srcRect), this._MaybeUpdateFragmentC3ParamsRect(i, _2.srcOriginRect), this._MaybeUpdateFragmentC3ParamsRect(a2, _2.layoutRect)), this._MaybeUpdateFragmentC3ParamsFloat(u2, _2.devicePixelRatio), this._MaybeUpdateFragmentC3ParamsFloat(h2, _2.layerScale), this._MaybeUpdateFragmentC3ParamsFloat(o2, _2.layerAngle), this._MaybeUpdateFragmentC3ParamsFloat(l, _2.seconds), this._MaybeUpdateFragmentC3ParamsFloat(this.GetNearZ(), _2.zNear), this._MaybeUpdateFragmentC3ParamsFloat(this.GetFarZ(), _2.zFar);
+      const d2 = this._fragC3ParamsLayout, f2 = this._currentProgram;
+      l %= 10800, f2.BlendsBackground() && this.SetBackTexture(e), f2.UsesAnyC3ParamRect() && (this._MaybeUpdateFragmentC3ParamsRect(t2, d2.destRect), this._MaybeUpdateFragmentC3ParamsRect(r2, d2.srcRect), this._MaybeUpdateFragmentC3ParamsRect(i, d2.srcOriginRect), this._MaybeUpdateFragmentC3ParamsRect(a2, d2.layoutRect)), this._MaybeUpdateFragmentC3ParamsFloat(u2, d2.devicePixelRatio), this._MaybeUpdateFragmentC3ParamsFloat(h2, d2.layerScale), this._MaybeUpdateFragmentC3ParamsFloat(o2, d2.layerAngle), this._MaybeUpdateFragmentC3ParamsFloat(l, d2.seconds), this._MaybeUpdateFragmentC3ParamsFloat(this.GetNearZ(), d2.zNear), this._MaybeUpdateFragmentC3ParamsFloat(this.GetFarZ(), d2.zFar);
     }
     SetProgramCustomParameters(e) {
       e && (e.IsChanged() && (this._MaybeEndRenderPass(), e.UpdateBuffer(this._commandEncoder)), this._SetBufferBindGroup(e.GetBufferBindGroup()));
@@ -9510,7 +10166,7 @@ var CheckPendingPolls2;
       this._MaybeUpdateFragmentC3ParamsUint(e ? 1 : 0, this._fragC3ParamsLayout.isSrcTexRotated);
     }
     _SetBufferBindGroup(e) {
-      e !== this._currentBufferBindGroup && (this._MaybeEndDrawBatch(), this._currentBufferBindGroup = e, this._flags |= 8192);
+      e !== this._currentBufferBindGroup && (this._MaybeEndDrawBatch(), this._currentBufferBindGroup = e, this._flags |= 16384);
     }
     _OnBufferBindGroupDestroyed(e) {
       this._currentBufferBindGroup === e && this._SetBufferBindGroup(this._defaultBufferBindGroup);
@@ -9532,19 +10188,19 @@ var CheckPendingPolls2;
     }
     _ResolveMultisampledRenderTarget(e) {
       this._MaybeDoPendingClearRenderPass(e), this._MaybeEndRenderPass();
-      this._commandEncoder["beginRenderPass"]({ "colorAttachments": [{ "view": e.GetTexture()._GetTextureView(), "resolveTarget": this._currentRenderTarget.GetTexture()._GetTextureView(), "loadOp": "load", "storeOp": "store" }] })["end"](), this._flags |= 16384;
+      this._commandEncoder["beginRenderPass"]({ "colorAttachments": [{ "view": e.GetTexture()._GetTextureView(), "resolveTarget": this._currentRenderTarget.GetTexture()._GetTextureView(), "loadOp": "load", "storeOp": "store" }] })["end"](), this._flags |= 32768;
     }
     CoplanarStartStencilPass() {
-      this._MaybeEndRenderPass(), this.SetDepthEnabled(true), this._flags |= 41943040;
+      this._MaybeEndRenderPass(), this.SetDepthEnabled(true), this._flags |= 83886080;
     }
     CoplanarStartColorPass(e = false) {
-      this._MaybeEndRenderPass(), this.SetDepthEnabled(e), this._flags &= -8388609, this._flags |= 16777216;
+      this._MaybeEndRenderPass(), this.SetDepthEnabled(e), this._flags &= -16777217, this._flags |= 33554432;
     }
     IsCoplanarColorPass() {
-      return this._IsFlagSet(16777216);
+      return this._IsFlagSet(33554432);
     }
     CoplanarRestoreStandardRendering(e = true) {
-      this._MaybeEndRenderPass(), this.SetDepthEnabled(e), this._flags &= -16777217;
+      this._MaybeEndRenderPass(), this.SetDepthEnabled(e), this._flags &= -33554433;
     }
     _InitBlendModes() {
       this._InitBlendModeData([["normal", ["one", "one-minus-src-alpha"]], ["additive", ["one", "one"]], ["xor", ["one", "one-minus-src-alpha"]], ["copy", ["one", "zero"]], ["destination-over", ["one-minus-dst-alpha", "one"]], ["source-in", ["dst-alpha", "zero"]], ["destination-in", ["zero", "src-alpha"]], ["source-out", ["one-minus-dst-alpha", "zero"]], ["destination-out", ["zero", "one-minus-src-alpha"]], ["source-atop", ["dst-alpha", "one-minus-src-alpha"]], ["destination-atop", ["one-minus-dst-alpha", "src-alpha"]], ["lighten", ["one", "one", "one", "one", "max", "max"]], ["darken", ["one", "one", "one", "one", "min", "min"]], ["multiply", ["dst", "one-minus-src-alpha", "one", "one-minus-src-alpha"]], ["screen", ["one", "one-minus-src", "one", "one-minus-src-alpha"]]]);
@@ -9712,10 +10368,6 @@ var CheckPendingPolls2;
 {
   let UpdateLayoutEndValues = function(t2) {
     for (const e of Object.values(t2)) e.end = e.offset + e.size;
-  }, makeNullFilledArray = function(t2) {
-    const e = [];
-    for (let n = 0; n < t2; ++n) e.push(null);
-    return e;
   }, GetFragmentInputStructDeclaration = function(t2) {
     return `
 struct FragmentInput {
@@ -9737,7 +10389,7 @@ fn c3_getDepthUV(fragPos : vec2<f32>, texDepth : texture_depth_2d) -> vec2<f32>
   }, HashPipelineState = function(t2, e, n, r2, a2) {
     return t2 << 10 | e << 7 | n << 5 | r2 << 4 | a2;
   };
-  UpdateLayoutEndValues2 = UpdateLayoutEndValues, makeNullFilledArray2 = makeNullFilledArray, GetFragmentInputStructDeclaration2 = GetFragmentInputStructDeclaration, HashPipelineState2 = HashPipelineState;
+  UpdateLayoutEndValues2 = UpdateLayoutEndValues, GetFragmentInputStructDeclaration2 = GetFragmentInputStructDeclaration, HashPipelineState2 = HashPipelineState;
   const C32 = self.C3, SIZEOF_F32 = 4, SIZEOF_F16 = 2, SIZEOF_U32 = 4, SIZEOF_VEC2_F32 = 8, SIZEOF_VEC4_F32 = 16, SIZEOF_MAT4_F32 = 64;
   const vertexUniformBufferDeclaration = "\nstruct Uniforms {\n	transform		: mat4x4<f32>,\n	pointTexStart	: vec2<f32>,\n	pointTexEnd		: vec2<f32>,\n	zElevation		: f32\n};\n@binding(0) @group(0) var<uniform> uniforms : Uniforms;\n", vubLayout = { transform: { offset: 0, size: 64, end: 0 }, pointTex: { offset: 64, size: 16, end: 0 }, pointTexStart: { offset: 64, size: 8, end: 0 }, pointTexEnd: { offset: 72, size: 8, end: 0 }, zElevation: { offset: 80, size: 4, end: 0 } };
   UpdateLayoutEndValues(vubLayout);
@@ -10543,32 +11195,46 @@ fn main(input : FragmentInput) -> FragmentOutput
   };
 }
 var UpdateLayoutEndValues2;
-var makeNullFilledArray2;
 var GetFragmentInputStructDeclaration2;
 var HashPipelineState2;
 {
-  const C32 = self.C3, VALID_SAMPLINGS = /* @__PURE__ */ new Set(["nearest", "bilinear", "trilinear"]), VALID_WRAP_MODES = /* @__PURE__ */ new Set(["clamp-to-edge", "repeat", "mirror-repeat"]), GPUTextureUsage = self["GPUTextureUsage"], DEFAULT_CREATE_OPTIONS = { wrapX: "clamp-to-edge", wrapY: "clamp-to-edge", sampling: "trilinear", anisotropy: 0, mipMap: true, isRenderTarget: false, isSampled: false, canReadPixels: false, canUpdate: false, multisampling: 0, width: -1, height: -1 }, TEXTURE_FORMAT_SIZE_DATA = [[1, ["r8unorm", "r8snorm", "r8uint", "r8sint", "stencil8"]], [2, ["r16uint", "r16sint", "r16float", "rg8unorm", "rg8snorm", "rg8uint", "rg8sint", "depth16unorm"]], [3, ["depth24plus"]], [4, ["r32uint", "r32sint", "r32float", "rg16uint", "rg16sint", "rg16float", "rgba8unorm", "rgba8unorm-srgb", "rgba8snorm", "rgba8uint", "rgba8sint", "bgra8unorm", "bgra8unorm-srgb", "rgb9e5ufloat", "rgb10a2uint", "rgb10a2unorm", "rg11b10ufloat", "depth24plus-stencil8", "depth32float"]], [8, ["rg32uint", "rg32sint", "rg32float", "rgba16uint", "rgba16sint", "rgba16float"]], [16, ["rgba32uint", "rgba32sint", "rgba32float"]], [5, ["depth32float-stencil8"]]], TEXTURE_FORMAT_SIZE_MAP = /* @__PURE__ */ new Map();
+  const C32 = self.C3, VALID_WRAP_MODES = /* @__PURE__ */ new Set(["clamp-to-edge", "repeat", "mirror-repeat"]), GPUTextureUsage = self["GPUTextureUsage"], DEFAULT_CREATE_OPTIONS = { wrapX: "clamp-to-edge", wrapY: "clamp-to-edge", defaultSampling: "trilinear", anisotropy: 1, mipMap: true, isRenderTarget: false, isSampled: false, canReadPixels: false, canUpdate: false, multisampling: 0, isWebGPUFastUpdate: false, width: -1, height: -1 }, TEXTURE_FORMAT_SIZE_DATA = [[1, ["r8unorm", "r8snorm", "r8uint", "r8sint", "stencil8"]], [2, ["r16uint", "r16sint", "r16float", "rg8unorm", "rg8snorm", "rg8uint", "rg8sint", "depth16unorm"]], [3, ["depth24plus"]], [4, ["r32uint", "r32sint", "r32float", "rg16uint", "rg16sint", "rg16float", "rgba8unorm", "rgba8unorm-srgb", "rgba8snorm", "rgba8uint", "rgba8sint", "bgra8unorm", "bgra8unorm-srgb", "rgb9e5ufloat", "rgb10a2uint", "rgb10a2unorm", "rg11b10ufloat", "depth24plus-stencil8", "depth32float"]], [8, ["rg32uint", "rg32sint", "rg32float", "rgba16uint", "rgba16sint", "rgba16float"]], [16, ["rgba32uint", "rgba32sint", "rgba32float"]], [5, ["depth32float-stencil8"]]], TEXTURE_FORMAT_SIZE_MAP = /* @__PURE__ */ new Map();
   for (const [e, t2] of TEXTURE_FORMAT_SIZE_DATA) for (const r2 of t2) TEXTURE_FORMAT_SIZE_MAP.set(r2, e);
   const allTextures = /* @__PURE__ */ new Set(), UPDATE_DEFAULT_OPTIONS = { premultiplyAlpha: true, flipY: false };
   C32.Gfx.WebGPURendererTexture = class {
+    #e = "trilinear";
+    #t = 2;
+    #r = [null, null, null];
+    #i = [null, null, null];
     constructor(e, t2) {
-      this._renderer = e, this._texture = null, this._format = "", this._textureView = null, this._sampler = null, this._ownTextureBindGroup = null, this._backTextureBindGroup = null, this._width = 0, this._height = 0, this._isStatic = true, this._wrapX = "clamp-to-edge", this._wrapY = "clamp-to-edge", this._sampling = "trilinear", this._anisotropy = 0, this._isMipMapped = false, this._refCount = 0, this._isRenderTarget = false, this._isSampled = false, this._canReadPixels = false, this._canUpdate = false, this._multisampling = 0, this._usage = 0, this._multiTextureEnabled = true, this._multiTextureGroup = null, this._multiTextureIndex = 0, this._isForBackbuffer = !!t2, this._isForBackbuffer && (this._format = this._renderer.GetSwapChainFormat(), this._isRenderTarget = true, this._isSampled = this._renderer._CanSampleBackbuffer(), this._sampling = this._renderer._GetBackTextureSampling(), this._sampler = this._renderer._GetSampler({ sampling: this._sampling }));
+      this._renderer = e, this._texture = null, this._format = "", this._textureView = null, this._width = 0, this._height = 0, this._isStatic = true, this._wrapX = "clamp-to-edge", this._wrapY = "clamp-to-edge", this._anisotropy = 1, this._isMipMapped = false, this._refCount = 0, this._isRenderTarget = false, this._isSampled = false, this._canReadPixels = false, this._canUpdate = false, this._isFastUpdate = false, this._multisampling = 0, this._usage = 0, this._multiTextureEnabled = true, this._multiTextureGroup = null, this._multiTextureIndex = 0, this._isForBackbuffer = !!t2, this._isForBackbuffer && (this._format = this._renderer.GetSwapChainFormat(), this._isRenderTarget = true, this._isSampled = this._renderer._CanSampleBackbuffer());
     }
     _InitFromOpts(e) {
-      if (this._wrapX = e.wrapX, this._wrapY = e.wrapY, this._sampling = e.sampling, this._anisotropy = e.anisotropy, this._isMipMapped = !!e.mipMap && this._renderer.AreMipmapsEnabled() && "nearest" !== e.sampling, this._isRenderTarget = !!e.isRenderTarget, this._isSampled = !!e.isSampled, this._canReadPixels = !!e.canReadPixels, this._canUpdate = !!e.canUpdate, this._multisampling = this._renderer._ClampToSupportedMultisampleValues(e.multisampling), !VALID_SAMPLINGS.has(this._sampling)) throw new Error("invalid sampling");
-      if (!VALID_WRAP_MODES.has(this._wrapX) || !VALID_WRAP_MODES.has(this._wrapY)) throw new Error("invalid wrap mode");
+      if (this._wrapX = e.wrapX, this._wrapY = e.wrapY, this._anisotropy = e.anisotropy, this._isMipMapped = !!e.mipMap && this._renderer.AreMipmapsEnabled(), this.SetDefaultSampling(e.defaultSampling), this._isRenderTarget = !!e.isRenderTarget, this._isSampled = !!e.isSampled, this._canReadPixels = !!e.canReadPixels, this._canUpdate = !!e.canUpdate, this._isFastUpdate = !!e.isWebGPUFastUpdate, this._multisampling = this._renderer._ClampToSupportedMultisampleValues(e.multisampling), !VALID_WRAP_MODES.has(this._wrapX) || !VALID_WRAP_MODES.has(this._wrapY)) throw new Error("invalid wrap mode");
       if (this._multisampling >= 2 && this._isSampled) throw new Error("invalid use of multisampling");
-      "nearest" === this._sampling && (this._anisotropy = 0), this._sampler = this._renderer._GetSampler({ wrapX: this._wrapX, wrapY: this._wrapY, sampling: this._sampling, anisotropy: this._anisotropy }), this._CreateGPUResources(), this._refCount = 1;
+      this._CreateGPUResources(), this._refCount = 1;
     }
     _CreateGPUResources() {
-      const e = this._renderer, t2 = e._GetDevice();
-      this._usage = 0, this._isRenderTarget ? (this._usage = GPUTextureUsage["RENDER_ATTACHMENT"], this._isSampled && (this._usage |= GPUTextureUsage["TEXTURE_BINDING"]), this._canUpdate && (this._usage |= GPUTextureUsage["COPY_DST"]), this._format = this._renderer.GetSwapChainFormat()) : (this._usage = GPUTextureUsage["COPY_DST"] | GPUTextureUsage["TEXTURE_BINDING"], this._format = this._renderer.GetTextureFormat()), this._canReadPixels && (this._usage |= GPUTextureUsage["COPY_SRC"]), this._texture = t2["createTexture"]({ "size": [this._width, this._height, 1], "mipLevelCount": this._GetMipLevelCount(), "format": this._format, "usage": this._usage, "sampleCount": this._multisampling >= 2 ? this._multisampling : 1 }), this._textureView = this._texture["createView"]();
-      const r2 = [], i = C32.Gfx.WebGPUMultiTextureGroup.GetMultiTextureLimit();
-      for (let e2 = 0; e2 < i; ++e2) r2.push({ "binding": 2 * e2, "resource": this._sampler }, { "binding": 2 * e2 + 1, "resource": this._textureView });
-      this._isRenderTarget && !this._isSampled || (this._ownTextureBindGroup = t2["createBindGroup"]({ "layout": e._GetTextureBindGroupLayout(), "entries": r2 }), this._backTextureBindGroup = t2["createBindGroup"]({ "layout": e._GetBackTextureBindGroupLayout(), "entries": [{ "binding": 0, "resource": this._renderer._GetSampler({ sampling: this._renderer._GetBackTextureSampling() }) }, { "binding": 1, "resource": this._textureView }] })), this._CanMultiTexture() && this._SetMultiTextureAvailable(true), allTextures.add(this);
+      const e = this._renderer._GetDevice();
+      this._usage = 0, this._isRenderTarget ? (this._usage = GPUTextureUsage["RENDER_ATTACHMENT"], this._isSampled && (this._usage |= GPUTextureUsage["TEXTURE_BINDING"]), this._canUpdate && (this._usage |= GPUTextureUsage["COPY_DST"]), this._format = this._renderer.GetSwapChainFormat()) : (this._usage = GPUTextureUsage["COPY_DST"] | GPUTextureUsage["TEXTURE_BINDING"], this._isFastUpdate && (this._usage |= GPUTextureUsage["RENDER_ATTACHMENT"]), this._format = this._renderer.GetTextureFormat()), this._canReadPixels && (this._usage |= GPUTextureUsage["COPY_SRC"]), this._texture = e["createTexture"]({ "size": [this._width, this._height, 1], "mipLevelCount": this._GetMipLevelCount(), "format": this._format, "usage": this._usage, "sampleCount": this._multisampling >= 2 ? this._multisampling : 1 }), this._textureView = this._texture["createView"](), this._CanMultiTexture() && this._SetMultiTextureAvailable(true), allTextures.add(this);
+    }
+    _GetSampler(e) {
+      const t2 = C32.Gfx.RendererBase.SamplingNumberToMode(e + 1);
+      return this._renderer._GetSampler({ wrapX: this._wrapX, wrapY: this._wrapY, sampling: t2, anisotropy: this._anisotropy });
+    }
+    #s(e) {
+      if (this._isRenderTarget && !this._isSampled) throw new Error("cannot create bind group");
+      const t2 = this._renderer, r2 = t2._GetDevice(), i = this._GetSampler(e), s = [], a2 = C32.Gfx.WebGPUMultiTextureGroup.GetMultiTextureLimit();
+      for (let e2 = 0; e2 < a2; ++e2) s.push({ "binding": 2 * e2, "resource": i }, { "binding": 2 * e2 + 1, "resource": this._textureView });
+      return r2["createBindGroup"]({ "layout": t2._GetTextureBindGroupLayout(), "entries": s });
+    }
+    #a(e) {
+      if (this._isRenderTarget && !this._isSampled) throw new Error("cannot create bind group");
+      const t2 = this._renderer, r2 = this._renderer._GetDevice(), i = this._GetSampler(e);
+      return r2["createBindGroup"]({ "layout": t2._GetBackTextureBindGroupLayout(), "entries": [{ "binding": 0, "resource": i }, { "binding": 1, "resource": this._textureView }] });
     }
     _DeleteGPUResources() {
-      allTextures.delete(this), this._multiTextureGroup && this._multiTextureGroup.Release(), this._SetMultiTextureAvailable(false), this._texture["destroy"](), this._texture = null, this._textureView = null, this._ownTextureBindGroup = null, this._backTextureBindGroup = null;
+      allTextures.delete(this), this._multiTextureGroup && this._multiTextureGroup.Release(), this._SetMultiTextureAvailable(false), this._texture["destroy"](), this._texture = null, this._textureView = null, this.#r.fill(null), this.#i.fill(null);
     }
     static IsGPUImageCopyExternalImageSource(e) {
       return e instanceof ImageBitmap || "undefined" != typeof HTMLVideoElement && e instanceof HTMLVideoElement || "undefined" != typeof HTMLCanvasElement && e instanceof HTMLCanvasElement || "undefined" != typeof OffscreenCanvas && e instanceof OffscreenCanvas;
@@ -10591,6 +11257,7 @@ var HashPipelineState2;
     }
     _UploadImage(e, t2 = true) {
       if (this._isMipMapped) this._GenerateMipmaps(e, this._GetMipLevelCount(), t2);
+      else if (this._isFastUpdate) this._CopyImageToMipLevel(this._texture, e, 0, t2);
       else {
         const r2 = this._renderer._GetDevice(), i = r2["createCommandEncoder"](), s = r2["createTexture"]({ "size": [this._width, this._height, 1], "mipLevelCount": 1, "format": this._format, "usage": GPUTextureUsage["COPY_SRC"] | GPUTextureUsage["COPY_DST"] | GPUTextureUsage["RENDER_ATTACHMENT"] });
         this._CopyImageToMipLevel(s, e, 0, t2), i["copyTextureToTexture"]({ "texture": s, "mipLevel": 0 }, { "texture": this._texture, "mipLevel": 0 }, [this._width, this._height, 1]), r2["queue"]["submit"]([i["finish"]()]), s["destroy"]();
@@ -10604,14 +11271,14 @@ var HashPipelineState2;
       return this._isMipMapped ? Math.floor(Math.log2(Math.max(this._width, this._height)) + 1) : 1;
     }
     _GenerateMipmaps(e, t2, r2 = true) {
-      const i = this._renderer._GetDevice(), s = i["createTexture"]({ "size": [this._width, this._height, 1], "mipLevelCount": this._GetMipLevelCount(), "format": this._format, "usage": GPUTextureUsage["COPY_DST"] | GPUTextureUsage["COPY_SRC"] | GPUTextureUsage["TEXTURE_BINDING"] | GPUTextureUsage["RENDER_ATTACHMENT"] }), a2 = this._renderer._GetMipmapGeneratorPipeline(), n = a2["getBindGroupLayout"](0), u2 = this._renderer._GetSampler({ sampling: "bilinear" }), h2 = i["createCommandEncoder"]();
+      const i = this._renderer._GetDevice(), s = i["createTexture"]({ "size": [this._width, this._height, 1], "mipLevelCount": this._GetMipLevelCount(), "format": this._format, "usage": GPUTextureUsage["COPY_DST"] | GPUTextureUsage["COPY_SRC"] | GPUTextureUsage["TEXTURE_BINDING"] | GPUTextureUsage["RENDER_ATTACHMENT"] }), a2 = this._renderer._GetMipmapGeneratorPipeline(), u2 = a2["getBindGroupLayout"](0), n = this._renderer._GetSampler({ sampling: "bilinear" }), h2 = i["createCommandEncoder"]();
       this._CopyImageToMipLevel(s, e, 0, r2), h2["copyTextureToTexture"]({ "texture": s, "mipLevel": 0 }, { "texture": this._texture, "mipLevel": 0 }, [this._width, this._height, 1]);
-      const _2 = [];
-      for (let e2 = 0; e2 < t2; ++e2) _2.push(s["createView"]({ "baseMipLevel": e2, "mipLevelCount": 1 }));
-      let l = this._width, o2 = this._height;
+      const l = [];
+      for (let e2 = 0; e2 < t2; ++e2) l.push(s["createView"]({ "baseMipLevel": e2, "mipLevelCount": 1 }));
+      let o2 = this._width, _2 = this._height;
       for (let e2 = 1; e2 < t2; ++e2) {
-        l /= 2, o2 /= 2;
-        const t3 = Math.max(Math.floor(l), 1), r3 = Math.max(Math.floor(o2), 1), p2 = h2["beginRenderPass"]({ "colorAttachments": [{ "view": _2[e2], "loadOp": "clear", "clearValue": [0, 0, 0, 0], "storeOp": "store" }] }), d2 = i["createBindGroup"]({ "layout": n, "entries": [{ "binding": 0, "resource": u2 }, { "binding": 1, "resource": _2[e2 - 1] }] });
+        o2 /= 2, _2 /= 2;
+        const t3 = Math.max(Math.floor(o2), 1), r3 = Math.max(Math.floor(_2), 1), p2 = h2["beginRenderPass"]({ "colorAttachments": [{ "view": l[e2], "loadOp": "clear", "clearValue": [0, 0, 0, 0], "storeOp": "store" }] }), d2 = i["createBindGroup"]({ "layout": u2, "entries": [{ "binding": 0, "resource": n }, { "binding": 1, "resource": l[e2 - 1] }] });
         p2["setPipeline"](a2), p2["setBindGroup"](0, d2), p2["draw"](4), p2["end"](), h2["copyTextureToTexture"]({ "texture": s, "mipLevel": e2 }, { "texture": this._texture, "mipLevel": e2 }, [t3, r3, 1]);
       }
       i["queue"]["submit"]([h2["finish"]()]), s["destroy"]();
@@ -10650,14 +11317,14 @@ var HashPipelineState2;
     _ClearMultiTextureGroup() {
       this._multiTextureGroup = null, this._multiTextureIndex = 0, this._CanMultiTexture() && this._SetMultiTextureAvailable(true);
     }
-    _GetOwnTextureBindGroup() {
-      return this._ownTextureBindGroup;
+    _GetOwnTextureBindGroup(e) {
+      return this.#r[e] || (this.#r[e] = this.#s(e)), this.#r[e];
     }
-    _GetBackTextureBindGroup() {
-      return this._backTextureBindGroup;
+    _GetBackTextureBindGroup(e) {
+      return this.#i[e] || (this.#i[e] = this.#a(e)), this.#i[e];
     }
-    _GetMultiTextureBindGroup() {
-      return null !== this._multiTextureGroup ? this._multiTextureGroup._GetBindGroup() : this._CanMultiTexture() ? (this._renderer._TryCreateMultiTextureGroup(this), null !== this._multiTextureGroup ? this._multiTextureGroup._GetBindGroup() : null) : null;
+    _GetMultiTextureBindGroup(e) {
+      return null !== this._multiTextureGroup ? this._multiTextureGroup._GetBindGroup(e) : this._CanMultiTexture() ? (this._renderer._TryCreateMultiTextureGroup(this), null !== this._multiTextureGroup ? this._multiTextureGroup._GetBindGroup(e) : null) : null;
     }
     _GetMultiTextureIndex() {
       return this._multiTextureIndex;
@@ -10680,14 +11347,18 @@ var HashPipelineState2;
     _GetFormat() {
       return this._format;
     }
-    _GetSampler() {
-      return this._sampler;
+    GetDefaultSampling() {
+      return this.#e;
     }
-    GetSampling() {
-      return this._sampling;
+    SetDefaultSampling(e) {
+      if (!C32.Gfx.RendererBase.IsValidSamplingMode(e) || "auto" === e) throw new Error("invalid sampling");
+      "trilinear" !== e || this._isMipMapped || (e = "bilinear"), this.#e = e, this.#t = C32.Gfx.RendererBase.SamplingModeToNumber(this.#e) - 1;
     }
-    IsLinearSampling() {
-      return "nearest" !== this._sampling;
+    _GetDefaultSamplingIndex() {
+      return this.#t;
+    }
+    _SetAnisotropy(e) {
+      this._anisotropy = e, this.#r.fill(null), this.#i.fill(null);
     }
     IsRenderTarget() {
       return this._isRenderTarget;
@@ -10715,11 +11386,12 @@ var HashPipelineState2;
       this._usage = e, this._format = t2;
     }
     _BackbufferTextureStartFrame() {
-      const e = this._renderer, t2 = e._GetDevice();
-      this._texture = e._GetSwapChainTexture(), this._textureView = e._GetSwapChainTexView(), e._CanSampleBackbuffer() && (this._backTextureBindGroup = t2["createBindGroup"]({ "layout": e._GetBackTextureBindGroupLayout(), "entries": [{ "binding": 0, "resource": this._sampler }, { "binding": 1, "resource": this._textureView }] }));
+      const e = this._renderer;
+      e._GetDevice();
+      this._texture = e._GetSwapChainTexture(), this._textureView = e._GetSwapChainTexView(), this.#i.fill(null);
     }
     _BackbufferTextureEndFrame() {
-      this._texture = null, this._textureView = null, this._backTextureBindGroup = null;
+      this._texture = null, this._textureView = null, this.#i.fill(null);
     }
     GetEstimatedMemoryUsage() {
       let e = this.GetWidth() * this.GetHeight() * C32.Gfx.WebGPURendererTexture.GetFormatByteSize(this._GetFormat());
@@ -10737,41 +11409,45 @@ var HashPipelineState2;
   };
 }
 {
-  const C32 = self.C3;
+  const C32 = self.C3, allMultiTextureGroups = /* @__PURE__ */ new Set();
   C32.Gfx.WebGPUMultiTextureGroup = class {
+    #e = [null, null, null];
     constructor(e, t2) {
       if (t2.length < 2) throw new Error("invalid multi-texture group");
-      this._renderer = e, this._textures = t2, this._multiTextureBindGroup = null;
+      this._renderer = e, this._textures = t2;
       for (let e2 = 0, r2 = t2.length; e2 < r2; ++e2) t2[e2]._SetMultiTextureGroup(this, e2);
-      t2.length < C32.Gfx.WebGPUMultiTextureGroup.GetMultiTextureLimit() && this._renderer._SetMultiTextureGroupNonFull(this, true), this._CreateBindGroup();
+      t2.length < C32.Gfx.WebGPUMultiTextureGroup.GetMultiTextureLimit() && this._renderer._SetMultiTextureGroupNonFull(this, true), allMultiTextureGroups.add(this);
     }
     Release() {
-      this._renderer._SetMultiTextureGroupNonFull(this, false);
+      allMultiTextureGroups.delete(this), this._renderer._SetMultiTextureGroupNonFull(this, false);
       for (const e of this._textures) e._ClearMultiTextureGroup();
-      this._DeleteBindGroup(), C32.clearArray(this._textures), this._renderer = null;
+      this.DeleteBindGroups(), C32.clearArray(this._textures), this._renderer = null;
     }
-    _CreateBindGroup() {
-      this._DeleteBindGroup();
-      const e = this._renderer._GetDevice(), t2 = [], r2 = C32.Gfx.WebGPUMultiTextureGroup.GetMultiTextureLimit();
-      for (let e2 = 0; e2 < r2; ++e2) {
-        const r3 = this._textures[Math.min(e2, this._textures.length - 1)];
-        t2.push({ "binding": 2 * e2, "resource": r3._GetSampler() }, { "binding": 2 * e2 + 1, "resource": r3._GetTextureView() });
+    #t(e) {
+      const t2 = this._renderer, r2 = t2._GetDevice(), u2 = [], i = C32.Gfx.WebGPUMultiTextureGroup.GetMultiTextureLimit();
+      for (let t3 = 0; t3 < i; ++t3) {
+        const r3 = this._textures[Math.min(t3, this._textures.length - 1)];
+        u2.push({ "binding": 2 * t3, "resource": r3._GetSampler(e) }, { "binding": 2 * t3 + 1, "resource": r3._GetTextureView() });
       }
-      this._multiTextureBindGroup = e["createBindGroup"]({ "layout": this._renderer._GetTextureBindGroupLayout(), "entries": t2 });
+      return r2["createBindGroup"]({ "layout": t2._GetTextureBindGroupLayout(), "entries": u2 });
     }
-    _DeleteBindGroup() {
-      null !== this._multiTextureBindGroup && this._renderer._OnMultiTextureBindGroupReleased(this._multiTextureBindGroup), this._multiTextureBindGroup = null;
+    DeleteBindGroups() {
+      for (const e of this.#e) e && this._renderer._OnMultiTextureBindGroupReleased(e);
+      this.#e.fill(null);
     }
-    _GetBindGroup() {
-      return this._multiTextureBindGroup;
+    _GetBindGroup(e) {
+      return this.#e[e] || (this.#e[e] = this.#t(e)), this.#e[e];
     }
     static GetMultiTextureLimit() {
       return 14;
     }
+    static all() {
+      return allMultiTextureGroups.values();
+    }
   };
 }
 {
-  const C32 = self.C3, glMatrix = self.glMatrix, vec3 = glMatrix.vec3, mat4 = glMatrix.mat4, DEFAULT_RENDERTARGET_OPTIONS = { sampling: "trilinear", alpha: true, depth: false, isSampled: true, canReadPixels: false, canUpdate: false, isDefaultSize: true, multisampling: 0 }, allRenderTargets = /* @__PURE__ */ new Set();
+  const C32 = self.C3, glMatrix = self.glMatrix, vec3 = glMatrix.vec3, mat4 = glMatrix.mat4, DEFAULT_RENDERTARGET_OPTIONS = { defaultSampling: "trilinear", alpha: true, depth: false, isSampled: true, canReadPixels: false, canUpdate: false, isDefaultSize: true, multisampling: 0 }, allRenderTargets = /* @__PURE__ */ new Set();
   C32.Gfx.WebGPURenderTarget = class {
     constructor(e, t2) {
       this._renderer = e, this._isBackBuffer = !!t2, this._depth = !!t2 && e.UsesDepthBuffer(), this._rendererTexture = null, this._isDefaultSize = true, this._multisampling = 0, this._isAwaitingClear = false, this._clearColor = C32.New(C32.Color), this._projectionMatrix = mat4.create(), this._lastFov = 0, this._lastNearZ = 0, this._lastFarZ = 0, this._isBackBuffer && (this._rendererTexture = C32.New(C32.Gfx.WebGPURendererTexture, e, true));
@@ -10779,15 +11455,15 @@ var HashPipelineState2;
     _Create(e, t2, r2) {
       if (r2 = Object.assign({}, DEFAULT_RENDERTARGET_OPTIONS, r2), this._rendererTexture) throw new Error("already created render target");
       if (this._depth = !!r2.depth, this._isDefaultSize = !!r2.isDefaultSize, this._multisampling = this._renderer._ClampToSupportedMultisampleValues(r2.multisampling), this._multisampling >= 2 && r2.isSampled) throw new Error("invalid use of multisampling");
-      this._rendererTexture = this._renderer.CreateDynamicTexture(e, t2, { sampling: r2.sampling, mipMap: false, isRenderTarget: true, isSampled: r2.isSampled, canReadPixels: r2.canReadPixels, canUpdate: r2.canUpdate, multisampling: this._multisampling }), this._CalculateProjection(), allRenderTargets.add(this);
+      this._rendererTexture = this._renderer.CreateDynamicTexture(e, t2, { defaultSampling: r2.defaultSampling, mipMap: false, isRenderTarget: true, isSampled: r2.isSampled, canReadPixels: r2.canReadPixels, canUpdate: r2.canUpdate, multisampling: this._multisampling }), this._CalculateProjection(), allRenderTargets.add(this);
     }
     _Delete() {
       allRenderTargets.delete(this), this._rendererTexture._DeleteGPUResources(), this._rendererTexture = null, this._renderer = null;
     }
     _Resize(e, t2) {
       if (e === this.GetWidth() && t2 === this.GetHeight()) return;
-      const r2 = this._rendererTexture.GetSampling(), i = this._rendererTexture.IsSampled(), s = this._rendererTexture.CanReadPixels();
-      this._rendererTexture._DeleteGPUResources(), this._rendererTexture = null, this._rendererTexture = this._renderer.CreateDynamicTexture(e, t2, { sampling: r2, mipMap: false, isRenderTarget: true, isSampled: i, canReadPixels: s }), this._CalculateProjection();
+      const r2 = this._rendererTexture.GetDefaultSampling(), i = this._rendererTexture.IsSampled(), s = this._rendererTexture.CanReadPixels();
+      this._rendererTexture._DeleteGPUResources(), this._rendererTexture = null, this._rendererTexture = this._renderer.CreateDynamicTexture(e, t2, { defaultSampling: r2, mipMap: false, isRenderTarget: true, isSampled: i, canReadPixels: s }), this._CalculateProjection();
     }
     _GetTextureView() {
       return this._isBackBuffer ? this._renderer._GetSwapChainTexView() : this._rendererTexture._GetTextureView();
@@ -10800,6 +11476,12 @@ var HashPipelineState2;
     }
     IsBackBuffer() {
       return this._isBackBuffer;
+    }
+    SetDefaultSampling(e) {
+      this._rendererTexture.SetDefaultSampling(e);
+    }
+    GetDefaultSampling() {
+      return this._rendererTexture.GetDefaultSampling();
     }
     HasDepthBuffer() {
       return this._depth;
@@ -10823,9 +11505,6 @@ var HashPipelineState2;
     GetProjectionMatrix() {
       return this._renderer.GetFovY() === this._lastFov && this._renderer.GetNearZ() === this._lastNearZ && this._renderer.GetFarZ() === this._lastFarZ || this._CalculateProjection(), this._projectionMatrix;
     }
-    IsLinearSampling() {
-      return this._rendererTexture.IsLinearSampling();
-    }
     IsSampled() {
       return this._rendererTexture.IsSampled();
     }
@@ -10833,7 +11512,7 @@ var HashPipelineState2;
       return this._rendererTexture.CanReadPixels();
     }
     IsCompatibleWithOptions(e) {
-      return "nearest" !== (e = Object.assign({}, DEFAULT_RENDERTARGET_OPTIONS, e)).sampling === this.IsLinearSampling() && (!!e.isSampled === this.IsSampled() && (!!e.canReadPixels === this.CanReadPixels() && (!!e.depth === this.HasDepthBuffer() && ("number" == typeof e.width || "number" == typeof e.height ? !this.IsDefaultSize() && this.GetWidth() === Math.floor(e.width) && this.GetHeight() === Math.floor(e.height) : this.IsDefaultSize()))));
+      return !!(e = Object.assign({}, DEFAULT_RENDERTARGET_OPTIONS, e)).isSampled === this.IsSampled() && (!!e.canReadPixels === this.CanReadPixels() && (!!e.depth === this.HasDepthBuffer() && ("number" == typeof e.width || "number" == typeof e.height ? !this.IsDefaultSize() && this.GetWidth() === Math.floor(e.width) && this.GetHeight() === Math.floor(e.height) : this.IsDefaultSize())));
     }
     _SetIsAwaitingClear(e) {
       this._isAwaitingClear = !!e;
@@ -10854,37 +11533,99 @@ var HashPipelineState2;
 {
   const C32 = self.C3;
   C32.Gfx.WebGPUTimeQuerySet = class {
-    constructor(e, t2) {
-      this._renderer = e, this._frameNumber = this._renderer.GetFrameNumber(), this._queryCount = t2;
-      const r2 = this._renderer._GetDevice();
-      this._querySet = r2["createQuerySet"]({ "count": this._queryCount, "type": "timestamp" });
-      const s = self["GPUBufferUsage"];
-      this._resolveBuffer = r2["createBuffer"]({ "size": this._GetBufferSize(), "usage": s["QUERY_RESOLVE"] | s["COPY_SRC"] }), this._readbackBuffer = r2["createBuffer"]({ "size": this._GetBufferSize(), "usage": s["COPY_DST"] | s["MAP_READ"] }), this._result = null;
+    #e;
+    #r = 0;
+    #t = null;
+    #s = null;
+    #u = null;
+    constructor(e) {
+      this.#e = e;
     }
-    _GetBufferSize() {
-      return 8 * this._queryCount;
+    SetQueryCount(e) {
+      if (e !== this.#r && (this.#r = e, this.#t && this.#t["destroy"](), this.#s && this.#s["destroy"](), this.#u && this.#u["destroy"](), this.#r > 0)) {
+        const e2 = this.#e._GetDevice();
+        this.#t = e2["createQuerySet"]({ "count": this.#r, "type": "timestamp" });
+        const r2 = globalThis["GPUBufferUsage"];
+        this.#s = e2["createBuffer"]({ "size": this.#f(), "usage": r2["QUERY_RESOLVE"] | r2["COPY_SRC"] }), this.#u = this.#i();
+      }
+    }
+    GetQueryCount() {
+      return this.#r;
+    }
+    #i() {
+      const e = this.#e._GetDevice(), r2 = globalThis["GPUBufferUsage"];
+      return e["createBuffer"]({ "size": this.#f(), "usage": r2["COPY_DST"] | r2["MAP_READ"] });
+    }
+    #f() {
+      return 8 * this.#r;
     }
     _GetQuerySet() {
-      return this._querySet;
+      return this.#t;
     }
     Resolve(e) {
-      e["resolveQuerySet"](this._querySet, 0, this._queryCount, this._resolveBuffer, 0), e["copyBufferToBuffer"](this._resolveBuffer, 0, this._readbackBuffer, 0, this._GetBufferSize());
+      e["resolveQuerySet"](this.#t, 0, this.#r, this.#s, 0), e["copyBufferToBuffer"](this.#s, 0, this.#u, 0, this.#f());
     }
-    async ReadResult() {
-      const e = this._GetBufferSize();
-      await this._readbackBuffer["mapAsync"](self["GPUMapMode"]["READ"], 0, e);
-      const t2 = this._readbackBuffer["getMappedRange"](0, e);
-      this._result = new BigUint64Array(t2.slice(0)), this._readbackBuffer["destroy"](), this._readbackBuffer = null, this._resolveBuffer["destroy"](), this._resolveBuffer = null, this._querySet["destroy"](), this._querySet = null;
+    async GetResult(e) {
+      const r2 = this.#u;
+      this.#u = this.#i();
+      const t2 = this.#f();
+      await r2["mapAsync"](globalThis["GPUMapMode"]["READ"], 0, t2);
+      const s = r2["getMappedRange"](0, t2), u2 = new BigUint64Array(s.slice(0));
+      r2["destroy"]();
+      for (let r3 = 0, t3 = u2.length; r3 < t3; ++r3) e.has(r3) || (u2[r3] = BigInt(0));
+      return u2;
     }
-    HasResult() {
-      return null !== this._result;
+  };
+}
+{
+  const C32 = globalThis.C3, assert = globalThis.assert, GPUBufferUsage = globalThis["GPUBufferUsage"], SIZEOF_U16 = 2, SIZEOF_U32 = 4, SIZEOF_F16 = 2, SIZEOF_F32 = 4;
+  C32.Gfx.MeshDataWebGPU = class extends C32.Gfx.MeshData {
+    #e = null;
+    #t = null;
+    #f = null;
+    #s = null;
+    #r = null;
+    WebGPUInitRenderPassVertexBuffers(e) {
+      e["setVertexBuffer"](0, this.#e), e["setVertexBuffer"](1, this.#t), e["setVertexBuffer"](2, this.#s), e["setVertexBuffer"](3, this.#f);
     }
-    GetResult() {
-      if (!this._result) throw new Error("not yet got result");
-      return this._result;
+    WebGPUInitRenderPassIndexBuffer(e) {
+      e["setIndexBuffer"](this.#r, this.IsIndexTypeUint16() ? "uint16" : "uint32");
     }
-    GetFrameNumber() {
-      return this._frameNumber;
+    CreateGPUResources() {
+      if (super.CreateGPUResources(), this.IsSmall()) return;
+      const e = this.GetRenderer()._GetDevice(), t2 = this.GetDebugLabel(), f2 = t2 ? "-" + t2 : "";
+      this.#e = e["createBuffer"]({ "label": "positionbuffer" + f2, "size": this.positions.byteLength, "usage": GPUBufferUsage["VERTEX"] | GPUBufferUsage["COPY_DST"] }), this.#t = e["createBuffer"]({ "label": "texcoordbuffer" + f2, "size": this.texCoords.byteLength, "usage": GPUBufferUsage["VERTEX"] | GPUBufferUsage["COPY_DST"] }), this.#f = e["createBuffer"]({ "label": "texindexbuffer" + f2, "size": this.texIndices.byteLength, "usage": GPUBufferUsage["VERTEX"] | GPUBufferUsage["COPY_DST"] }), this.#s = e["createBuffer"]({ "label": "colorbuffer" + f2, "size": this.colors.byteLength, "usage": GPUBufferUsage["VERTEX"] | GPUBufferUsage["COPY_DST"] }), this.#r = e["createBuffer"]({ "label": "indexbuffer" + f2, "size": 4 * Math.ceil(this.indices.byteLength / 4), "usage": GPUBufferUsage["INDEX"] | GPUBufferUsage["COPY_DST"] });
+    }
+    WriteGPUData(e) {
+      const t2 = this.GetRenderer(), f2 = t2._GetDevice()["queue"];
+      let s = this.GetPendingBufferUpdate("positions"), r2 = s.GetPendingChange();
+      if (r2) {
+        const e2 = r2.end - r2.start, t3 = 12;
+        f2["writeBuffer"](this.#e, r2.start * t3, this.positions.buffer, r2.start * t3, e2 * t3), s.Reset();
+      }
+      if (s = this.GetPendingBufferUpdate("texCoords"), r2 = s.GetPendingChange(), r2) {
+        const e2 = r2.end - r2.start, t3 = 8;
+        f2["writeBuffer"](this.#t, r2.start * t3, this.texCoords.buffer, r2.start * t3, e2 * t3), s.Reset();
+      }
+      if (e && (s = this.GetPendingBufferUpdate("texIndices"), r2 = s.GetPendingChange(), r2)) {
+        const e2 = r2.end - r2.start;
+        f2["writeBuffer"](this.#f, 4 * r2.start, this.texIndices.buffer, 4 * r2.start, 4 * e2), s.Reset();
+      }
+      if (s = this.GetPendingBufferUpdate("colors"), r2 = s.GetPendingChange(), r2) {
+        const e2 = r2.end - r2.start, i = 4 * (t2.IsColorDataF16() ? 2 : 4);
+        f2["writeBuffer"](this.#s, r2.start * i, this.colors.buffer, r2.start * i, e2 * i), s.Reset();
+      }
+      if (s = this.GetPendingBufferUpdate("indices"), r2 = s.GetPendingChange(), r2) {
+        const e2 = this.IsIndexTypeUint16() ? 2 : 4;
+        let t3 = r2.start * e2, i = (r2.end - r2.start) * e2;
+        t3 % 4 != 0 && (t3 -= t3 % 4), i % 4 != 0 && (i += 4 - i % 4), f2["writeBuffer"](this.#r, t3, this.indices.buffer, t3, i), s.Reset();
+      }
+    }
+    ReleaseGPUResources() {
+      super.ReleaseGPUResources(), this.#e && (this.#e["destroy"](), this.#e = null), this.#t && (this.#t["destroy"](), this.#t = null), this.#f && (this.#f["destroy"](), this.#f = null), this.#s && (this.#s["destroy"](), this.#s = null), this.#r && (this.#r["destroy"](), this.#r = null);
+    }
+    OnContextLost() {
+      this.#e = null, this.#t = null, this.#f = null, this.#s = null, this.#r = null;
     }
   };
 }
@@ -10920,7 +11661,7 @@ var HashPipelineState2;
       this._cbRedraw(e);
     }
     _GetWebGPUBackTexture(e, t2, r2) {
-      return t2 = Math.floor(t2), r2 = Math.floor(r2), !this._webgpuBackTexture || this._webgpuBackTexture.GetWidth() === t2 && this._webgpuBackTexture.GetHeight() === r2 || (e.DeleteTexture(this._webgpuBackTexture), this._webgpuBackTexture = null), null === this._webgpuBackTexture && (this._webgpuBackTexture = e.CreateStaticTexture(null, { width: t2, height: r2, sampling: "nearest", mipMap: false })), this._webgpuBackTexture;
+      return t2 = Math.floor(t2), r2 = Math.floor(r2), !this._webgpuBackTexture || this._webgpuBackTexture.GetWidth() === t2 && this._webgpuBackTexture.GetHeight() === r2 || (e.DeleteTexture(this._webgpuBackTexture), this._webgpuBackTexture = null), null === this._webgpuBackTexture && (this._webgpuBackTexture = e.CreateStaticTexture(null, { width: t2, height: r2, mipMap: false })), this._webgpuBackTexture;
     }
   };
 }
@@ -10973,7 +11714,7 @@ var HashPipelineState2;
     Render(e, t2, r2) {
       e.IsWebGPU() && null === t2 && (t2 = e.GetBackbufferRenderTarget()), this._destRenderTarget = t2, this._contentObject = r2.contentObject || null, this._contextObject = r2.contextObject || null, this._blendMode = r2.blendMode || 0, this._devicePixelRatio = r2.devicePixelRatio || 1, this._layerScale = r2.layerScale || 1, this._layerAngle = r2.layerAngle || 0, this._time = "number" == typeof r2.time ? r2.time : this._manager.GetTime(), this._didChangeTransform = false, e.ResetDidChangeTransformFlag(), this._isAnyShaderAnimated && this._Redraw();
       let s = false;
-      if (this._UseCopyTextureBackgroundSampling() && (this._CalculateDrawSizeAndRectangles(e, r2), s = true, this._backTex = this._manager._GetWebGPUBackTexture(e, this._drawWidth, this._drawHeight), tempRect.copy(this._drawSurfaceRect), tempRect.roundOuter(), e.IsWebGPU() && e._MaybeDoPendingClearRenderPass(this._destRenderTarget), e.CopyTextureToTexture(this._destRenderTarget.GetTexture(), this._backTex, tempRect.getLeft(), tempRect.getTop(), tempRect.width(), tempRect.height())), this._canUseFastPath) this._Render_FastPath(e, r2);
+      if (this._UseCopyTextureBackgroundSampling() && (this._CalculateDrawSizeAndRectangles(e, r2), s = true, this._backTex = this._manager._GetWebGPUBackTexture(e, this._drawWidth, this._drawHeight), tempRect.copy(this._drawSurfaceRect), tempRect.roundOuter(), e.IsWebGPU() && e._MaybeDoPendingClearRenderPass(this._destRenderTarget), this._backTex.SetDefaultSampling(this._destRenderTarget.GetTexture().GetDefaultSampling()), e.CopyTextureToTexture(this._destRenderTarget.GetTexture(), this._backTex, tempRect.getLeft(), tempRect.getTop(), tempRect.width(), tempRect.height())), this._canUseFastPath) this._Render_FastPath(e, r2);
       else if (s || this._CalculateDrawSizeAndRectangles(e, r2), 0 !== this._rcTexOriginal.width() || 0 !== this._rcTexOriginal.height()) {
         e.SetAlphaBlend(), e.ResetCullState(), e.ResetColor(), e.SetBaseZ(0), e.SetCurrentZ(0), this._cbDrawContentHook = r2.drawContentHook || null, this._compositOffX = r2.compositOffX || 0, this._compositOffY = r2.compositOffY || 0, this._compositRtWidth = r2.compositRtWidth || 0, this._compositRtHeight = r2.compositRtHeight || 0, this._updateOwnProjection = !!r2.updateOwnProjection, this._OnBeforeStartEffectChain(e), this._renderTargets[0] = t2, this._renderTargets[1] = this._numTempSurfacesRequired >= 1 ? this._GetRenderTarget() : null, this._renderTargets[2] = 2 === this._numTempSurfacesRequired ? this._GetRenderTarget() : null;
         for (const t3 of this._steps) {
@@ -11182,7 +11923,7 @@ var HashPipelineState2;
   };
 }
 {
-  const C32 = self.C3, tempRect = C32.New(C32.Rect), tempQuad = C32.New(C32.Quad);
+  const C32 = self.C3, tempRect = C32.New(C32.Rect), tempQuad = C32.New(C32.Quad2D);
   C32.Gfx.EffectChain.Step.PostDraw = class extends C32.Gfx.EffectChain.Step {
     constructor(e, t2, r2, a2) {
       super(e, t2, r2, a2);
@@ -11214,7 +11955,7 @@ var HashPipelineState2;
   };
 }
 {
-  const C32 = self.C3, tempRect = C32.New(C32.Rect), tempQuad = C32.New(C32.Quad);
+  const C32 = self.C3, tempRect = C32.New(C32.Rect), tempQuad = C32.New(C32.Quad2D);
   C32.Gfx.EffectChain.Step.Bounce = class extends C32.Gfx.EffectChain.Step {
     constructor(e, t2, r2, a2) {
       super(e, t2, r2, a2);
@@ -11241,13 +11982,13 @@ var HashPipelineState2;
   SortZOrderList2 = SortZOrderList;
   const C32 = self.C3, C3X = self.C3X;
   let runtime = null;
-  const keysDownByKey = /* @__PURE__ */ new Set();
+  const keysDownByKey = /* @__PURE__ */ new Set(), loggedDeprecationIds = /* @__PURE__ */ new Set();
   const tempZOrderList = [], tempInstances = [];
-  let didWarnInAlertPolyfill = false, didWarnFpsDeprecated = false, didWarnCreateWorkerDeprecated = false;
-  const VALID_FRAMERATE_MODES = /* @__PURE__ */ new Set(["vsync", "unlimited-tick", "unlimited-frame"]);
+  let didWarnInAlertPolyfill = false;
+  const VALID_FRAMERATE_MODES = /* @__PURE__ */ new Set(["vsync", "fixed", "unlimited-tick", "unlimited-frame"]), ANISOTROPIC_FILTERING_MODES = /* @__PURE__ */ new Map([["auto", 4], ["off", 1], ["2x", 2], ["3x", 3], ["4x", 4], ["8x", 8], ["16x", 16]]);
   self.IRuntime = class {
     constructor(e) {
-      runtime = e, Object.defineProperties(this, { assets: { value: runtime.GetAssetManager().GetIAssetManager(), writable: false }, collisions: { value: runtime.GetCollisionEngine().GetICollisionEngine(), writable: false }, objects: { value: {}, writable: false }, globalVars: { value: {}, writable: false }, projectName: { value: runtime.GetProjectName(), writable: false }, projectVersion: { value: runtime.GetProjectVersion(), writable: false }, projectId: { value: runtime.GetAppId(), writable: false }, projectUniqueId: { value: runtime.GetProjectUniqueId(), writable: false }, exportDate: { value: new Date(runtime.GetExportTimestamp()), writable: false }, storage: { value: new self.IStorage(runtime), writable: false }, isInWorker: { value: runtime.IsInWorker(), writable: false }, viewportWidth: { value: runtime.GetOriginalViewportWidth(), writable: false }, viewportHeight: { value: runtime.GetOriginalViewportHeight(), writable: false }, sampling: { value: runtime.GetSampling(), writable: false }, platformInfo: { value: new self.IPlatformInfo(e), writable: false }, sdk: { value: new self.ISDKUtils(e), writable: false } }), runtime.UserScriptDispatcher().addEventListener("keydown", (e2) => {
+      runtime = e, Object.defineProperties(this, { assets: { value: runtime.GetAssetManager().GetIAssetManager(), writable: false }, collisions: { value: runtime.GetCollisionEngine().GetICollisionEngine(), writable: false }, objects: { value: {}, writable: false }, globalVars: { value: {}, writable: false }, projectName: { value: runtime.GetProjectName(), writable: false }, projectVersion: { value: runtime.GetProjectVersion(), writable: false }, projectId: { value: runtime.GetAppId(), writable: false }, projectUniqueId: { value: runtime.GetProjectUniqueId(), writable: false }, exportDate: { value: new Date(runtime.GetExportTimestamp()), writable: false }, storage: { value: new self.IStorage(runtime), writable: false }, isInWorker: { value: runtime.IsInWorker(), writable: false }, viewportWidth: { value: runtime.GetOriginalViewportWidth(), writable: false }, viewportHeight: { value: runtime.GetOriginalViewportHeight(), writable: false }, platformInfo: { value: new self.IPlatformInfo(e), writable: false }, sdk: { value: new self.ISDKUtils(e), writable: false } }), runtime.UserScriptDispatcher().addEventListener("keydown", (e2) => {
         keysDownByKey.has(e2["key"]) ? e2.stopPropagation() : keysDownByKey.add(e2["key"]);
       }), runtime.UserScriptDispatcher().addEventListener("keyup", (e2) => keysDownByKey.delete(e2["key"])), runtime.Dispatcher().addEventListener("window-blur", () => keysDownByKey.clear()), runtime.IsInWorker() && (self["alert"] = (e2) => (didWarnInAlertPolyfill || (didWarnInAlertPolyfill = true, console.warn("[Construct] alert() was called from a Web Worker, because the project 'Use worker' setting is enabled. This method is not normally available in a Web Worker. Construct has implemented the alert for you, but note that other features may be missing in worker mode. You may wish to disable 'Use worker', or use a more convenient function like console.log(). For more information please refer to the scripting section of the manual.")), this.alert(e2)));
     }
@@ -11270,15 +12011,15 @@ var HashPipelineState2;
       if (!n.IsEnabled()) return n.GetDefaultReturnValue();
       if (t2.length < n.GetFunctionParameterCount()) throw new Error(`not enough function parameters passed for '${e}' (${t2.length} passed, ${n.GetFunctionParameterCount()} expected)`);
       const i = n.GetEventBlock();
-      let a2 = i.GetSolModifiersIncludingParents();
-      const o2 = r2.GetCurrentEvent();
-      if (o2) {
-        a2 = a2.slice(0);
-        const e2 = new Set(a2);
-        for (const t3 of o2.GetSolModifiersIncludingParents()) e2.has(t3) || (a2.push(t3), e2.add(t3));
-        for (const t3 of r2.GetDynamicSolModifiersSet()) e2.has(t3) || (a2.push(t3), e2.add(t3));
+      let o2 = i.GetSolModifiersIncludingParents();
+      const a2 = r2.GetCurrentEvent();
+      if (a2) {
+        o2 = o2.slice(0);
+        const e2 = new Set(o2);
+        for (const t3 of a2.GetSolModifiersIncludingParents()) e2.has(t3) || (o2.push(t3), e2.add(t3));
+        for (const t3 of r2.GetDynamicSolModifiersSet()) e2.has(t3) || (o2.push(t3), e2.add(t3));
       }
-      return i.RunAsExpressionOrJSFunctionCall(a2, n.IsCopyPicked(), n.GetReturnType(), n.GetDefaultReturnValue(), null, ...t2);
+      return i.RunAsExpressionOrJSFunctionCall(o2, n.IsCopyPicked(), n.GetReturnType(), n.GetDefaultReturnValue(), null, ...t2);
     }
     setReturnValue(e) {
       const t2 = runtime.GetEventStack().GetCurrentExpFuncStackFrame();
@@ -11328,7 +12069,7 @@ var HashPipelineState2;
       C3X.RequireFiniteNumber(e), runtime.SetTimeScale(e);
     }
     get fps() {
-      return didWarnFpsDeprecated || (console.warn("IRuntime.fps is deprecated. Use IRuntime.framesPerSecond instead."), didWarnFpsDeprecated = true), runtime.GetFramesPerSecond();
+      return this._logDeprecationWarning("IRuntime.fps", "IRuntime property 'fps' is deprecated. Use 'framesPerSecond' instead."), runtime.GetFramesPerSecond();
     }
     get framesPerSecond() {
       return runtime.GetFramesPerSecond();
@@ -11349,6 +12090,12 @@ var HashPipelineState2;
       if (!VALID_FRAMERATE_MODES.has(e)) throw new Error("invalid framerate mode");
       runtime._SetFramerateMode(e);
     }
+    get fixedFramerate() {
+      return runtime.GetFixedFramerate();
+    }
+    set fixedFramerate(e) {
+      C3X.RequireFiniteNumber(e), runtime._SetFixedFramerate(e);
+    }
     get minDt() {
       return runtime.GetMinDt();
     }
@@ -11366,6 +12113,23 @@ var HashPipelineState2;
     }
     get isPixelRoundingEnabled() {
       return runtime.IsPixelRoundingEnabled();
+    }
+    set sampling(e) {
+      runtime.SetSamplingMode(e);
+    }
+    get sampling() {
+      return runtime.GetSamplingMode();
+    }
+    set anisotropicFiltering(e) {
+      const t2 = ANISOTROPIC_FILTERING_MODES.get(e);
+      if ("number" != typeof t2) throw new Error("invalid mode");
+      const r2 = runtime.GetCanvasManager();
+      r2 && r2.SetAnisotropicFiltering(t2);
+    }
+    get anisotropicFiltering() {
+      const e = runtime.GetCanvasManager(), t2 = e ? e.GetTextureAnisotropy() : 1;
+      for (const [e2, r2] of ANISOTROPIC_FILTERING_MODES) if (r2 === t2 && "auto" !== e2) return e2;
+      throw new Error("invalid mode");
     }
     get loadingProgress() {
       return runtime.GetAssetManager().GetLoadProgress();
@@ -11440,8 +12204,8 @@ var HashPipelineState2;
       tempZOrderList.sort(SortZOrderList), tempInstances.sort((e2, r3) => t2(e2.GetInterfaceClass(), r3.GetInterfaceClass()));
       let n = false;
       for (let e2 = 0, t3 = tempZOrderList.length; e2 < t3; ++e2) {
-        const t4 = tempInstances[e2], i = r2.GetLayerByIndex(tempZOrderList[e2][0]), a2 = tempZOrderList[e2][1], o2 = i._GetInstances();
-        o2[a2] !== t4 && (o2[a2] = t4, t4.GetWorldInfo()._SetLayer(i, true), i.SetZIndicesChanged(t4), n = true);
+        const t4 = tempInstances[e2], i = r2.GetLayerByIndex(tempZOrderList[e2][0]), o2 = tempZOrderList[e2][1], a2 = i._GetInstances();
+        a2[o2] !== t4 && (a2[o2] = t4, t4.GetWorldInfo()._SetLayer(i, true), i.SetZIndicesChanged(t4), n = true);
       }
       n && runtime.UpdateRender(), C32.clearArray(tempZOrderList), C32.clearArray(tempInstances);
     }
@@ -11453,7 +12217,7 @@ var HashPipelineState2;
       runtime.GetEventSheetManager().IsInEventEngine() || runtime.GetLayoutManager().IsEndingLayout() || runtime.GetEventSheetManager().IsFlushingBlocked() || runtime.FlushPendingInstances();
     }
     async createWorker(e, t2) {
-      didWarnCreateWorkerDeprecated || (console.warn("IRuntime.createWorker() is deprecated. All modern browsers now support nested workers so this method is no longer needed."), didWarnCreateWorkerDeprecated = true);
+      this._logDeprecationWarning("IRuntime.createWorker", "IRuntime method 'createWorker' is deprecated. All modern browsers now support nested workers so this method is no longer needed.");
       const r2 = new MessageChannel(), n = r2.port1, i = r2.port2;
       return await runtime.PostComponentMessageToDOMAsync("runtime", "script-create-worker", { "url": e, "opts": t2, "port2": i }, [i]), n;
     }
@@ -11464,7 +12228,7 @@ var HashPipelineState2;
       return C3X.RequireFiniteNumber(e), runtime._GetHTMLLayerWrapElement(e);
     }
     addLoadPromise(e) {
-      runtime.AddLoadPromise(e);
+      this._logDeprecationWarning("IRuntime.addLoadPromise", "IRuntime method 'addLoadPromise' is deprecated. Use 'runtime.sdk.addLoadPromise' instead."), runtime.AddLoadPromise(e);
     }
     async saveCanvasImage(e, t2, r2) {
       C3X.RequireOptionalString(e), C3X.RequireOptionalNumber(t2), C3X.RequireOptionalInstanceOf(r2, DOMRect), r2 || (r2 = new DOMRect(0, 0, 0, 0));
@@ -11474,6 +12238,9 @@ var HashPipelineState2;
       const i = await n.SnapshotCanvas(e || "image/png", t2, r2.x, r2.y, r2.width, r2.height);
       return await runtime.TriggerAsync(C32.Plugins.System.Cnds.OnCanvasSnapshot, null), i;
     }
+    _logDeprecationWarning(e, t2) {
+      loggedDeprecationIds.has(e) || (console.warn("[Deprecated API] " + t2), loggedDeprecationIds.add(e));
+    }
   };
 }
 var SortZOrderList2;
@@ -11482,12 +12249,15 @@ var SortZOrderList2;
   let assetManager = null;
   self.IAssetManager = class {
     constructor(e) {
-      assetManager = e, Object.defineProperties(this, { isWebMOpusSupported: { value: true, writable: false } });
+      assetManager = e, Object.defineProperties(this, { runtime: { value: assetManager.GetRuntime().GetIRuntime(), writable: false } });
+    }
+    get isWebMOpusSupported() {
+      return this.runtime._logDeprecationWarning("IAssetManager.isWebMOpusSupported", "IAssetManager 'isWebMOpusSupported' property is deprecated. It is always true."), true;
     }
     loadImageAsset(e) {
-      const r2 = self.IImageInfo._Unwrap(e);
-      if (!r2) throw new Error("invalid IImageInfo");
-      r2.LoadAsset(assetManager.GetRuntime());
+      const t2 = self.IImageInfo._Unwrap(e);
+      if (!t2) throw new Error("invalid IImageInfo");
+      t2.LoadAsset(assetManager.GetRuntime());
     }
     fetchText(e) {
       return assetManager.FetchText(e);
@@ -11510,7 +12280,7 @@ var SortZOrderList2;
     get mediaFolder() {
       return assetManager.GetMediaSubfolder();
     }
-    async decodeWebMOpus(e, r2) {
+    async decodeWebMOpus(e, t2) {
       throw new Error("decodeWebMOpus() is no longer supported - use Web Audio's decodeAudioData() directly as all supported platforms now support WebM Opus");
     }
     loadScripts(...e) {
@@ -11627,6 +12397,60 @@ var SortZOrderList2;
     }
     keys() {
       return this._storage.keys();
+    }
+  };
+}
+{
+  const C32 = globalThis.C3, C3X = globalThis.C3X;
+  globalThis.IAABB3D = class t2 {
+    #t;
+    constructor(t3, a2, b2, s, e, o2) {
+      this.#t = new C32.AABB3D(t3 ?? 0, a2 ?? 0, b2 ?? 0, s ?? 0, e ?? 0, o2 ?? 0), t3 instanceof C32.AABB3D && this.#t.copy(t3);
+    }
+    clone() {
+      return new t2(this.left, this.top, this.back, this.right, this.bottom, this.front);
+    }
+    copy(t3) {
+      this.#t.set(t3.left, t3.top, t3.back, t3.right, t3.bottom, t3.front);
+    }
+    set(t3, a2, b2, s, e, o2) {
+      this.#t.set(t3, a2, b2, s, e, o2);
+    }
+    set left(t3) {
+      this.#t.setLeft(t3);
+    }
+    get left() {
+      return this.#t.getLeft();
+    }
+    set top(t3) {
+      this.#t.setTop(t3);
+    }
+    get top() {
+      return this.#t.getTop();
+    }
+    set back(t3) {
+      this.#t.setBack(t3);
+    }
+    get back() {
+      return this.#t.getBack();
+    }
+    set right(t3) {
+      this.#t.setRight(t3);
+    }
+    get right() {
+      return this.#t.getRight();
+    }
+    set bottom(t3) {
+      this.#t.setBottom(t3);
+    }
+    get bottom() {
+      return this.#t.getBottom();
+    }
+    set front(t3) {
+      this.#t.setFront(t3);
+    }
+    get front() {
+      return this.#t.getFront();
     }
   };
 }
@@ -11847,6 +12671,15 @@ var SortZOrderList2;
     get scrollY() {
       return this.#e.GetScrollY();
     }
+    set sampling(e) {
+      this.#e.SetSamplingMode(e);
+    }
+    get sampling() {
+      return this.#e.GetSamplingMode();
+    }
+    get activeSampling() {
+      return this.#e.GetActiveSampling();
+    }
     scrollTo(e, t2) {
       C3X.RequireNumber(e), C3X.RequireNumber(t2);
       const r2 = this.#e;
@@ -11874,19 +12707,19 @@ var SortZOrderList2;
     addLayer(e, t2, r2) {
       const i = this.#e, n = self.ILayer;
       C3X.RequireString(e), C3X.RequireOptionalInstanceOf(t2, n);
-      const s = t2 ? i.GetRuntime()._UnwrapScriptInterface(t2) : null, a2 = VALID_WHERE_STRINGS.indexOf(r2);
-      if (a2 < 0) throw new Error("invalid location");
-      i.AddLayer(e, s, a2);
+      const a2 = t2 ? i.GetRuntime()._UnwrapScriptInterface(t2) : null, s = VALID_WHERE_STRINGS.indexOf(r2);
+      if (s < 0) throw new Error("invalid location");
+      i.AddLayer(e, a2, s);
     }
     moveLayer(e, t2, r2) {
-      const i = this.#e, n = i.GetRuntime(), s = self.ILayer;
-      C3X.RequireInstanceOf(e, s);
-      const a2 = n._UnwrapScriptInterface(e);
-      if (!a2) throw new Error("invalid layer");
-      C3X.RequireOptionalInstanceOf(t2, s);
+      const i = this.#e, n = i.GetRuntime(), a2 = self.ILayer;
+      C3X.RequireInstanceOf(e, a2);
+      const s = n._UnwrapScriptInterface(e);
+      if (!s) throw new Error("invalid layer");
+      C3X.RequireOptionalInstanceOf(t2, a2);
       const o2 = t2 ? n._UnwrapScriptInterface(t2) : null, l = VALID_WHERE_STRINGS.indexOf(r2);
       if (l < 0) throw new Error("invalid location");
-      i.MoveLayer(a2, o2, l);
+      i.MoveLayer(s, o2, l);
     }
     removeLayer(e) {
       const t2 = this.#e, r2 = self.ILayer;
@@ -12056,6 +12889,15 @@ var SortZOrderList2;
       const e = this.#e.GetBackgroundColor();
       return [e.getR(), e.getG(), e.getB()];
     }
+    set sampling(e) {
+      this.#e.SetSamplingMode(e);
+    }
+    get sampling() {
+      return this.#e.GetSamplingMode();
+    }
+    get activeSampling() {
+      return this.#e.GetActiveSampling();
+    }
     set scrollX(e) {
       C3X.RequireNumber(e);
       const t2 = this.#e;
@@ -12182,7 +13024,7 @@ var SortZOrderList2;
       return t2.isSubsetOf(i);
     }
     setAllTags(e) {
-      e instanceof Set || (e = new Set(e)), this.#e.SetTagsSet(e);
+      this.#e.SetTagsSet(C32.ensureSet(e));
     }
     getAllTags() {
       return new Set(this.#e.GetTagsSet());
@@ -12322,17 +13164,17 @@ var GetDispatcher2;
 }
 {
   let MakeIWorldInstanceClass = function(e) {
-    return class t2 extends e {
+    return class extends e {
       #e;
       #t;
       constructor(e2) {
         super(e2);
-        const t3 = C32.AddonManager._GetInitObject2(internalApiToken), i = t3.GetWorldInfo();
-        this.#e = t3, this.#t = i, map.set(this, t3);
+        const t2 = C32.AddonManager._GetInitObject2(internalApiToken), i = t2.GetWorldInfo();
+        this.#e = t2, this.#t = i, map.set(this, t2);
         const n = [], r2 = i.GetInstanceEffectList();
         if (r2) {
           const e3 = i.GetObjectClass().GetEffectList().GetAllEffectTypes().length;
-          for (let t4 = 0; t4 < e3; ++t4) n.push(new self.IEffectInstance(r2, t4));
+          for (let t3 = 0; t3 < e3; ++t3) n.push(new self.IEffectInstance(r2, t3));
         }
         const s = { effects: { value: n, writable: false } };
         Object.defineProperties(this, s);
@@ -12348,99 +13190,137 @@ var GetDispatcher2;
       }
       set x(e2) {
         e2 = +e2;
-        const t3 = this.#t;
-        isNaN(e2) || t3.GetX() === e2 || (t3.SetX(e2), t3.SetBboxChanged());
+        const t2 = this.#t;
+        isNaN(e2) || t2.GetX() === e2 || (t2.SetX(e2), t2.SetBboxChanged());
       }
       get y() {
         return this.#t.GetY();
       }
       set y(e2) {
         e2 = +e2;
-        const t3 = this.#t;
-        isNaN(e2) || t3.GetY() === e2 || (t3.SetY(e2), t3.SetBboxChanged());
+        const t2 = this.#t;
+        isNaN(e2) || t2.GetY() === e2 || (t2.SetY(e2), t2.SetBboxChanged());
       }
-      setPosition(e2, t3) {
-        e2 = +e2, t3 = +t3;
+      get z() {
+        return this.#t.GetZ();
+      }
+      set z(e2) {
+        e2 = +e2;
+        const t2 = this.#e, i = this.#t;
+        isNaN(e2) || i.GetZ() === e2 || (i.SetZ(e2), i.SetBboxChanged(), t2.GetRuntime().UpdateRender());
+      }
+      get totalZ() {
+        return this.#t.GetTotalZ();
+      }
+      get zElevation() {
+        return this.runtime._logDeprecationWarning("IWorldInstance.zElevation", "IWorldInstance 'zElevation' property is deprecated. Use 'z' instead."), this.z;
+      }
+      set zElevation(e2) {
+        this.runtime._logDeprecationWarning("IWorldInstance.zElevation", "IWorldInstance 'zElevation' property is deprecated. Use 'z' instead."), this.z = e2;
+      }
+      get totalZElevation() {
+        return this.runtime._logDeprecationWarning("IWorldInstance.totalZElevation", "IWorldInstance 'totalZElevation' property is deprecated. Use 'totalZ' instead."), this.totalZ;
+      }
+      setPosition(e2, t2) {
+        e2 = +e2, t2 = +t2;
         const i = this.#t;
-        isNaN(e2) || isNaN(t3) || i.GetX() === e2 && i.GetY() === t3 || (i.SetXY(e2, t3), i.SetBboxChanged());
+        isNaN(e2) || isNaN(t2) || i.EqualsXY(e2, t2) || (i.SetXY(e2, t2), i.SetBboxChanged());
       }
       getPosition() {
-        const e2 = this.#t;
-        return [e2.GetX(), e2.GetY()];
+        return this.#t.GetXY();
       }
-      offsetPosition(e2, t3) {
-        if (e2 = +e2, t3 = +t3, isNaN(e2) || isNaN(t3) || 0 === e2 && 0 === t3) return;
+      offsetPosition(e2, t2) {
+        if (e2 = +e2, t2 = +t2, isNaN(e2) || isNaN(t2) || 0 === e2 && 0 === t2) return;
         const i = this.#t;
-        i.OffsetXY(e2, t3), i.SetBboxChanged();
+        i.OffsetXY(e2, t2), i.SetBboxChanged();
+      }
+      setPosition3d(e2, t2, i) {
+        e2 = +e2, t2 = +t2, i = +i;
+        const n = this.#t;
+        isNaN(e2) || isNaN(t2) || isNaN(i) || n.EqualsXYZ(e2, t2, i) || (n.SetXYZ(e2, t2, i), n.SetBboxChanged());
+      }
+      getPosition3d() {
+        return this.#t.GetXYZ();
+      }
+      offsetPosition3d(e2, t2, i) {
+        if (e2 = +e2, t2 = +t2, i = +i, isNaN(e2) || isNaN(t2) || isNaN(i) || 0 === e2 && 0 === t2 && 0 === i) return;
+        const n = this.#t;
+        n.OffsetXYZ(e2, t2, i), n.SetBboxChanged();
       }
       set originX(e2) {
         e2 = +e2;
-        const t3 = this.#t;
-        isNaN(e2) || t3.GetOriginX() === e2 || (t3.SetOriginX(e2), t3.SetBboxChanged());
+        const t2 = this.#t;
+        isNaN(e2) || t2.GetOriginX() === e2 || (t2.SetOriginX(e2), t2.SetBboxChanged());
       }
       get originX() {
         return this.#t.GetOriginX();
       }
       set originY(e2) {
         e2 = +e2;
-        const t3 = this.#t;
-        isNaN(e2) || t3.GetOriginY() === e2 || (t3.SetOriginY(e2), t3.SetBboxChanged());
+        const t2 = this.#t;
+        isNaN(e2) || t2.GetOriginY() === e2 || (t2.SetOriginY(e2), t2.SetBboxChanged());
       }
       get originY() {
         return this.#t.GetOriginY();
       }
-      setOrigin(e2, t3) {
-        e2 = +e2, t3 = +t3;
+      setOrigin(e2, t2) {
+        e2 = +e2, t2 = +t2;
         const i = this.#t;
-        isNaN(e2) || isNaN(t3) || i.GetOriginX() === e2 && i.GetOriginY() === t3 || (i.SetOriginX(e2), i.SetOriginY(t3), i.SetBboxChanged());
+        isNaN(e2) || isNaN(t2) || i.GetOriginX() === e2 && i.GetOriginY() === t2 || (i.SetOriginX(e2), i.SetOriginY(t2), i.SetBboxChanged());
       }
       getOrigin() {
         const e2 = this.#t;
         return [e2.GetOriginX(), e2.GetOriginY()];
-      }
-      get zElevation() {
-        return this.#t.GetZElevation();
-      }
-      set zElevation(e2) {
-        e2 = +e2;
-        const t3 = this.#e, i = this.#t;
-        isNaN(e2) || i.GetZElevation() === e2 || (i.SetZElevation(e2), t3.GetRuntime().UpdateRender());
-      }
-      get totalZElevation() {
-        return this.#t.GetTotalZElevation();
       }
       get width() {
         return this.#t.GetWidth();
       }
       set width(e2) {
         e2 = +e2;
-        const t3 = this.#t;
-        isNaN(e2) || t3.GetWidth() === e2 || (t3.SetWidth(e2), t3.SetBboxChanged());
+        const t2 = this.#t;
+        isNaN(e2) || t2.GetWidth() === e2 || (t2.SetWidth(e2), t2.SetBboxChanged());
       }
       get height() {
         return this.#t.GetHeight();
       }
       set height(e2) {
         e2 = +e2;
-        const t3 = this.#t;
-        isNaN(e2) || t3.GetHeight() === e2 || (t3.SetHeight(e2), t3.SetBboxChanged());
+        const t2 = this.#t;
+        isNaN(e2) || t2.GetHeight() === e2 || (t2.SetHeight(e2), t2.SetBboxChanged());
       }
-      setSize(e2, t3) {
-        e2 = +e2, t3 = +t3;
+      get depth() {
+        return this.#t.GetDepth();
+      }
+      set depth(e2) {
+        e2 = +e2;
+        const t2 = this.#t;
+        isNaN(e2) || t2.GetDepth() === e2 || (t2.SetDepth(e2), t2.SetBboxChanged());
+      }
+      setSize(e2, t2) {
+        e2 = +e2, t2 = +t2;
         const i = this.#t;
-        isNaN(e2) || isNaN(t3) || i.GetWidth() === e2 && i.GetHeight() === t3 || (i.SetSize(e2, t3), i.SetBboxChanged());
+        isNaN(e2) || isNaN(t2) || i.GetWidth() === e2 && i.GetHeight() === t2 || (i.SetSize(e2, t2), i.SetBboxChanged());
       }
       getSize() {
         const e2 = this.#t;
         return [e2.GetWidth(), e2.GetHeight()];
+      }
+      setSize3d(e2, t2, i) {
+        e2 = +e2, t2 = +t2, i = +i;
+        const n = this.#t;
+        isNaN(e2) || isNaN(t2) || isNaN(i) || n.GetWidth() === e2 && n.GetHeight() === t2 && n.GetDepth() === i || (n.SetSize(e2, t2), n.SetDepth(i), n.SetBboxChanged());
+      }
+      getSize3d() {
+        const e2 = this.#t;
+        return [e2.GetWidth(), e2.GetHeight(), e2.GetDepth()];
       }
       get angle() {
         return this.#t.GetAngle();
       }
       set angle(e2) {
         e2 = C32.clampAngle(+e2);
-        const t3 = this.#t;
-        isNaN(e2) || t3.GetAngle() === e2 || (t3.SetAngle(e2), t3.SetBboxChanged());
+        const t2 = this.#t;
+        isNaN(e2) || t2.GetAngle() === e2 || (t2.SetAngle(e2), t2.SetBboxChanged());
       }
       get angleDegrees() {
         return C32.toDegrees(this.angle);
@@ -12449,10 +13329,13 @@ var GetDispatcher2;
         this.angle = C32.toRadians(e2);
       }
       getBoundingBox(e2) {
-        return e2 ? (this.#t.CalculateBbox(tempRect, tempQuad, false), tempRect.toDOMRect()) : this.#t.GetBoundingBox().toDOMRect();
+        return e2 ? (this.#t.CalculateBbox(tempAABB3D, tempQuad, false), tempAABB3D.toDOMRect()) : this.#t.GetBoundingBox().toDOMRect();
+      }
+      getBoundingBox3d(e2) {
+        return e2 ? (this.#t.CalculateBbox(tempAABB3D, tempQuad, false), new globalThis.IAABB3D(tempAABB3D)) : new globalThis.IAABB3D(this.#t.GetBoundingBox());
       }
       getBoundingQuad(e2) {
-        return e2 ? (this.#t.CalculateBbox(tempRect, tempQuad, false), tempQuad.toDOMQuad()) : this.#t.GetBoundingQuad().toDOMQuad();
+        return e2 ? (this.#t.CalculateBbox(null, tempQuad, false), tempQuad.toDOMQuad()) : this.#t.GetBoundingQuad().toDOMQuad();
       }
       isOnScreen() {
         return this.#t.IsInViewport2();
@@ -12462,22 +13345,22 @@ var GetDispatcher2;
       }
       set isVisible(e2) {
         e2 = !!e2;
-        const t3 = this.#e, i = this.#t;
-        i.IsVisible() !== e2 && (i.SetVisible(e2), t3.GetRuntime().UpdateRender());
+        const t2 = this.#e, i = this.#t;
+        i.IsVisible() !== e2 && (i.SetVisible(e2), t2.GetRuntime().UpdateRender());
       }
       get opacity() {
         return this.#t.GetOpacity();
       }
       set opacity(e2) {
         e2 = C32.clamp(+e2, 0, 1);
-        const t3 = this.#e, i = this.#t;
-        isNaN(e2) || i.GetOpacity() === e2 || (i.SetOpacity(e2), t3.GetRuntime().UpdateRender());
+        const t2 = this.#e, i = this.#t;
+        isNaN(e2) || i.GetOpacity() === e2 || (i.SetOpacity(e2), t2.GetRuntime().UpdateRender());
       }
       set colorRgb(e2) {
         if (C3X.RequireArray(e2), e2.length < 3) throw new Error("expected 3 elements");
         tempColor.setRgb(e2[0], e2[1], e2[2]);
-        const t3 = this.#e, i = this.#t;
-        i.GetUnpremultipliedColor().equalsIgnoringAlpha(tempColor) || (i.SetUnpremultipliedColor(tempColor), t3.GetRuntime().UpdateRender());
+        const t2 = this.#e, i = this.#t;
+        i.GetUnpremultipliedColor().equalsIgnoringAlpha(tempColor) || (i.SetUnpremultipliedColor(tempColor), t2.GetRuntime().UpdateRender());
       }
       get colorRgb() {
         const e2 = this.#t.GetUnpremultipliedColor();
@@ -12485,13 +13368,22 @@ var GetDispatcher2;
       }
       set blendMode(e2) {
         C3X.RequireString(e2);
-        const t3 = BLEND_MODE_TO_INDEX.get(e2);
-        if ("number" != typeof t3) throw new Error("invalid blend mode");
+        const t2 = BLEND_MODE_TO_INDEX.get(e2);
+        if ("number" != typeof t2) throw new Error("invalid blend mode");
         const i = this.#e;
-        this.#t.SetBlendMode(t3), i.GetRuntime().UpdateRender();
+        this.#t.SetBlendMode(t2), i.GetRuntime().UpdateRender();
       }
       get blendMode() {
         return INDEX_TO_BLEND_MODE.get(this.#t.GetBlendMode());
+      }
+      set sampling(e2) {
+        this.#t.SetSamplingMode(e2);
+      }
+      get sampling() {
+        return this.#t.GetSamplingMode();
+      }
+      get activeSampling() {
+        return C32.Gfx.RendererBase.SamplingNumberToMode(this.#t.GetActiveSampling());
       }
       moveToTop() {
         this.#t.ZOrderMoveToTop();
@@ -12501,12 +13393,12 @@ var GetDispatcher2;
       }
       moveToLayer(e2) {
         C3X.RequireInstanceOf(e2, ILayer);
-        const t3 = this.#e, i = t3.GetRuntime()._UnwrapScriptInterface(e2);
+        const t2 = this.#e, i = t2.GetRuntime()._UnwrapScriptInterface(e2);
         if (!i) throw new Error("invalid layer");
-        t3.GetWorldInfo().ZOrderMoveToLayer(i);
+        t2.GetWorldInfo().ZOrderMoveToLayer(i);
       }
-      moveAdjacentToInstance(e2, i) {
-        C3X.RequireInstanceOf(e2, t2), this.#t.ZOrderMoveAdjacentToInstance(map.get(e2), i);
+      moveAdjacentToInstance(e2, t2) {
+        C3X.RequireIWorldInstance(e2), this.#t.ZOrderMoveAdjacentToInstance(map.get(e2), t2);
       }
       get zIndex() {
         return this.#t.GetZIndex();
@@ -12517,17 +13409,17 @@ var GetDispatcher2;
       set isCollisionEnabled(e2) {
         this.#t.SetCollisionEnabled(!!e2);
       }
-      containsPoint(e2, t3) {
-        return C3X.RequireNumber(e2), C3X.RequireNumber(t3), this.#t.ContainsPoint(+e2, +t3);
+      containsPoint(e2, t2) {
+        return C3X.RequireNumber(e2), C3X.RequireNumber(t2), this.#t.ContainsPoint(+e2, +t2);
       }
       testOverlap(e2) {
-        C3X.RequireInstanceOf(e2, t2);
-        const i = this.#e, n = map.get(e2);
-        return i.GetRuntime().GetCollisionEngine().TestOverlap(i, n);
+        C3X.RequireIWorldInstance(e2);
+        const t2 = this.#e, i = map.get(e2);
+        return t2.GetRuntime().GetCollisionEngine().TestOverlap(t2, i);
       }
       testOverlapSolid() {
-        const e2 = this.#e, t3 = e2.GetRuntime().GetCollisionEngine().TestOverlapSolid(e2);
-        return t3 ? t3.GetInterfaceClass() : null;
+        const e2 = this.#e, t2 = e2.GetRuntime().GetCollisionEngine().TestOverlapSolid(e2);
+        return t2 ? t2.GetInterfaceClass() : null;
       }
       getParent() {
         const e2 = this.#e.GetParent();
@@ -12544,8 +13436,8 @@ var GetDispatcher2;
         return this.#e.GetChildCount();
       }
       getChildAt(e2) {
-        const t3 = this.#e.GetChildAt(e2);
-        return t3 ? t3.GetInterfaceClass() : null;
+        const t2 = this.#e.GetChildAt(e2);
+        return t2 ? t2.GetInterfaceClass() : null;
       }
       *children() {
         for (const e2 of this.#e.children()) yield e2.GetInterfaceClass();
@@ -12553,15 +13445,15 @@ var GetDispatcher2;
       *allChildren() {
         for (const e2 of this.#e.allChildren()) yield e2.GetInterfaceClass();
       }
-      addChild(e2, i) {
-        C3X.RequireInstanceOf(e2, t2), C3X.RequireOptionalObject(i), i || (i = {});
-        const n = this.#e, r2 = map.get(e2);
-        n.AddChild(r2, i);
+      addChild(e2, t2) {
+        C3X.RequireIWorldInstance(e2), C3X.RequireOptionalObject(t2), t2 || (t2 = {});
+        const i = this.#e, n = map.get(e2);
+        "number" != typeof t2.transformZ && "number" == typeof t2.transformZElevation && (this.runtime._logDeprecationWarning("IWorldInstance.addChild", "IWorldInstance 'addChild' method option 'transformZElevation' is deprecated. Use 'transformZ' instead."), t2.transformZ = t2.transformZElevation), i.AddChild(n, t2);
       }
       removeChild(e2) {
-        C3X.RequireInstanceOf(e2, t2);
-        const i = this.#e, n = map.get(e2);
-        i.RemoveChild(n);
+        C3X.RequireIWorldInstance(e2);
+        const t2 = this.#e, i = map.get(e2);
+        t2.RemoveChild(i);
       }
       removeFromParent() {
         const e2 = this.#e;
@@ -12570,40 +13462,45 @@ var GetDispatcher2;
       }
       getHierarchyOpts() {
         const e2 = this.#t;
-        return { transformX: e2.GetTransformWithParentX(), transformY: e2.GetTransformWithParentY(), transformWidth: e2.GetTransformWithParentWidth(), transformHeight: e2.GetTransformWithParentHeight(), transformAngle: e2.GetTransformWithParentAngle(), transformZElevation: e2.GetTransformWithParentZElevation(), transformOpacity: e2.GetTransformWithParentOpacity(), transformVisibility: e2.GetTransformWithParentVisibility(), destroyWithParent: e2.GetDestroyWithParent() };
+        return { transformX: e2.GetTransformWithParentX(), transformY: e2.GetTransformWithParentY(), transformZ: e2.GetTransformWithParentZ(), transformWidth: e2.GetTransformWithParentWidth(), transformHeight: e2.GetTransformWithParentHeight(), transformAngle: e2.GetTransformWithParentAngle(), transformOpacity: e2.GetTransformWithParentOpacity(), transformVisibility: e2.GetTransformWithParentVisibility(), destroyWithParent: e2.GetDestroyWithParent() };
       }
-      createMesh(e2, t3) {
-        C3X.RequireFiniteNumber(e2), C3X.RequireFiniteNumber(t3), this.#t.CreateMesh(e2, t3);
+      createMesh(e2, t2) {
+        C3X.RequireFiniteNumber(e2), C3X.RequireFiniteNumber(t2), this.#t.CreateMesh(e2, t2);
       }
       releaseMesh() {
         const e2 = this.#t;
         e2.ReleaseMesh(), e2.SetBboxChanged();
       }
-      setMeshPoint(e2, t3, i) {
-        C3X.RequireFiniteNumber(e2), C3X.RequireFiniteNumber(t3), C3X.RequireObject(i);
+      setMeshPoint(e2, t2, i) {
+        C3X.RequireFiniteNumber(e2), C3X.RequireFiniteNumber(t2), C3X.RequireObject(i);
         const n = this.#t;
-        n.SetMeshPoint(e2, t3, i) && n.SetBboxChanged();
+        "number" != typeof i.z && "number" == typeof i.zElevation && (this.runtime._logDeprecationWarning("IWorldInstance.setMeshPoint", "IWorldInstance 'setMeshPoint' method option 'zElevation' is deprecated. Use 'z' instead."), i.z = i.zElevation), n.SetMeshPoint(e2, t2, i) && n.SetBboxChanged();
       }
-      getMeshPoint(e2, t3) {
+      getMeshPoint(e2, t2) {
         let i = NaN, n = NaN, r2 = NaN, s = NaN, a2 = NaN;
         const o2 = this.#t;
         if (o2.HasMesh()) {
-          const l = o2.GetSourceMesh().GetMeshPointAt(e2, t3);
-          null !== l && (i = l.GetX(), n = l.GetY(), r2 = l.GetZElevation(), s = l.GetU(), a2 = l.GetV());
+          const l = o2.GetSourceMesh().GetMeshPointAt(e2, t2);
+          null !== l && (i = l.GetX(), n = l.GetY(), r2 = l.GetZ(), s = l.GetU(), a2 = l.GetV());
         }
-        return { x: i, y: n, zElevation: r2, u: s, v: a2 };
+        return { x: i, y: n, z: r2, u: s, v: a2 };
       }
       getMeshSize() {
         const e2 = this.#t;
         if (!e2.HasMesh()) return [0, 0];
-        const t3 = e2.GetSourceMesh();
-        return [t3.GetHSize(), t3.GetVSize()];
+        const t2 = e2.GetSourceMesh();
+        return [t2.GetHSize(), t2.GetVSize()];
       }
     };
   };
   MakeIWorldInstanceClass2 = MakeIWorldInstanceClass;
-  const C32 = self.C3, C3X = self.C3X, IInstance = self.IInstance, ILayer = self.ILayer, tempRect = C32.New(C32.Rect), tempQuad = C32.New(C32.Quad), map = /* @__PURE__ */ new WeakMap(), internalApiToken = C32._GetInternalAPIToken(), BLEND_MODE_TO_INDEX = /* @__PURE__ */ new Map([["normal", 0], ["additive", 1], ["copy", 3], ["destination-over", 4], ["source-in", 5], ["destination-in", 6], ["source-out", 7], ["destination-out", 8], ["source-atop", 9], ["destination-atop", 10], ["lighten", 11], ["darken", 12], ["multiply", 13], ["screen", 14]]), INDEX_TO_BLEND_MODE = new Map([...BLEND_MODE_TO_INDEX.entries()].map((e) => [e[1], e[0]])), tempColor = C32.New(C32.Color);
-  self.IWorldInstance = MakeIWorldInstanceClass(self.IInstance), self.IWorldInstanceSDKBase = MakeIWorldInstanceClass(self.ISDKInstanceBase);
+  const C32 = self.C3, C3X = self.C3X, IInstance = self.IInstance, ILayer = self.ILayer, tempAABB3D = new C32.AABB3D(), tempQuad = new C32.Quad2D(), map = /* @__PURE__ */ new WeakMap(), internalApiToken = C32._GetInternalAPIToken(), BLEND_MODE_TO_INDEX = /* @__PURE__ */ new Map([["normal", 0], ["additive", 1], ["copy", 3], ["destination-over", 4], ["source-in", 5], ["destination-in", 6], ["source-out", 7], ["destination-out", 8], ["source-atop", 9], ["destination-atop", 10], ["lighten", 11], ["darken", 12], ["multiply", 13], ["screen", 14]]), INDEX_TO_BLEND_MODE = new Map([...BLEND_MODE_TO_INDEX.entries()].map((e) => [e[1], e[0]])), tempColor = C32.New(C32.Color);
+  const IWorldInstance = MakeIWorldInstanceClass(globalThis.IInstance), IWorldInstanceSDKBase = MakeIWorldInstanceClass(globalThis.ISDKInstanceBase);
+  globalThis.IWorldInstance = IWorldInstance, globalThis.IWorldInstanceSDKBase = IWorldInstanceSDKBase, C3X.IsIWorldInstance = function(e) {
+    return e instanceof IWorldInstance || e instanceof IWorldInstanceSDKBase;
+  }, C3X.RequireIWorldInstance = function(e) {
+    if (!C3X.IsIWorldInstance(e)) throw new TypeError("expected IWorldInstance");
+  };
 }
 var MakeIWorldInstanceClass2;
 {
@@ -13135,7 +14032,7 @@ var GetTweenState2;
     }
     _shouldPreserveElement() {
       const e = map.get(this).GetRuntime().GetCanvasManager().GetFullscreenMode();
-      return "Android" === C32.Platform.OS && ("scale-inner" === e || "scale-outer" === e || "crop" === e);
+      return "Android" === C32.Platform.OS && ("scale-inner" === e || "integer-scale-inner" === e || "scale-outer" === e || "integer-scale-outer" === e || "crop" === e);
     }
     _updatePosition(e) {
       const t2 = map.get(this);
@@ -13146,11 +14043,11 @@ var GetTweenState2;
       if (!s.IsVisible() || !i.IsVisible()) return void this.setElementVisible(false);
       if (!this._shouldPreserveElement() && (a2 <= 0 || h2 <= 0 || o2 >= m2 || l >= r2)) return void this.setElementVisible(false);
       tempRect.set(o2, l, a2, h2);
-      const c2 = d2.GetLastWidth(), p2 = d2.GetLastHeight(), u2 = i.GetHTMLIndex(), M2 = s.GetHTMLZIndex();
-      if (!e && tempRect.equals(this.#o) && this.#l === c2 && this.#a === p2 && this.#h === u2 && this.#d === M2) return void this.setElementVisible(true);
-      this.#o.copy(tempRect), this.#l = c2, this.#a = p2, this.#h = u2, this.#d = M2, this.setElementVisible(true);
+      const c2 = d2.GetLastWidth(), u2 = d2.GetLastHeight(), p2 = i.GetHTMLIndex(), M2 = s.GetHTMLZIndex();
+      if (!e && tempRect.equals(this.#o) && this.#l === c2 && this.#a === u2 && this.#h === p2 && this.#d === M2) return void this.setElementVisible(true);
+      this.#o.copy(tempRect), this.#l = c2, this.#a = u2, this.#h = p2, this.#d = M2, this.setElementVisible(true);
       let I2 = null;
-      this.#i && (I2 = i.GetDisplayScale() + this.#n), this._postToDOMElement("update-position", { "left": Math.round(this.#o.getLeft()), "top": Math.round(this.#o.getTop()), "width": Math.round(this.#o.width()), "height": Math.round(this.#o.height()), "htmlIndex": u2, "htmlZIndex": M2, "fontSize": I2 });
+      this.#i && (I2 = i.GetDisplayScale() + this.#n), this._postToDOMElement("update-position", { "left": Math.round(this.#o.getLeft()), "top": Math.round(this.#o.getTop()), "width": Math.round(this.#o.width()), "height": Math.round(this.#o.height()), "htmlIndex": p2, "htmlZIndex": M2, "fontSize": I2 });
     }
     focusElement() {
       this._postToDOMElementMaybeSync("focus", { "focus": true });
@@ -13351,300 +14248,335 @@ var GetTweenState2;
     return e instanceof ImageBitmap || "undefined" != typeof HTMLImageElement && e instanceof HTMLImageElement || "undefined" != typeof HTMLCanvasElement && e instanceof HTMLCanvasElement || "undefined" != typeof OffscreenCanvas && e instanceof OffscreenCanvas;
   };
   IsStaticTextureDataType2 = IsStaticTextureDataType;
-  const C32 = self.C3, C3X = self.C3X;
-  let renderer = null, runtime = null;
-  const CULL_MODE_ARR = ["none", "back", "front"], FRONT_FACE_WINDING_ARR = ["cw", "ccw"];
-  self.IRenderer = class {
+  const C32 = globalThis.C3, C3X = globalThis.C3X;
+  const CULL_MODE_ARR = ["none", "back", "front"], FRONT_FACE_WINDING_ARR = ["cw", "ccw"], DEFAULT_MESHDATA_OPTS = { debugLabel: "" };
+  globalThis.IRenderer = class {
+    #e;
+    #r;
     constructor(e, r2) {
-      runtime = e, renderer = r2;
+      this.#e = e, this.#r = r2;
     }
     setAlphaBlendMode() {
-      renderer.SetAlphaBlend();
+      this.#r.SetAlphaBlend();
     }
     setBlendMode(e) {
-      renderer.SetNamedBlendMode(e);
+      this.#r.SetNamedBlendMode(e);
     }
     setColorFillMode() {
-      renderer.SetColorFillMode();
+      this.#r.SetColorFillMode();
     }
     setTextureFillMode() {
-      renderer.SetTextureFillMode();
+      this.#r.SetTextureFillMode();
     }
     setSmoothLineFillMode() {
-      renderer.SetSmoothLineFillMode();
+      this.#r.SetSmoothLineFillMode();
     }
     setColor(e) {
-      renderer.SetColorRgba(e[0], e[1], e[2], e[3]);
+      this.#r.SetColorRgba(e[0], e[1], e[2], e[3]);
     }
-    setColorRgba(e, r2, n, t2) {
-      renderer.SetColorRgba(e, r2, n, t2);
+    setColorRgba(e, r2, t2, n) {
+      this.#r.SetColorRgba(e, r2, t2, n);
     }
     resetColor() {
-      renderer.ResetColor();
+      this.#r.ResetColor();
     }
     setOpacity(e) {
-      renderer.SetOpacity(e);
+      this.#r.SetOpacity(e);
     }
     setCurrentZ(e) {
-      renderer.SetCurrentZ(e);
+      this.#r.SetCurrentZ(e);
     }
     getCurrentZ() {
-      return renderer.GetCurrentZ();
+      return this.#r.GetCurrentZ();
     }
     setCullFaceMode(e) {
       const r2 = CULL_MODE_ARR.indexOf(e);
       if (-1 === r2) throw new Error("invalid cull mode");
-      renderer.SetCullFaceMode(r2);
+      this.#r.SetCullFaceMode(r2);
     }
     getCullFaceMode() {
-      return CULL_MODE_ARR[renderer.GetCullFaceMode()];
+      return CULL_MODE_ARR[this.#r.GetCullFaceMode()];
     }
     setFrontFaceWinding(e) {
       const r2 = FRONT_FACE_WINDING_ARR.indexOf(e);
       if (-1 === r2) throw new Error("invalid front face winding");
-      renderer.SetFrontFaceWinding(r2);
+      this.#r.SetFrontFaceWinding(r2);
     }
     getFrontFaceWinding() {
-      return renderer.GetFrontFaceWinding();
+      return this.#r.GetFrontFaceWinding();
     }
     rect(e) {
-      renderer.Rect2(e.left, e.top, e.right, e.bottom);
+      this.#r.Rect2(e.left, e.top, e.right, e.bottom);
     }
-    rect2(e, r2, n, t2) {
-      renderer.Rect2(e, r2, n, t2);
+    rect2(e, r2, t2, n) {
+      this.#r.Rect2(e, r2, t2, n);
     }
     quad(e) {
-      renderer.Quad(C32.Quad.fromDOMQuad(e));
+      this.#r.Quad(C32.Quad2D.fromDOMQuad(e));
     }
-    quad2(e, r2, n, t2, a2, d2, i, o2) {
-      renderer.Quad2(e, r2, n, t2, a2, d2, i, o2);
+    quad2(e, r2, t2, n, a2, i, d2, s) {
+      this.#r.Quad2(e, r2, t2, n, a2, i, d2, s);
     }
     quad3(e, r2) {
-      renderer.Quad3(C32.Quad.fromDOMQuad(e), C32.Rect.fromDOMRect(r2));
+      this.#r.Quad3(C32.Quad2D.fromDOMQuad(e), C32.Rect.fromDOMRect(r2));
     }
     quad4(e, r2) {
-      renderer.Quad4(C32.Quad.fromDOMQuad(e), C32.Quad.fromDOMQuad(r2));
+      this.#r.Quad4(C32.Quad2D.fromDOMQuad(e), C32.Quad2D.fromDOMQuad(r2));
     }
-    quad5(e, r2, n) {
-      renderer.Quad5(C32.Quad.fromDOMQuad(e), C32.Quad.fromDOMQuad(r2), n);
+    quad5(e, r2, t2) {
+      this.#r.Quad5(C32.Quad2D.fromDOMQuad(e), C32.Quad2D.fromDOMQuad(r2), t2);
     }
-    quad3D(e, r2, n, t2, a2, d2, i, o2, u2, l, c2, s, p2) {
-      renderer.Quad3D(e, r2, n, t2, a2, d2, i, o2, u2, l, c2, s, C32.Rect.fromDOMRect(p2));
+    quad3D(e, r2, t2, n, a2, i, d2, s, o2, u2, l, h2, c2) {
+      this.#r.Quad3D(e, r2, t2, n, a2, i, d2, s, o2, u2, l, h2, C32.Rect.fromDOMRect(c2));
     }
-    quad3D2(e, r2, n, t2, a2, d2, i, o2, u2, l, c2, s, p2) {
-      renderer.Quad3D2(e, r2, n, t2, a2, d2, i, o2, u2, l, c2, s, C32.Quad.fromDOMQuad(p2));
+    quad3D2(e, r2, t2, n, a2, i, d2, s, o2, u2, l, h2, c2) {
+      this.#r.Quad3D2(e, r2, t2, n, a2, i, d2, s, o2, u2, l, h2, C32.Quad2D.fromDOMQuad(c2));
     }
-    quad3D3(e, r2, n, t2, a2, d2, i, o2, u2, l, c2, s, p2, f2) {
-      renderer.Quad3D3(e, r2, n, t2, a2, d2, i, o2, u2, l, c2, s, C32.Quad.fromDOMQuad(p2), f2);
+    quad3D3(e, r2, t2, n, a2, i, d2, s, o2, u2, l, h2, c2, p2) {
+      this.#r.Quad3D3(e, r2, t2, n, a2, i, d2, s, o2, u2, l, h2, C32.Quad2D.fromDOMQuad(c2), p2);
     }
-    drawMesh(e, r2, n, t2) {
-      renderer.DrawMesh(e, r2, n, t2);
+    drawMesh(e, r2, t2, n) {
+      this.#r.DrawMesh(e, r2, t2, n);
     }
     convexPoly(e) {
-      renderer.ConvexPoly(e);
+      this.#r.ConvexPoly(e);
     }
-    line(e, r2, n, t2) {
-      renderer.Line(e, r2, n, t2);
+    line(e, r2, t2, n) {
+      this.#r.Line(e, r2, t2, n);
     }
-    texturedLine(e, r2, n, t2, a2, d2) {
-      renderer.TexturedLine(e, r2, n, t2, a2, d2);
+    texturedLine(e, r2, t2, n, a2, i) {
+      this.#r.TexturedLine(e, r2, t2, n, a2, i);
     }
-    lineRect(e, r2, n, t2) {
-      renderer.LineRect(e, r2, n, t2);
+    lineRect(e, r2, t2, n) {
+      this.#r.LineRect(e, r2, t2, n);
     }
     lineRect2(e) {
-      renderer.LineRect2(C32.Rect.fromDOMRect(e));
+      this.#r.LineRect2(C32.Rect.fromDOMRect(e));
     }
     lineQuad(e) {
-      renderer.LineQuad(C32.Quad.fromDOMQuad(e));
+      this.#r.LineQuad(C32.Quad2D.fromDOMQuad(e));
     }
     pushLineWidth(e) {
-      renderer.PushLineWidth(e);
+      this.#r.PushLineWidth(e);
     }
     popLineWidth() {
-      renderer.PopLineWidth();
+      this.#r.PopLineWidth();
     }
     pushLineCap(e) {
-      renderer.PushLineCap(e);
+      this.#r.PushLineCap(e);
     }
     popLineCap() {
-      renderer.PopLineCap();
+      this.#r.PopLineCap();
     }
-    setTexture(e) {
-      C3X.RequireOptionalInstanceOf(e, self.ITexture);
-      const r2 = e ? runtime._UnwrapScriptInterface(e) : null;
-      renderer.SetTexture(r2);
+    setTexture(e, r2 = "auto") {
+      C3X.RequireOptionalInstanceOf(e, globalThis.ITexture);
+      const t2 = e ? this.#e._UnwrapScriptInterface(e) : null;
+      this.#r.SetTexture(t2, C32.Gfx.RendererBase.SamplingModeToNumber(r2));
     }
     loadTextureForImageInfo(e, r2) {
-      const n = self.IImageInfo._Unwrap(e);
-      if (!n) throw new Error("invalid IImageInfo");
-      return n.LoadStaticTexture(renderer, { wrapX: r2?.wrapX ?? "clamp-to-edge", wrapY: r2?.wrapY ?? "clamp-to-edge", sampling: r2?.sampling ?? "trilinear", mipMap: r2?.mipMap ?? true });
+      const t2 = globalThis.IImageInfo._Unwrap(e);
+      if (!t2) throw new Error("invalid IImageInfo");
+      return t2.LoadStaticTexture(this.#r, { wrapX: r2?.wrapX ?? "clamp-to-edge", wrapY: r2?.wrapY ?? "clamp-to-edge", defaultSampling: r2?.defaultSampling ?? r2?.sampling ?? "trilinear", mipMap: r2?.mipMap ?? true });
     }
     releaseTextureForImageInfo(e) {
-      const r2 = self.IImageInfo._Unwrap(e);
+      const r2 = globalThis.IImageInfo._Unwrap(e);
       if (!r2) throw new Error("invalid IImageInfo");
       r2.ReleaseTexture();
     }
     getTextureForImageInfo(e) {
-      const r2 = self.IImageInfo._Unwrap(e);
+      const r2 = globalThis.IImageInfo._Unwrap(e);
       if (!r2) throw new Error("invalid IImageInfo");
-      const n = r2.GetTexture();
-      return self.ITexture.GetInterface(runtime, n);
+      const t2 = r2.GetTexture();
+      return globalThis.ITexture.GetInterface(this.#e, t2);
     }
     createStaticTexture(e, r2) {
       if (!IsStaticTextureDataType(e)) throw new TypeError("invalid texture data");
-      const n = renderer.CreateStaticTexture(e, { wrapX: r2?.wrapX ?? "clamp-to-edge", wrapY: r2?.wrapY ?? "clamp-to-edge", sampling: r2?.sampling ?? "trilinear", mipMap: r2?.mipMap ?? true });
-      return self.ITexture.GetInterface(runtime, n);
+      const t2 = this.#r.CreateStaticTexture(e, { wrapX: r2?.wrapX ?? "clamp-to-edge", wrapY: r2?.wrapY ?? "clamp-to-edge", defaultSampling: r2?.defaultSampling ?? r2?.sampling ?? "trilinear", mipMap: r2?.mipMap ?? true });
+      return globalThis.ITexture.GetInterface(this.#e, t2);
     }
-    createDynamicTexture(e, r2, n) {
+    createDynamicTexture(e, r2, t2) {
       C3X.RequireFiniteNumber(e), C3X.RequireFiniteNumber(r2);
-      const t2 = renderer.CreateDynamicTexture(e, r2, { wrapX: n?.wrapX ?? "clamp-to-edge", wrapY: n?.wrapY ?? "clamp-to-edge", sampling: n?.sampling ?? "trilinear", mipMap: n?.mipMap ?? true });
-      return self.ITexture.GetInterface(runtime, t2);
+      const n = this.#r.CreateDynamicTexture(e, r2, { wrapX: t2?.wrapX ?? "clamp-to-edge", wrapY: t2?.wrapY ?? "clamp-to-edge", defaultSampling: t2?.defaultSampling ?? t2?.sampling ?? "trilinear", mipMap: t2?.mipMap ?? true });
+      return globalThis.ITexture.GetInterface(this.#e, n);
     }
-    updateTexture(e, r2, n) {
-      C3X.RequireInstanceOf(r2, self.ITexture);
-      const t2 = runtime._UnwrapScriptInterface(r2);
-      renderer.UpdateTexture(e, t2, { premultiplyAlpha: n?.premultiplyAlpha ?? true });
+    updateTexture(e, r2, t2) {
+      C3X.RequireInstanceOf(r2, globalThis.ITexture);
+      const n = this.#e._UnwrapScriptInterface(r2);
+      this.#r.UpdateTexture(e, n, { premultiplyAlpha: t2?.premultiplyAlpha ?? true });
     }
     deleteTexture(e) {
-      C3X.RequireInstanceOf(e, self.ITexture);
-      const r2 = runtime._UnwrapScriptInterface(e);
-      renderer.DeleteTexture(r2);
+      C3X.RequireInstanceOf(e, globalThis.ITexture);
+      const r2 = this.#e._UnwrapScriptInterface(e);
+      this.#r.DeleteTexture(r2);
     }
     createRendererText() {
-      const e = renderer.CreateRendererText();
-      return new self.IRendererText(runtime, e);
+      const e = this.#r.CreateRendererText();
+      return new globalThis.IRendererText(this.#e, e);
+    }
+    createMeshData(e, r2, t2) {
+      C3X.RequireFiniteNumber(e), C3X.RequireFiniteNumber(r2), t2 = Object.assign({}, DEFAULT_MESHDATA_OPTS, t2);
+      const n = this.#r.CreateMeshData(e, r2, { debugLabel: t2.debugLabel });
+      n.CreateGPUResources();
+      const a2 = new globalThis.IMeshData(n);
+      return this.#e._MapScriptInterface(a2, n), a2;
+    }
+    drawMeshData(e, r2 = 0, t2 = e.indexCount) {
+      const n = this.#e._UnwrapScriptInterface(e);
+      this.#r.DrawMeshData(n, r2, t2);
     }
     setDeviceTransform() {
-      runtime.GetCanvasManager().SetDeviceTransform(renderer);
+      this.#e.GetCanvasManager().SetDeviceTransform(this.#r);
     }
     setLayerTransform(e) {
       C3X.RequireInstanceOf(e, globalThis.ILayer);
-      runtime._UnwrapScriptInterface(e)._SetTransform(renderer);
+      this.#e._UnwrapScriptInterface(e)._SetTransform(this.#r);
     }
   };
 }
 var IsStaticTextureDataType2;
 {
-  const C32 = self.C3, C3X = self.C3X, map = /* @__PURE__ */ new WeakMap(), reverseMap = /* @__PURE__ */ new WeakMap();
-  self.ITexture = class {
+  const C32 = globalThis.C3, C3X = globalThis.C3X, reverseMap = /* @__PURE__ */ new WeakMap();
+  globalThis.ITexture = class {
+    #e;
+    #t;
     constructor(e, t2) {
-      map.set(this, { runtime: e, texture: t2 }), reverseMap.set(t2, this), e._MapScriptInterface(this, t2), Object.defineProperties(this, { width: { value: t2.GetWidth(), writable: false }, height: { value: t2.GetHeight(), writable: false } });
+      this.#e = e, this.#t = t2, reverseMap.set(t2, this), e._MapScriptInterface(this, t2), Object.defineProperties(this, { width: { value: t2.GetWidth(), writable: false }, height: { value: t2.GetHeight(), writable: false }, defaultSampling: { value: t2.GetDefaultSampling(), writable: false } });
     }
     static GetInterface(e, t2) {
       if (!t2) return null;
       const r2 = reverseMap.get(t2);
-      return r2 || new self.ITexture(e, t2);
+      return r2 || new globalThis.ITexture(e, t2);
     }
   };
 }
 {
-  let getActual = function(t2) {
-    return map.get(t2).rendererText;
-  };
-  getActual2 = getActual;
-  const C32 = self.C3, C3X = self.C3X, map = /* @__PURE__ */ new WeakMap();
-  self.IRendererText = class {
-    constructor(t2, e) {
-      map.set(this, { runtime: t2, rendererText: e }), t2._MapScriptInterface(this, e);
+  const C32 = globalThis.C3, C3X = globalThis.C3X;
+  globalThis.IRendererText = class {
+    #e;
+    #t;
+    constructor(e, t2) {
+      this.#e = e, this.#t = t2, e._MapScriptInterface(this, t2);
     }
     release() {
-      getActual(this).Release();
+      this.#t.Release();
     }
-    set fontFace(t2) {
-      C3X.RequireString(t2), getActual(this).SetFontName(t2);
+    set fontFace(e) {
+      C3X.RequireString(e), this.#t.SetFontName(e);
     }
     get fontFace() {
-      return getActual(this).GetFontName();
+      return this.#t.GetFontName();
     }
-    set sizePt(t2) {
-      C3X.RequireFiniteNumber(t2), getActual(this).SetFontSize(t2);
+    set sizePt(e) {
+      C3X.RequireFiniteNumber(e), this.#t.SetFontSize(e);
     }
     get sizePt() {
-      return getActual(this).GetFontSize();
+      return this.#t.GetFontSize();
     }
-    set lineHeight(t2) {
-      C3X.RequireFiniteNumber(t2), getActual(this).SetLineHeight(t2);
+    set lineHeight(e) {
+      C3X.RequireFiniteNumber(e), this.#t.SetLineHeight(e);
     }
     get lineHeight() {
-      return getActual(this).GetLineHeight();
+      return this.#t.GetLineHeight();
     }
-    set isBold(t2) {
-      getActual(this).SetBold(t2);
+    set isBold(e) {
+      this.#t.SetBold(e);
     }
     get isBold() {
-      return getActual(this).IsBold();
+      return this.#t.IsBold();
     }
-    set isItalic(t2) {
-      getActual(this).SetItalic(t2);
+    set isItalic(e) {
+      this.#t.SetItalic(e);
     }
     get isItalic() {
-      return getActual(this).IsItalic();
+      return this.#t.IsItalic();
     }
-    setColor(t2) {
-      C3X.RequireArray(t2), this.setColorRgb(t2[0], t2[1], t2[2]);
+    setColor(e) {
+      C3X.RequireArray(e), this.setColorRgb(e[0], e[1], e[2]);
     }
-    setColorRgb(t2, e, i) {
-      getActual(this).SetColorRgb(t2, e, i);
+    setColorRgb(e, t2, r2) {
+      this.#t.SetColorRgb(e, t2, r2);
     }
-    setCssColor(t2) {
-      C3X.RequireString(t2), getActual(this).SetColor(t2);
+    setCssColor(e) {
+      C3X.RequireString(e), this.#t.SetColor(e);
     }
-    set horizontalAlign(t2) {
-      getActual(this).SetHorizontalAlignment(t2);
+    set horizontalAlign(e) {
+      this.#t.SetHorizontalAlignment(e);
     }
     get horizontalAlign() {
-      return getActual(this).GetHorizontalAlignment();
+      return this.#t.GetHorizontalAlignment();
     }
-    set verticalAlign(t2) {
-      getActual(this).SetVerticalAlignment(t2);
+    set verticalAlign(e) {
+      this.#t.SetVerticalAlignment(e);
     }
     get verticalAlign() {
-      return getActual(this).GetVerticalAlignment();
+      return this.#t.GetVerticalAlignment();
     }
-    set wordWrapMode(t2) {
-      getActual(this).SetWordWrapMode(t2);
+    set wordWrapMode(e) {
+      this.#t.SetWordWrapMode(e);
     }
     get wordWrapMode() {
-      return getActual(this).GetWordWrapMode();
+      return this.#t.GetWordWrapMode();
     }
-    set textDirection(t2) {
-      getActual(this).SetTextDirection(t2);
+    set textDirection(e) {
+      this.#t.SetTextDirection(e);
     }
     get textDirection() {
-      return getActual(this).GetTextDirection();
+      return this.#t.GetTextDirection();
     }
-    set text(t2) {
-      C3X.RequireString(t2), getActual(this).SetText(t2);
+    set text(e) {
+      C3X.RequireString(e), this.#t.SetText(e);
     }
     get text() {
-      return getActual(this).GetText();
+      return this.#t.GetText();
     }
-    setSize(t2, e, i) {
-      C3X.RequireFiniteNumber(t2), C3X.RequireFiniteNumber(e), C3X.RequireFiniteNumber(i), getActual(this).SetSize(t2, e, i);
+    setSize(e, t2, r2) {
+      C3X.RequireFiniteNumber(e), C3X.RequireFiniteNumber(t2), C3X.RequireFiniteNumber(r2), this.#t.SetSize(e, t2, r2);
     }
     getTexture() {
-      const { runtime: t2, rendererText: e } = map.get(this), i = e.GetTexture();
-      return self.ITexture.GetInterface(t2, i);
+      const e = this.#t.GetTexture();
+      return globalThis.ITexture.GetInterface(this.#e, e);
     }
     getTexRect() {
-      return getActual(this).GetTexRect().toDOMRect();
+      return this.#t.GetTexRect().toDOMRect();
     }
-    setTextureUpdateCallback(t2) {
-      C3X.RequireFunction(t2), getActual(this).ontextureupdate = t2;
+    setTextureUpdateCallback(e) {
+      C3X.RequireFunction(e), this.#t.ontextureupdate = e;
     }
     releaseTexture() {
-      getActual(this).ReleaseTexture();
+      this.#t.ReleaseTexture();
     }
     get textWidth() {
-      return getActual(this).GetTextWidth();
+      return this.#t.GetTextWidth();
     }
     get textHeight() {
-      return getActual(this).GetTextHeight();
+      return this.#t.GetTextHeight();
     }
   };
 }
-var getActual2;
+{
+  const C32 = globalThis.C3, C3X = globalThis.C3X;
+  globalThis.IMeshData = class {
+    #e;
+    constructor(e) {
+      this.#e = e, Object.defineProperties(this, { vertexCount: { value: e.GetVertexCount(), writable: false }, indexCount: { value: e.GetIndexCount(), writable: false }, positions: { value: e.positions, writable: false }, texCoords: { value: e.texCoords, writable: false }, colors: { value: e.colors, writable: false }, indices: { value: e.indices, writable: false }, debugLabel: { value: e.GetDebugLabel(), writable: false } });
+    }
+    markDataChanged(e, a2, t2) {
+      this.#e.MarkDataChanged(e, a2, t2);
+    }
+    markAllVertexDataChanged(e = 0, a2 = this.vertexCount) {
+      this.#e.MarkAllVertexDataChanged(e, a2);
+    }
+    markIndexDataChanged(e = 0, a2 = this.indexCount) {
+      this.#e.MarkIndexDataChanged(e, a2);
+    }
+    fillColor(e, a2, t2, l) {
+      this.#e.FillColor(e, a2, t2, l);
+    }
+    release() {
+      this.#e.Release();
+    }
+  };
+}
 {
   let GetTypeFromFileExtension = function(e) {
     if (!e) return "";
@@ -14037,19 +14969,22 @@ var SortByInstLastCachedZIndex2;
 {
   let SortByInstLastCachedZIndex = function(e, t2) {
     return e.GetWorldInfo()._GetLastCachedZIndex() - t2.GetWorldInfo()._GetLastCachedZIndex();
-  }, SortByInstZElevation = function(e, t2) {
-    return e.GetWorldInfo().GetZElevation() - t2.GetWorldInfo().GetZElevation();
+  }, SortByInstZ = function(e, t2) {
+    const s = e.GetWorldInfo(), a2 = t2.GetWorldInfo();
+    return s.GetZ() - s.GetDepth() * s.GetOriginZ() - (a2.GetZ() - a2.GetDepth() * a2.GetOriginZ());
   };
-  SortByInstLastCachedZIndex2 = SortByInstLastCachedZIndex, SortByInstZElevation2 = SortByInstZElevation;
-  const C32 = self.C3, assert = self.assert, tmpRect = new C32.Rect(), tmpQuad = new C32.Quad(), renderCellArr = [], tmpDestRect = new C32.Rect(), tmpSrcRect = new C32.Rect(), glMatrix = self.glMatrix, vec3 = glMatrix.vec3, vec4 = glMatrix.vec4, mat4 = glMatrix.mat4, tempMat4 = mat4.create(), tempVec3 = vec3.create(), tempVec4 = vec4.create(), camVector = vec3.create(), lookVector = vec3.create(), upVector = vec3.create(), tempVec2 = C32.New(C32.Vector2), tempRect = C32.New(C32.Rect);
-  const tempInstanceList1 = [], tempInstanceList2 = [], tempInstancesByCameraDist = [], DEFAULT_LAYER_OPTIONS = { name: "", sid: -1, isDynamic: false, isVisible: true, isInteractive: true, isHTMLElementsLayer: false, backgroundColor: [1, 1, 1, 1], isTransparent: true, parallax: [1, 1], opacity: 1, isForceOwnTexture: false, renderAs3d: false, useCameraDistanceDrawOrder: false, useRenderCells: false, scaleRate: 1, blendMode: 0, zElevation: 0, initialInstancesData: [], effectListData: [], subLayersData: [] }, allInitialGlobalInstances = /* @__PURE__ */ new Map(), on_global_instance_destroy = (e) => {
+  SortByInstLastCachedZIndex2 = SortByInstLastCachedZIndex, SortByInstZ2 = SortByInstZ;
+  const C32 = self.C3, assert = self.assert, tmpRect = new C32.Rect(), tmpQuad = new C32.Quad2D(), renderCellArr = [], tmpDestRect = new C32.Rect(), tmpSrcRect = new C32.Rect(), glMatrix = self.glMatrix, vec3 = glMatrix.vec3, vec4 = glMatrix.vec4, mat4 = glMatrix.mat4, tempMat4 = mat4.create(), tempVec3 = vec3.create(), tempVec4 = vec4.create(), camVector = vec3.create(), lookVector = vec3.create(), upVector = vec3.create(), tempVec2 = C32.New(C32.Vector2), tempRect = C32.New(C32.Rect);
+  const tempInstanceList1 = [], tempInstanceList2 = [], tempInstancesByCameraDist = [], DEFAULT_LAYER_OPTIONS = { name: "", sid: -1, isDynamic: false, isVisible: true, isInteractive: true, isHTMLElementsLayer: false, backgroundColor: [1, 1, 1, 1], isTransparent: true, parallax: [1, 1], opacity: 1, isForceOwnTexture: false, renderAs3d: false, useCameraDistanceDrawOrder: false, useRenderCells: false, scaleRate: 1, blendMode: 0, zElevation: 0, samplingMode: "auto", initialInstancesData: [], effectListData: [], subLayersData: [] }, allInitialGlobalInstances = /* @__PURE__ */ new Map(), on_global_instance_destroy = (e) => {
     if (!e.instance.GetObjectClass().IsGlobal()) return;
     const t2 = e.instance.GetUID();
     allInitialGlobalInstances.has(t2) && (allInitialGlobalInstances.delete(t2), allInitialGlobalInstances.size || e.instance.GetRuntime().Dispatcher().removeEventListener("instancedestroy", on_global_instance_destroy));
   };
   C32.Layer = class extends C32.DefendedBase {
+    #e = "auto";
+    #t = "trilinear";
     constructor(e, t2, s) {
-      super(), s = Object.assign({}, DEFAULT_LAYER_OPTIONS, s), this._layout = e, this._runtime = e.GetRuntime(), this._parentLayer = t2, this._name = s.name, this._index = -1, this._isHTMLElementsLayer = !!s.isHTMLElementsLayer, this._htmlIndex = -1, this._sid = s.sid, this._isDynamic = !!s.isDynamic, this._isVisible = !!s.isVisible, this._isInteractive = !!s.isInteractive, this._backgroundColor = C32.New(C32.Color), this._backgroundColor.setFromJSON(s.backgroundColor), this._isTransparent = !!s.isTransparent, this._parallaxX = s.parallax[0], this._parallaxY = s.parallax[1], this._color = C32.New(C32.Color, 1, 1, 1, s.opacity), this._premultipliedColor = C32.New(C32.Color), this._isForceOwnTexture = !!s.isForceOwnTexture, this._renderAs3d = !!s.renderAs3d, this._useCameraDistanceDrawOrder = !!s.useCameraDistanceDrawOrder, this._useRenderCells = !!s.useRenderCells, this._scaleRate = s.scaleRate, this._blendMode = s.blendMode, this._curRenderTarget = null, this._scale = 1, this._zElevation = s.zElevation, this._angle = 0, this._scrollX = 0, this._scrollY = 0, this._hasOwnScrollPosition = false, this._viewport = C32.New(C32.Rect), this._viewportZ0 = C32.New(C32.Rect), this._viewport3D = C32.New(C32.Rect), this._isViewportChanged = true, this._projectionMatrix = mat4.create(), this._isProjectionMatrixChanged = true, this._modelViewMatrix = mat4.create(), this._isMVMatrixChanged = true, this._viewFrustum = C32.New(C32.Gfx.ViewFrustum), this._isViewFrustumChanged = true, this._startupInitialInstances = [], this._initialInstancesData = s.initialInstancesData, this._initialInstances = [], this._createdGlobalUids = [], this._initialUIDsToInstanceData = /* @__PURE__ */ new Map(), this._instances = [], this._zIndicesUpToDate = false, this._htmlZIndicesUpToDate = false, this._anyInstanceZElevated = false;
+      super(), s = Object.assign({}, DEFAULT_LAYER_OPTIONS, s), this._layout = e, this._runtime = e.GetRuntime(), this._parentLayer = t2, this._name = s.name, this._index = -1, this._isHTMLElementsLayer = !!s.isHTMLElementsLayer, this._htmlIndex = -1, this._sid = s.sid, this._isDynamic = !!s.isDynamic, this._isVisible = !!s.isVisible, this._isInteractive = !!s.isInteractive, this._backgroundColor = C32.New(C32.Color), this._backgroundColor.setFromJSON(s.backgroundColor), this._isTransparent = !!s.isTransparent, this._parallaxX = s.parallax[0], this._parallaxY = s.parallax[1], this._color = C32.New(C32.Color, 1, 1, 1, s.opacity), this._premultipliedColor = C32.New(C32.Color), this._isForceOwnTexture = !!s.isForceOwnTexture, this._renderAs3d = !!s.renderAs3d, this._useCameraDistanceDrawOrder = !!s.useCameraDistanceDrawOrder, this._useRenderCells = !!s.useRenderCells, this._scaleRate = s.scaleRate, this._blendMode = s.blendMode, this._curRenderTarget = null, this.#e = s.samplingMode, this._scale = 1, this._zElevation = s.zElevation, this._angle = 0, this._scrollX = 0, this._scrollY = 0, this._hasOwnScrollPosition = false, this._viewport = C32.New(C32.Rect), this._viewportZ0 = C32.New(C32.Rect), this._viewport3D = C32.New(C32.Rect), this._isViewportChanged = true, this._projectionMatrix = mat4.create(), this._isProjectionMatrixChanged = true, this._modelViewMatrix = mat4.create(), this._isMVMatrixChanged = true, this._viewFrustum = C32.New(C32.Gfx.ViewFrustum), this._isViewFrustumChanged = true, this._startupInitialInstances = [], this._initialInstancesData = s.initialInstancesData, this._initialInstances = [], this._createdGlobalUids = [], this._initialUIDsToInstanceData = /* @__PURE__ */ new Map(), this._instances = [], this._zIndicesUpToDate = false, this._htmlZIndicesUpToDate = false, this._anyInstanceZElevated = false;
       const a2 = this._runtime.GetCanvasManager();
       this._effectList = C32.New(C32.EffectList, this, s.effectListData), this._effectChain = C32.New(C32.Gfx.EffectChain, a2.GetEffectChainManager(), { drawContent: (e2, t3) => {
         const s2 = t3.GetContentObject(), i = s2.GetRenderTarget();
@@ -14064,7 +14999,7 @@ var SortByInstLastCachedZIndex2;
       C32.shallowAssignArray(this._startupInitialInstances, this._initialInstances), this._initialInstancesData = null;
     }
     static CreateFromExportData(e, t2, s) {
-      return C32.New(C32.Layer, e, t2, { name: s[0], sid: s[2], isVisible: s[3], isInteractive: s[13], isHTMLElementsLayer: s[19], backgroundColor: s[4].map((e2) => e2 / 255), isTransparent: s[5], parallax: [s[6], s[7]], opacity: s[8], isForceOwnTexture: s[9], renderAs3d: s[17], useCameraDistanceDrawOrder: s[18], useRenderCells: s[10], scaleRate: s[11], blendMode: s[12], zElevation: s[16], initialInstancesData: s[14], effectListData: s[15], subLayersData: s[20] });
+      return C32.New(C32.Layer, e, t2, { name: s[0], sid: s[2], isVisible: s[3], isInteractive: s[13], isHTMLElementsLayer: s[19], backgroundColor: s[4].map((e2) => e2 / 255), isTransparent: s[5], parallax: [s[6], s[7]], opacity: s[8], isForceOwnTexture: s[9], renderAs3d: s[17], useCameraDistanceDrawOrder: s[18], useRenderCells: s[10], scaleRate: s[11], blendMode: s[12], zElevation: s[16], initialInstancesData: s[14], effectListData: s[15], samplingMode: s[20], subLayersData: s[21] });
     }
     Release() {
       for (const e of this._subLayers) e.Release();
@@ -14097,15 +15032,15 @@ var SortByInstLastCachedZIndex2;
       if (!e.GetPlugin().IsWorldType()) throw new Error("instance is not of world type");
       const s = e.GetWorldInfo();
       if (s.GetLayer() !== this) throw new Error("instance added to wrong layer");
-      this._instances.push(e), 0 !== s.GetZElevation() && (this._anyInstanceZElevated = true), t2 && this.UsesRenderCells() && e.GetWorldInfo().SetBboxChanged(), this.SetZIndicesChanged(e);
+      this._instances.push(e), 0 !== s.GetZ() && (this._anyInstanceZElevated = true), t2 && this.UsesRenderCells() && e.GetWorldInfo().SetBboxChanged(), this.SetZIndicesChanged(e);
     }
     _MaybeAddInstance(e) {
-      this._instances.includes(e) || (this._instances.push(e), 0 !== e.GetWorldInfo().GetZElevation() && (this._anyInstanceZElevated = true), this.SetZIndicesChanged(e));
+      this._instances.includes(e) || (this._instances.push(e), 0 !== e.GetWorldInfo().GetZ() && (this._anyInstanceZElevated = true), this.SetZIndicesChanged(e));
     }
     _PrependInstance(e, t2) {
       const s = e.GetWorldInfo();
       if (s.GetLayer() !== this) throw new Error("instance added to wrong layer");
-      this._instances.unshift(e), 0 !== s.GetZElevation() && (this._anyInstanceZElevated = true), this.SetZIndicesChanged(e), t2 && this.UsesRenderCells() && e.GetWorldInfo().SetBboxChanged();
+      this._instances.unshift(e), 0 !== s.GetZ() && (this._anyInstanceZElevated = true), this.SetZIndicesChanged(e), t2 && this.UsesRenderCells() && e.GetWorldInfo().SetBboxChanged();
     }
     _RemoveInstance(e, t2) {
       const s = this._instances.indexOf(e);
@@ -14142,24 +15077,29 @@ var SortByInstLastCachedZIndex2;
       this._runtime.FlushPendingInstances(), C32.clearArray(this._instances), this._anyInstanceZElevated = false, this.SetZIndicesChanged();
     }
     RecreateInitialObjects(e, t2, s, a2, i, r2) {
-      const n = this._runtime.GetEventSheetManager(), l = this._runtime.GetAllObjectClasses(), o2 = e.IsFamily(), h2 = [];
-      for (const c2 of this._initialInstances) {
-        const d2 = c2[0], _2 = d2[0], u2 = d2[1];
-        if (!t2.containsPoint(_2, u2)) continue;
-        const G = l[c2[1]];
-        if (G !== e) {
+      const n = this._runtime.GetEventSheetManager(), l = this._runtime.GetAllObjectClasses(), o2 = e.IsFamily(), h2 = [], c2 = [];
+      for (const e2 of this._initialInstances) {
+        const t3 = e2[0][15], s2 = t3?.[3] || -1;
+        -1 !== s2 && (c2.includes(s2) || c2.push(s2));
+      }
+      for (const d2 of this._initialInstances) {
+        const _2 = d2[0], u2 = _2[0], p2 = _2[1], G = _2[15], f2 = G?.[3] || -1;
+        if (r2 && c2.includes(f2)) continue;
+        if (!t2.containsPoint(u2, p2)) continue;
+        const I2 = l[d2[1]];
+        if (I2 !== e) {
           if (!o2) continue;
-          if (!e.FamilyHasMember(G)) continue;
+          if (!e.FamilyHasMember(I2)) continue;
         }
-        let p2 = i;
-        if (!p2) {
+        let m2 = i;
+        if (!m2) {
           const e2 = this._runtime.GetCurrentLayout();
-          this.GetLayout() === e2 ? p2 = this : (p2 = e2.GetLayerByName(this.GetName()), p2 || (p2 = e2.GetLayerByIndex(this.GetIndex())));
+          this.GetLayout() === e2 ? m2 = this : (m2 = e2.GetLayerByName(this.GetName()), m2 || (m2 = e2.GetLayerByIndex(this.GetIndex())));
         }
-        const f2 = this._runtime.CreateInstanceFromData(c2, p2, false, void 0, void 0, false, r2, void 0, r2);
-        r2 && p2.SortAndAddInstancesByZIndex(f2);
-        const I2 = f2.GetWorldInfo();
-        I2.OffsetXY(s, a2), I2.SetBboxChanged(), n.BlockFlushingInstances(true), f2._TriggerOnCreatedOnSelfAndRelated(), n.BlockFlushingInstances(false), h2.push(f2);
+        const C2 = this._runtime.CreateInstanceFromData(d2, m2, false, void 0, void 0, false, r2, void 0, r2);
+        r2 && m2.SortAndAddInstancesByZIndex(C2);
+        const y2 = C2.GetWorldInfo();
+        y2.OffsetXY(s, a2), y2.SetBboxChanged(), n.BlockFlushingInstances(true), C2._TriggerOnCreatedOnSelfAndRelated(), n.BlockFlushingInstances(false), h2.push(C2);
       }
       return h2;
     }
@@ -14364,6 +15304,24 @@ var SortByInstLastCachedZIndex2;
     GetOwnAngle() {
       return this._angle;
     }
+    SetSamplingMode(e) {
+      if (!C32.Gfx.RendererBase.IsValidSamplingMode(e)) throw new Error(`invalid sampling mode '${e}'`);
+      this.#e !== e && (this.#e = e, this._runtime.UpdateRender(), this._UpdateActiveSamplingModes());
+    }
+    GetSamplingMode() {
+      return this.#e;
+    }
+    _UpdateActiveSamplingModes() {
+      let e;
+      e = this.IsRootLayer() ? this.GetLayout().GetActiveSampling() : this.GetParentLayer().GetActiveSampling();
+      const t2 = this.GetSamplingMode();
+      "auto" !== t2 && (e = t2), this.#t = e;
+      for (const e2 of this._instances) e2.HasParent() || e2.GetWorldInfo()._UpdateActiveSamplingMode();
+      for (const e2 of this._subLayers) e2._UpdateActiveSamplingModes();
+    }
+    GetActiveSampling() {
+      return this.#t;
+    }
     HasInstances() {
       return this._instances.length > 0;
     }
@@ -14378,7 +15336,7 @@ var SortByInstLastCachedZIndex2;
       for (const t2 of this._subLayers) t2.IsVisible() && t2.GetOpacity() > 0 && t2._AppendAllInstancesIncludingSubLayersInDrawOrder(e);
     }
     _SortInstancesByCameraDistance(e, t2) {
-      const s = this.GetLayout().Get3DCameraPosition(), a2 = s[0], i = s[1], r2 = s[2], n = e.GetWorldInfo(), l = t2.GetWorldInfo(), o2 = n.GetX() - a2, h2 = n.GetY() - i, c2 = n.GetZElevation() - r2, d2 = l.GetX() - a2, _2 = l.GetY() - i, u2 = l.GetZElevation() - r2;
+      const s = this.GetLayout().Get3DCameraPosition(), a2 = s[0], i = s[1], r2 = s[2], n = e.GetWorldInfo(), l = t2.GetWorldInfo(), o2 = n.GetX() - a2, h2 = n.GetY() - i, c2 = n.GetZ() - r2, d2 = l.GetX() - a2, _2 = l.GetY() - i, u2 = l.GetZ() - r2;
       return d2 * d2 + _2 * _2 + u2 * u2 - (o2 * o2 + h2 * h2 + c2 * c2);
     }
     GetBackgroundColor() {
@@ -14429,7 +15387,7 @@ var SortByInstLastCachedZIndex2;
       return this._parentLayer;
     }
     _SetParentLayer(e) {
-      this._parentLayer = e;
+      this._parentLayer = e, this._UpdateActiveSamplingModes();
     }
     GetSubLayers() {
       return this._subLayers;
@@ -14487,7 +15445,7 @@ var SortByInstLastCachedZIndex2;
     }
     _UpdateZIndices() {
       if (!this._zIndicesUpToDate) {
-        if (this._instances.sort(SortByInstZElevation), this.UsesRenderCells()) for (let e = 0, t2 = this._instances.length; e < t2; ++e) {
+        if (this._instances.sort(SortByInstZ), this.UsesRenderCells()) for (let e = 0, t2 = this._instances.length; e < t2; ++e) {
           const t3 = this._instances[e].GetWorldInfo();
           t3._SetZIndex(e), this._renderGrid.MarkRangeChanged(t3.GetRenderCellRange());
         }
@@ -14611,16 +15569,16 @@ var SortByInstLastCachedZIndex2;
       return [h2, c2, d2];
     }
     _CalculateModelViewMatrix(e, t2, s, a2, i) {
-      const r2 = this._runtime, n = this.GetLayout();
+      const r2 = this._runtime, n = r2.GetCanvasManager(), l = this.GetLayout();
       if (this.Has3DCamera()) {
-        vec3.copy(camVector, n.Get3DCameraPosition()), vec3.copy(lookVector, n.Get3DCameraLookAt()), vec3.copy(upVector, n.Get3DCameraUpVector());
+        vec3.copy(camVector, l.Get3DCameraPosition()), vec3.copy(lookVector, l.Get3DCameraLookAt()), vec3.copy(upVector, l.Get3DCameraUpVector());
         const e2 = r2.GetParallaxXOrigin(), t3 = r2.GetParallaxYOrigin(), s2 = lookVector[0] - camVector[0], a3 = lookVector[1] - camVector[1], i2 = lookVector[2] - camVector[2];
         camVector[0] = (camVector[0] - e2) * this._parallaxX + e2, camVector[1] = (camVector[1] - t3) * this._parallaxY + t3, camVector[2] *= Math.max(this._parallaxX, this._parallaxY), lookVector[0] = camVector[0] + s2, lookVector[1] = camVector[1] + a3, lookVector[2] = camVector[2] + i2;
       } else {
-        const [e2, t3, r3] = this._Get2DCameraPosition(s, a2, i);
-        vec3.set(camVector, e2, t3, r3), vec3.set(lookVector, e2, t3, r3 - 100);
-        const n2 = this.GetAngle();
-        0 === n2 ? vec3.set(upVector, 0, 1, 0) : vec3.set(upVector, Math.sin(n2), Math.cos(n2), 0);
+        let [e2, t3, r3] = this._Get2DCameraPosition(s, a2, i);
+        "low" === n.GetCurrentFullscreenScalingQuality() && 1 === this.GetActiveSampling() && (n.GetDrawWidth() % 2 == 1 && (e2 += 0.5), n.GetDrawHeight() % 2 == 1 && (t3 += 0.5)), vec3.set(camVector, e2, t3, r3), vec3.set(lookVector, e2, t3, r3 - 100);
+        const l2 = this.GetAngle();
+        0 === l2 ? vec3.set(upVector, 0, 1, 0) : vec3.set(upVector, Math.sin(l2), Math.cos(l2), 0);
       }
       e.CalculateLookAtModelView(t2, camVector, lookVector, upVector, i || r2.GetViewportHeight());
     }
@@ -14673,8 +15631,8 @@ var SortByInstLastCachedZIndex2;
       let r2 = null;
       const n = this._MaybeStartWebGLProfiling(e);
       if (this._MaybeStartWebGPUProfiling(e), i) {
-        const t3 = { sampling: this._runtime.GetSampling(), isSampled: true, canReadPixels: !!e.IsWebGPU() && this._runtime.UsesAnyBackgroundBlending() };
-        "low" === a2.GetCurrentFullscreenScalingQuality() && (t3.width = a2.GetDrawWidth(), t3.height = a2.GetDrawHeight()), r2 = this._runtime.GetAdditionalRenderTarget(t3), this._curRenderTarget = r2, e.SetRenderTarget(r2), this.IsTransparent() && e.ClearRgba(0, 0, 0, 0);
+        const t3 = { isSampled: true, canReadPixels: !!e.IsWebGPU() && this._runtime.UsesAnyBackgroundBlending() };
+        "low" === a2.GetCurrentFullscreenScalingQuality() && (t3.width = a2.GetDrawWidth(), t3.height = a2.GetDrawHeight()), r2 = this._runtime.GetAdditionalRenderTarget(t3), r2.SetDefaultSampling(this.GetActiveSampling()), this._curRenderTarget = r2, e.SetRenderTarget(r2), this.IsTransparent() && e.ClearRgba(0, 0, 0, 0);
       } else this._curRenderTarget = t2, e.SetRenderTarget(t2);
       if (this.IsTransparent() || e.Clear(this._backgroundColor), this._layout._DrawLayerList(e, this._curRenderTarget, this._subLayers, i && this.IsTransparent()), this._MaybeStartWebGPUProfiling(e), this._SetTransform(e), e.SetBaseZ(this.GetZElevation()), e.SetDepthEnabled(this.RendersIn3DMode()), this._FireDrawEvent(e, "beforedraw"), this.GetNormalScale() > Number.EPSILON) {
         this._UpdateZIndices();
@@ -14703,13 +15661,13 @@ var SortByInstLastCachedZIndex2;
           continue;
         }
         (!o2.RendersToOwnZPlane() || h2.GetDepth() > 0) && i.push(o2);
-        const c2 = o2.GetWorldInfo().GetTotalZElevation();
+        const c2 = h2.GetTotalZ() - h2.GetDepth() * h2.GetOriginZ();
         a2.push(o2);
         let d2 = n + 1;
         for (; d2 < l; ++d2) {
           const e2 = r2[d2], t3 = e2.GetWorldInfo();
           if (t3.IsVisible() && t3.IsInViewport3D(s)) {
-            if (t3.GetTotalZElevation() !== c2) break;
+            if (t3.GetTotalZ() - t3.GetDepth() * t3.GetOriginZ() !== c2) break;
             e2.RendersToOwnZPlane() ? (t3.GetDepth() > 0 && i.push(e2), a2.push(e2)) : i.push(e2);
           }
         }
@@ -14762,7 +15720,7 @@ var SortByInstLastCachedZIndex2;
     }
     _DrawInstanceWithEffects(e, t2, s, a2, i) {
       const r2 = t2.GetInstanceEffectList().GetEffectChain();
-      return r2.Render(s, a2, { contentObject: e, blendMode: t2.GetBlendMode(), devicePixelRatio: this._runtime.GetEffectDevicePixelRatioParam(), time: e.GetInstanceGameTime(), layerScale: this._runtime.GetEffectLayerScaleParam() * this.GetNormalScale(), layerAngle: this.GetAngle(), layoutRect: t2.GetBoundingBox(), drawSurfaceRect: r2.CanSkipCalculatingDrawSurfaceRect() ? null : this._InstanceBoxToDrawSurface(t2), drawContentHook: i && i.drawContentHook, compositOffX: i && i.compositOffX, compositOffY: i && i.compositOffY, compositRtWidth: i && i.compositRtWidth, compositRtHeight: i && i.compositRtHeight, updateOwnProjection: i && i.updateOwnProjection }), s.SetBaseZ(this.GetZElevation()), r2.DidChangeTransform();
+      return r2.Render(s, a2, { contentObject: e, blendMode: t2.GetBlendMode(), devicePixelRatio: this._runtime.GetEffectDevicePixelRatioParam(), time: e.GetInstanceGameTime(), layerScale: this._runtime.GetEffectLayerScaleParam() * this.GetNormalScale(), layerAngle: this.GetAngle(), layoutRect: t2.GetBoundingBox().toRect(), drawSurfaceRect: r2.CanSkipCalculatingDrawSurfaceRect() ? null : this._InstanceBoxToDrawSurface(t2), drawContentHook: i && i.drawContentHook, compositOffX: i && i.compositOffX, compositOffY: i && i.compositOffY, compositRtWidth: i && i.compositRtWidth, compositRtHeight: i && i.compositRtHeight, updateOwnProjection: i && i.updateOwnProjection }), s.SetBaseZ(this.GetZElevation()), r2.DidChangeTransform();
     }
     _DrawLayerOwnTextureToRenderTarget(e, t2, s, a2) {
       const i = this._effectList.GetActiveEffectTypes(), r2 = this._runtime;
@@ -14798,8 +15756,8 @@ var SortByInstLastCachedZIndex2;
     }
     CalculateViewport3D(e, t2) {
       const s = this._runtime.GetCanvasManager(), a2 = s.GetCssWidth(), i = s.GetCssHeight(), [r2, n] = this.CanvasCssToLayer(0, 0, e), [l, o2] = this.CanvasCssToLayer(a2, 0, e), [h2, c2] = this.CanvasCssToLayer(a2, i, e), [d2, _2] = this.CanvasCssToLayer(0, i, e);
-      let u2 = Math.min(r2, l, h2, d2), G = Math.min(n, o2, c2, _2), p2 = Math.max(r2, l, h2, d2), f2 = Math.max(n, o2, c2, _2);
-      isFinite(u2) || (u2 = -1 / 0), isFinite(G) || (G = -1 / 0), isFinite(p2) || (p2 = 1 / 0), isFinite(f2) || (f2 = 1 / 0), t2.set(u2, G, p2, f2);
+      let u2 = Math.min(r2, l, h2, d2), p2 = Math.min(n, o2, c2, _2), G = Math.max(r2, l, h2, d2), f2 = Math.max(n, o2, c2, _2);
+      isFinite(u2) || (u2 = -1 / 0), isFinite(p2) || (p2 = -1 / 0), isFinite(G) || (G = 1 / 0), isFinite(f2) || (f2 = 1 / 0), t2.set(u2, p2, G, f2);
     }
     CanvasCssToLayer(e, t2, s = 0) {
       return this._CanvasToLayer(e, t2, s, this.GetDisplayScale());
@@ -14835,21 +15793,21 @@ var SortByInstLastCachedZIndex2;
       return e *= this.GetRenderScale() * this.GetDevicePixelRatio(), 0 !== t2 && (e *= this.Get2DScaleFactorToZ(t2)), e;
     }
     _InstanceBoxToDrawSurface(e) {
-      const t2 = e.GetBoundingBox(), s = e.GetTotalZElevation(), a2 = e.GetDepth(), i = s + a2, r2 = t2.getLeft(), n = t2.getTop(), l = t2.getRight(), o2 = t2.getBottom();
+      const t2 = e.GetBoundingBox(), s = t2.getLeft(), a2 = t2.getTop(), i = t2.getRight(), r2 = t2.getBottom(), n = t2.getBack(), l = t2.getFront(), o2 = n !== l;
       if (this.Has3DCamera()) {
-        if (this._IsPointBehindNearPlane(r2, n, s) || this._IsPointBehindNearPlane(l, n, s) || this._IsPointBehindNearPlane(l, o2, s) || this._IsPointBehindNearPlane(r2, o2, s)) return null;
-        if (a2 > 0 && (this._IsPointBehindNearPlane(r2, n, i) || this._IsPointBehindNearPlane(l, n, i) || this._IsPointBehindNearPlane(l, o2, i) || this._IsPointBehindNearPlane(r2, o2, i))) return null;
-      } else if (i >= this.Get2DCameraZ()) return null;
-      let [h2, c2] = this.LayerToDrawSurface(r2, n, s), [d2, _2] = this.LayerToDrawSurface(l, o2, s);
-      if (0 !== this.GetAngle() || a2 > 0 || this.Has3DCamera()) {
-        const [e2, t3] = this.LayerToDrawSurface(l, n, s), [u2, G] = this.LayerToDrawSurface(r2, o2, s);
-        if (a2 > 0) {
-          const [s2, a3] = this.LayerToDrawSurface(r2, n, i), [p2, f2] = this.LayerToDrawSurface(l, n, i), [I2, C2] = this.LayerToDrawSurface(l, o2, i), [m2, y2] = this.LayerToDrawSurface(r2, o2, i);
-          let S2 = Math.min(h2, d2, e2, u2, s2, p2, I2, m2);
-          d2 = Math.max(h2, d2, e2, u2, s2, p2, I2, m2), h2 = S2, S2 = Math.min(c2, _2, t3, G, a3, f2, C2, y2), _2 = Math.max(c2, _2, t3, G, a3, f2, C2, y2), c2 = S2;
+        if (this._IsPointBehindNearPlane(s, a2, n) || this._IsPointBehindNearPlane(i, a2, n) || this._IsPointBehindNearPlane(i, r2, n) || this._IsPointBehindNearPlane(s, r2, n)) return null;
+        if (o2 && (this._IsPointBehindNearPlane(s, a2, l) || this._IsPointBehindNearPlane(i, a2, l) || this._IsPointBehindNearPlane(i, r2, l) || this._IsPointBehindNearPlane(s, r2, l))) return null;
+      } else if (l >= this.Get2DCameraZ()) return null;
+      let [h2, c2] = this.LayerToDrawSurface(s, a2, n), [d2, _2] = this.LayerToDrawSurface(i, r2, n);
+      if (0 !== this.GetAngle() || o2 || this.Has3DCamera()) {
+        const [e2, t3] = this.LayerToDrawSurface(i, a2, n), [u2, p2] = this.LayerToDrawSurface(s, r2, n);
+        if (o2) {
+          const [n2, o3] = this.LayerToDrawSurface(s, a2, l), [G, f2] = this.LayerToDrawSurface(i, a2, l), [I2, m2] = this.LayerToDrawSurface(i, r2, l), [C2, y2] = this.LayerToDrawSurface(s, r2, l);
+          let S2 = Math.min(h2, d2, e2, u2, n2, G, I2, C2);
+          d2 = Math.max(h2, d2, e2, u2, n2, G, I2, C2), h2 = S2, S2 = Math.min(c2, _2, t3, p2, o3, f2, m2, y2), _2 = Math.max(c2, _2, t3, p2, o3, f2, m2, y2), c2 = S2;
         } else {
           let s2 = Math.min(h2, d2, e2, u2);
-          d2 = Math.max(h2, d2, e2, u2), h2 = s2, s2 = Math.min(c2, _2, t3, G), _2 = Math.max(c2, _2, t3, G), c2 = s2;
+          d2 = Math.max(h2, d2, e2, u2), h2 = s2, s2 = Math.min(c2, _2, t3, p2), _2 = Math.max(c2, _2, t3, p2), c2 = s2;
         }
       }
       return tmpRect.set(h2, c2, d2, _2), tmpRect;
@@ -14865,10 +15823,10 @@ var SortByInstLastCachedZIndex2;
       return this._GetViewFrustum().IsBehindNearPlane(e, t2, s);
     }
     _SaveToJson() {
-      return { "d": this.IsDynamic(), "s": this.GetOwnScale(), "a": this.GetOwnAngle(), "v": this._IsVisibleFlagSet(), "i": this.IsInteractive(), "html": this.IsHTMLElementsLayer(), "bc": this._backgroundColor.toJSON(), "t": this.IsTransparent(), "sx": this._scrollX, "sy": this._scrollY, "hosp": this._hasOwnScrollPosition, "px": this.GetParallaxX(), "py": this.GetParallaxY(), "c": this._color.toJSON(), "sr": this.GetScaleRate(), "fx": this._effectList.SaveToJson(), "cg": this._createdGlobalUids };
+      return { "d": this.IsDynamic(), "s": this.GetOwnScale(), "a": this.GetOwnAngle(), "v": this._IsVisibleFlagSet(), "i": this.IsInteractive(), "html": this.IsHTMLElementsLayer(), "bc": this._backgroundColor.toJSON(), "t": this.IsTransparent(), "sx": this._scrollX, "sy": this._scrollY, "hosp": this._hasOwnScrollPosition, "px": this.GetParallaxX(), "py": this.GetParallaxY(), "c": this._color.toJSON(), "sr": this.GetScaleRate(), "samp": this.GetSamplingMode(), "fx": this._effectList.SaveToJson(), "cg": this._createdGlobalUids };
     }
     _LoadFromJson(e) {
-      this._isDynamic = !!e["d"], this._scale = e["s"], this._angle = e["a"], this._isVisible = !!e["v"], this._isInteractive = !e.hasOwnProperty("i") || e["i"], this._isHTMLElementsLayer = !!e["html"], this._backgroundColor.setFromJSON(e["bc"]), this._isTransparent = !!e["t"], e.hasOwnProperty("sx") && (this._scrollX = e["sx"]), e.hasOwnProperty("sy") && (this._scrollY = e["sy"]), e.hasOwnProperty("hosp") && (this._hasOwnScrollPosition = !!e["hosp"]), this._parallaxX = e["px"], this._parallaxY = e["py"], this._color.setFromJSON(e["c"]), this._UpdatePremultipliedColor(), this._scaleRate = e["sr"], C32.shallowAssignArray(this._createdGlobalUids, e["cg"]), C32.shallowAssignArray(this._initialInstances, this._startupInitialInstances);
+      this._isDynamic = !!e["d"], this._scale = e["s"], this._angle = e["a"], this._isVisible = !!e["v"], this._isInteractive = !e.hasOwnProperty("i") || e["i"], this._isHTMLElementsLayer = !!e["html"], this._backgroundColor.setFromJSON(e["bc"]), this._isTransparent = !!e["t"], e.hasOwnProperty("sx") && (this._scrollX = e["sx"]), e.hasOwnProperty("sy") && (this._scrollY = e["sy"]), e.hasOwnProperty("hosp") && (this._hasOwnScrollPosition = !!e["hosp"]), this._parallaxX = e["px"], this._parallaxY = e["py"], this._color.setFromJSON(e["c"]), this._UpdatePremultipliedColor(), this._scaleRate = e["sr"], this.#e = e["samp"] ?? "auto", C32.shallowAssignArray(this._createdGlobalUids, e["cg"]), C32.shallowAssignArray(this._initialInstances, this._startupInitialInstances);
       const t2 = new Set(this._createdGlobalUids);
       let s = 0;
       for (let e2 = 0, a2 = this._initialInstances.length; e2 < a2; ++e2) t2.has(this._initialInstances[e2][2]) || (this._initialInstances[s] = this._initialInstances[e2], ++s);
@@ -14910,10 +15868,10 @@ var SortByInstLastCachedZIndex2;
   };
 }
 var SortByInstLastCachedZIndex2;
-var SortByInstZElevation2;
+var SortByInstZ2;
 {
-  let vec3EqualsXYZ = function(e, t2, s, r2) {
-    return e[0] === Math.fround(t2) && e[1] === Math.fround(s) && e[2] === Math.fround(r2);
+  let vec3EqualsXYZ = function(e, t2, s, a2) {
+    return e[0] === Math.fround(t2) && e[1] === Math.fround(s) && e[2] === Math.fround(a2);
   }, MaybePrepareLayerDraw = function(e, t2) {
     lastLayerPreparedForDrawing !== e && (e.PrepareForDraw(t2), lastLayerPreparedForDrawing = e);
   };
@@ -14921,17 +15879,20 @@ var SortByInstZElevation2;
   const C32 = self.C3, C3Debugger = self.C3Debugger, assert = self.assert, tempDestRect = C32.New(C32.Rect), tempSrcRect = C32.New(C32.Rect), tempLayoutRect = C32.New(C32.Rect), tempColor = C32.New(C32.Color), glMatrix = self.glMatrix, vec3 = glMatrix.vec3, tempRender3dList = [], tempInstanceList1 = [], tempInstanceList2 = [], tempInstanceList3 = [];
   let lastLayerPreparedForDrawing = null;
   C32.Layout = class extends C32.DefendedBase {
+    #e = "auto";
+    #t = "trilinear";
+    #s = false;
     constructor(e, t2, s) {
-      super(), this._layoutManager = e, this._runtime = e.GetRuntime(), this._name = s[0], this._originalWidth = s[1], this._originalHeight = s[2], this._width = s[1], this._height = s[2], this._isUnboundedScrolling = !!s[3], this._isOrthographicProjection = !!s[4], this._vanishingPointX = s[5], this._vanishingPointY = s[6], this._eventSheetName = s[7], this._eventSheet = null, this._sid = s[8], this._index = t2, this._scrollX = 0, this._scrollY = 0, this._scale = 1, this._angle = 0, this._initialObjectClasses = /* @__PURE__ */ new Set(), this._textureLoadedTypes = /* @__PURE__ */ new Set(), this._textureLoadPendingPromises = /* @__PURE__ */ new Set(), this._createdInstances = [], this._createdPersistedInstances = [], this._createdPersistedInstancesToDataMap = /* @__PURE__ */ new Map(), this._createdPersistedIndexToInstanceMap = /* @__PURE__ */ new Map(), this._initialNonWorld = [], this._is3dCameraEnabled = false, this._cam3dposition = vec3.create(), this._cam3dlook = vec3.create(), this._cam3dup = vec3.create(), this._rootLayers = [], this._allLayersFlat = [], this._layersByName = /* @__PURE__ */ new Map(), this._layersBySid = /* @__PURE__ */ new Map(), this._pendingSetHTMLLayerCount = -1;
-      const r2 = this._runtime.GetCanvasManager();
-      this._effectList = C32.New(C32.EffectList, this, s[11]), this._effectChain = C32.New(C32.Gfx.EffectChain, r2.GetEffectChainManager(), { drawContent: (e2, t3) => {
+      super(), this._layoutManager = e, this._runtime = e.GetRuntime(), this._name = s[0], this._originalWidth = s[1], this._originalHeight = s[2], this._width = s[1], this._height = s[2], this._isUnboundedScrolling = !!s[3], this._isOrthographicProjection = !!s[4], this._vanishingPointX = s[5], this._vanishingPointY = s[6], this.#e = s[7], this._eventSheetName = s[8], this._eventSheet = null, this._sid = s[9], this._index = t2, this._scrollX = 0, this._scrollY = 0, this._scale = 1, this._angle = 0, this._initialObjectClasses = /* @__PURE__ */ new Set(), this._textureLoadedTypes = /* @__PURE__ */ new Set(), this._textureLoadPendingPromises = /* @__PURE__ */ new Set(), this._createdInstances = [], this._createdPersistedInstances = [], this._createdPersistedInstancesToDataMap = /* @__PURE__ */ new Map(), this._createdPersistedIndexToInstanceMap = /* @__PURE__ */ new Map(), this._initialNonWorld = [], this._is3dCameraEnabled = false, this._cam3dposition = vec3.create(), this._cam3dlook = vec3.create(), this._cam3dup = vec3.create(), this._rootLayers = [], this._allLayersFlat = [], this._layersByName = /* @__PURE__ */ new Map(), this._layersBySid = /* @__PURE__ */ new Map(), this._pendingSetHTMLLayerCount = -1;
+      const a2 = this._runtime.GetCanvasManager();
+      this._effectList = C32.New(C32.EffectList, this, s[12]), this._effectChain = C32.New(C32.Gfx.EffectChain, a2.GetEffectChainManager(), { drawContent: (e2, t3) => {
         const s2 = t3.GetContentObject().GetRenderTarget();
-        e2.ResetColor(), e2.DrawRenderTarget(s2), e2.InvalidateRenderTarget(s2), r2.ReleaseAdditionalRenderTarget(s2);
+        e2.ResetColor(), e2.DrawRenderTarget(s2), e2.InvalidateRenderTarget(s2), a2.ReleaseAdditionalRenderTarget(s2);
       }, getShaderParameters: (e2) => this.GetEffectList()._GetEffectChainShaderParametersForIndex(e2) }), this._needsRebuildEffectChainSteps = true, this._wasFullScreenQualityLow = false, this._curRenderTarget = null, this._persistData = {}, this._persistedIntances = /* @__PURE__ */ new Map(), this._isFirstVisit = true, this._iLayout = new self.ILayout(this), this._userScriptDispatcher = C32.New(C32.Event.Dispatcher);
-      for (const e2 of s[9]) this._rootLayers.push(C32.Layer.CreateFromExportData(this, null, e2));
+      for (const e2 of s[10]) this._rootLayers.push(C32.Layer.CreateFromExportData(this, null, e2));
       this._ReindexLayers();
       for (const e2 of this.allLayers()) e2._InitInitialInstances();
-      for (const e2 of s[10]) {
+      for (const e2 of s[11]) {
         const t3 = this._runtime.GetObjectClassByIndex(e2[1]);
         if (!t3) throw new Error("missing nonworld object class");
         t3.GetDefaultInstanceData() || t3.SetDefaultInstanceData(e2), this._initialNonWorld.push(e2), this._AddInitialObjectClass(t3);
@@ -15043,14 +16004,30 @@ var SortByInstZElevation2;
     IsPerspectiveProjection() {
       return !this.IsOrthographicProjection();
     }
+    SetSamplingMode(e) {
+      if (!C32.Gfx.RendererBase.IsValidSamplingMode(e)) throw new Error(`invalid sampling mode '${e}'`);
+      this.#e !== e && (this.#e = e, this._runtime.UpdateRender(), this._UpdateActiveSamplingModes());
+    }
+    GetSamplingMode() {
+      return this.#e;
+    }
+    _UpdateActiveSamplingModes() {
+      let e = this._runtime.GetSamplingMode();
+      const t2 = this.GetSamplingMode();
+      "auto" !== t2 && (e = t2), this.#t = e;
+      for (const e2 of this._rootLayers) e2._UpdateActiveSamplingModes();
+    }
+    GetActiveSampling() {
+      return this.#t;
+    }
     Set3DCameraEnabled(e) {
       e = !!e, this._is3dCameraEnabled !== e && (this._is3dCameraEnabled = e, this._SetAllLayersMVChanged(), this._runtime.UpdateRender());
     }
     Is3DCameraEnabled() {
       return this._is3dCameraEnabled;
     }
-    Set3DCameraOrientation(e, t2, s, r2, a2, n, i, o2, l) {
-      vec3EqualsXYZ(this._cam3dposition, e, t2, s) && vec3EqualsXYZ(this._cam3dlook, r2, a2, n) && vec3EqualsXYZ(this._cam3dup, i, o2, l) || (vec3.set(this._cam3dposition, e, t2, s), vec3.set(this._cam3dlook, r2, a2, n), vec3.set(this._cam3dup, i, o2, l), this.Set3DCameraChanged());
+    Set3DCameraOrientation(e, t2, s, a2, n, i, r2, o2, l) {
+      vec3EqualsXYZ(this._cam3dposition, e, t2, s) && vec3EqualsXYZ(this._cam3dlook, a2, n, i) && vec3EqualsXYZ(this._cam3dup, r2, o2, l) || (vec3.set(this._cam3dposition, e, t2, s), vec3.set(this._cam3dlook, a2, n, i), vec3.set(this._cam3dup, r2, o2, l), this.Set3DCameraChanged());
     }
     Set3DCameraChanged() {
       this._SetAllLayersMVChanged(), this._runtime.UpdateRender();
@@ -15127,8 +16104,8 @@ var SortByInstZElevation2;
     AddLayer(e, t2, s) {
       if (this.HasLayerByName(e)) throw new Error(`layer name '${e}' already in use`);
       if (!t2 && s < 2) throw new Error("invalid insert position");
-      const r2 = s >= 2 ? t2 : t2.GetParentLayer(), a2 = C32.New(C32.Layer, this, r2, { name: e, sid: Math.floor(1e15 * Math.random()), isDynamic: true });
-      this._InsertLayer(a2, t2, s), this.GetRuntime().UpdateRender(), this._ReindexAndUpdateAllLayers();
+      const a2 = s >= 2 ? t2 : t2.GetParentLayer(), n = C32.New(C32.Layer, this, a2, { name: e, sid: Math.floor(1e15 * Math.random()), isDynamic: true });
+      this._InsertLayer(n, t2, s), this.GetRuntime().UpdateRender(), this._ReindexAndUpdateAllLayers();
     }
     MoveLayer(e, t2, s) {
       if (!t2 && s < 2) throw new Error("invalid insert position");
@@ -15155,14 +16132,14 @@ var SortByInstZElevation2;
         t2._AddSubLayer(e, 2 === s), e._SetParentLayer(t2);
       } else 2 === s ? this._rootLayers.push(e) : this._rootLayers.unshift(e), e._SetParentLayer(null);
       else {
-        const r2 = t2.GetParentLayer();
-        if (r2) {
+        const a2 = t2.GetParentLayer();
+        if (a2) {
           if (t2.HasParentLayer(e)) throw new Error(`cannot move layer '${e.GetName()}' to sub-layer of itself`);
-          r2._InsertSubLayer(e, t2, 0 === s), e._SetParentLayer(r2);
+          a2._InsertSubLayer(e, t2, 0 === s), e._SetParentLayer(a2);
         } else {
-          let r3 = this._rootLayers.indexOf(t2);
-          if (-1 === r3) throw new Error("cannot find layer to insert by");
-          0 === s && ++r3, this._rootLayers.splice(r3, 0, e), e._SetParentLayer(null);
+          let a3 = this._rootLayers.indexOf(t2);
+          if (-1 === a3) throw new Error("cannot find layer to insert by");
+          0 === s && ++a3, this._rootLayers.splice(a3, 0, e), e._SetParentLayer(null);
         }
       }
     }
@@ -15205,9 +16182,9 @@ var SortByInstZElevation2;
     GetRootLayersForHTMLLayer(e) {
       const t2 = [];
       for (const s of this._rootLayers) {
-        const r2 = s.GetHTMLIndex();
-        if (r2 === e) t2.push(s);
-        else if (r2 > e) break;
+        const a2 = s.GetHTMLIndex();
+        if (a2 === e) t2.push(s);
+        else if (a2 > e) break;
       }
       return t2;
     }
@@ -15272,10 +16249,10 @@ var SortByInstZElevation2;
       this._textureLoadedTypes.clear();
     }
     async _StartRunning(e) {
-      const t2 = this._runtime, s = this._layoutManager, r2 = t2.GetEventSheetManager();
-      this._eventSheetName && (this._eventSheet = r2.GetEventSheetByName(this._eventSheetName), this._eventSheet._UpdateDeepIncludes()), s._SetMainRunningLayout(this), this._width = this._originalWidth, this._height = this._originalHeight, this._scrollX = t2.GetOriginalViewportWidth() / 2, this._scrollY = t2.GetOriginalViewportHeight() / 2, this.BoundScrolling(), this._SetAllLayersProjectionChanged(), this._SetAllLayersMVChanged(), this._ReindexHTMLLayers(), await this._runtime.GetCanvasManager().SetHTMLLayerCount(this.GetHTMLLayerCount(), true), this._MoveGlobalObjectsToThisLayout(e), this._runtime.SetUsingCreatePromises(true), this._CreateInitialInstances(), this._isFirstVisit || this._CreatePersistedInstances(), this._CreateAndLinkContainerInstances(this._createdInstances), this._CreateAndLinkContainerInstances(this._createdPersistedInstances), this._CreateInitialNonWorldInstances(), s.ClearPendingChangeLayout(), t2.FlushPendingInstances(), this._runtime.SetUsingCreatePromises(false);
-      const a2 = this._runtime.GetCreatePromises();
-      if (await Promise.all(a2), C32.clearArray(a2), !t2.IsLoadingState()) {
+      const t2 = this._runtime, s = this._layoutManager, a2 = t2.GetEventSheetManager();
+      this._eventSheetName && (this._eventSheet = a2.GetEventSheetByName(this._eventSheetName), this._eventSheet._UpdateDeepIncludes()), s._SetMainRunningLayout(this), this._width = this._originalWidth, this._height = this._originalHeight, this._scrollX = t2.GetOriginalViewportWidth() / 2, this._scrollY = t2.GetOriginalViewportHeight() / 2, this.BoundScrolling(), this._SetAllLayersProjectionChanged(), this._SetAllLayersMVChanged(), this._ReindexHTMLLayers(), await this._runtime.GetCanvasManager().SetHTMLLayerCount(this.GetHTMLLayerCount(), true), this._MoveGlobalObjectsToThisLayout(e), this._runtime.SetUsingCreatePromises(true), this.#s = true, this._CreateInitialInstances(), this._isFirstVisit || this._CreatePersistedInstances(), this._CreateAndLinkContainerInstances(this._createdInstances), this._CreateAndLinkContainerInstances(this._createdPersistedInstances), this._CreateInitialNonWorldInstances(), s.ClearPendingChangeLayout(), t2.FlushPendingInstances(), this._runtime.SetUsingCreatePromises(false);
+      const n = this._runtime.GetCreatePromises();
+      if (await Promise.all(n), C32.clearArray(n), !t2.IsLoadingState()) {
         for (const e2 of this._createdInstances) e2.SetupInitialSceneGraphConnections();
         for (const e2 of this._createdPersistedInstances) e2.SetupPersistedSceneGraphConnections(this._createdPersistedInstancesToDataMap, this._createdPersistedIndexToInstanceMap);
         for (const [e2, t3] of Object.entries(this._persistData)) {
@@ -15287,15 +16264,18 @@ var SortByInstZElevation2;
         for (const e2 of this._createdInstances) e2.HasParent() || e2._OnHierarchyReady();
         for (const e2 of this._createdPersistedInstances) e2.HasParent() || e2._OnHierarchyReady();
       }
-      C32.clearArray(this._createdInstances), C32.clearArray(this._createdPersistedInstances), this._createdPersistedInstancesToDataMap.clear(), this._createdPersistedIndexToInstanceMap.clear(), await Promise.all([...this._initialObjectClasses].map((e2) => e2.PreloadTexturesWithInstances(this._runtime.GetRenderer()))), e && (t2.Dispatcher().dispatchEvent(new C32.Event("beforefirstlayoutstart")), await t2.DispatchUserScriptEventAsyncWait(new C32.Event("beforeprojectstart"))), await this.DispatchRuntimeUserScriptEventAsyncWait(new C32.Event("beforeanylayoutstart")), t2.Dispatcher().dispatchEvent(new C32.Event("beforelayoutstart")), await this.DispatchUserScriptEventAsyncWait(new C32.Event("beforelayoutstart")), t2.IsLoadingState() || await t2.TriggerAsync(C32.Plugins.System.Cnds.OnLayoutStart, null, null), t2.Dispatcher().dispatchEvent(new C32.Event("afterlayoutstart")), await this.DispatchUserScriptEventAsyncWait(new C32.Event("afterlayoutstart")), await this.DispatchRuntimeUserScriptEventAsyncWait(new C32.Event("afteranylayoutstart")), e && (t2.Dispatcher().dispatchEvent(new C32.Event("afterfirstlayoutstart")), await t2.DispatchUserScriptEventAsyncWait(new C32.Event("afterprojectstart"))), r2._RunQueuedTriggers(s), await this.WaitForPendingTextureLoadsToComplete(), this._isFirstVisit = false;
+      C32.clearArray(this._createdInstances), C32.clearArray(this._createdPersistedInstances), this._createdPersistedInstancesToDataMap.clear(), this._createdPersistedIndexToInstanceMap.clear(), await Promise.all([...this._initialObjectClasses].map((e2) => e2.PreloadTexturesWithInstances(this._runtime.GetRenderer()))), this.#s = false, this._UpdateActiveSamplingModes(), e && (t2.Dispatcher().dispatchEvent(new C32.Event("beforefirstlayoutstart")), await t2.DispatchUserScriptEventAsyncWait(new C32.Event("beforeprojectstart"))), await this.DispatchRuntimeUserScriptEventAsyncWait(new C32.Event("beforeanylayoutstart")), t2.Dispatcher().dispatchEvent(new C32.Event("beforelayoutstart")), await this.DispatchUserScriptEventAsyncWait(new C32.Event("beforelayoutstart")), t2.IsLoadingState() || await t2.TriggerAsync(C32.Plugins.System.Cnds.OnLayoutStart, null, null), t2.Dispatcher().dispatchEvent(new C32.Event("afterlayoutstart")), await this.DispatchUserScriptEventAsyncWait(new C32.Event("afterlayoutstart")), await this.DispatchRuntimeUserScriptEventAsyncWait(new C32.Event("afteranylayoutstart")), e && (t2.Dispatcher().dispatchEvent(new C32.Event("afterfirstlayoutstart")), await t2.DispatchUserScriptEventAsyncWait(new C32.Event("afterprojectstart"))), a2._RunQueuedTriggers(s), await this.WaitForPendingTextureLoadsToComplete(), this._isFirstVisit = false;
+    }
+    IsCreatingInitialInstances() {
+      return this.#s;
     }
     _MoveGlobalObjectsToThisLayout(e) {
       for (const e2 of this._runtime.GetAllObjectClasses()) if (!e2.IsFamily() && e2.IsWorldType()) for (const t2 of e2.GetInstances()) {
-        const e3 = t2.GetWorldInfo(), s = e3.GetLayer(), r2 = s.GetName(), a2 = this.GetLayerByName(r2);
-        if (a2) e3._SetLayer(a2, true), a2._MaybeAddInstance(t2);
+        const e3 = t2.GetWorldInfo(), s = e3.GetLayer(), a2 = s.GetName(), n = this.GetLayerByName(a2);
+        if (n) e3._SetLayer(n, true), n._MaybeAddInstance(t2);
         else {
-          const r3 = C32.clamp(s.GetIndex(), 0, this._allLayersFlat.length - 1), a3 = this._allLayersFlat[r3];
-          e3._SetLayer(a3, true), a3._MaybeAddInstance(t2);
+          const a3 = C32.clamp(s.GetIndex(), 0, this._allLayersFlat.length - 1), n2 = this._allLayersFlat[a3];
+          e3._SetLayer(n2, true), n2._MaybeAddInstance(t2);
         }
       }
       if (!e) for (const e2 of this._allLayersFlat) e2._SortInstancesByLastCachedZIndex(false);
@@ -15306,12 +16286,12 @@ var SortByInstZElevation2;
     _CreatePersistedInstances() {
       let e = false;
       for (const [t2, s] of Object.entries(this._persistData)) {
-        const r2 = this._runtime.GetObjectClassBySID(parseInt(t2, 10));
-        if (r2 && !r2.IsFamily() && r2.HasPersistBehavior()) for (const t3 of s) {
+        const a2 = this._runtime.GetObjectClassBySID(parseInt(t2, 10));
+        if (a2 && !a2.IsFamily() && a2.HasPersistBehavior()) for (const t3 of s) {
           let s2 = null;
-          if (r2.IsWorldType() && (s2 = t3.hasOwnProperty("instJson") ? this.GetLayerBySID(t3["instJson"]["w"]["l"]) : this.GetLayerBySID(t3["w"]["l"]), !s2)) continue;
-          const a2 = this._runtime.CreateInstanceFromData(r2, s2, false, 0, 0, true);
-          t3.hasOwnProperty("instJson") ? a2.LoadFromJson(t3["instJson"]) : a2.LoadFromJson(t3), e = true, this._createdPersistedInstances.push(a2), t3.hasOwnProperty("instJson") && (this._createdPersistedInstancesToDataMap.set(a2, t3), this._createdPersistedIndexToInstanceMap.set(t3["index"], a2));
+          if (a2.IsWorldType() && (s2 = t3.hasOwnProperty("instJson") ? this.GetLayerBySID(t3["instJson"]["w"]["l"]) : this.GetLayerBySID(t3["w"]["l"]), !s2)) continue;
+          const n = this._runtime.CreateInstanceFromData(a2, s2, false, 0, 0, true);
+          t3.hasOwnProperty("instJson") ? n.LoadFromJson(t3["instJson"]) : n.LoadFromJson(t3), e = true, this._createdPersistedInstances.push(n), t3.hasOwnProperty("instJson") && (this._createdPersistedInstancesToDataMap.set(n, t3), this._createdPersistedIndexToInstanceMap.set(t3["index"], n));
         }
       }
       for (const e2 of this._allLayersFlat) e2._SortInstancesByLastCachedZIndex(true), e2.SetZIndicesChanged();
@@ -15320,14 +16300,14 @@ var SortByInstZElevation2;
     _CreateAndLinkContainerInstances(e) {
       for (const t2 of e) {
         if (!t2.IsInContainer()) continue;
-        const s = t2.GetWorldInfo(), r2 = t2.GetIID();
-        for (const a2 of t2.GetObjectClass().GetContainer().objectTypes()) {
-          if (a2 === t2.GetObjectClass()) continue;
-          const n = a2.GetInstances();
-          if (n.length > r2) t2._AddSibling(n[r2]);
+        const s = t2.GetWorldInfo(), a2 = t2.GetIID();
+        for (const n of t2.GetObjectClass().GetContainer().objectTypes()) {
+          if (n === t2.GetObjectClass()) continue;
+          const i = n.GetInstances();
+          if (i.length > a2) t2._AddSibling(i[a2]);
           else {
-            let r3;
-            r3 = s ? this._runtime.CreateInstanceFromData(a2, s.GetLayer(), true, s.GetX(), s.GetY(), true) : this._runtime.CreateInstanceFromData(a2, null, true, 0, 0, true), this._runtime.FlushPendingInstances(), a2._UpdateIIDs(), t2._AddSibling(r3), e.push(r3);
+            let a3;
+            a3 = s ? this._runtime.CreateInstanceFromData(n, s.GetLayer(), true, s.GetX(), s.GetY(), true) : this._runtime.CreateInstanceFromData(n, null, true, 0, 0, true), this._runtime.FlushPendingInstances(), n._UpdateIIDs(), t2._AddSibling(a3), e.push(a3);
           }
         }
       }
@@ -15340,17 +16320,17 @@ var SortByInstZElevation2;
     _CreateGlobalNonWorlds() {
       const e = [], t2 = this._initialNonWorld;
       let s = 0;
-      for (let r2 = 0, a2 = t2.length; r2 < a2; ++r2) {
-        const a3 = t2[r2], n = this._runtime.GetObjectClassByIndex(a3[1]);
-        n.IsGlobal() ? n.IsInContainer() && n.GetContainer().HasAnyWorldType() || e.push(this._runtime.CreateInstanceFromData(a3, null, true)) : (t2[s] = a3, ++s);
+      for (let a2 = 0, n = t2.length; a2 < n; ++a2) {
+        const n2 = t2[a2], i = this._runtime.GetObjectClassByIndex(n2[1]);
+        i.IsGlobal() ? i.IsInContainer() && i.GetContainer().HasAnyWorldType() || e.push(this._runtime.CreateInstanceFromData(n2, null, true)) : (t2[s] = n2, ++s);
       }
       C32.truncateArray(t2, s), this._runtime.FlushPendingInstances(), this._CreateAndLinkContainerInstances(e);
     }
-    RecreateInitialObjects(e, t2, s, r2, a2, n, i) {
-      if (s) return s.RecreateInitialObjects(e, t2, a2, n, r2, i);
+    RecreateInitialObjects(e, t2, s, a2, n, i, r2) {
+      if (s) return s.RecreateInitialObjects(e, t2, n, i, a2, r2);
       {
         const s2 = [];
-        for (const o2 of this._allLayersFlat) s2.push(o2.RecreateInitialObjects(e, t2, a2, n, r2, i));
+        for (const o2 of this._allLayersFlat) s2.push(o2.RecreateInitialObjects(e, t2, n, i, a2, r2));
         return s2.flat();
       }
     }
@@ -15367,8 +16347,8 @@ var SortByInstZElevation2;
     _SaveInstanceToPersist(e, t2) {
       const s = e.GetObjectClass().GetSID().toString();
       this._persistData.hasOwnProperty(s) || (this._persistData[s] = []);
-      const r2 = this._persistData[s], a2 = { "index": t2, "instJson": e.SaveToJson(), "sceneGraphJson": { "children": [] } };
-      r2.push(a2), this._persistedIntances.set(e, a2);
+      const a2 = this._persistData[s], n = { "index": t2, "instJson": e.SaveToJson(), "sceneGraphJson": { "children": [] } };
+      a2.push(n), this._persistedIntances.set(e, n);
     }
     _SaveSceneGraphInfoToPersist(e) {
       const t2 = this._persistedIntances.get(e);
@@ -15407,8 +16387,8 @@ var SortByInstZElevation2;
       const t2 = this._runtime.GetCanvasManager();
       if (this.UsesOwnTexture()) {
         e.SetRenderTarget(null), e.ClearRgba(0, 0, 0, 0);
-        const s = { sampling: this._runtime.GetSampling(), isSampled: e.IsWebGPU() || this._runtime.UsesAnyBackgroundBlending() || this._effectList.HasAnyActiveEffect(), canReadPixels: !!e.IsWebGPU() && this._runtime.UsesAnyBackgroundBlending() };
-        "low" === t2.GetCurrentFullscreenScalingQuality() && (s.width = t2.GetDrawWidth(), s.height = t2.GetDrawHeight()), this._curRenderTarget = this._runtime.GetAdditionalRenderTarget(s);
+        const s = { isSampled: e.IsWebGPU() || this._runtime.UsesAnyBackgroundBlending() || this._effectList.HasAnyActiveEffect(), canReadPixels: !!e.IsWebGPU() && this._runtime.UsesAnyBackgroundBlending() };
+        "low" === t2.GetCurrentFullscreenScalingQuality() && (s.width = t2.GetDrawWidth(), s.height = t2.GetDrawHeight()), this._curRenderTarget = this._runtime.GetAdditionalRenderTarget(s), this._curRenderTarget.SetDefaultSampling(this.GetActiveSampling());
       } else this._curRenderTarget = null;
     }
     _MaybeCopyOwnTextureToBackbuffer(e) {
@@ -15425,19 +16405,19 @@ var SortByInstZElevation2;
     DrawForHTMLLayerIndex(e, t2) {
       let s = null;
       this._runtime._NeedsHTMLLayerCompositing(e) && (s = this._curRenderTarget), e.SetRenderTarget(s), e.ClearRgba(0, 0, 0, 0), this._runtime.Uses3DFeatures() && e.ClearDepth();
-      const r2 = this.GetRootLayersForHTMLLayer(t2);
-      this._DrawLayerList(e, s, r2, true), this._MaybeCopyOwnTextureToBackbuffer(e), e.EndBatch(), this._runtime.GetCanvasManager().BlitMainCanvasToHTMLLayerCanvas(t2);
+      const a2 = this.GetRootLayersForHTMLLayer(t2);
+      this._DrawLayerList(e, s, a2, true), this._MaybeCopyOwnTextureToBackbuffer(e), e.EndBatch(), this._runtime.GetCanvasManager().BlitMainCanvasToHTMLLayerCanvas(t2);
     }
-    _DrawLayerList(e, t2, s, r2) {
-      const a2 = s.filter((e2) => e2.ShouldDraw());
-      for (let s2 = 0, n = a2.length; s2 < n; ) {
-        const i = a2[s2];
-        if (i.SelfAndAllSubLayersHave3DCamera() && !i.SelfOrAnySubLayerUsesOwnTexture()) {
-          tempRender3dList.push(i);
-          for (let e2 = s2 + 1; e2 < n; ++e2) {
-            const t3 = a2[e2];
+    _DrawLayerList(e, t2, s, a2) {
+      const n = s.filter((e2) => e2.ShouldDraw());
+      for (let s2 = 0, i = n.length; s2 < i; ) {
+        const r2 = n[s2];
+        if (r2.SelfAndAllSubLayersHave3DCamera() && !r2.SelfOrAnySubLayerUsesOwnTexture()) {
+          tempRender3dList.push(r2);
+          for (let e2 = s2 + 1; e2 < i; ++e2) {
+            const t3 = n[e2];
             if (!t3.SelfAndAllSubLayersHave3DCamera() || t3.SelfOrAnySubLayerUsesOwnTexture()) break;
-            tempRender3dList.push(a2[e2]);
+            tempRender3dList.push(n[e2]);
           }
           if (tempRender3dList.length >= 2 || 1 === tempRender3dList.length && tempRender3dList[0].HasAnyVisibleSubLayer()) {
             this._Draw3DLayers(e, t2, tempRender3dList), s2 += tempRender3dList.length, C32.clearArray(tempRender3dList);
@@ -15445,70 +16425,70 @@ var SortByInstZElevation2;
           }
           C32.clearArray(tempRender3dList);
         }
-        i.Draw(e, t2, r2 && 0 === s2), ++s2;
+        r2.Draw(e, t2, a2 && 0 === s2), ++s2;
       }
     }
     _DrawLayoutOwnTextureToRenderTarget(e, t2) {
-      const s = this._effectList.GetActiveEffectTypes(), r2 = this._runtime;
-      0 === s.length ? (e.SetRenderTarget(null), e.SetTextureFillMode(), e.CopyRenderTarget(t2), e.InvalidateRenderTarget(t2), r2.ReleaseAdditionalRenderTarget(t2)) : (tempLayoutRect.set(0, 0, r2.GetViewportWidth(), r2.GetViewportHeight()), this.GetEffectChain().Render(e, null, { contentObject: this, blendMode: 3, devicePixelRatio: this._runtime.GetEffectDevicePixelRatioParam(), layerScale: this._runtime.GetEffectLayerScaleParam() * this.GetScale(), layerAngle: this.GetAngle(), layoutRect: tempLayoutRect, drawSurfaceRect: null, invalidateRenderTargets: true }));
+      const s = this._effectList.GetActiveEffectTypes(), a2 = this._runtime;
+      0 === s.length ? (e.SetRenderTarget(null), e.SetTextureFillMode(), e.CopyRenderTarget(t2), e.InvalidateRenderTarget(t2), a2.ReleaseAdditionalRenderTarget(t2)) : (tempLayoutRect.set(0, 0, a2.GetViewportWidth(), a2.GetViewportHeight()), this.GetEffectChain().Render(e, null, { contentObject: this, blendMode: 3, devicePixelRatio: this._runtime.GetEffectDevicePixelRatioParam(), layerScale: this._runtime.GetEffectLayerScaleParam() * this.GetScale(), layerAngle: this.GetAngle(), layoutRect: tempLayoutRect, drawSurfaceRect: null, invalidateRenderTargets: true }));
     }
     _Draw3DLayers(e, t2, s) {
-      const r2 = s[0], a2 = r2._MaybeStartWebGLProfiling(e);
-      r2._MaybeStartWebGPUProfiling(e), s[0].IsTransparent() || (tempColor.copyRgb(s[0].GetBackgroundColor()), tempColor.setA(1), e.Clear(tempColor)), e.SetDepthEnabled(true);
-      const n = tempInstanceList1, i = tempInstanceList2, o2 = tempInstanceList3;
-      for (const t3 of s) t3._UpdateZIndices(), t3._AppendAllInstancesIncludingSubLayersInDrawOrder(n), t3._FireDrawEvent(e, "beforedraw");
-      for (let s2 = 0, r3 = n.length; s2 < r3; ) {
-        const a3 = n[s2], l = a3.GetWorldInfo(), h2 = l.GetLayer();
+      const a2 = s[0], n = a2._MaybeStartWebGLProfiling(e);
+      a2._MaybeStartWebGPUProfiling(e), s[0].IsTransparent() || (tempColor.copyRgb(s[0].GetBackgroundColor()), tempColor.setA(1), e.Clear(tempColor)), e.SetDepthEnabled(true);
+      const i = tempInstanceList1, r2 = tempInstanceList2, o2 = tempInstanceList3;
+      for (const t3 of s) t3._UpdateZIndices(), t3._AppendAllInstancesIncludingSubLayersInDrawOrder(i), t3._FireDrawEvent(e, "beforedraw");
+      for (let s2 = 0, a3 = i.length; s2 < a3; ) {
+        const n2 = i[s2], l = n2.GetWorldInfo(), h2 = l.GetLayer();
         if (!l.IsVisible() || !l.IsInViewport3D(h2._GetViewFrustum())) {
           ++s2;
           continue;
         }
-        (!a3.RendersToOwnZPlane() || l.GetDepth() > 0) && o2.push(a3);
-        const c2 = a3.GetWorldInfo().GetTotalZElevation();
-        i.push(a3);
+        (!n2.RendersToOwnZPlane() || l.GetDepth() > 0) && o2.push(n2);
+        const c2 = l.GetTotalZ() - l.GetDepth() * l.GetOriginZ();
+        r2.push(n2);
         let d2 = s2 + 1;
-        for (; d2 < r3; ++d2) {
-          const e2 = n[d2], t3 = e2.GetWorldInfo();
+        for (; d2 < a3; ++d2) {
+          const e2 = i[d2], t3 = e2.GetWorldInfo();
           if (t3.IsVisible() && t3.IsInViewport3D(t3.GetLayer()._GetViewFrustum())) {
-            if (t3.GetTotalZElevation() !== c2) break;
-            e2.RendersToOwnZPlane() ? (t3.GetDepth() > 0 && o2.push(e2), i.push(e2)) : o2.push(e2);
+            if (t3.GetTotalZ() - t3.GetDepth() * t3.GetOriginZ() !== c2) break;
+            e2.RendersToOwnZPlane() ? (t3.GetDepth() > 0 && o2.push(e2), r2.push(e2)) : o2.push(e2);
           }
         }
-        if (1 !== i.length || i[0].MustMitigateZFighting()) {
-          this._Draw3DLayersCoplanarInstances(e, t2, i);
-          for (let s3 = 0, r4 = o2.length; s3 < r4; ++s3) {
-            const r5 = o2[s3], a4 = r5.GetWorldInfo(), n2 = a4.GetLayer();
-            a4._SetDrawNonBackFacesOnly(true), MaybePrepareLayerDraw(n2, e), n2._DrawInstanceMaybeWithEffects(r5, a4, e, t2), a4._SetDrawNonBackFacesOnly(false);
+        if (1 !== r2.length || r2[0].MustMitigateZFighting()) {
+          this._Draw3DLayersCoplanarInstances(e, t2, r2);
+          for (let s3 = 0, a4 = o2.length; s3 < a4; ++s3) {
+            const a5 = o2[s3], n3 = a5.GetWorldInfo(), i2 = n3.GetLayer();
+            n3._SetDrawNonBackFacesOnly(true), MaybePrepareLayerDraw(i2, e), i2._DrawInstanceMaybeWithEffects(a5, n3, e, t2), n3._SetDrawNonBackFacesOnly(false);
           }
         } else {
-          MaybePrepareLayerDraw(h2, e), h2._DrawInstanceMaybeWithEffects(a3, l, e, t2);
-          for (let s3 = 0, r4 = o2.length; s3 < r4; ++s3) {
-            const r5 = o2[s3];
-            if (r5 === a3) continue;
-            const n2 = r5.GetWorldInfo(), i2 = n2.GetLayer();
-            MaybePrepareLayerDraw(i2, e), i2._DrawInstanceMaybeWithEffects(r5, n2, e, t2);
+          MaybePrepareLayerDraw(h2, e), h2._DrawInstanceMaybeWithEffects(n2, l, e, t2);
+          for (let s3 = 0, a4 = o2.length; s3 < a4; ++s3) {
+            const a5 = o2[s3];
+            if (a5 === n2) continue;
+            const i2 = a5.GetWorldInfo(), r3 = i2.GetLayer();
+            MaybePrepareLayerDraw(r3, e), r3._DrawInstanceMaybeWithEffects(a5, i2, e, t2);
           }
         }
-        s2 = d2, C32.clearArray(i), C32.clearArray(o2);
+        s2 = d2, C32.clearArray(r2), C32.clearArray(o2);
       }
       for (const t3 of s) t3._FireDrawEvent(e, "afterdraw");
-      a2 && e.EndQuery(a2), C32.clearArray(n), lastLayerPreparedForDrawing = null;
+      n && e.EndQuery(n), C32.clearArray(i), lastLayerPreparedForDrawing = null;
     }
     _Draw3DLayersCoplanarInstances(e, t2, s) {
       e.CoplanarStartStencilPass();
-      for (let t3 = 0, r2 = s.length; t3 < r2; ++t3) {
-        const r3 = s[t3], a2 = r3.GetWorldInfo(), n = a2.GetLayer();
-        a2._SetDrawBackFaceOnly(true), MaybePrepareLayerDraw(n, e), n._DrawInstance(r3, a2, e);
+      for (let t3 = 0, a2 = s.length; t3 < a2; ++t3) {
+        const a3 = s[t3], n = a3.GetWorldInfo(), i = n.GetLayer();
+        n._SetDrawBackFaceOnly(true), MaybePrepareLayerDraw(i, e), i._DrawInstance(a3, n, e);
       }
       e.CoplanarStartColorPass();
-      for (let r2 = 0, a2 = s.length; r2 < a2; ++r2) {
-        const a3 = s[r2], n = a3.GetWorldInfo(), i = n.GetLayer();
-        MaybePrepareLayerDraw(i, e), i._DrawInstanceMaybeWithEffects(a3, n, e, t2), n._SetDrawBackFaceOnly(false);
+      for (let a2 = 0, n = s.length; a2 < n; ++a2) {
+        const n2 = s[a2], i = n2.GetWorldInfo(), r2 = i.GetLayer();
+        MaybePrepareLayerDraw(r2, e), r2._DrawInstanceMaybeWithEffects(n2, i, e, t2), i._SetDrawBackFaceOnly(false);
       }
       e.CoplanarRestoreStandardRendering();
     }
     _SaveToJson() {
-      const e = { "sx": this.GetScrollX(), "sy": this.GetScrollY(), "s": this.GetScale(), "a": this.GetAngle(), "w": this.GetWidth(), "h": this.GetHeight(), "ortho": this.IsOrthographicProjection(), "vpX": this.GetVanishingPointX(), "vpY": this.GetVanishingPointY(), "fv": this._isFirstVisit, "persist": this._persistData, "fx": this._effectList.SaveToJson(), "layers": {}, "dynamicLayers": [] };
+      const e = { "sx": this.GetScrollX(), "sy": this.GetScrollY(), "s": this.GetScale(), "a": this.GetAngle(), "w": this.GetWidth(), "h": this.GetHeight(), "ortho": this.IsOrthographicProjection(), "vpX": this.GetVanishingPointX(), "vpY": this.GetVanishingPointY(), "samp": this.GetSamplingMode(), "fv": this._isFirstVisit, "persist": this._persistData, "fx": this._effectList.SaveToJson(), "layers": {}, "dynamicLayers": [] };
       for (const t2 of this._allLayersFlat) if (t2.IsDynamic()) {
         const s = t2.GetParentLayer();
         e["dynamicLayers"].push({ "sid": t2.GetSID(), "name": t2.GetName(), "parentSid": s ? s.GetSID() : null, "siblingIndex": t2._GetSiblingIndex(), "data": t2._SaveToJson() });
@@ -15516,24 +16496,24 @@ var SortByInstZElevation2;
       return e;
     }
     _LoadFromJson(e) {
-      this._scrollX = e["sx"], this._scrollY = e["sy"], this._scale = e["s"], this._angle = e["a"], this._width = e["w"], this._height = e["h"], this._isOrthographicProjection = !!e["ortho"], e.hasOwnProperty("vpX") && (this._vanishingPointX = e["vpX"]), e.hasOwnProperty("vpY") && (this._vanishingPointY = e["vpY"]), this._isFirstVisit = !!e["fv"], this._persistData = e["persist"], this._effectList.LoadFromJson(e["fx"]), this._needsRebuildEffectChainSteps = true;
+      this._scrollX = e["sx"], this._scrollY = e["sy"], this._scale = e["s"], this._angle = e["a"], this._width = e["w"], this._height = e["h"], this._isOrthographicProjection = !!e["ortho"], e.hasOwnProperty("vpX") && (this._vanishingPointX = e["vpX"]), e.hasOwnProperty("vpY") && (this._vanishingPointY = e["vpY"]), this.#e = e["samp"] ?? "auto", this._isFirstVisit = !!e["fv"], this._persistData = e["persist"], this._effectList.LoadFromJson(e["fx"]), this._needsRebuildEffectChainSteps = true;
       for (const [t2, s] of Object.entries(e["layers"])) {
-        const e2 = parseInt(t2, 10), r2 = this.GetLayerBySID(e2);
-        r2 && r2._LoadFromJson(s);
+        const e2 = parseInt(t2, 10), a2 = this.GetLayerBySID(e2);
+        a2 && a2._LoadFromJson(s);
       }
       if (e.hasOwnProperty("dynamicLayers")) {
         this.RemoveAllDynamicLayers(), this._runtime.FlushPendingInstances();
         const t2 = /* @__PURE__ */ new Map(), s = e["dynamicLayers"];
         for (let e2 = s.length - 1; e2 >= 0; --e2) {
-          const r2 = s[e2], a2 = r2["sid"], n = r2["name"], i = r2["parentSid"], o2 = r2["siblingIndex"], l = r2["data"];
-          if (this._ReindexLayers(), this.HasLayerByName(n) || this.GetLayerBySID(a2)) continue;
+          const a2 = s[e2], n = a2["sid"], i = a2["name"], r2 = a2["parentSid"], o2 = a2["siblingIndex"], l = a2["data"];
+          if (this._ReindexLayers(), this.HasLayerByName(i) || this.GetLayerBySID(n)) continue;
           let h2, c2;
-          if (null === i) h2 = null, c2 = this._rootLayers;
+          if (null === r2) h2 = null, c2 = this._rootLayers;
           else {
-            if (h2 = this.GetLayerBySID(i), !h2) continue;
+            if (h2 = this.GetLayerBySID(r2), !h2) continue;
             c2 = h2.GetSubLayers();
           }
-          const d2 = C32.New(C32.Layer, this, h2, { name: n, sid: a2, isDynamic: true });
+          const d2 = C32.New(C32.Layer, this, h2, { name: i, sid: n, isDynamic: true });
           c2.push(d2);
           let _2 = t2.get(c2);
           _2 || (_2 = [], t2.set(c2, _2)), _2.push({ layer: d2, siblingIndex: o2 }), d2._LoadFromJson(l);
@@ -15541,9 +16521,9 @@ var SortByInstZElevation2;
         for (const [e2, s2] of t2) {
           s2.sort((e3, t3) => e3.siblingIndex - t3.siblingIndex);
           for (const t3 of s2) {
-            const s3 = t3.layer, r2 = t3.siblingIndex;
-            let a2 = e2.indexOf(s3);
-            e2.splice(a2, 1), e2.splice(r2, 0, s3);
+            const s3 = t3.layer, a2 = t3.siblingIndex;
+            let n = e2.indexOf(s3);
+            e2.splice(n, 1), e2.splice(a2, 0, s3);
           }
         }
       }
@@ -16539,7 +17519,7 @@ var MaybePrepareLayerDraw2;
       let r2 = false, h2 = false;
       const l = this.GetLoop(), o2 = this.GetPingPong();
       let m2;
-      l || o2 ? l && !o2 ? this._playbackRate > 0 ? this._playheadTime >= n && (this._SetTimeAndReset(0), h2 = true) : this._playheadTime <= 0 && (this._SetTimeAndReset(n), h2 = true) : !l && o2 ? this._playbackRate > 0 ? this._playheadTime >= n && (this._SetTime(n), this.SetPlaybackRate(-1 * this.GetPlaybackRate()), h2 = true, 1 === this._pingPongState ? this._currentRepeatCount < this.GetRepeatCount() ? (this._currentRepeatCount++, this._pingPongState = 0) : r2 = true : 0 === this._pingPongState && (this._pingPongState = 1)) : this._playheadTime <= 0 && (this._SetTime(0), this.SetPlaybackRate(-1 * this.GetPlaybackRate()), h2 = true, 1 === this._pingPongState ? this._currentRepeatCount < this.GetRepeatCount() ? (this._currentRepeatCount++, this._pingPongState = 0) : r2 = true : 0 === this._pingPongState && (this._pingPongState = 1)) : l && o2 && (this._playbackRate > 0 ? this._playheadTime >= n && (this._SetTime(n), this.SetPlaybackRate(-1 * this.GetPlaybackRate()), h2 = true, this._pingPongState++, C32.wrap(this._pingPongState, 0, 2)) : this._playheadTime <= 0 && (this._SetTime(0), this.SetPlaybackRate(-1 * this.GetPlaybackRate()), h2 = true, this._pingPongState++, C32.wrap(this._pingPongState, 0, 2))) : this._playbackRate > 0 ? this._playheadTime >= n && (this._currentRepeatCount < this.GetRepeatCount() ? (this._currentRepeatCount++, this._SetTimeAndReset(0), h2 = true) : (this._SetTime(n), r2 = true)) : this._playheadTime <= 0 && (this._currentRepeatCount < this.GetRepeatCount() ? (this._currentRepeatCount++, this._SetTimeAndReset(n), h2 = true) : (this._SetTime(0), r2 = true));
+      l || o2 ? l && !o2 ? this._playbackRate > 0 ? this._playheadTime >= n && this._SetTimeAndReset(0) : this._playheadTime <= 0 && this._SetTimeAndReset(n) : !l && o2 ? this._playbackRate > 0 ? this._playheadTime >= n && (this._SetTime(n), this.SetPlaybackRate(-1 * this.GetPlaybackRate()), h2 = true, 1 === this._pingPongState ? this._currentRepeatCount < this.GetRepeatCount() ? (this._currentRepeatCount++, this._pingPongState = 0) : r2 = true : 0 === this._pingPongState && (this._pingPongState = 1)) : this._playheadTime <= 0 && (this._SetTime(0), this.SetPlaybackRate(-1 * this.GetPlaybackRate()), h2 = true, 1 === this._pingPongState ? this._currentRepeatCount < this.GetRepeatCount() ? (this._currentRepeatCount++, this._pingPongState = 0) : r2 = true : 0 === this._pingPongState && (this._pingPongState = 1)) : l && o2 && (this._playbackRate > 0 ? this._playheadTime >= n && (this._SetTime(n), this.SetPlaybackRate(-1 * this.GetPlaybackRate()), h2 = true, this._pingPongState++, C32.wrap(this._pingPongState, 0, 2)) : this._playheadTime <= 0 && (this._SetTime(0), this.SetPlaybackRate(-1 * this.GetPlaybackRate()), h2 = true, this._pingPongState++, C32.wrap(this._pingPongState, 0, 2))) : this._playbackRate > 0 ? this._playheadTime >= n && (this._currentRepeatCount < this.GetRepeatCount() ? (this._currentRepeatCount++, this._SetTimeAndReset(0)) : (this._SetTime(n), r2 = true)) : this._playheadTime <= 0 && (this._currentRepeatCount < this.GetRepeatCount() ? (this._currentRepeatCount++, this._SetTimeAndReset(n)) : (this._SetTime(0), r2 = true));
       const _2 = this._tracksLength;
       if (r2) {
         for (m2 = 0; m2 < _2; m2++) this._tracks[m2].SetEndState();
@@ -16708,7 +17688,7 @@ var MaybePrepareLayerDraw2;
   const C32 = self.C3, INSTANCE_TRACK = 0, VALUE_TRACK = 1, AUDIO_TRACK = 2;
   C32.TrackState = class extends C32.DefendedBase {
     constructor(t2, e) {
-      super(), this._timeline = t2, this._trackDataItem = e, this._trackData = e.GetTrackData(), this._instanceUid = NaN, this._objectClassIndex = NaN, this._instance = null, this._worldInfo = null, this._cleared = false, this._isNested = e.GetStartOffset() > 0, this._initialStateOfNestedSet = false, this._endStateOfNestedSet = false, this._instanceUidToLoad = NaN, this._lastKeyframeDataItem = null, this._keyframeDataItems = this._trackDataItem.GetKeyframeData().GetKeyframeDataItemArray(), this._propertyTracks = [], this.CreatePropertyTrackStates(), this._worldInfoChange = 0, this._renderChange = 0, this._needsBeforeAndAfter = 0, this._keyframeReachedOnCurrentTick = null;
+      super(), this._timeline = t2, this._trackDataItem = e, this._trackData = e.GetTrackData(), this._instanceUid = NaN, this._objectClassIndex = NaN, this._instance = null, this._worldInfo = null, this._cleared = false, this._isNested = e.GetStartOffset() > 0, this._initialStateOfNestedSet = false, this._endStateOfNestedSet = false, this._instanceUidToLoad = NaN, this._lastKeyframeDataItem = null, this._keyframeDataItems = this._trackDataItem.GetKeyframeData().GetKeyframeDataItemArray(), this._propertyTracks = [], this.CreatePropertyTrackStates(), this._worldInfoChange = 0, this._renderChange = 0, this._needsBeforeAndAfter = 0, this._lastTime = NaN, this._keyframeReachedOnCurrentTick = null;
     }
     static Create(t2, e) {
       return C32.New(C32.TrackState, t2, e);
@@ -16890,20 +17870,14 @@ var MaybePrepareLayerDraw2;
     }
     GetOriginalWidth() {
       const t2 = this.GetInstance();
-      if (t2) {
-        if (t2.GetSdkInstance().IsOriginalSizeKnown()) return t2.GetSdkInstance().GetOriginalWidth();
-      }
-      return this._trackDataItem.GetOriginalWidth();
+      return t2 && t2.IsOriginalSizeKnown() ? t2.GetOriginalWidth() : this._trackDataItem.GetOriginalWidth();
     }
     SetOriginalHeight(t2) {
       this._trackDataItem.SetOriginalHeight(t2);
     }
     GetOriginalHeight() {
       const t2 = this.GetInstance();
-      if (t2) {
-        if (t2.GetSdkInstance().IsOriginalSizeKnown()) return t2.GetSdkInstance().GetOriginalHeight();
-      }
-      return this._trackDataItem.GetOriginalHeight();
+      return t2 && t2.IsOriginalSizeKnown() ? t2.GetOriginalHeight() : this._trackDataItem.GetOriginalHeight();
     }
     GetType() {
       return this._trackDataItem.GetType();
@@ -16935,14 +17909,14 @@ var MaybePrepareLayerDraw2;
     SetResetState() {
       for (const t3 of this._propertyTracks) t3.SetResetState();
       const t2 = this.GetTimeline(), e = t2.GetTime();
-      t2.IsForwardPlayBack() ? this._lastKeyframeDataItem = this._GetLastKeyFrameBeforeTime(e) : this._lastKeyframeDataItem = this._GetFirstKeyFrameAfterTime(e);
+      t2.IsForwardPlayBack() ? this._lastKeyframeDataItem = this._GetLastKeyFrameBeforeTime(e) : this._lastKeyframeDataItem = this._GetFirstKeyFrameAfterTime(e), this._lastTime = NaN;
     }
     SetInitialState() {
       if (this.MaybeGetInstance(), !this.IsInstanceValid() && this.IsInstanceTrack()) return;
       const t2 = this.GetTimeline().IsForwardPlayBack(), e = t2 ? 0 : this.GetLocalTotalTime();
       for (const t3 of this._propertyTracks) t3.SetInitialState(e), 0 === this._worldInfoChange && 1 === t3.GetWorldInfoChange() && (this._worldInfoChange = 1), 0 === this._renderChange && 1 === t3.GetRenderChange() && (this._renderChange = 1);
       this._needsBeforeAndAfter = 0;
-      this._propertyTracks.some((t3) => t3.GetNeedsBeforeAndAfter()) && (this._needsBeforeAndAfter = 1), this._lastKeyframeDataItem = t2 ? this._GetLastKeyFrameBeforeTime(e) : this._GetFirstKeyFrameAfterTime(e), this._initialStateOfNestedSet = false, this._endStateOfNestedSet = false, this.Interpolate(e), this.OnInitialKeyframeReached(this._lastKeyframeDataItem);
+      this._propertyTracks.some((t3) => t3.GetNeedsBeforeAndAfter()) && (this._needsBeforeAndAfter = 1), this._lastKeyframeDataItem = t2 ? this._GetLastKeyFrameBeforeTime(e) : this._GetFirstKeyFrameAfterTime(e), this._initialStateOfNestedSet = false, this._endStateOfNestedSet = false, this._lastTime = NaN, this.Interpolate(e), this.OnInitialKeyframeReached(this._lastKeyframeDataItem);
     }
     GetCurrentKeyframeInterval() {
       const t2 = this.GetLastKeyframe(), e = this.GetNextKeyframe();
@@ -16959,7 +17933,7 @@ var MaybePrepareLayerDraw2;
     SetResumeState() {
       if (this.MaybeGetInstance(), !this.IsInstanceValid() && this.IsInstanceTrack()) return;
       const t2 = this._timeline.IsForwardPlayBack(), e = this._timeline.GetTime() - this.GetStartOffset();
-      this._lastKeyframeDataItem = t2 ? this._GetLastKeyFrameBeforeTime(e) : this._GetFirstKeyFrameAfterTime(e);
+      this._lastKeyframeDataItem = t2 ? this._GetLastKeyFrameBeforeTime(e) : this._GetFirstKeyFrameAfterTime(e), this._lastTime = NaN;
       for (const t3 of this._propertyTracks) t3.SetResumeState(e);
     }
     SetEndState() {
@@ -16981,10 +17955,10 @@ var MaybePrepareLayerDraw2;
     Interpolate(t2, e = false, a2 = false, s = false, r2 = false, i = false, n = false) {
       this._instance || this.GetInstance();
       const h2 = this._instance && !this._instance.IsDestroyed(), o2 = 0 === this._trackDataItem._type;
-      if ((h2 || !o2) && !(i && o2 && this.GetObjectClass().IsGlobal() || (t2 -= this.GetStartOffset()) < 0)) {
+      if ((h2 || !o2) && !(i && o2 && this.GetObjectClass().IsGlobal()) && !((t2 -= this.GetStartOffset()) < 0) && (this._lastTime !== t2 || !e || a2 || s || r2 || n)) {
         this.MaybeSetInitialStateOfNestedTrack(t2, e), this.MaybeTriggerKeyframeReachedConditions(t2, e, r2), !this.GetTimeline().IsPlaying() && this.GetTimeline().GetStoppedOnKeyframe() && (t2 = this.GetTimeline().GetStoppedOnKeyframe().GetTime());
         for (let e2 = 0, r3 = this._propertyTracks.length; e2 < r3; e2++) this._propertyTracks[e2].Interpolate(t2, a2, s, n);
-        this.MaybeSetEndStateOfNestedTrack(t2, e), 0 !== this._worldInfoChange && (this._worldInfo || (this._worldInfo = this._instance.GetWorldInfo()), this._worldInfo && this._worldInfo.SetBboxChanged());
+        this.MaybeSetEndStateOfNestedTrack(t2, e), 0 !== this._worldInfoChange && (this._worldInfo || (this._worldInfo = this._instance.GetWorldInfo()), this._worldInfo && this._worldInfo.SetBboxChanged()), this._lastTime = t2;
       }
     }
     AfterInterpolate(t2, e = false) {
@@ -17022,7 +17996,7 @@ var MaybePrepareLayerDraw2;
       const s = this.GetTimeline();
       if (s.IsForwardPlayBack()) {
         const e2 = this._lastKeyframeDataItem.GetNext(), a3 = this._lastKeyframeDataItem.GetTime(), r2 = e2 ? e2.GetTime() : s.GetTotalTime();
-        (t2 <= a3 || t2 >= r2) && (this._lastKeyframeDataItem = this._trackData.GetFirstKeyFrameDataItemLowerOrEqualThan(t2, this._trackDataItem), e2 && this.OnKeyframeReached(this._lastKeyframeDataItem));
+        (t2 <= a3 || t2 >= r2) && (this._lastKeyframeDataItem = this._trackData.GetFirstKeyFrameDataItemLowerOrEqualThan(t2, this._trackDataItem), e2 && this.OnKeyframeReached(this._lastKeyframeDataItem, false, t2));
       } else {
         if (!this._trackData.GetFirstKeyFrameDataItemHigherOrEqualThan(t2, this._trackDataItem)) return;
         this._lastKeyframeDataItem || (this._lastKeyframeDataItem = this._trackData.GetFirstKeyFrameDataItemHigherOrEqualThan(t2, this._trackDataItem));
@@ -17038,10 +18012,10 @@ var MaybePrepareLayerDraw2;
       const e = this._trackData.GetKeyFrameDataItemAtTime(t2, this._trackDataItem);
       return e || this._trackData.GetFirstKeyFrameDataItemHigherOrEqualThan(t2, this._trackDataItem);
     }
-    OnKeyframeReached(t2, e = false) {
+    OnKeyframeReached(t2, e = false, a2) {
       if (!C32.Plugins.Timeline) return;
-      const a2 = this.GetTimeline(), s = a2.GetTimelineManager();
-      C32.Plugins.Timeline.Cnds.PushTriggerTimeline(a2), C32.Plugins.Timeline.Cnds.PushTriggerKeyframe(t2), s.Trigger(C32.Plugins.Timeline.Cnds.OnAnyKeyframeReached), s.Trigger(C32.Plugins.Timeline.Cnds.OnKeyframeReached), a2.IsPlaying() || e || a2.SetStoppedOnKeyframe(t2), C32.Plugins.Timeline.Cnds.PopTriggerTimeline(a2), C32.Plugins.Timeline.Cnds.PopTriggerKeyframe(t2), this._keyframeReachedOnCurrentTick = t2;
+      const s = this.GetTimeline(), r2 = s.GetTimelineManager();
+      C32.Plugins.Timeline.Cnds.PushTriggerTimeline(s), C32.Plugins.Timeline.Cnds.PushTriggerKeyframe(t2), r2.Trigger(C32.Plugins.Timeline.Cnds.OnAnyKeyframeReached), r2.Trigger(C32.Plugins.Timeline.Cnds.OnKeyframeReached), s.IsPlaying() || e || s.SetStoppedOnKeyframe(t2), C32.Plugins.Timeline.Cnds.PopTriggerTimeline(s), C32.Plugins.Timeline.Cnds.PopTriggerKeyframe(t2), this._keyframeReachedOnCurrentTick = t2;
     }
     WasKeyframeReachedOnCurrentTick() {
       return this._keyframeReachedOnCurrentTick;
@@ -17731,13 +18705,13 @@ var MaybePrepareLayerDraw2;
     GetInstanceOriginalWidth(e, t2) {
       const r2 = t2.GetTimeline().GetTrackFromInstance(e.GetInstance());
       if (r2) return r2.GetOriginalWidth();
-      const a2 = e.GetInstance().GetSdkInstance();
+      const a2 = e.GetInstance();
       return a2.IsOriginalSizeKnown() ? a2.GetOriginalWidth() : e._GetSceneGraphInfo()._GetStartWidth();
     }
     GetInstanceOriginalHeight(e, t2) {
       const r2 = t2.GetTimeline().GetTrackFromInstance(e.GetInstance());
       if (r2) return r2.GetOriginalHeight();
-      const a2 = e.GetInstance().GetSdkInstance();
+      const a2 = e.GetInstance();
       return a2.IsOriginalSizeKnown() ? a2.GetOriginalHeight() : e._GetSceneGraphInfo()._GetStartHeight();
     }
     GetNewWidth(e, t2, r2, a2, i, n) {
@@ -18291,7 +19265,7 @@ var MaybePrepareLayerDraw2;
   }, get_original_size = (t2, e) => {
     const a2 = e.GetTimeline().GetTrackFromInstance(t2.GetInstance());
     if (a2) return a2.GetOriginalWidth();
-    const r2 = t2.GetInstance().GetSdkInstance();
+    const r2 = t2.GetInstance();
     return r2.IsOriginalSizeKnown() ? r2.GetOriginalWidth() : t2._GetSceneGraphInfo()._GetStartWidth();
   }, get_last_property_keyframe_value = (t2, e, a2, r2 = 0) => {
     const i = e.GetTimeline().GetTrackFromInstance(t2.GetInstance());
@@ -18312,7 +19286,7 @@ var MaybePrepareLayerDraw2;
     "relative" === r2._propertyTrack.GetResultMode() ? t2.OffsetX(e, a2.GetTimeline().GetTransformWithSceneGraph()) : t2.OffsetX(e);
   }, (t2, e) => t2.SetX(e), (t2) => t2.GetX(), true), add("offsetY", (t2, e, a2, r2) => {
     "relative" === r2._propertyTrack.GetResultMode() ? t2.OffsetY(e, a2.GetTimeline().GetTransformWithSceneGraph()) : t2.OffsetY(e);
-  }, (t2, e) => t2.SetY(e), (t2) => t2.GetY(), true), add("offsetWidth", (t2, e, a2, r2, i = false, s = true) => {
+  }, (t2, e) => t2.SetY(e), (t2) => t2.GetY(), true), add("offsetZElevation", (t2, e) => t2.OffsetZ(e), (t2, e) => t2.SetZ(e), (t2) => t2.GetZ(), true), add("offsetWidth", (t2, e, a2, r2, i = false, s = true) => {
     if (0 === e) return;
     const o2 = "relative" === r2._propertyTrack.GetResultMode(), n = 1 === r2._typeAdapter.GetType();
     if ((o2 || n) && t2.HasParent() && t2.GetTransformWithParentWidth()) {
@@ -18403,7 +19377,7 @@ var MaybePrepareLayerDraw2;
         break;
       }
     }
-  }), add("offsetOriginX", (t2, e) => t2.OffsetOriginX(e), (t2, e) => t2.SetOriginX(e), (t2) => t2.GetOriginX(), false), add("offsetOriginY", (t2, e) => t2.OffsetOriginY(e), (t2, e) => t2.SetOriginY(e), (t2) => t2.GetOriginY(), false), add("offsetZElevation", (t2, e) => t2.OffsetZElevation(e), (t2, e) => t2.SetZElevation(e), (t2) => t2.GetZElevation(), true), add("offsetScaleX", (t2, e, a2, r2) => {
+  }), add("offsetOriginX", (t2, e) => t2.OffsetOriginX(e), (t2, e) => t2.SetOriginX(e), (t2) => t2.GetOriginX(), false), add("offsetOriginY", (t2, e) => t2.OffsetOriginY(e), (t2, e) => t2.SetOriginY(e), (t2) => t2.GetOriginY(), false), add("offsetScaleX", (t2, e, a2, r2) => {
     if (0 === e) return;
     const i = t2.GetWidth() < 0 ? -1 : 1;
     if (r2._absoluteScaleXOffset += e, "relative" === r2._propertyTrack.GetResultMode() && t2.HasParent() && t2.GetTransformWithParentWidth()) {
@@ -18424,7 +19398,7 @@ var MaybePrepareLayerDraw2;
       let s = NaN;
       if (i) s = r2.GetWidth() / i.GetOriginalWidth();
       else {
-        const t3 = r2.GetInstance().GetSdkInstance();
+        const t3 = r2.GetInstance();
         s = t3.IsOriginalSizeKnown() ? r2.GetWidth() / t3.GetOriginalWidth() : 1;
       }
       return t2.GetWidth() * a2 / (e.GetOriginalWidth() * s);
@@ -18453,7 +19427,7 @@ var MaybePrepareLayerDraw2;
       let s = NaN;
       if (i) s = r2.GetHeight() / i.GetOriginalHeight();
       else {
-        const t3 = r2.GetInstance().GetSdkInstance();
+        const t3 = r2.GetInstance();
         s = t3.IsOriginalSizeKnown() ? r2.GetHeight() / t3.GetOriginalHeight() : 1;
       }
       return t2.GetHeight() * a2 / (e.GetOriginalHeight() * s);
@@ -20073,7 +21047,7 @@ var MaybePrepareLayerDraw2;
         C32.IsArray(e.propertyTracksConfig) || (e.propertyTracksConfig = [e.propertyTracksConfig]), n.SetId(e.id), n.SetTags(e.tags), n.SetInitialValueMode(e.initialValueMode), n.SetDestroyInstanceOnComplete(e.releaseOnComplete), n.SetLoop(e.loop), n.SetPingPong(e.pingPong), n.SetTotalTime(e.time), n.SetStep(0), n.SetInterpolationMode("default"), n.SetResultMode(e.propertyTracksConfig[0].resultMode), n.SetRepeatCount(e.repeatCount);
         const i = n.AddTrack();
         i.SetInstanceUID(e.instance.GetUID()), i.SetInterpolationMode("default"), i.SetResultMode(e.propertyTracksConfig[0].resultMode), i.SetEnable(true), i.SetObjectClassIndex(e.instance.GetObjectClass().GetIndex());
-        const a2 = e.instance.GetSdkInstance(), r2 = a2.IsOriginalSizeKnown() ? a2.GetOriginalWidth() : e.instance.GetWorldInfo().GetWidth(), o2 = a2.IsOriginalSizeKnown() ? a2.GetOriginalHeight() : e.instance.GetWorldInfo().GetHeight();
+        const a2 = e.instance, r2 = a2.IsOriginalSizeKnown() ? a2.GetOriginalWidth() : e.instance.GetWorldInfo().GetWidth(), o2 = a2.IsOriginalSizeKnown() ? a2.GetOriginalHeight() : e.instance.GetWorldInfo().GetHeight();
         i.SetOriginalWidth(r2), i.SetOriginalHeight(o2);
         const h2 = i.AddKeyframe();
         h2.SetTime(0), h2.SetEase("noease"), h2.SetEnable(true), h2.SetTags("");
@@ -20104,35 +21078,35 @@ var MaybePrepareLayerDraw2;
 {
   const C32 = self.C3;
   C32.TweenTrackState = class extends C32.TrackState {
-    constructor(t2, e) {
-      super(t2, e), this._firstPropertyTrack = null, this._secondPropertyTrack = null;
+    constructor(t2, r2) {
+      super(t2, r2), this._firstPropertyTrack = null, this._secondPropertyTrack = null, this._thirdPropertyTrack = null;
     }
-    static Create(t2, e) {
-      return C32.New(C32.TweenTrackState, t2, e);
+    static Create(t2, r2) {
+      return C32.New(C32.TweenTrackState, t2, r2);
     }
     _CachePropertyTracks() {
-      1 === this._propertyTracks.length ? this._firstPropertyTrack = this._propertyTracks[0] : (this._firstPropertyTrack = this._propertyTracks[0], this._secondPropertyTrack = this._propertyTracks[1]);
+      1 === this._propertyTracks.length ? this._firstPropertyTrack = this._propertyTracks[0] : 2 === this._propertyTracks.length ? (this._firstPropertyTrack = this._propertyTracks[0], this._secondPropertyTrack = this._propertyTracks[1]) : (this._firstPropertyTrack = this._propertyTracks[0], this._secondPropertyTrack = this._propertyTracks[1], this._thirdPropertyTrack = this._propertyTracks[2]);
     }
     CreatePropertyTrackStates() {
       for (const t2 of this._trackDataItem.GetPropertyTrackData().propertyTrackDataItems()) this._propertyTracks.push(C32.TweenPropertyTrackState.Create(this, t2));
       this._CachePropertyTracks();
     }
     AddPropertyTrack() {
-      const t2 = this._trackDataItem.GetPropertyTrackData().AddEmptyPropertyTrackDataItem(), e = C32.TweenPropertyTrackState.Create(this, t2);
-      return this._propertyTracks.push(e), this._CachePropertyTracks(), e;
+      const t2 = this._trackDataItem.GetPropertyTrackData().AddEmptyPropertyTrackDataItem(), r2 = C32.TweenPropertyTrackState.Create(this, t2);
+      return this._propertyTracks.push(r2), this._CachePropertyTracks(), r2;
     }
     SetInitialState() {
       if (this.MaybeGetInstance(), !this.IsInstanceValid() && this.IsInstanceTrack()) return;
       const t2 = this.GetTimeline().IsForwardPlayBack() ? 0 : this.GetLocalTotalTime();
-      for (const e of this._propertyTracks) e.SetInitialState(t2), 0 === this._worldInfoChange && 1 === e.GetWorldInfoChange() && (this._worldInfoChange = 1), 0 === this._renderChange && 1 === e.GetRenderChange() && (this._renderChange = 1);
+      for (const r2 of this._propertyTracks) r2.SetInitialState(t2), 0 === this._worldInfoChange && 1 === r2.GetWorldInfoChange() && (this._worldInfoChange = 1), 0 === this._renderChange && 1 === r2.GetRenderChange() && (this._renderChange = 1);
       this._needsBeforeAndAfter = 0;
       this._propertyTracks.some((t3) => t3.GetNeedsBeforeAndAfter()) && (this._needsBeforeAndAfter = 1), this._lastKeyframeDataItem = this._GetLastKeyFrameBeforeTime(t2), this._initialStateOfNestedSet = false, this._endStateOfNestedSet = false, this.Interpolate(t2);
     }
     BeforeInterpolate() {
     }
-    Interpolate(t2, e = false, r2 = false, s = false, a2 = false, o2 = false, n = false) {
+    Interpolate(t2, r2 = false, e = false, s = false, a2 = false, o2 = false, i = false) {
       if (this._instance || this.GetInstance(), !this._instance) return;
-      return !this._instance.IsDestroyed() && ((!o2 || !this.GetObjectClass().IsGlobal()) && (this._secondPropertyTrack ? (this._firstPropertyTrack.Interpolate(t2, r2, s, n), this._secondPropertyTrack.Interpolate(t2, r2, s, n)) : this._firstPropertyTrack.Interpolate(t2, r2, s, n), void (0 !== this._firstPropertyTrack.GetWorldInfoChange() && (this._worldInfo || (this._worldInfo = this._instance.GetWorldInfo()), this._worldInfo && this._worldInfo.SetBboxChanged()))));
+      return !this._instance.IsDestroyed() && ((!o2 || !this.GetObjectClass().IsGlobal()) && (this._thirdPropertyTrack ? (this._firstPropertyTrack.Interpolate(t2, e, s, i), this._secondPropertyTrack.Interpolate(t2, e, s, i), this._thirdPropertyTrack.Interpolate(t2, e, s, i)) : this._secondPropertyTrack ? (this._firstPropertyTrack.Interpolate(t2, e, s, i), this._secondPropertyTrack.Interpolate(t2, e, s, i)) : this._firstPropertyTrack.Interpolate(t2, e, s, i), void (0 !== this._firstPropertyTrack.GetWorldInfoChange() && (this._worldInfo || (this._worldInfo = this._instance.GetWorldInfo()), this._worldInfo && this._worldInfo.SetBboxChanged()))));
     }
     AfterInterpolate() {
     }
@@ -20347,7 +21321,7 @@ var MaybePrepareLayerDraw2;
     }
     Create(e) {
       if (this._templateDataMap || (this._templateDataMap = /* @__PURE__ */ new Map()), !e) return;
-      const t2 = e[0][16][0], a2 = e[1];
+      const t2 = e[0][17][0], a2 = e[1];
       this._templateDataMap.has(a2) || this._templateDataMap.set(a2, /* @__PURE__ */ new Map());
       this._templateDataMap.get(a2).set(t2, e);
     }
@@ -21113,6 +22087,479 @@ var MaybePrepareLayerDraw2;
 }
 {
   const C32 = self.C3;
+  C32.Model3dManager = class {
+    #e;
+    #t = /* @__PURE__ */ new Map();
+    constructor(e) {
+      this.#e = e;
+    }
+    Release() {
+      for (const e of this.#t.values()) e.Release();
+      this.#t.clear(), this.#t = null, this._runtime = null;
+    }
+    GetRuntime() {
+      return this._runtime;
+    }
+    Create(e) {
+      const t2 = new C32.Model3dDataItem(e);
+      this.#t.set(t2.GetName(), t2);
+    }
+    *GetModel3dDataItems() {
+      yield* this.#t.values();
+    }
+    GetModel3dDataItemByName(e) {
+      return this.#t.get(e);
+    }
+    HasModels3d() {
+      return this.#t.size;
+    }
+    static CreateDataItems(e, t2, s, d2) {
+      if (t2) for (const l of t2) {
+        const t3 = new s(l, d2);
+        e.push(t3);
+      }
+    }
+  };
+}
+{
+  const C32 = self.C3, NAME = 0, ANIMATIONS = 1, MESHES = 2, OTHER = 3, BONES = 4;
+  C32.Model3dDataItem = class {
+    #t;
+    #e = null;
+    #s = null;
+    #a = null;
+    #n = null;
+    constructor(t2) {
+      this.#t = t2[0], this.#e = new C32.Model3dAnimationData(t2[1], this), this.#s = new C32.Model3dMeshData(t2[2], this), this.#a = new C32.Model3dObjectData(t2[3], this), this.#n = new C32.Model3dObjectData(t2[4], this), this.#s.OnCreate();
+    }
+    Release() {
+      this.#e.Release(), this.#e = null, this.#s.Release(), this.#s = null, this.#a.Release(), this.#a = null, this.#n.Release(), this.#n = null;
+    }
+    GetName() {
+      return this.#t;
+    }
+    GetAnimations() {
+      return this.#e.GetAnimationsMap();
+    }
+    GetMeshes() {
+      return this.#s.GetMeshesMap();
+    }
+    GetObjects() {
+      return this.#a.GetObjectsMap();
+    }
+    GetBones() {
+      return this.#n.GetObjectsMap();
+    }
+    *GetTextures() {
+      for (const t2 of this.GetMeshes().values()) yield t2.GetModel3dTexture();
+    }
+    GetObjectById(t2) {
+      if (this.GetMeshes()) {
+        for (const e of this.GetMeshes().values()) if (e.GetId() === t2) return e;
+      }
+      if (this.GetObjects()) {
+        for (const e of this.GetObjects().values()) if (e.GetId() === t2) return e;
+      }
+      if (this.GetBones()) {
+        for (const e of this.GetBones().values()) if (e.GetId() === t2) return e;
+      }
+    }
+  };
+}
+{
+  const C32 = self.C3, ID = 0, NAME = 1, DURATION = 2, TRACKS = 3;
+  C32.Model3dAnimationDataItem = class {
+    #t;
+    #a;
+    #e;
+    #i;
+    constructor(t2) {
+      this.#t = t2[0], this.#a = t2[1], this.#e = t2[2], this.#i = t2[3].map((t3) => new TrackDataItem(t3));
+    }
+    Release() {
+      for (const t2 of this.#i) t2.Release();
+      this.#i = null;
+    }
+    GetId() {
+      return this.#t;
+    }
+    GetName() {
+      return this.#a;
+    }
+    GetDuration() {
+      return this.#e;
+    }
+    GetTracks() {
+      return this.#i;
+    }
+  };
+  const ANIMATION_TYPE = 0, ANIMATION_NAME = 1, ANIMATION_TIMES = 2, ANIMATION_VALUES = 3, ANIMATION_INTERPOLATION = 4, ANIMATION_LOOKUP_UUID = 5;
+  class TrackDataItem {
+    #s;
+    #a;
+    #n;
+    #o;
+    #r;
+    #m;
+    constructor(t2) {
+      this.#s = t2[0], this.#a = t2[1], this.#n = new globalThis.Float32Array(C32.toArrayLike(t2[2])), this.#o = new globalThis.Float32Array(C32.toArrayLike(t2[3])), this.#r = t2[4], this.#m = t2[5];
+    }
+    Release() {
+      this.#n = null, this.#o = null;
+    }
+    GetType() {
+      return this.#s;
+    }
+    GetName() {
+      return this.#a;
+    }
+    GetTimes() {
+      return this.#n;
+    }
+    GetValues() {
+      return this.#o;
+    }
+    GetInterpolation() {
+      return this.#r;
+    }
+    GetLookupUUID() {
+      return this.#m;
+    }
+  }
+  C32.Model3dAnimationData = class {
+    #l;
+    #h;
+    #I;
+    constructor(t2, a2) {
+      this.#l = a2, this.#h = [], C32.Model3dManager.CreateDataItems(this.#h, t2, C32.Model3dAnimationDataItem, this);
+    }
+    Release() {
+      this.#l = null;
+      for (const t2 of this.#h) t2.Release();
+      C32.clearArray(this.#h), this.#h = null, this.#I && this.#I.clear(), this.#I = null;
+    }
+    GetModel3dDataItem() {
+      return this.#l;
+    }
+    GetAnimationsMap() {
+      if (this.#I) return this.#I;
+      this.#I = /* @__PURE__ */ new Map();
+      for (const t2 of this.#h) this.#I.set(t2.GetName(), t2);
+      return this.#I;
+    }
+  };
+}
+{
+  const C32 = self.C3, ID = 0, PARENT_ID = 1, NAME = 2, POSITION = 3, QUATERNION = 4, SCALE = 5, BIND_MATRIX = 6, BIND_MATRIX_INVERSE = 7;
+  C32.Model3dObjectDataItem = class {
+    #t;
+    #e;
+    #a;
+    #s;
+    #i;
+    #r;
+    #n;
+    #o;
+    constructor(t2) {
+      this.#t = t2[0], this.#e = t2[1], this.#a = t2[2], this.#s = new globalThis.Float32Array(C32.toArrayLike(t2[3])), this.#i = new globalThis.Float32Array(C32.toArrayLike(t2[4])), this.#r = new globalThis.Float32Array(C32.toArrayLike(t2[5])), this.#n = new globalThis.Float32Array(C32.toArrayLike(t2[6])), this.#o = new globalThis.Float32Array(C32.toArrayLike(t2[7]));
+    }
+    Release() {
+      this.#s = null, this.#i = null, this.#r = null, this.#n = null, this.#o = null;
+    }
+    GetId() {
+      return this.#t;
+    }
+    GetParentId() {
+      return this.#e;
+    }
+    GetName() {
+      return this.#a;
+    }
+    GetPosition() {
+      return this.#s;
+    }
+    GetQuaternion() {
+      return this.#i;
+    }
+    GetScale() {
+      return this.#r;
+    }
+    GetBindMatrix() {
+      return this.#n;
+    }
+    GetBindMatrixInverse() {
+      return this.#o;
+    }
+  }, C32.Model3dObjectData = class {
+    #l;
+    #d;
+    #h;
+    constructor(t2, e) {
+      this.#l = e, this.#d = [], C32.Model3dManager.CreateDataItems(this.#d, t2, C32.Model3dObjectDataItem, this);
+    }
+    Release() {
+      this.#l = null;
+      for (const t2 of this.#d) t2.Release();
+      C32.clearArray(this.#d), this.#d = null, this.#h && this.#h.clear(), this.#h = null;
+    }
+    GetModel3dDataItem() {
+      return this.#l;
+    }
+    GetObjectsMap() {
+      if (this.#h) return this.#h;
+      this.#h = /* @__PURE__ */ new Map();
+      for (const t2 of this.#d) this.#h.set(t2.GetName(), t2);
+      return this.#h;
+    }
+  };
+}
+{
+  const C32 = self.C3, ID = 0, PARENT_ID = 1, NAME = 2, POSITION = 3, QUATERNION = 4, SCALE = 5, BIND_MATRIX = 6, BIND_MATRIX_INVERSE = 7, VERTEX_DATA = 8, UV_DATA = 9, INDEX_DATA = 10, IS_SKINNED = 11, SKIN_INDEX_DATA = 12, SKIN_WEIGTH_DATA = 13, COLOR_DATA = 14, BONES_DATA = 15, BONE_INVERSE_MATRIX_DATA = 16, BIND_POSE_DATA = 17, TEXTURE_DATA = 18, RENDER_TYPE = 19;
+  C32.Model3dMeshDataItem = class extends C32.Model3dObjectDataItem {
+    #t;
+    #e;
+    #a;
+    #s;
+    #n;
+    #i;
+    #r;
+    #o;
+    #h;
+    #l;
+    #D;
+    #d;
+    #I;
+    #m;
+    constructor(t2, e) {
+      super(t2), this.#m = e, t2[8] && (this.#t = new globalThis.Float32Array(C32.toArrayLike(t2[8]))), t2[9] && (this.#e = new globalThis.Float32Array(C32.toArrayLike(t2[9]))), t2[10] && (this.#a = new globalThis.Float32Array(C32.toArrayLike(t2[10]))), this.#s = t2[11], t2[12] && (this.#n = new globalThis.Float32Array(C32.toArrayLike(t2[12]))), t2[13] && (this.#i = new globalThis.Float32Array(C32.toArrayLike(t2[13]))), t2[14] && (this.#r = new globalThis.Float32Array(C32.toArrayLike(t2[14]))), t2[19] && (this.#d = t2[19]), t2[15] && (this.#o = t2[15].map((t3) => new Bone(t3))), this.#h = t2[16], t2[17] && (this.#l = t2[17].map((t3) => new Bone(t3))), this.#D = new C32.Model3dTextureDataItem(t2[18]);
+    }
+    Release() {
+      if (super.Release(), this.#t = null, this.#e = null, this.#a = null, this.#n = null, this.#i = null, this.#r = null, this.#o) for (const t2 of this.#o) t2.Release();
+      if (this.#o = null, this.#h = null, this.#l) for (const t2 of this.#l) t2.Release();
+      this.#l = null, this.#I && this.#I.clear(), this.#I = null, this.#D && this.#D.Release();
+    }
+    OnCreate() {
+      for (const t2 of this.#m.GetAnimations().values()) {
+        const e = t2.GetTracks(), a2 = e.some((t3) => {
+          const e2 = this.#m.GetObjectById(t3.GetLookupUUID());
+          return !(!e2 || e2.GetId() !== this.GetId());
+        });
+        let s = false;
+        if (this.#o) for (const t3 of this.#o) s ||= e.some((e2) => {
+          const a3 = this.#m.GetObjectById(e2.GetLookupUUID());
+          return !(!a3 || a3.GetId() !== t3.GetId());
+        });
+        (a2 || s) && (this.#I || (this.#I = /* @__PURE__ */ new Map()), this.#I.set(t2.GetName(), t2));
+      }
+    }
+    GetAnimationsMap() {
+      return this.#I;
+    }
+    GetVertexData() {
+      return this.#t;
+    }
+    GetUVData() {
+      return this.#e;
+    }
+    GetIndexData() {
+      return this.#a;
+    }
+    IsSkinned() {
+      return this.#s;
+    }
+    GetSkinIndexData() {
+      return this.#n;
+    }
+    GetSkinWeigthData() {
+      return this.#i;
+    }
+    GetColorData() {
+      return this.#r;
+    }
+    GetRenderType() {
+      return this.#d;
+    }
+    GetBoneData() {
+      return this.#o;
+    }
+    GetBoneInverseMatricesData() {
+      return this.#h;
+    }
+    GetBoneBindPoseData() {
+      return this.#l;
+    }
+    GetModel3dTexture() {
+      return this.#D;
+    }
+  };
+  const BONE_ID = 0, BONE_PARENT_ID = 1, BONE_INDEX = 2, BONE_PARENT_INDEX = 3, BONE_NAME = 4, BONE_POSITION = 5, BONE_QUATERNION = 6, BONE_SCALE = 7;
+  class Bone {
+    #u;
+    #A;
+    #M;
+    #c;
+    #T;
+    #N;
+    #E;
+    #G;
+    constructor(t2) {
+      this.#u = t2[0], this.#A = t2[1], this.#M = t2[2], this.#c = t2[3], this.#T = t2[4], this.#N = new globalThis.Float32Array(C32.toArrayLike(t2[5])), this.#E = new globalThis.Float32Array(C32.toArrayLike(t2[6])), this.#G = new globalThis.Float32Array(C32.toArrayLike(t2[7]));
+    }
+    Release() {
+      this.#N = null, this.#E = null, this.#G = null;
+    }
+    GetId() {
+      return this.#u;
+    }
+    GetParentId() {
+      return this.#A;
+    }
+    GetIndex() {
+      return this.#M;
+    }
+    GetParentIndex() {
+      return this.#c;
+    }
+    GetName() {
+      return this.#T;
+    }
+    GetPosition() {
+      return this.#N;
+    }
+    GetQuaternion() {
+      return this.#E;
+    }
+    GetScale() {
+      return this.#G;
+    }
+  }
+  C32.Model3dMeshData = class {
+    #m;
+    #p;
+    #x;
+    constructor(t2, e) {
+      this.#m = e, this.#p = [], C32.Model3dManager.CreateDataItems(this.#p, t2, C32.Model3dMeshDataItem, e);
+    }
+    Release() {
+      this.#m = null;
+      for (const t2 of this.#p) t2.Release();
+      C32.clearArray(this.#p), this.#p = null, this.#x && this.#x.clear(), this.#x = null;
+    }
+    GetModel3dDataItem() {
+      return this.#m;
+    }
+    GetMeshesMap() {
+      if (this.#x) return this.#x;
+      this.#x = /* @__PURE__ */ new Map();
+      for (const t2 of this.#p) this.#x.set(t2.GetName(), t2);
+      return this.#x;
+    }
+    OnCreate() {
+      for (const t2 of this.#p) t2.OnCreate();
+    }
+  };
+}
+{
+  const C32 = self.C3, URL2 = 0, FILE_SIZE = 1, OFFSET_X = 2, OFFSET_Y = 3, WIDTH = 4, HEIGHT = 5, IS_ROTATED = 6, NAME = 7, COLOR_ARRAY = 8, WRAP_X = 9, WRAP_Y = 10, HAS_CONTENT = 11, CONTENT_TYPE = 12, uniqueTextureDataItems = /* @__PURE__ */ new Map();
+  C32.Model3dTextureDataItem = class {
+    #e;
+    #t;
+    #r;
+    #s;
+    #a;
+    #i;
+    #h;
+    #o;
+    #u;
+    #n;
+    #I;
+    #T;
+    #d;
+    #m;
+    constructor(e) {
+      uniqueTextureDataItems.has(e[0]) ? this.#m = uniqueTextureDataItems.get(e[0]) : (this.#o = new C32.ImageInfo(), this.#o.LoadData(e), uniqueTextureDataItems.set(e[0], this));
+      const t2 = e[8];
+      this.#e = e[0], this.#t = e[7], this.#r = e[8] ? new C32.Color(t2[0], t2[1], t2[2], t2[3]) : null, this.#s = e[9], this.#a = e[10], this.#i = e[11], this.#h = e[12], this.#u = false, this.#n = false, this.#I = false, this.#T = false;
+    }
+    Release() {
+      this.#m || (this.#o.Release(), uniqueTextureDataItems.delete(this.#e)), this.#o = null, this.#m = null;
+    }
+    HasContent() {
+      return this.#i;
+    }
+    GetContentType() {
+      return this.#h;
+    }
+    GetColor() {
+      return this.#r;
+    }
+    GetOpacity() {
+      return this.#r ? this.#r.getA() : 1;
+    }
+    GetImageInfo() {
+      return this.#m ? this.#m.GetImageInfo() : this.#o;
+    }
+    GetSpriteSheetWidth() {
+      if (this.#m) return this.#m.GetSpriteSheetWidth();
+      const e = this.GetImageInfo().GetSheetWidth();
+      return -1 === e ? NaN : e;
+    }
+    GetSpriteSheetHeight() {
+      if (this.#m) return this.#m.GetSpriteSheetHeight();
+      const e = this.#o.GetSheetHeight();
+      return -1 === e ? NaN : e;
+    }
+    GetSpriteSheetOffsetX() {
+      return this.#m ? this.#m.GetSpriteSheetOffsetX() : this.#o.GetOffsetX();
+    }
+    GetSpriteSheetOffsetY() {
+      return this.#m ? this.#m.GetSpriteSheetOffsetY() : this.#o.GetOffsetY();
+    }
+    GetWidthInSpriteSheet() {
+      return this.#m ? this.#m.GetWidthInSpriteSheet() : this.#o.GetWidth();
+    }
+    GetHeightInSpriteSheet() {
+      return this.#m ? this.#m.GetHeightInSpriteSheet() : this.#o.GetHeight();
+    }
+    IsContentReady() {
+      return this.#m ? this.#m.IsContentReady() : this.#n && !this.#u;
+    }
+    IsLoadingTexture() {
+      return this.#m ? this.#m.IsLoadingTexture() : this.#I;
+    }
+    LoadAsset(e, t2) {
+      if (this.#m) return this.#m.LoadAsset(e, t2);
+      !this.#T && this.HasContent() && this.#o.LoadAsset(e, t2), this.#T = true;
+    }
+    GetTexture(e, t2, r2) {
+      if (this.#m) return this.#m.GetTexture(e, t2, r2);
+      if (!this.HasContent() || this.#u) return null;
+      if (this.#n) return this.#o.GetTexture();
+      if (!this.#I && !this.#n) {
+        this.LoadAsset(e, r2), r2 ? (r2.wrapX = this.#s, r2.wrapY = this.#a) : r2 = { wrapX: this.#s, wrapY: this.#a }, this.#I = true;
+        const s = this.#o.GetImageAsset(), a2 = s.IsLoaded() ? s.GetBlob() : this.#o.GetImageAsset().Load();
+        this.#d = a2.then(() => this.#o.LoadStaticTexture(t2, r2)).then((e2) => {
+          this.#u = false, this.#I = false, this.#n = true;
+        }).catch((e2) => {
+          this.#u = true, this.#I = false, this.#n = false;
+        });
+      }
+      return this.#o.GetTexture();
+    }
+    ReleaseTexture() {
+      if (this.#m) return this.#m.ReleaseTexture();
+      !this.#I && this.#o && this.#o.ReleaseTexture(), this.#u = false, this.#I = false, this.#n = false;
+    }
+    HadTextureError() {
+      return this.#m ? this.#m.HadTextureError() : this.#u;
+    }
+    IsReady() {
+      return this.#d;
+    }
+  };
+}
+{
+  const C32 = self.C3;
   C32.SolStack = class extends C32.DefendedBase {
     constructor(t2) {
       super(), this._objectClass = t2, this._stack = [], this._stack.push(C32.New(C32.Sol, this)), this._index = 0, this._current = this._stack[0];
@@ -21810,21 +23257,21 @@ var MaybePrepareLayerDraw2;
     PopSol(t2) {
       for (let e = 0, s = t2.length; e < s; ++e) t2[e].GetSolStack().Pop();
     }
-    GetDynamicSolModifiersSet(t2) {
-      const e = /* @__PURE__ */ new Set(), s = this._eventStack.GetAllStackFrames(), n = this._eventStack.GetCurrentStackFrameIndex();
-      for (let i = 0; i <= n; ++i) {
-        const n2 = s[i].GetDynamicSolModifiers();
-        if (n2) for (const s2 of n2) t2 && t2.has(s2) || e.add(s2);
+    GetDynamicSolModifiersSet() {
+      const t2 = /* @__PURE__ */ new Set(), e = this._eventStack.GetAllStackFrames(), s = this._eventStack.GetCurrentStackFrameIndex();
+      for (let n = 0; n <= s; ++n) {
+        const s2 = e[n].GetDynamicSolModifiers();
+        if (s2) for (const e2 of s2) t2.add(e2);
       }
-      return e;
+      return t2;
     }
     PushCleanSolDynamic(t2) {
-      const e = /* @__PURE__ */ new Set([...t2]), s = this.GetDynamicSolModifiersSet(e);
-      if (s.size > 0) {
-        for (const t3 of s) t3.GetSolStack().PushClean();
-        return [...s];
-      }
-      return null;
+      const e = this.GetDynamicSolModifiersSet();
+      if (0 === e.size) return null;
+      const s = e.difference(C32.ensureSet(t2));
+      if (0 === s.size) return null;
+      for (const t3 of s) t3.GetSolStack().PushClean();
+      return [...s];
     }
     AddScheduledWait() {
       const t2 = C32.New(C32.ScheduledWait, this);
@@ -22237,23 +23684,28 @@ var IsSolArrayIdentical2;
     }
     _ExecuteTrigger(e, t2, s) {
       const n = this._runtime, r2 = this._eventSheetManager, i = r2.GetCurrentEvent(), l = r2.GetEventStack(), o2 = r2.GetTriggerDepth();
-      let a2 = false;
-      i && r2.PushCleanSol(i.GetSolModifiersIncludingParents()), r2.PushCleanSol(t2.GetSolModifiersIncludingParents());
-      const c2 = o2 > 1;
-      c2 && r2.GetLocalVarStack().Push();
-      const u2 = l.Push(t2);
+      let a2 = false, c2 = null, u2 = null;
+      if (i) {
+        const e2 = new Set(t2.GetSolModifiersIncludingParents());
+        for (const t3 of i.GetSolModifiersIncludingParents()) e2.add(t3);
+        c2 = [...e2], u2 = r2.PushCleanSolDynamic(e2);
+      } else c2 = t2.GetSolModifiersIncludingParents();
+      r2.PushCleanSol(c2);
+      const g2 = o2 > 1;
+      g2 && r2.GetLocalVarStack().Push();
+      const h2 = l.Push(t2);
       if (e) {
         t2.GetConditions()[s].GetObjectClass().GetCurrentSol().SetSinglePicked(e), e.IsInContainer() && e.SetSiblingsSinglePicked();
       }
-      let g2 = true;
+      let _2 = true;
       if (t2.GetParent()) {
         const e2 = t2.GetTriggerParents();
-        for (let t3 = 0, s2 = e2.length; t3 < s2; ++t3) if (!e2[t3].RunPreTrigger(u2)) {
-          g2 = false;
+        for (let t3 = 0, s2 = e2.length; t3 < s2; ++t3) if (!e2[t3].RunPreTrigger(h2)) {
+          _2 = false;
           break;
         }
       }
-      return g2 && (t2.IsOrBlock() ? t2.RunOrBlockTrigger(u2, s) : t2.Run(u2), a2 = u2.GetLastEventTrue()), l.Pop(), c2 && r2.GetLocalVarStack().Pop(), r2.PopSol(t2.GetSolModifiersIncludingParents()), i && r2.PopSol(i.GetSolModifiersIncludingParents()), i || 1 !== o2 || (r2.ClearAsyncActionPromises(), r2.IsFlushingBlocked() || n.FlushPendingInstances()), a2;
+      return _2 && (t2.IsOrBlock() ? t2.RunOrBlockTrigger(h2, s) : t2.Run(h2), a2 = h2.GetLastEventTrue()), l.Pop(), g2 && r2.GetLocalVarStack().Pop(), r2.PopSol(c2), u2 && r2.PopSol(u2), i || 1 !== o2 || (r2.ClearAsyncActionPromises(), r2.IsFlushingBlocked() || n.FlushPendingInstances()), a2;
     }
     *_DebugExecuteTrigger(e, t2, s) {
       const n = this._runtime, r2 = this._eventSheetManager, i = r2.GetCurrentEvent(), l = r2.GetEventStack(), o2 = r2.GetTriggerDepth();
@@ -22774,29 +24226,20 @@ var IsSolArrayIdentical2;
       let i, o2;
       const r2 = t2.length > 0;
       let u2 = null;
-      const l = this._runtime, a2 = this._eventStack, c2 = l.GetEventSheetManager(), h2 = this._scopeParent, _2 = h2.IsAsync(), d2 = c2._IncTriggerDepth() > 1;
-      this._EvaluateFunctionCallParameters(c2, e, d2), r2 && (n ? c2.PushCopySol(t2) : c2.PushCleanSol(t2)), null !== s && (u2 = this.#t(c2, s, n, t2));
+      const l = this._runtime, a2 = this._eventStack, h2 = l.GetEventSheetManager(), c2 = this._scopeParent, _2 = c2.IsAsync(), d2 = h2._IncTriggerDepth() > 1;
+      this._EvaluateFunctionCallParameters(h2, e, d2), r2 && (n ? h2.PushCopySol(t2) : h2.PushCleanSol(t2)), null !== s && (u2 = this.#t(h2, s, n, t2));
       const g2 = a2.Push(this);
-      return n && g2.SetDynamicSolModifiers(t2), this._CheckParentsOKToRun(g2) && (g2.SetCurrentEvent(this), _2 && ([o2, i] = h2.StartAsyncFunctionCall()), this._RunAndBlock(g2), _2 && h2.MaybeFinishAsyncFunctionCall(o2)), a2.Pop(), d2 && c2.GetLocalVarStack().Pop(), null !== u2 && c2.PopSol(u2), r2 && c2.PopSol(t2), c2._DecTriggerDepth(), i;
+      return n && g2.SetDynamicSolModifiers(t2), this._CheckParentsOKToRun(g2) && (g2.SetCurrentEvent(this), _2 && ([o2, i] = c2.StartAsyncFunctionCall()), this._RunAndBlock(g2), _2 && c2.MaybeFinishAsyncFunctionCall(o2)), a2.Pop(), d2 && h2.GetLocalVarStack().Pop(), null !== u2 && h2.PopSol(u2), r2 && h2.PopSol(t2), h2._DecTriggerDepth(), i;
     }
     *DebugRunAsFunctionCall(t2, e, n, s) {
       let i, o2;
       (this.IsDebugBreakpoint() || this._runtime.DebugBreakNext()) && (yield this);
       const r2 = t2.length > 0;
       let u2 = null;
-      const l = this._runtime, a2 = this._eventStack, c2 = l.GetEventSheetManager(), h2 = this._scopeParent, _2 = h2.IsAsync(), d2 = c2._IncTriggerDepth() > 1;
-      if (this._EvaluateFunctionCallParameters(c2, e, d2), r2 && (n ? c2.PushCopySol(t2) : c2.PushCleanSol(t2)), null !== s) {
-        if (s.copyFromObjectClass) {
-          const t3 = n ? s.copyFromObjectClass.GetCurrentSol() : s.copyFromObjectClass.GetSolStack().GetOneBelowCurrentSol(), e2 = s.copyToObjectClass.GetCurrentSol();
-          e2.SetArrayPicked(t3.GetInstances()), e2.ClearElseInstances(), n || s.copyToObjectClass.ApplySolToContainer();
-        } else if (s.pickObjectClass) {
-          const t3 = s.pickObjectClass.GetCurrentSol();
-          t3.SetArrayPicked(s.pickInstances), t3.ClearElseInstances();
-        }
-        s.pushCleanSolDynamic && (u2 = c2.PushCleanSolDynamic(t2));
-      }
+      const l = this._runtime, a2 = this._eventStack, h2 = l.GetEventSheetManager(), c2 = this._scopeParent, _2 = c2.IsAsync(), d2 = h2._IncTriggerDepth() > 1;
+      this._EvaluateFunctionCallParameters(h2, e, d2), r2 && (n ? h2.PushCopySol(t2) : h2.PushCleanSol(t2)), null !== s && (u2 = this.#t(h2, s, n, t2));
       const g2 = a2.Push(this);
-      return n && g2.SetDynamicSolModifiers(t2), (yield* this._DebugCheckParentsOKToRun(g2)) && (g2.SetCurrentEvent(this), _2 && ([o2, i] = h2.StartAsyncFunctionCall()), yield* this._DebugRunAndBlock(g2), _2 && h2.MaybeFinishAsyncFunctionCall(o2)), a2.Pop(), d2 && c2.GetLocalVarStack().Pop(), null !== u2 && c2.PopSol(u2), r2 && c2.PopSol(t2), c2._DecTriggerDepth(), i;
+      return n && g2.SetDynamicSolModifiers(t2), (yield* this._DebugCheckParentsOKToRun(g2)) && (g2.SetCurrentEvent(this), _2 && ([o2, i] = c2.StartAsyncFunctionCall()), yield* this._DebugRunAndBlock(g2), _2 && c2.MaybeFinishAsyncFunctionCall(o2)), a2.Pop(), d2 && h2.GetLocalVarStack().Pop(), null !== u2 && h2.PopSol(u2), r2 && h2.PopSol(t2), h2._DecTriggerDepth(), i;
     }
     RunAsMappedFunctionCall(t2, e) {
       const n = this.GetSolModifiersIncludingParents(), s = n.length > 0, i = this._runtime, o2 = this._eventStack, r2 = i.GetEventSheetManager(), u2 = r2._IncTriggerDepth() > 1;
@@ -22815,10 +24258,10 @@ var IsSolArrayIdentical2;
       let r2, u2;
       const l = t2.length > 0;
       let a2 = null;
-      const c2 = this._runtime, h2 = this._eventStack, _2 = c2.GetEventSheetManager(), d2 = this._scopeParent, g2 = d2.IsAsync(), S2 = _2._IncTriggerDepth() > 1;
+      const h2 = this._runtime, c2 = this._eventStack, _2 = h2.GetEventSheetManager(), d2 = this._scopeParent, g2 = d2.IsAsync(), S2 = _2._IncTriggerDepth() > 1;
       S2 && _2.GetLocalVarStack().Push(), o2.length > 0 && this._scopeParent.SetFunctionParameters(o2), l && (e ? _2.PushCopySol(t2) : _2.PushCleanSol(t2)), null !== i && (a2 = this.#t(_2, i, e, t2));
-      const b2 = h2.Push(this);
-      return b2.InitCallFunctionExpression(n, s), e && b2.SetDynamicSolModifiers(t2), h2.PushExpFunc(b2), c2.SetDebuggingEnabled(false), this._CheckParentsOKToRun(b2) && (b2.SetCurrentEvent(this), g2 && ([u2, r2] = d2.StartAsyncFunctionCall()), this._RunAndBlock(b2), g2 && d2.MaybeFinishAsyncFunctionCall(u2)), c2.SetDebuggingEnabled(true), h2.Pop(), h2.PopExpFunc(), S2 && _2.GetLocalVarStack().Pop(), null !== a2 && _2.PopSol(a2), l && _2.PopSol(t2), _2._DecTriggerDepth(), r2 || b2.GetFunctionReturnValue();
+      const R = c2.Push(this);
+      return R.InitCallFunctionExpression(n, s), e && R.SetDynamicSolModifiers(t2), c2.PushExpFunc(R), h2.SetDebuggingEnabled(false), this._CheckParentsOKToRun(R) && (R.SetCurrentEvent(this), g2 && ([u2, r2] = d2.StartAsyncFunctionCall()), this._RunAndBlock(R), g2 && d2.MaybeFinishAsyncFunctionCall(u2)), h2.SetDebuggingEnabled(true), c2.Pop(), c2.PopExpFunc(), S2 && _2.GetLocalVarStack().Pop(), null !== a2 && _2.PopSol(a2), l && _2.PopSol(t2), _2._DecTriggerDepth(), r2 || R.GetFunctionReturnValue();
     }
   };
 }
@@ -23332,7 +24775,7 @@ var WrapIndex2;
       super(), this._owner = t2, this._index = s, this._type = e, this.Get = null, this._variesPerInstance = false, this._isConstant = false;
     }
     static Create(t2, e, s) {
-      const r2 = e[0], n = [ExpressionParameter, StringExpressionParameter, FileParameter, ComboParameter, ObjectParameter, LayerExpressionParameter, LayoutParameter, ExpressionParameter, ComboParameter, ComboParameter, InstVarParameter, EventVarParameter, FileParameter, VariadicParameter, StringExpressionParameter, TimelineParameter, BooleanParameter, FunctionParameter, EaseParameter, TilemapBrushParameter, TemplateExpressionParameter, FlowchartParameter];
+      const r2 = e[0], n = [ExpressionParameter, StringExpressionParameter, FileParameter, ComboParameter, ObjectParameter, LayerExpressionParameter, LayoutParameter, ExpressionParameter, ComboParameter, ComboParameter, InstVarParameter, EventVarParameter, FileParameter, VariadicParameter, StringExpressionParameter, TimelineParameter, BooleanParameter, FunctionParameter, EaseParameter, TilemapBrushParameter, TemplateExpressionParameter, FlowchartParameter, Model3dParameter];
       return C32.New(n[r2], t2, r2, s, e);
     }
     _PostInit() {
@@ -23575,6 +25018,14 @@ var WrapIndex2;
     }
     GetFlowchartName() {
       return this._flowchartDataItem.GetName();
+    }
+  }
+  class Model3dParameter extends C32.Parameter {
+    constructor(t2, e, s, r2) {
+      super(t2, e, s), this._model3dDataItem = this.GetRuntime().GetModel3dManager().GetModel3dDataItemByName(r2[1]), this.Get = this.GetModel3dName, this._isConstant = true;
+    }
+    GetModel3dName() {
+      return this._model3dDataItem.GetName();
     }
   }
 }
@@ -24307,13 +25758,13 @@ var EvalParams2;
     const s = 0 !== n || 0 !== o2, i = t2.GetWorldInfo(), r2 = runtime.GetCollisionEngine(), a2 = runtime.GetCurrentCondition(), l = a2.GetEventBlock().IsOrBlock(), c2 = a2.GetObjectClass(), u2 = a2.IsInverted(), S2 = e.GetCurrentSol(), f2 = c2 !== e;
     let G;
     rPickType = e, needsCollisionFinish = f2 && !u2, rPickFromElseInstances = false;
-    let d2 = 0, I2 = 0, C2 = false;
-    S2.IsSelectAll() ? (tempRect.copy(i.GetBoundingBox()), tempRect.offset(n, o2), r2.GetCollisionCandidates(i.GetLayer(), e, tempRect, tempCandidates2), G = tempCandidates2) : l ? runtime.IsCurrentConditionFirst() && !S2._GetOwnElseInstances().length && S2._GetOwnInstances().length ? G = S2._GetOwnInstances() : (G = S2._GetOwnElseInstances(), rPickFromElseInstances = true) : G = S2._GetOwnInstances(), s && (d2 = i.GetX(), I2 = i.GetY(), i.OffsetXY(n, o2), i.SetBboxChanged());
+    let d2 = 0, h2 = 0, I2 = false;
+    S2.IsSelectAll() ? (tempRect.setFromAABB3D(i.GetBoundingBox()), tempRect.offset(n, o2), r2.GetCollisionCandidates(i.GetLayer(), e, tempRect, tempCandidates2), G = tempCandidates2) : l ? runtime.IsCurrentConditionFirst() && !S2._GetOwnElseInstances().length && S2._GetOwnInstances().length ? G = S2._GetOwnInstances() : (G = S2._GetOwnElseInstances(), rPickFromElseInstances = true) : G = S2._GetOwnInstances(), s && (d2 = i.GetX(), h2 = i.GetY(), i.OffsetXY(n, o2), i.SetBboxChanged());
     for (const e2 of G) if (r2.TestOverlap(t2, e2)) {
-      if (C2 = true, u2) break;
+      if (I2 = true, u2) break;
       f2 && rToPick.add(e2);
     }
-    return s && (i.SetXY(d2, I2), i.SetBboxChanged()), C32.clearArray(tempCandidates2), C2;
+    return s && (i.SetXY(d2, h2), i.SetBboxChanged()), C32.clearArray(tempCandidates2), I2;
   }, FinishCollisionConditionPicking = function(t2) {
     const e = runtime.GetCurrentEvent().IsOrBlock(), n = rPickType.GetCurrentSol(), o2 = n._GetOwnInstances(), s = n._GetOwnElseInstances();
     n.IsSelectAll() ? (n.SetSetPicked(rToPick), e && (C32.clearArray(s), n.AddElseInstances(rToPick, rPickType.GetInstances()))) : e ? rPickFromElseInstances ? n.TransferElseInstancesToOwn(rToPick) : (n.AddElseInstances(rToPick, o2), n.SetSetPicked(rToPick)) : n.SetSetPicked(rToPick), rPickType.ApplySolToContainer();
@@ -24364,6 +25815,12 @@ var EvalParams2;
     return C32.compare(this.GetWorldInfo().GetY(), t2, e);
   }, SDKv2.CompareY = function(t2, e) {
     return C32.compare(this.y, t2, e);
+  }, SDKv1.CompareZ = function(t2, e, n) {
+    const o2 = this.GetWorldInfo(), s = 0 === t2 ? o2.GetZ() : o2.GetTotalZ();
+    return C32.compare(s, e, n);
+  }, SDKv2.CompareZ = function(t2, e, n) {
+    const o2 = 0 === t2 ? this.z : this.totalZ;
+    return C32.compare(o2, e, n);
   }, SDKv1.IsOnScreen = function() {
     return this.GetWorldInfo().IsInViewport2();
   }, SDKv2.IsOnScreen = function() {
@@ -24371,16 +25828,16 @@ var EvalParams2;
   }, AnySDK.IsOutsideLayout = function() {
     const t2 = GetWorldInfo(this), e = t2.GetLayout(), n = t2.GetBoundingBox();
     return n.getRight() < 0 || n.getBottom() < 0 || n.getLeft() > e.GetWidth() || n.getTop() > e.GetHeight();
-  }, AnySDK.PickDistance = function(t2, e, n) {
-    const o2 = GetObjectClass(this).GetCurrentSol(), s = o2.GetInstances();
-    if (!s.length) return false;
-    let i = s[0], r2 = i.GetWorldInfo(), a2 = i, l = C32.distanceSquared(r2.GetX(), r2.GetY(), e, n);
-    for (let o3 = 1, c2 = s.length; o3 < c2; ++o3) {
-      i = s[o3], r2 = i.GetWorldInfo();
-      const c3 = C32.distanceSquared(r2.GetX(), r2.GetY(), e, n);
-      (0 === t2 && c3 < l || 1 === t2 && c3 > l) && (l = c3, a2 = i);
+  }, AnySDK.PickDistance = function(t2, e, n, o2) {
+    const s = GetObjectClass(this).GetCurrentSol(), i = s.GetInstances();
+    if (0 === i.length) return false;
+    const r2 = [];
+    let a2 = 0;
+    for (let s2 = 0, l = i.length; s2 < l; ++s2) {
+      const l2 = i[s2], c2 = l2.GetWorldInfo(), u2 = C32.distanceSquared(c2.GetX(), c2.GetY(), e, n);
+      0 === r2.length || 0 === t2 && u2 < a2 || 1 === t2 && u2 > a2 ? (a2 = u2, C32.clearArray(r2), r2.push(l2)) : o2 && u2 === a2 && r2.push(l2);
     }
-    return o2.PickOne(a2), true;
+    return o2 ? s.SetArrayPicked(r2) : s.PickOne(r2[0]), true;
   }, SDKv1.SetX = function(t2) {
     const e = this.GetWorldInfo();
     e.GetX() !== t2 && (e.SetX(t2), e.SetBboxChanged());
@@ -24391,11 +25848,21 @@ var EvalParams2;
     e.GetY() !== t2 && (e.SetY(t2), e.SetBboxChanged());
   }, SDKv2.SetY = function(t2) {
     this.y = +t2;
+  }, SDKv1.SetZ = function(t2) {
+    const e = this.GetWorldInfo();
+    e.GetZ() !== t2 && (e.SetZ(t2), runtime.UpdateRender());
+  }, SDKv2.SetZ = function(t2) {
+    this.z = t2;
   }, SDKv1.SetPos = function(t2, e) {
     const n = this.GetWorldInfo();
     n.EqualsXY(t2, e) || (n.SetXY(t2, e), n.SetBboxChanged());
   }, SDKv2.SetPos = function(t2, e) {
     this.setPosition(t2, e);
+  }, SDKv1.SetPos3D = function(t2, e, n) {
+    const o2 = this.GetWorldInfo();
+    o2.EqualsXYZ(t2, e, n) || (o2.SetXYZ(t2, e, n), o2.SetBboxChanged());
+  }, SDKv2.SetPos3D = function(t2, e, n) {
+    this.setPosition3d(t2, e, n);
   }, AnySDK.SetPosToObject = function(t2, e) {
     if (!(t2 = GetObjectClass(t2))) return;
     const n = GetInst(this), o2 = t2.GetPairedInstance(n);
@@ -24420,6 +25887,14 @@ var EvalParams2;
     return this.GetWorldInfo().GetY();
   }, SDKv2.GetY = function() {
     return this.y;
+  }, SDKv1.GetZ = function() {
+    return this.GetWorldInfo().GetZ();
+  }, SDKv2.GetZ = function() {
+    return this.z;
+  }, SDKv1.GetTotalZ = function() {
+    return this.GetWorldInfo().GetTotalZ();
+  }, SDKv2.GetTotalZ = function() {
+    return this.totalZ;
   }, AnySDK.GetDt = function() {
     return runtime.GetDt(GetInst(this));
   }, SDKv1.CompareWidth = function(t2, e) {
@@ -24430,6 +25905,10 @@ var EvalParams2;
     return C32.compare(this.GetWorldInfo().GetHeight(), t2, e);
   }, SDKv2.CompareHeight = function(t2, e) {
     return C32.compare(this.height, t2, e);
+  }, SDKv1.CompareDepth = function(t2, e) {
+    return C32.compare(this.GetWorldInfo().GetDepth(), t2, e);
+  }, SDKv2.CompareDepth = function(t2, e) {
+    return C32.compare(this.depth, t2, e);
   }, SDKv1.SetWidth = function(t2) {
     const e = this.GetWorldInfo();
     e.GetWidth() !== t2 && (e.SetWidth(t2), e.SetBboxChanged());
@@ -24440,11 +25919,21 @@ var EvalParams2;
     e.GetHeight() !== t2 && (e.SetHeight(t2), e.SetBboxChanged());
   }, SDKv2.SetHeight = function(t2) {
     this.height = t2;
+  }, SDKv1.SetDepth = function(t2) {
+    const e = this.GetWorldInfo();
+    e.GetDepth() !== t2 && (e.SetDepth(t2), e.SetBboxChanged());
+  }, SDKv2.SetDepth = function(t2) {
+    this.depth = t2;
   }, SDKv1.SetSize = function(t2, e) {
     const n = GetWorldInfo(this);
     n.GetWidth() === t2 && n.GetHeight() === e || (n.SetSize(t2, e), n.SetBboxChanged());
   }, SDKv2.SetSize = function(t2, e) {
     this.setSize(t2, e);
+  }, SDKv1.SetSize3D = function(t2, e, n) {
+    const o2 = GetWorldInfo(this);
+    o2.GetWidth() === t2 && o2.GetHeight() === e && o2.GetDepth() === n || (o2.SetSize(t2, e), o2.SetDepth(n), o2.SetBboxChanged());
+  }, SDKv2.SetSize3D = function(t2, e, n) {
+    this.setSize3d(t2, e, n);
   }, SDKv1.GetWidth = function() {
     return this.GetWorldInfo().GetWidth();
   }, SDKv2.GetWidth = function() {
@@ -24453,20 +25942,28 @@ var EvalParams2;
     return this.GetWorldInfo().GetHeight();
   }, SDKv2.GetHeight = function() {
     return this.height;
+  }, SDKv1.GetDepth = function() {
+    return this.GetWorldInfo().GetDepth();
+  }, SDKv2.GetDepth = function() {
+    return this.depth;
   }, AnySDK.GetBboxLeft = function() {
     return GetWorldInfo(this).GetBoundingBox().getLeft();
   }, AnySDK.GetBboxTop = function() {
     return GetWorldInfo(this).GetBoundingBox().getTop();
+  }, AnySDK.GetBboxBack = function() {
+    return GetWorldInfo(this).GetBoundingBox().getBack();
   }, AnySDK.GetBboxRight = function() {
     return GetWorldInfo(this).GetBoundingBox().getRight();
   }, AnySDK.GetBboxBottom = function() {
     return GetWorldInfo(this).GetBoundingBox().getBottom();
+  }, AnySDK.GetBboxFront = function() {
+    return GetWorldInfo(this).GetBoundingBox().getFront();
   }, AnySDK.GetBboxMidX = function() {
-    const t2 = GetWorldInfo(this).GetBoundingBox();
-    return (t2.getLeft() + t2.getRight()) / 2;
+    return GetWorldInfo(this).GetBoundingBox().midX();
   }, AnySDK.GetBboxMidY = function() {
-    const t2 = GetWorldInfo(this).GetBoundingBox();
-    return (t2.getTop() + t2.getBottom()) / 2;
+    return GetWorldInfo(this).GetBoundingBox().midY();
+  }, AnySDK.GetBboxMidZ = function() {
+    return GetWorldInfo(this).GetBoundingBox().midZ();
   }, AnySDK.IsAngleWithin = function(t2, e) {
     return C32.angleDiff(GetWorldInfo(this).GetAngle(), C32.toRadians(e)) <= C32.toRadians(t2);
   }, AnySDK.IsAngleClockwiseFrom = function(t2) {
@@ -24524,6 +26021,8 @@ var EvalParams2;
     return C32.PackRGBAEx(t2.getR(), t2.getG(), t2.getB(), t2.getA());
   }, AnySDK.GetOpacity = function() {
     return C32.roundToDp(100 * GetWorldInfo(this).GetOpacity(), 6);
+  }, AnySDK.SetSampling = function(t2) {
+    GetWorldInfo(this).SetSamplingMode(C32.Gfx.RendererBase.SamplingNumberToMode(t2));
   }, AnySDK.IsOnLayer = function(t2) {
     return !!(t2 = GetLayer(t2)) && GetWorldInfo(this).GetLayer() === t2;
   }, AnySDK.PickTopBottom = function(t2) {
@@ -24535,12 +26034,6 @@ var EvalParams2;
       0 === t2 ? (a2 > l || a2 === l && i.GetZIndex() > r2.GetZIndex()) && (o2 = s2) : (a2 < l || a2 === l && i.GetZIndex() < r2.GetZIndex()) && (o2 = s2);
     }
     return e.PickOne(o2), true;
-  }, SDKv1.CompareZElevation = function(t2, e, n) {
-    const o2 = this.GetWorldInfo(), s = 0 === t2 ? o2.GetZElevation() : o2.GetTotalZElevation();
-    return C32.compare(s, e, n);
-  }, SDKv2.CompareZElevation = function(t2, e, n) {
-    const o2 = 0 === t2 ? this.zElevation : this.totalZElevation;
-    return C32.compare(o2, e, n);
   }, SDKv1.MoveToTop = function() {
     this.GetWorldInfo().ZOrderMoveToTop();
   }, SDKv2.MoveToTop = function() {
@@ -24556,11 +26049,6 @@ var EvalParams2;
     if (!(e = GetObjectClass(e))) return;
     const o2 = GetInst(this), s = e.GetFirstPicked(o2);
     s && o2.GetWorldInfo().ZOrderMoveAdjacentToInstance(s, n);
-  }, SDKv1.SetZElevation = function(t2) {
-    const e = this.GetWorldInfo();
-    e.GetZElevation() !== t2 && (e.SetZElevation(t2), runtime.UpdateRender());
-  }, SDKv2.SetZElevation = function(t2) {
-    this.zElevation = t2;
   }, AnySDK.LayerNumber = function() {
     return GetWorldInfo(this).GetLayer().GetIndex();
   }, AnySDK.LayerName = function() {
@@ -24569,14 +26057,6 @@ var EvalParams2;
     return this.GetWorldInfo().GetZIndex();
   }, SDKv2.ZIndex = function() {
     return this.zIndex;
-  }, SDKv1.ZElevation = function() {
-    return this.GetWorldInfo().GetZElevation();
-  }, SDKv2.ZElevation = function() {
-    return this.zElevation;
-  }, SDKv1.TotalZElevation = function() {
-    return this.GetWorldInfo().GetTotalZElevation();
-  }, SDKv2.TotalZElevation = function() {
-    return this.totalZElevation;
   }, AnySDK.IsEffectEnabled = function(t2) {
     const e = GetInst(this), n = e.GetObjectClass().GetEffectList().GetEffectTypeByName(t2);
     if (!n) return;
@@ -24605,11 +26085,11 @@ var EvalParams2;
     const e = this.GetRuntime(), n = e.GetCollisionEngine(), o2 = e.GetEventSheetManager(), s = o2.GetEventStack(), i = o2.GetCurrentCondition(), r2 = i.GetObjectClass(), a2 = i.GetSavedDataMap(), l = i.GetUnsavedDataMap(), c2 = s.GetCurrentStackFrame(), u2 = e.GetTickCount(), S2 = u2 - 1, f2 = c2.GetCurrentEvent(), G = s.Push(f2);
     let d2 = a2.get("collmemory");
     d2 || (d2 = C32.New(C32.PairMap), a2.set("collmemory", d2)), l.get("collisionCreatedDestroyCallback") || (l.set("collisionCreatedDestroyCallback", true), e.Dispatcher().addEventListener("instancedestroy", (t3) => CollMemory_RemoveInstance(d2, t3.instance)));
-    const I2 = r2.GetCurrentSol(), C2 = t2.GetCurrentSol(), h2 = I2.GetInstances();
+    const h2 = r2.GetCurrentSol(), I2 = t2.GetCurrentSol(), C2 = h2.GetInstances();
     let m2 = null;
-    for (let e2 = 0; e2 < h2.length; ++e2) {
-      const s2 = h2[e2];
-      C2.IsSelectAll() ? (n.GetCollisionCandidates(s2.GetWorldInfo().GetLayer(), t2, s2.GetWorldInfo().GetBoundingBox(), tempCandidates1), m2 = tempCandidates1, n.AddRegisteredCollisionCandidates(s2, t2, m2)) : m2 = C2.GetInstances();
+    for (let e2 = 0; e2 < C2.length; ++e2) {
+      const s2 = C2[e2];
+      I2.IsSelectAll() ? (n.GetCollisionCandidates(s2.GetWorldInfo().GetLayer(), t2, s2.GetWorldInfo().GetBoundingBox(), tempCandidates1), m2 = tempCandidates1, n.AddRegisteredCollisionCandidates(s2, t2, m2)) : m2 = I2.GetInstances();
       for (let e3 = 0; e3 < m2.length; ++e3) {
         const i2 = m2[e3];
         if (n.TestOverlap(s2, i2) || n.CheckRegisteredCollision(s2, i2)) {
@@ -24643,21 +26123,21 @@ var EvalParams2;
     if (n.IsDebugging()) return DebugOnCollision.call(e, t2);
     if (!t2) return false;
     const o2 = n.GetCollisionEngine(), s = n.GetEventSheetManager(), i = s.GetEventStack(), r2 = s.GetCurrentCondition(), a2 = r2.GetObjectClass(), l = r2.GetSavedDataMap(), c2 = r2.GetUnsavedDataMap(), u2 = i.GetCurrentStackFrame(), S2 = n.GetTickCount(), f2 = S2 - 1, G = u2.GetCurrentEvent(), d2 = i.Push(G);
-    let I2 = l.get("collmemory");
-    I2 || (I2 = C32.New(C32.PairMap), l.set("collmemory", I2)), c2.get("collisionCreatedDestroyCallback") || (c2.set("collisionCreatedDestroyCallback", true), n.Dispatcher().addEventListener("instancedestroy", (t3) => CollMemory_RemoveInstance(I2, t3.instance)));
-    const C2 = a2.GetCurrentSol(), h2 = t2.GetCurrentSol(), m2 = C2.GetInstances();
+    let h2 = l.get("collmemory");
+    h2 || (h2 = C32.New(C32.PairMap), l.set("collmemory", h2)), c2.get("collisionCreatedDestroyCallback") || (c2.set("collisionCreatedDestroyCallback", true), n.Dispatcher().addEventListener("instancedestroy", (t3) => CollMemory_RemoveInstance(h2, t3.instance)));
+    const I2 = a2.GetCurrentSol(), C2 = t2.GetCurrentSol(), m2 = I2.GetInstances();
     let g2 = null;
     for (let e2 = 0; e2 < m2.length; ++e2) {
       const n2 = m2[e2];
-      h2.IsSelectAll() ? (o2.GetCollisionCandidates(n2.GetWorldInfo().GetLayer(), t2, n2.GetWorldInfo().GetBoundingBox(), tempCandidates1), g2 = tempCandidates1, o2.AddRegisteredCollisionCandidates(n2, t2, g2)) : g2 = h2.GetInstances();
+      C2.IsSelectAll() ? (o2.GetCollisionCandidates(n2.GetWorldInfo().GetLayer(), t2, n2.GetWorldInfo().GetBoundingBox(), tempCandidates1), g2 = tempCandidates1, o2.AddRegisteredCollisionCandidates(n2, t2, g2)) : g2 = C2.GetInstances();
       for (let e3 = 0; e3 < g2.length; ++e3) {
         const i2 = g2[e3];
         if (o2.TestOverlap(n2, i2) || o2.CheckRegisteredCollision(n2, i2)) {
-          const e4 = CollMemory_Get(I2, n2, i2);
+          const e4 = CollMemory_Get(h2, n2, i2);
           let o3 = false, r3 = -2;
           "number" == typeof e4 && (o3 = true, r3 = e4);
           const l2 = !o3 || r3 < f2;
-          if (CollMemory_Add(I2, n2, i2, S2), l2) {
+          if (CollMemory_Add(h2, n2, i2, S2), l2) {
             const e5 = G.GetSolModifiers();
             s.PushCopySol(e5);
             const o4 = a2.GetCurrentSol(), r4 = t2.GetCurrentSol();
@@ -24670,7 +26150,7 @@ var EvalParams2;
             }
             G.Retrigger(u2, d2), s.PopSol(e5);
           }
-        } else CollMemory_Remove(I2, n2, i2);
+        } else CollMemory_Remove(h2, n2, i2);
       }
       C32.clearArray(tempCandidates1);
     }
@@ -24772,7 +26252,7 @@ var EvalParams2;
     const u2 = GetInst(this), S2 = runtime.GetCurrentAction().GetObjectClass();
     for (const f2 of t2.allCorrespondingInstances(u2, S2)) {
       if (!f2.GetPlugin().SupportsSceneGraph()) return;
-      u2.AddChild(f2, { transformX: e, transformY: n, transformWidth: o2, transformHeight: s, transformAngle: i, transformOpacity: r2, transformZElevation: a2, transformVisibility: l, destroyWithParent: c2 });
+      u2.AddChild(f2, { transformX: e, transformY: n, transformZ: o2, transformWidth: s, transformHeight: i, transformAngle: r2, transformOpacity: a2, transformVisibility: l, destroyWithParent: c2 });
     }
   }, AnySDK.RemoveChild = function(t2) {
     t2 = GetObjectClass(t2);
@@ -24795,7 +26275,7 @@ var EvalParams2;
     t2 < 2 || e < 2 || !isFinite(t2) || !isFinite(e) ? (n.ReleaseMesh(), n.SetBboxChanged()) : n.CreateMesh(t2, e);
   }, AnySDK.SetMeshPoint = function(t2, e, n, o2, s, i, r2, a2) {
     const l = GetWorldInfo(this);
-    l.SetMeshPoint(t2, e, { mode: 0 === n ? "absolute" : "relative", x: o2, y: s, zElevation: i, u: r2, v: a2 }) && l.SetBboxChanged();
+    l.SetMeshPoint(t2, e, { mode: 0 === n ? "absolute" : "relative", x: o2, y: s, z: i, u: r2, v: a2 }) && l.SetBboxChanged();
   }, AnySDK.MeshColumns = function() {
     const t2 = GetWorldInfo(this);
     return t2.HasMesh() ? t2.GetSourceMesh().GetHSize() : 0;
@@ -24829,16 +26309,16 @@ var EvalParams2;
     return !!this.GetInstance().GetInstanceVariableValue(t2);
   }, SDKv2.IsBoolInstanceVarSet = function(t2) {
     return !!GetInst_SDKv2(this).GetInstanceVariableValue(t2);
-  }, AnySDK.PickInstVarHiLow = function(t2, e) {
-    const n = GetObjectClass(this), o2 = n.GetCurrentSol(), s = o2.GetInstances();
-    if (!s.length) return false;
-    const i = n.IsFamily();
-    let r2 = null, a2 = 0;
-    for (let o3 = 0, l = s.length; o3 < l; ++o3) {
-      const l2 = s[o3], c2 = i ? l2.GetObjectClass().GetFamilyInstanceVariableOffset(n.GetFamilyIndex()) : 0, u2 = l2.GetInstanceVariableValue(c2 + e);
-      (null === r2 || 0 === t2 && u2 < a2 || 1 === t2 && u2 > a2) && (a2 = u2, r2 = l2);
+  }, AnySDK.PickInstVarHiLow = function(t2, e, n) {
+    const o2 = GetObjectClass(this), s = o2.GetCurrentSol(), i = s.GetInstances();
+    if (0 === i.length) return false;
+    const r2 = o2.IsFamily(), a2 = [];
+    let l = 0;
+    for (let s2 = 0, c2 = i.length; s2 < c2; ++s2) {
+      const c3 = i[s2], u2 = r2 ? c3.GetObjectClass().GetFamilyInstanceVariableOffset(o2.GetFamilyIndex()) : 0, S2 = c3.GetInstanceVariableValue(u2 + e);
+      0 === a2.length || 0 === t2 && S2 < l || 1 === t2 && S2 > l ? (l = S2, C32.clearArray(a2), a2.push(c3)) : n && S2 === l && a2.push(c3);
     }
-    return o2.PickOne(r2), true;
+    return n ? s.SetArrayPicked(a2) : s.PickOne(a2[0]), true;
   }, AnySDK.PickByUID = function(t2) {
     const e = GetObjectClass(this);
     return e.GetRuntime().GetCurrentCondition().IsInverted() ? PickByUID_Inverted(e, t2) : PickByUID_Normal(e, t2);
@@ -24910,7 +26390,9 @@ var EvalParams2;
       return void console.error("Failed to load from JSON string: ", t3);
     }
     const n = GetInst(this), o2 = "state";
-    runtime.ClearIntancesNeedingAfterLoad(), n._OnBeforeLoad(o2), n.LoadFromJson(e, o2), runtime.DoAfterLoad(o2, { setFromJson: true });
+    runtime.ClearIntancesNeedingAfterLoad(), n._OnBeforeLoad(o2), n.LoadFromJson(e, o2);
+    const s = n.GetWorldInfo();
+    s && s._UpdateActiveSamplingMode(), runtime.DoAfterLoad(o2, { setFromJson: true });
   }, AnySDK.AsJSON = function() {
     return JSON.stringify(GetInst(this).SaveToJson("state"));
   }, AnySDK.ObjectTypeName = function() {
@@ -24942,8 +26424,8 @@ var EvalParams2;
   }, AnySDK.TemplateName = function() {
     return GetInst(this).GetTemplateName();
   }, C32.AddCommonACEs = function(t2, e, n) {
-    const o2 = t2[1], s = t2[3], i = t2[4], r2 = t2[5], a2 = t2[6], l = t2[7], c2 = t2[8], u2 = t2[10], S2 = t2[11], f2 = t2[12], G = t2[13], d2 = t2[14], I2 = t2[15], C2 = t2[16], h2 = e.Cnds, m2 = e.Acts, g2 = e.Exps, y2 = Object.assign({}, AnySDK, n >= 2 ? SDKv2 : SDKv1);
-    s && (h2.CompareX = y2.CompareX, h2.CompareY = y2.CompareY, h2.IsOnScreen = y2.IsOnScreen, h2.IsOutsideLayout = y2.IsOutsideLayout, h2.PickDistance = y2.PickDistance, m2.SetX = y2.SetX, m2.SetY = y2.SetY, m2.SetPos = y2.SetPos, m2.SetPosToObject = y2.SetPosToObject, m2.MoveForward = y2.MoveForward, m2.MoveAtAngle = y2.MoveAtAngle, g2.X = y2.GetX, g2.Y = y2.GetY, g2.dt = y2.GetDt), i && (h2.CompareWidth = y2.CompareWidth, h2.CompareHeight = y2.CompareHeight, m2.SetWidth = y2.SetWidth, m2.SetHeight = y2.SetHeight, m2.SetSize = y2.SetSize, g2.Width = y2.GetWidth, g2.Height = y2.GetHeight, g2.BBoxLeft = y2.GetBboxLeft, g2.BBoxTop = y2.GetBboxTop, g2.BBoxRight = y2.GetBboxRight, g2.BBoxBottom = y2.GetBboxBottom, g2.BBoxMidX = y2.GetBboxMidX, g2.BBoxMidY = y2.GetBboxMidY), r2 && (h2.AngleWithin = y2.IsAngleWithin, h2.IsClockwiseFrom = y2.IsAngleClockwiseFrom, h2.IsBetweenAngles = y2.IsBetweenAngles, m2.SetAngle = y2.SetAngle, m2.RotateClockwise = y2.RotateClockwise, m2.RotateCounterclockwise = y2.RotateCounterclockwise, m2.RotateTowardAngle = y2.RotateTowardAngle, m2.RotateTowardPosition = y2.RotateTowardPosition, m2.SetTowardPosition = y2.SetTowardPosition, g2.Angle = y2.GetAngle), a2 && (h2.IsVisible = y2.IsVisible, h2.CompareOpacity = y2.CompareOpacity, m2.SetVisible = y2.SetVisible, m2.SetOpacity = y2.SetOpacity, m2.SetDefaultColor = y2.SetDefaultColor, g2.Opacity = y2.GetOpacity, g2.ColorValue = y2.GetColor), l && (h2.IsOnLayer = y2.IsOnLayer, h2.PickTopBottom = y2.PickTopBottom, h2.CompareZElevation = y2.CompareZElevation, m2.MoveToTop = y2.MoveToTop, m2.MoveToBottom = y2.MoveToBottom, m2.MoveToLayer = y2.MoveToLayer, m2.ZMoveToObject = y2.ZMoveToObject, m2.SetZElevation = y2.SetZElevation, g2.LayerNumber = y2.LayerNumber, g2.LayerName = y2.LayerName, g2.ZIndex = y2.ZIndex, g2.ZElevation = y2.ZElevation, g2.TotalZElevation = y2.TotalZElevation), c2 && (h2.IsEffectEnabled = y2.IsEffectEnabled, m2.SetEffectEnabled = y2.SetEffectEnabled, m2.SetEffectParam = y2.SetEffectParam), G && (h2.OnHierarchyReady = y2.OnHierarchyReady, h2.HasParent = y2.HasParent, h2.HasChildren = y2.HasChildren, h2.PickParent = y2.PickParent, h2.PickChildren = y2.PickChildren, h2.PickNthChild = y2.PickNthChild, h2.CompareChildCount = y2.CompareChildCount, m2.AddChild = y2.AddChild, m2.RemoveChild = y2.RemoveChild, m2.RemoveFromParent = y2.RemoveFromParent, g2.ParentUID = y2.ParentUID, g2.ChildCount = y2.ChildCount, g2.AllChildCount = y2.AllChildCount), d2 && (m2.SetMeshSize = y2.SetMeshSize, m2.SetMeshPoint = y2.SetMeshPoint, g2.MeshColumns = y2.MeshColumns, g2.MeshRows = y2.MeshRows), u2 && (h2.IsVisible = y2.IsVisible, m2.SetVisible = y2.SetElementVisible, m2.SetCSSStyle = y2.SetElementCSSStyle, m2.SetElemAttribute = y2.SetElementAttribute, m2.RemoveElemAttribute = y2.RemoveElementAttribute), S2 && (h2.IsFocused = y2.IsElementFocused, m2.SetFocus = y2.SetElementFocus, m2.SetBlur = y2.SetElementBlur), f2 && (h2.IsEnabled = y2.IsElementEnabled, m2.SetEnabled = y2.SetElementEnabled), I2 && (h2.OnCollision = y2.OnCollision, h2.IsOverlapping = y2.IsOverlapping, h2.IsOverlappingOffset = y2.IsOverlappingOffset, e.FinishCollisionCondition = FinishCollisionCondition), o2 || (h2.CompareInstanceVar = y2.CompareInstanceVar, h2.IsBoolInstanceVarSet = y2.IsBoolInstanceVarSet, h2.PickInstVarHiLow = y2.PickInstVarHiLow, h2.PickByUID = y2.PickByUID, h2.HasTags = y2.HasTags, m2.SetInstanceVar = y2.SetInstanceVar, m2.AddInstanceVar = y2.AddInstanceVar, m2.SubInstanceVar = y2.SubInstanceVar, m2.SetBoolInstanceVar = y2.SetBoolInstanceVar, m2.ToggleBoolInstanceVar = y2.ToggleBoolInstanceVar, m2.ChangeTags = y2.ChangeTags, h2.OnCreated = y2.OnCreated, h2.OnDestroyed = y2.OnDestroyed, m2.Destroy = y2.Destroy, m2.LoadFromJsonString || (m2.LoadFromJsonString = y2.LoadFromJsonString), g2.AsJSON || (g2.AsJSON = y2.AsJSON), g2.Count = y2.Count, g2.PickedCount = y2.PickedCount, g2.IID = y2.GetIID, g2.UID = y2.GetUID, g2.ObjectTypeName = y2.ObjectTypeName, g2.Tags = y2.Tags, g2.TagsCount = y2.TagsCount, g2.TagAt = y2.TagAt, h2.OnInstanceSignal = y2.OnInstanceSignal, m2.InstanceSignal = y2.InstanceSignal, m2.InstanceWaitForSignal = y2.InstanceWaitForSignal), C2 && (g2.TemplateName = y2.TemplateName);
+    const o2 = t2[1], s = t2[3], i = t2[4], r2 = t2[5], a2 = t2[6], l = t2[7], c2 = t2[8], u2 = t2[22], S2 = t2[10], f2 = t2[11], G = t2[12], d2 = t2[13], h2 = t2[14], I2 = t2[15], C2 = t2[16], m2 = t2[18], g2 = t2[23], D2 = e.Cnds, p2 = e.Acts, y2 = e.Exps, A = Object.assign({}, AnySDK, n >= 2 ? SDKv2 : SDKv1);
+    s && (D2.CompareX = A.CompareX, D2.CompareY = A.CompareY, D2.IsOnScreen = A.IsOnScreen, D2.IsOutsideLayout = A.IsOutsideLayout, D2.PickDistance = A.PickDistance, p2.SetX = A.SetX, p2.SetY = A.SetY, p2.SetPos = A.SetPos, p2.SetPosToObject = A.SetPosToObject, p2.MoveForward = A.MoveForward, p2.MoveAtAngle = A.MoveAtAngle, y2.X = A.GetX, y2.Y = A.GetY, y2.dt = A.GetDt), g2 && (D2.CompareZ = A.CompareZ, p2.SetPos3D = A.SetPos3D, p2.SetZ = A.SetZ, y2.Z = A.GetZ, y2.TotalZ = A.GetTotalZ, y2.ZElevation = A.GetZ, y2.TotalZElevation = A.GetTotalZ), i && (D2.CompareWidth = A.CompareWidth, D2.CompareHeight = A.CompareHeight, p2.SetWidth = A.SetWidth, p2.SetHeight = A.SetHeight, p2.SetSize = A.SetSize, y2.Width = A.GetWidth, y2.Height = A.GetHeight, y2.BBoxLeft = A.GetBboxLeft, y2.BBoxTop = A.GetBboxTop, y2.BBoxBack = A.GetBboxBack, y2.BBoxRight = A.GetBboxRight, y2.BBoxBottom = A.GetBboxBottom, y2.BBoxFront = A.GetBboxFront, y2.BBoxMidX = A.GetBboxMidX, y2.BBoxMidY = A.GetBboxMidY, y2.BBoxMidZ = A.GetBboxMidZ, m2 && (D2.CompareDepth = A.CompareDepth, p2.SetDepth = A.SetDepth, p2.SetSize3D = A.SetSize3D, y2.Depth = A.GetDepth)), r2 && (D2.AngleWithin = A.IsAngleWithin, D2.IsClockwiseFrom = A.IsAngleClockwiseFrom, D2.IsBetweenAngles = A.IsBetweenAngles, p2.SetAngle = A.SetAngle, p2.RotateClockwise = A.RotateClockwise, p2.RotateCounterclockwise = A.RotateCounterclockwise, p2.RotateTowardAngle = A.RotateTowardAngle, p2.RotateTowardPosition = A.RotateTowardPosition, p2.SetTowardPosition = A.SetTowardPosition, y2.Angle = A.GetAngle), a2 && (D2.IsVisible = A.IsVisible, D2.CompareOpacity = A.CompareOpacity, p2.SetVisible = A.SetVisible, p2.SetOpacity = A.SetOpacity, p2.SetDefaultColor = A.SetDefaultColor, y2.Opacity = A.GetOpacity, y2.ColorValue = A.GetColor), u2 && (p2.SetSampling = A.SetSampling), l && (D2.IsOnLayer = A.IsOnLayer, D2.PickTopBottom = A.PickTopBottom, p2.MoveToTop = A.MoveToTop, p2.MoveToBottom = A.MoveToBottom, p2.MoveToLayer = A.MoveToLayer, p2.ZMoveToObject = A.ZMoveToObject, y2.LayerNumber = A.LayerNumber, y2.LayerName = A.LayerName, y2.ZIndex = A.ZIndex), c2 && (D2.IsEffectEnabled = A.IsEffectEnabled, p2.SetEffectEnabled = A.SetEffectEnabled, p2.SetEffectParam = A.SetEffectParam), d2 && (D2.OnHierarchyReady = A.OnHierarchyReady, D2.HasParent = A.HasParent, D2.HasChildren = A.HasChildren, D2.PickParent = A.PickParent, D2.PickChildren = A.PickChildren, D2.PickNthChild = A.PickNthChild, D2.CompareChildCount = A.CompareChildCount, p2.AddChild = A.AddChild, p2.RemoveChild = A.RemoveChild, p2.RemoveFromParent = A.RemoveFromParent, y2.ParentUID = A.ParentUID, y2.ChildCount = A.ChildCount, y2.AllChildCount = A.AllChildCount), h2 && (p2.SetMeshSize = A.SetMeshSize, p2.SetMeshPoint = A.SetMeshPoint, y2.MeshColumns = A.MeshColumns, y2.MeshRows = A.MeshRows), S2 && (D2.IsVisible = A.IsVisible, p2.SetVisible = A.SetElementVisible, p2.SetCSSStyle = A.SetElementCSSStyle, p2.SetElemAttribute = A.SetElementAttribute, p2.RemoveElemAttribute = A.RemoveElementAttribute), f2 && (D2.IsFocused = A.IsElementFocused, p2.SetFocus = A.SetElementFocus, p2.SetBlur = A.SetElementBlur), G && (D2.IsEnabled = A.IsElementEnabled, p2.SetEnabled = A.SetElementEnabled), I2 && (D2.OnCollision = A.OnCollision, D2.IsOverlapping = A.IsOverlapping, D2.IsOverlappingOffset = A.IsOverlappingOffset, e.FinishCollisionCondition = FinishCollisionCondition), o2 || (D2.CompareInstanceVar = A.CompareInstanceVar, D2.IsBoolInstanceVarSet = A.IsBoolInstanceVarSet, D2.PickInstVarHiLow = A.PickInstVarHiLow, D2.PickByUID = A.PickByUID, D2.HasTags = A.HasTags, p2.SetInstanceVar = A.SetInstanceVar, p2.AddInstanceVar = A.AddInstanceVar, p2.SubInstanceVar = A.SubInstanceVar, p2.SetBoolInstanceVar = A.SetBoolInstanceVar, p2.ToggleBoolInstanceVar = A.ToggleBoolInstanceVar, p2.ChangeTags = A.ChangeTags, D2.OnCreated = A.OnCreated, D2.OnDestroyed = A.OnDestroyed, p2.Destroy = A.Destroy, p2.LoadFromJsonString || (p2.LoadFromJsonString = A.LoadFromJsonString), y2.AsJSON || (y2.AsJSON = A.AsJSON), y2.Count = A.Count, y2.PickedCount = A.PickedCount, y2.IID = A.GetIID, y2.UID = A.GetUID, y2.ObjectTypeName = A.ObjectTypeName, y2.Tags = A.Tags, y2.TagsCount = A.TagsCount, y2.TagAt = A.TagAt, D2.OnInstanceSignal = A.OnInstanceSignal, p2.InstanceSignal = A.InstanceSignal, p2.InstanceWaitForSignal = A.InstanceWaitForSignal), C2 && (y2.TemplateName = A.TemplateName);
   };
 }
 var GetInst2;
@@ -25137,8 +26619,10 @@ var PickByUID_Inverted2;
   GetNextParamMap2 = GetNextParamMap;
   const C32 = self.C3;
   C32.SDKPluginBase = class extends C32.DefendedBase {
+    #t = false;
+    #e = false;
     constructor(t2) {
-      super(), this._runtime = t2.runtime, this._id = t2.id, this._name = t2.name ?? "", this._isSingleGlobal = !!t2.isSingleGlobal, this._isWorldType = !!t2.isWorld, this._isRotatable = !!t2.isRotatable, this._mustPredraw = !!t2.mustPredraw, this._hasEffects = !!t2.hasEffects, this._supportsSceneGraph = !!t2.supportsSceneGraph, this._supportsMesh = !!t2.supportsMesh, this._isHTMLElementType = !!t2.isHTMLElementType, this._is3d = !!t2.is3d, this._sdkVersion = t2.sdkVersion, this._exportData = t2.exportData, this._singleGlobalObjectClass = null, this._boundACEMethodCache = /* @__PURE__ */ new Map(), this._boundACEMethodCache_1param = /* @__PURE__ */ new Map(), this._boundACEMethodCache_2params = /* @__PURE__ */ new Map(), this._boundACEMethodCache_3params = /* @__PURE__ */ new Map(), this._scriptInterfaceClass = t2.scriptInterfaceClass, this._iPlugin = null;
+      super(), this._runtime = t2.runtime, this._id = t2.id, this._name = t2.name ?? "", this._isSingleGlobal = !!t2.isSingleGlobal, this._isWorldType = !!t2.isWorld, this._isRotatable = !!t2.isRotatable, this._mustPredraw = !!t2.mustPredraw, this._hasEffects = !!t2.hasEffects, this._supportsSceneGraph = !!t2.supportsSceneGraph, this._supportsMesh = !!t2.supportsMesh, this._isHTMLElementType = !!t2.isHTMLElementType, this._is3d = !!t2.is3d, this._sdkVersion = t2.sdkVersion, this.#t = t2.supportsZElevation, this.#e = t2.supportsChangingSampling, this._exportData = t2.exportData, this._singleGlobalObjectClass = null, this._boundACEMethodCache = /* @__PURE__ */ new Map(), this._boundACEMethodCache_1param = /* @__PURE__ */ new Map(), this._boundACEMethodCache_2params = /* @__PURE__ */ new Map(), this._boundACEMethodCache_3params = /* @__PURE__ */ new Map(), this._scriptInterfaceClass = t2.scriptInterfaceClass, this._iPlugin = null;
     }
     Release() {
       this._runtime = null;
@@ -25194,6 +26678,12 @@ var PickByUID_Inverted2;
     SupportsMesh() {
       return this._supportsMesh;
     }
+    SupportsZElevation() {
+      return this.#t;
+    }
+    SupportsChangingSampling() {
+      return this.#e;
+    }
     _GetBoundACEMethod(t2, e) {
       if (!e) throw new Error("missing 'this' binding");
       let s = this._boundACEMethodCache.get(t2);
@@ -25213,9 +26703,9 @@ var PickByUID_Inverted2;
     }
     _GetBoundACEMethod_3params(t2, e, s, i, n) {
       if (!e) throw new Error("missing 'this' binding");
-      const r2 = GetNextParamMap(this._boundACEMethodCache_3params, t2), a2 = GetNextParamMap(r2, s), l = GetNextParamMap(a2, i);
-      let o2 = l.get(n);
-      return o2 || (o2 = t2.bind(e, s, i, n), l.set(n, o2), o2);
+      const r2 = GetNextParamMap(this._boundACEMethodCache_3params, t2), a2 = GetNextParamMap(r2, s), o2 = GetNextParamMap(a2, i);
+      let l = o2.get(n);
+      return l || (l = t2.bind(e, s, i, n), o2.set(n, l), l);
     }
     _SetSingleGlobalObjectClass(t2) {
       if (!this.IsSingleGlobal()) throw new Error("must be single-global plugin");
@@ -25557,7 +27047,7 @@ var GetNextParamMap2;
     }
     GetImagePoint(e) {
       const t2 = this._inst.GetWorldInfo();
-      return [t2.GetX(), t2.GetY(), t2.GetTotalZElevation()];
+      return [t2.GetX(), t2.GetY(), t2.GetTotalZ()];
     }
     LoadTilemapData(e, t2, r2) {
     }
@@ -25571,8 +27061,8 @@ var GetNextParamMap2;
 {
   const C32 = self.C3, tempRect = C32.New(C32.Rect);
   C32.SDKDOMInstanceBase = class extends C32.SDKWorldInstanceBase {
-    constructor(t2, e) {
-      super(t2, e), this._elementId = this.GetPlugin()._AddElement(this), this._isElementShowing = true, this._elemHasFocus = false, this._autoFontSize = false, this._autoFontSizeOffset = -0.2, this._lastRect = C32.New(C32.Rect, 0, 0, -1, -1);
+    constructor(e, t2) {
+      super(e, t2), this._elementId = this.GetPlugin()._AddElement(this), this._isElementShowing = true, this._elemHasFocus = false, this._autoFontSize = false, this._autoFontSizeOffset = -0.2, this._lastRect = C32.New(C32.Rect, 0, 0, -1, -1);
       const s = this._runtime.GetCanvasManager();
       this._lastWindowWidth = s.GetLastWidth(), this._lastWindowHeight = s.GetLastHeight(), this._lastHTMLIndex = -1, this._lastHTMLZIndex = -1, this._isPendingUpdateState = false, this._StartTicking();
     }
@@ -25583,40 +27073,40 @@ var GetNextParamMap2;
       if (this._runtime.IsInWorker()) throw new Error("not valid in worker mode");
       return this._PostToDOMElementMaybeSync("get-element");
     }
-    PostToDOMElement(t2, e) {
-      e || (e = {}), e["elementId"] = this._elementId, this.PostToDOM(t2, e);
+    PostToDOMElement(e, t2) {
+      t2 || (t2 = {}), t2["elementId"] = this._elementId, this.PostToDOM(e, t2);
     }
-    _PostToDOMElementMaybeSync(t2, e) {
-      return e || (e = {}), e["elementId"] = this._elementId, this._PostToDOMMaybeSync(t2, e);
+    _PostToDOMElementMaybeSync(e, t2) {
+      return t2 || (t2 = {}), t2["elementId"] = this._elementId, this._PostToDOMMaybeSync(e, t2);
     }
-    PostToDOMElementAsync(t2, e) {
-      return e || (e = {}), e["elementId"] = this._elementId, this.PostToDOMAsync(t2, e);
+    PostToDOMElementAsync(e, t2) {
+      return t2 || (t2 = {}), t2["elementId"] = this._elementId, this.PostToDOMAsync(e, t2);
     }
-    CreateElement(t2) {
-      t2 || (t2 = {});
-      const e = this.GetWorldInfo();
-      t2["elementId"] = this._elementId, t2["isVisible"] = e.IsVisible(), t2["htmlIndex"] = e.GetLayer().GetHTMLIndex(), t2["htmlZIndex"] = e.GetHTMLZIndex(), Object.assign(t2, this.GetElementState()), this._isElementShowing = !!t2["isVisible"], this._PostToDOMMaybeSync("create", t2), this._UpdatePosition(true);
+    CreateElement(e) {
+      e || (e = {});
+      const t2 = this.GetWorldInfo();
+      e["elementId"] = this._elementId, e["isVisible"] = t2.IsVisible(), e["htmlIndex"] = t2.GetLayer().GetHTMLIndex(), e["htmlZIndex"] = t2.GetHTMLZIndex(), Object.assign(e, this.GetElementState()), this._isElementShowing = !!e["isVisible"], this._PostToDOMMaybeSync("create", e), this._UpdatePosition(true);
     }
-    SetElementVisible(t2) {
-      t2 = !!t2, this._isElementShowing !== t2 && (this._isElementShowing = t2, this.PostToDOMElement("set-visible", { "isVisible": t2 }));
+    SetElementVisible(e) {
+      e = !!e, this._isElementShowing !== e && (this._isElementShowing = e, this.PostToDOMElement("set-visible", { "isVisible": e }));
     }
     Tick() {
       this._UpdatePosition(false);
     }
     _ShouldPreserveElement() {
-      const t2 = this._runtime.GetCanvasManager().GetFullscreenMode();
-      return "Android" === C32.Platform.OS && ("scale-inner" === t2 || "scale-outer" === t2 || "crop" === t2);
+      const e = this._runtime.GetCanvasManager().GetFullscreenMode();
+      return "Android" === C32.Platform.OS && ("scale-inner" === e || "integer-scale-inner" === e || "scale-outer" === e || "integer-scale-outer" === e || "crop" === e);
     }
-    _UpdatePosition(t2) {
+    _UpdatePosition(e) {
       if (this.GetInstance().IsDestroyed()) return;
-      const e = this.GetWorldInfo(), s = e.GetLayer(), i = e.GetBoundingBox();
+      const t2 = this.GetWorldInfo(), s = t2.GetLayer(), i = t2.GetBoundingBox();
       let [n, l] = s.LayerToCanvasCss(i.getLeft(), i.getTop()), [o2, h2] = s.LayerToCanvasCss(i.getRight(), i.getBottom());
       const a2 = this._runtime.GetCanvasManager(), d2 = a2.GetCssWidth(), m2 = a2.GetCssHeight();
-      if (!e.IsVisible() || !s.IsVisible()) return void this.SetElementVisible(false);
+      if (!t2.IsVisible() || !s.IsVisible()) return void this.SetElementVisible(false);
       if (!this._ShouldPreserveElement() && (o2 <= 0 || h2 <= 0 || n >= d2 || l >= m2)) return void this.SetElementVisible(false);
       tempRect.set(n, l, o2, h2);
-      const r2 = a2.GetLastWidth(), _2 = a2.GetLastHeight(), c2 = s.GetHTMLIndex(), u2 = e.GetHTMLZIndex();
-      if (!t2 && tempRect.equals(this._lastRect) && this._lastWindowWidth === r2 && this._lastWindowHeight === _2 && this._lastHTMLIndex === c2 && this._lastHTMLZIndex === u2) return void this.SetElementVisible(true);
+      const r2 = a2.GetLastWidth(), _2 = a2.GetLastHeight(), c2 = s.GetHTMLIndex(), u2 = t2.GetHTMLZIndex();
+      if (!e && tempRect.equals(this._lastRect) && this._lastWindowWidth === r2 && this._lastWindowHeight === _2 && this._lastHTMLIndex === c2 && this._lastHTMLZIndex === u2) return void this.SetElementVisible(true);
       this._lastRect.copy(tempRect), this._lastWindowWidth = r2, this._lastWindowHeight = _2, this._lastHTMLIndex = c2, this._lastHTMLZIndex = u2, this.SetElementVisible(true);
       let M2 = null;
       this._autoFontSize && (M2 = s.GetDisplayScale() + this._autoFontSizeOffset), this._PostToDOMElementMaybeSync("update-position", { "left": Math.round(this._lastRect.getLeft()), "top": Math.round(this._lastRect.getTop()), "width": Math.round(this._lastRect.width()), "height": Math.round(this._lastRect.height()), "htmlIndex": c2, "htmlZIndex": u2, "fontSize": M2 });
@@ -25636,14 +27126,14 @@ var GetNextParamMap2;
     IsElementFocused() {
       return this._elemHasFocus;
     }
-    SetElementCSSStyle(t2, e) {
-      this.PostToDOMElement("set-css-style", { "prop": C32.CSSToCamelCase(t2), "val": e });
+    SetElementCSSStyle(e, t2) {
+      this.PostToDOMElement("set-css-style", { "prop": C32.CSSToCamelCase(e), "val": t2 });
     }
-    SetElementAttribute(t2, e) {
-      this.PostToDOMElement("set-attribute", { "name": t2, "val": e });
+    SetElementAttribute(e, t2) {
+      this.PostToDOMElement("set-attribute", { "name": e, "val": t2 });
     }
-    RemoveElementAttribute(t2) {
-      this.PostToDOMElement("remove-attribute", { "name": t2 });
+    RemoveElementAttribute(e) {
+      this.PostToDOMElement("remove-attribute", { "name": e });
     }
     UpdateElementState() {
       this._isPendingUpdateState || (this._isPendingUpdateState = true, Promise.resolve().then(() => {
@@ -25876,16 +27366,16 @@ var GetNextParamMap2;
     #n = [];
     #r = /* @__PURE__ */ new Map();
     #o = null;
-    #a = null;
-    #s;
+    #s = null;
+    #a;
     constructor(t2, e) {
-      super(), this.#t = t2, this.#s = new Set(e);
+      super(), this.#t = t2, this.#a = new Set(e);
     }
     CreatePlugin(t2) {
       const e = t2[19], i = this.#t.GetObjectReference(t2[0]);
       if (!i) throw new Error("missing plugin");
       C32.AddCommonACEs(t2, i, e);
-      const n = e >= 2 ? C32.SDKPluginBase : i, r2 = C32.New(n, { runtime: this.#t, isSingleGlobal: t2[1], isWorld: t2[2], isRotatable: t2[5], hasEffects: t2[8], mustPredraw: t2[9], supportsSceneGraph: t2[13], supportsMesh: t2[14], isHTMLElementType: t2[17], is3d: t2[18], sdkVersion: e, id: t2[20], name: t2[21], scriptInterfaceClass: e >= 2 ? i : null, exportData: t2[22] });
+      const n = e >= 2 ? C32.SDKPluginBase : i, r2 = C32.New(n, { runtime: this.#t, isSingleGlobal: t2[1], isWorld: t2[2], isRotatable: t2[5], hasEffects: t2[8], mustPredraw: t2[9], supportsSceneGraph: t2[13], supportsMesh: t2[14], isHTMLElementType: t2[17], is3d: t2[18], sdkVersion: e, id: t2[20], name: t2[21], scriptInterfaceClass: e >= 2 ? i : null, supportsChangingSampling: t2[22], supportsZElevation: t2[23], exportData: t2[24] });
       r2.OnCreate(), this.#e.push(r2), pluginsByCtor.set(i, r2);
     }
     CreateSystemPlugin() {
@@ -25896,7 +27386,7 @@ var GetNextParamMap2;
       if (!r2) throw new Error("missing behavior");
       this.#r.set(r2, () => {
         const t3 = e >= 2 ? C32.SDKBehaviorBase : r2, o2 = C32.New(t3, { runtime: this.#t, id: i, name: n, sdkVersion: e, scriptInterfaceClass: e >= 2 ? r2 : null });
-        o2.OnCreate(), this.#n.push(o2), behaviorsByCtor.set(r2, o2), !this.#o && C32.Behaviors.solid && o2 instanceof C32.Behaviors.solid ? this.#o = o2 : !this.#a && C32.Behaviors.jumpthru && o2 instanceof C32.Behaviors.jumpthru && (this.#a = o2), o2._InitScriptInterface();
+        o2.OnCreate(), this.#n.push(o2), behaviorsByCtor.set(r2, o2), !this.#o && C32.Behaviors.solid && o2 instanceof C32.Behaviors.solid ? this.#o = o2 : !this.#s && C32.Behaviors.jumpthru && o2 instanceof C32.Behaviors.jumpthru && (this.#s = o2), o2._InitScriptInterface();
       });
     }
     _DelayCreateBehavior(t2) {
@@ -25947,10 +27437,10 @@ var GetNextParamMap2;
       return this.#o;
     }
     GetJumpthruBehavior() {
-      return this.#a;
+      return this.#s;
     }
     HasWrapperComponentId(t2) {
-      return this.#s.has(t2);
+      return this.#a.has(t2);
     }
   }, originalPushInitObject = C32.AddonManager._PushInitObject, originalPopInitObject = C32.AddonManager._PopInitObject, originalGetInitObject = C32.AddonManager._GetInitObject, originalGetInitObject2 = C32.AddonManager._GetInitObject2;
 }
@@ -25959,7 +27449,7 @@ var ValidateInternalAPIToken2;
   const C32 = self.C3, allImageInfos = /* @__PURE__ */ new Set();
   C32.ImageInfo = class extends C32.DefendedBase {
     constructor() {
-      super(), this._generation = 0, this._url = "", this._size = 0, this._offsetX = 0, this._offsetY = 0, this._width = 0, this._height = 0, this._isRotated = false, this._hasMetaData = false, this._imageAsset = null, this._textureState = "", this._rcTex = C32.New(C32.Rect), this._quadTex = C32.New(C32.Quad), this._blobUrl = "", this._iImageInfo = new self.IImageInfo(this), allImageInfos.add(this);
+      super(), this._generation = 0, this._url = "", this._size = 0, this._offsetX = 0, this._offsetY = 0, this._width = 0, this._height = 0, this._isRotated = false, this._hasMetaData = false, this._imageAsset = null, this._textureState = "", this._rcTex = C32.New(C32.Rect), this._quadTex = C32.New(C32.Quad2D), this._blobUrl = "", this._iImageInfo = new self.IImageInfo(this), allImageInfos.add(this);
     }
     Release() {
       this.ReleaseTexture(), this._imageAsset && 0 === this._imageAsset.GetRefCount() && this._imageAsset.Release(), this._imageAsset = null, allImageInfos.delete(this), this.ReleaseBlobURL();
@@ -26861,6 +28351,17 @@ var ValidateInternalAPIToken2;
     GetFlag(t2) {
       return !!(this._flags & t2 << 16);
     }
+    IsOriginalSizeKnown() {
+      return !!this._sdkInst && this._sdkInst.IsOriginalSizeKnown();
+    }
+    GetOriginalWidth() {
+      if (!this.IsOriginalSizeKnown()) throw new Error("original size not known");
+      return this._sdkInst ? this._sdkInst.GetOriginalWidth() : NaN;
+    }
+    GetOriginalHeight() {
+      if (!this.IsOriginalSizeKnown()) throw new Error("original size not known");
+      return this._sdkInst ? this._sdkInst.GetOriginalHeight() : NaN;
+    }
     GetCurrentImageInfo() {
       return this._sdkInst ? this._sdkInst.GetCurrentImageInfo() : null;
     }
@@ -26877,7 +28378,7 @@ var ValidateInternalAPIToken2;
       return !!this._sdkInst && this._sdkInst.IsCurrentTexRotated();
     }
     GetImagePoint(t2) {
-      return this._sdkInst ? this._sdkInst.GetImagePoint(t2) : [this._iScriptInterface.x, this._iScriptInterface.y, this._iScriptInterface.totalZElevation];
+      return this._sdkInst ? this._sdkInst.GetImagePoint(t2) : [this._iScriptInterface.x, this._iScriptInterface.y, this._iScriptInterface.totalZ];
     }
     GetObjectClass() {
       return this._objectType;
@@ -26991,7 +28492,7 @@ var ValidateInternalAPIToken2;
         const e2 = this._runtime.GetInstanceByUID(t3[2]);
         if (e2) {
           const s = t3[3];
-          this.AddChild(e2, { transformX: !!(1 & s), transformY: !!(s >> 1 & 1), transformWidth: !!(s >> 2 & 1), transformHeight: !!(s >> 3 & 1), transformAngle: !!(s >> 4 & 1), destroyWithParent: !!(s >> 5 & 1), transformZElevation: !!(s >> 6 & 1), transformOpacity: !!(s >> 7 & 1), transformVisibility: !!(s >> 8 & 1) });
+          this.AddChild(e2, { transformX: !!(1 & s), transformY: !!(s >> 1 & 1), transformZ: !!(s >> 6 & 1), transformWidth: !!(s >> 2 & 1), transformHeight: !!(s >> 3 & 1), transformAngle: !!(s >> 4 & 1), destroyWithParent: !!(s >> 5 & 1), transformOpacity: !!(s >> 7 & 1), transformVisibility: !!(s >> 8 & 1) });
         }
       }
     }
@@ -27001,7 +28502,7 @@ var ValidateInternalAPIToken2;
         const s2 = e.get(t3["index"]);
         if (!s2) continue;
         const n = t3["flags"];
-        this.AddChild(s2, { transformX: !!(1 & n), transformY: !!(n >> 1 & 1), transformWidth: !!(n >> 2 & 1), transformHeight: !!(n >> 3 & 1), transformAngle: !!(n >> 4 & 1), destroyWithParent: !!(n >> 5 & 1), transformZElevation: !!(n >> 6 & 1), transformOpacity: !!(n >> 7 & 1), transformVisibility: !!(n >> 8 & 1) });
+        this.AddChild(s2, { transformX: !!(1 & n), transformY: !!(n >> 1 & 1), transformZ: !!(n >> 6 & 1), transformWidth: !!(n >> 2 & 1), transformHeight: !!(n >> 3 & 1), transformAngle: !!(n >> 4 & 1), destroyWithParent: !!(n >> 5 & 1), transformOpacity: !!(n >> 7 & 1), transformVisibility: !!(n >> 8 & 1) });
       }
     }
     GetTemplateName() {
@@ -27357,7 +28858,7 @@ var ValidateInternalAPIToken2;
       super(), this._owner = t2, this._parent = null, this._children = [], this._startWidth = t2.GetWidth(), this._startHeight = t2.GetHeight(), this._startScaleX = 1, this._startScaleY = 1, this._parentStartAngle = 0, this._ownOpacity = 1, this._startOpacity = t2.GetOpacity(), this._tmpSceneGraphChildren = null, this._tmpSceneGraphChildrenIndexes = null, this._indexInParent = NaN, this._originalSizeKnown = false, this._originalWidth = NaN, this._originalHeight = NaN, this._on_instance_create = (e) => {
         if (e.instance !== this._parent.GetInstance()) return;
         t2.GetRuntime().Dispatcher().removeEventListener("instancecreate", this._on_instance_create);
-        const n = this._parent.GetInstance().GetSdkInstance();
+        const n = this._parent.GetInstance();
         this._originalSizeKnown = !!n.IsOriginalSizeKnown(), this._originalWidth = this._originalSizeKnown ? n.GetOriginalWidth() : NaN, this._originalHeight = this._originalSizeKnown ? n.GetOriginalHeight() : NaN;
       };
     }
@@ -27370,7 +28871,10 @@ var ValidateInternalAPIToken2;
         if (this._parent.GetInstance().GetPlugin().GetSdkVersion() < 2) {
           const e = this._parent.GetInstance().GetSdkInstance();
           e ? (this._originalSizeKnown = !!e.IsOriginalSizeKnown(), this._originalWidth = this._originalSizeKnown ? e.GetOriginalWidth() : NaN, this._originalHeight = this._originalSizeKnown ? e.GetOriginalHeight() : NaN) : this._parent.GetInstance().IsDestroyed() || t3.Dispatcher().addEventListener("instancecreate", this._on_instance_create);
-        } else this._originalSizeKnown = false, this._originalWidth = NaN, this._originalHeight = NaN;
+        } else {
+          const t4 = this._parent.GetInstance();
+          this._originalSizeKnown = t4.IsOriginalSizeKnown(), this._originalWidth = this._isOriginalSizeKnown ? t4.GetOriginalWidth() : NaN, this._originalHeight = this._isOriginalSizeKnwon ? t4.GetOriginalHeight() : NaN;
+        }
       } else this._originalSizeKnown = false, this._originalWidth = NaN, this._originalHeight = NaN;
     }
     GetParent() {
@@ -27449,7 +28953,7 @@ var ValidateInternalAPIToken2;
     }
     _GetFlagsString(t2) {
       let e = "";
-      return t2.GetTransformWithParentX() && (e += "x"), t2.GetTransformWithParentY() && (e += "y"), t2.GetTransformWithParentWidth() && (e += "w"), t2.GetTransformWithParentHeight() && (e += "h"), t2.GetTransformWithParentAngle() && (e += "a"), t2.GetTransformWithParentZElevation() && (e += "z"), t2.GetDestroyWithParent() && (e += "d"), t2.GetTransformWithParentOpacity() && (e += "o"), t2.GetTransformWithParentVisibility() && (e += "v"), e;
+      return t2.GetTransformWithParentX() && (e += "x"), t2.GetTransformWithParentY() && (e += "y"), t2.GetTransformWithParentZ() && (e += "z"), t2.GetTransformWithParentWidth() && (e += "w"), t2.GetTransformWithParentHeight() && (e += "h"), t2.GetTransformWithParentAngle() && (e += "a"), t2.GetDestroyWithParent() && (e += "d"), t2.GetTransformWithParentOpacity() && (e += "o"), t2.GetTransformWithParentVisibility() && (e += "v"), e;
     }
     _GetParentJson(t2) {
       return this._parent ? !this._parent.GetInstance() || this._parent.GetInstance().IsDestroyed() ? null : this._GetInstanceJson(this._parent, this._owner, t2) : null;
@@ -27656,7 +29160,7 @@ var ValidateInternalAPIToken2;
     }
     _GetFlagsObj(t2) {
       const e = {};
-      return e.transformX = t2.includes("x"), e.transformY = t2.includes("y"), e.transformWidth = t2.includes("w"), e.transformHeight = t2.includes("h"), e.transformAngle = t2.includes("a"), e.transformZElevation = t2.includes("z"), e.destroyWithParent = t2.includes("d"), e.transformOpacity = t2.includes("o"), e.transformVisibility = t2.includes("v"), e;
+      return e.transformX = t2.includes("x"), e.transformY = t2.includes("y"), e.transformZ = t2.includes("z"), e.transformWidth = t2.includes("w"), e.transformHeight = t2.includes("h"), e.transformAngle = t2.includes("a"), e.destroyWithParent = t2.includes("d"), e.transformOpacity = t2.includes("o"), e.transformVisibility = t2.includes("v"), e;
     }
     _GetObjectClassIndex(t2) {
       return C32.IsFiniteNumber(t2["oci"]) ? t2["oci"] : t2[1];
@@ -27720,7 +29224,7 @@ var ValidateInternalAPIToken2;
     }
     static _GetFlagsNumber(t2) {
       let e = 0;
-      return e |= Number(t2.GetTransformWithParentVisibility()) << 8, e |= Number(t2.GetTransformWithParentOpacity()) << 7, e |= Number(t2.GetTransformWithParentZElevation()) << 6, e |= Number(t2.GetDestroyWithParent()) << 5, e |= Number(t2.GetTransformWithParentAngle()) << 4, e |= Number(t2.GetTransformWithParentHeight()) << 3, e |= Number(t2.GetTransformWithParentWidth()) << 2, e |= Number(t2.GetTransformWithParentY()) << 1, e |= Number(t2.GetTransformWithParentX()) | 0, e;
+      return e |= Number(t2.GetTransformWithParentVisibility()) << 8, e |= Number(t2.GetTransformWithParentOpacity()) << 7, e |= Number(t2.GetDestroyWithParent()) << 5, e |= Number(t2.GetTransformWithParentAngle()) << 4, e |= Number(t2.GetTransformWithParentHeight()) << 3, e |= Number(t2.GetTransformWithParentWidth()) << 2, e |= Number(t2.GetTransformWithParentZ()) << 6, e |= Number(t2.GetTransformWithParentY()) << 1, e |= Number(t2.GetTransformWithParentX()) | 0, e;
     }
     static _GetDefaultFlagsNumber(t2) {
       let e = 0;
@@ -27732,12 +29236,17 @@ var ValidateInternalAPIToken2;
   };
 }
 {
-  const C32 = self.C3, glMatrix = self.glMatrix, vec3 = glMatrix.vec3, vec4 = glMatrix.vec4, tempRect = C32.New(C32.Rect), tempQuad = C32.New(C32.Quad), bboxChangeEvent = C32.New(C32.Event, "bboxchange", false), tempColor = C32.New(C32.Color, 0, 0, 0, 0), tempCollisionPoly = C32.New(C32.CollisionPoly), DEFAULT_COLOR = C32.New(C32.Color, 1, 1, 1, 1), DEFAULT_RENDER_CELLS = C32.New(C32.Rect, 0, 0, -1, -1), DEFAULT_COLLISION_CELLS = C32.New(C32.Rect, 0, 0, -1, -1), VALID_SET_MESH_POINT_MODES = /* @__PURE__ */ new Set(["absolute", "relative"]), EMPTY_ARRAY = [];
+  const C32 = self.C3, glMatrix = self.glMatrix, vec3 = glMatrix.vec3, vec4 = glMatrix.vec4, tempRect = new C32.Rect(), tempRect2 = new C32.Rect(), tempQuad = C32.New(C32.Quad2D), bboxChangeEvent = C32.New(C32.Event, "bboxchange", false), tempColor = C32.New(C32.Color, 0, 0, 0, 0), tempCollisionPoly = C32.New(C32.CollisionPoly), DEFAULT_COLOR = C32.New(C32.Color, 1, 1, 1, 1), DEFAULT_RENDER_CELLS = C32.New(C32.Rect, 0, 0, -1, -1), DEFAULT_COLLISION_CELLS = C32.New(C32.Rect, 0, 0, -1, -1), VALID_SET_MESH_POINT_MODES = /* @__PURE__ */ new Set(["absolute", "relative"]), EMPTY_ARRAY = [];
   let enableUpdateRendererStateGroup = true;
-  const FLAG_IS_VISIBLE = 1, FLAG_BBOX_CHANGED = 2, FLAG_ENABLE_BBOX_CHANGED_EVENT = 4, FLAG_COLLISION_ENABLED = 8, FLAG_COLLISION_CELL_CHANGED = 16, FLAG_SOLID_FILTER_INCLUSIVE = 32, FLAG_HAS_ANY_ACTIVE_EFFECT = 64, FLAG_IS_ROTATABLE = 128, FLAG_DESTROYED = 256, FLAG_DESTROY_WITH_PARENT = 512, FLAG_TRANSFORM_WITH_PARENT_X = 1024, FLAG_TRANSFORM_WITH_PARENT_Y = 2048, FLAG_TRANSFORM_WITH_PARENT_W = 4096, FLAG_TRANSFORM_WITH_PARENT_H = 8192, FLAG_TRANSFORM_WITH_PARENT_A = 16384, FLAG_TRANSFORM_WITH_PARENT_Z_ELEVATION = 32768, FLAG_TRANSFORM_WITH_PARENT_OPACITY = 1 << 22, FLAG_TRANSFORM_WITH_PARENT_VISIBILITY = 1 << 23, MASK_ALL_SCENE_GRAPH_FLAGS = 12647936, FLAG_MESH_CHANGED = 65536, FLAG_PHYSICS_BODY_CHANGED = 1 << 17, FLAG_SIN_COS_ANGLE_CHANGED = 1 << 18, FLAG_USE_POINTS_SHADER_PROGRAM = 1 << 19, FLAG_DRAW_BACK_FACE_ONLY = 1 << 20, FLAG_DRAW_NON_BACK_FACES_ONLY = 1 << 21, FLAG_ENABLE_BACK_FACE_CULLING = 1 << 24, FLAG_BLEND_MODE_BIT_OFFSET = 26, FLAG_BLEND_MODE_MASK = 31 << 26, sceneGraphExportDataMap = /* @__PURE__ */ new WeakMap(), sceneGraphZIndexMap = /* @__PURE__ */ new WeakMap();
+  const FLAG_IS_VISIBLE = 1, FLAG_BBOX_CHANGED = 2, FLAG_ENABLE_BBOX_CHANGED_EVENT = 4, FLAG_COLLISION_ENABLED = 8, FLAG_COLLISION_CELL_CHANGED = 16, FLAG_SOLID_FILTER_INCLUSIVE = 32, FLAG_HAS_ANY_ACTIVE_EFFECT = 64, FLAG_IS_ROTATABLE = 128, FLAG_DESTROYED = 256, FLAG_DESTROY_WITH_PARENT = 512, FLAG_TRANSFORM_WITH_PARENT_X = 1024, FLAG_TRANSFORM_WITH_PARENT_Y = 2048, FLAG_TRANSFORM_WITH_PARENT_Z = 32768, FLAG_TRANSFORM_WITH_PARENT_W = 4096, FLAG_TRANSFORM_WITH_PARENT_H = 8192, FLAG_TRANSFORM_WITH_PARENT_A = 16384, FLAG_TRANSFORM_WITH_PARENT_OPACITY = 1 << 22, FLAG_TRANSFORM_WITH_PARENT_VISIBILITY = 1 << 23, MASK_ALL_SCENE_GRAPH_FLAGS = 12647936, FLAG_MESH_CHANGED = 65536, FLAG_PHYSICS_BODY_CHANGED = 1 << 17, FLAG_SIN_COS_ANGLE_CHANGED = 1 << 18, FLAG_USE_POINTS_SHADER_PROGRAM = 1 << 19, FLAG_DRAW_BACK_FACE_ONLY = 1 << 20, FLAG_DRAW_NON_BACK_FACES_ONLY = 1 << 21, FLAG_ENABLE_BACK_FACE_CULLING = 1 << 24, FLAG_BLEND_MODE_BIT_OFFSET = 26, FLAG_BLEND_MODE_MASK = 31 << 26, sceneGraphExportDataMap = /* @__PURE__ */ new WeakMap(), sceneGraphZIndexMap = /* @__PURE__ */ new WeakMap();
   C32.WorldInfo = class extends C32.DefendedBase {
+    #t = NaN;
+    #e = NaN;
+    #s = NaN;
+    #i = 0;
+    #n = 0;
     constructor(t2, e) {
-      super(), this._inst = t2, this._objectClass = t2.GetObjectClass(), this._runtime = t2.GetRuntime(), this._layer = e, this._objectClass._OnWorldInstanceLayerChanged(this, null, e), this._zIndex = -1, this._htmlZIndex = -1, this._flags = 196635, this._objectClass.GetPlugin().IsRotatable() && (this._flags |= 128), this._x = NaN, this._y = NaN, this._zElevation = NaN, this._w = NaN, this._h = NaN, this._depth = NaN, this._a = NaN, this._sinA = NaN, this._cosA = NaN, this._ox = NaN, this._oy = NaN, this._boundingBox = C32.New(C32.Rect), this._boundingQuad = C32.New(C32.Quad), this._collisionCells = DEFAULT_COLLISION_CELLS, this._renderCells = DEFAULT_RENDER_CELLS, this._sourceCollisionPoly = null, this._transformedPolyInfo = null, this._solidFilterTags = null, this._color = DEFAULT_COLOR, this._colorPremultiplied = DEFAULT_COLOR, this._stateGroup = null, this._instanceEffectList = null, this._inst.GetObjectClass().UsesEffects() && (this._instanceEffectList = C32.New(C32.InstanceEffectList, this._inst, this)), this._sceneGraphInfo = null, this._tmpSceneGraphChildren = null, this._tmpSceneGraphChildrenIndexes = null, this._tmpHierarchyPosition = -1, this._meshInfo = null;
+      super(), this._inst = t2, this._objectClass = t2.GetObjectClass(), this._runtime = t2.GetRuntime(), this._layer = e, this._objectClass._OnWorldInstanceLayerChanged(this, null, e), this._zIndex = -1, this._htmlZIndex = -1, this._flags = 196635, this._objectClass.GetPlugin().IsRotatable() && (this._flags |= 128), this._x = NaN, this._y = NaN, this._z = NaN, this._w = NaN, this._h = NaN, this._depth = NaN, this._a = NaN, this._sinA = NaN, this._cosA = NaN, this._boundingBox = new C32.AABB3D(), this._boundingQuad = new C32.Quad2D(), this._collisionCells = DEFAULT_COLLISION_CELLS, this._renderCells = DEFAULT_RENDER_CELLS, this._sourceCollisionPoly = null, this._transformedPolyInfo = null, this._solidFilterTags = null, this._color = DEFAULT_COLOR, this._colorPremultiplied = DEFAULT_COLOR, this._stateGroup = null, this._instanceEffectList = null, this._inst.GetObjectClass().UsesEffects() && (this._instanceEffectList = C32.New(C32.InstanceEffectList, this._inst, this)), this._sceneGraphInfo = null, this._tmpSceneGraphChildren = null, this._tmpSceneGraphChildrenIndexes = null, this._tmpHierarchyPosition = -1, this._meshInfo = null;
     }
     _MarkDestroyed() {
       this._flags |= 256;
@@ -27753,26 +29262,26 @@ var ValidateInternalAPIToken2;
       this._ReleaseSceneGraphInfo(), this._ReleaseTmpSceneGraphInfo(), sceneGraphExportDataMap.delete(this), sceneGraphZIndexMap.delete(this), this._inst = null, this._objectClass = null, this._runtime = null, this._layer = null;
     }
     Init(t2) {
-      if (enableUpdateRendererStateGroup = false, this.SetXY(t2[0], t2[1]), this.SetZElevation(t2[2]), this.SetSize(t2[3], t2[4]), this._depth = 0, this.IsRotatable() ? this.SetAngle(t2[6]) : this._a = 0, tempColor.setFromJSON(t2[7]), this._SetColor(tempColor), this.SetOriginX(t2[8]), this.SetOriginY(t2[9]), this.SetBlendMode(t2[10]), this._instanceEffectList && this._instanceEffectList._LoadEffectParameters(t2[12]), t2[14] && sceneGraphExportDataMap.set(this, { childrenData: t2[14][1], zIndexData: t2[14][2] }), t2[15]) {
-        const e = t2[15];
+      if (enableUpdateRendererStateGroup = false, this.SetXYZ(t2[0], t2[1], t2[2]), this.SetSize(t2[3], t2[4]), this._depth = t2[5], this.IsRotatable() ? this.SetAngle(t2[6]) : this._a = 0, tempColor.setFromJSON(t2[7]), this._SetColor(tempColor), this.SetOriginX(t2[8]), this.SetOriginY(t2[9]), this.SetOriginZ(t2[10]), this.SetBlendMode(t2[11]), this.#i = t2[12], this._instanceEffectList && this._instanceEffectList._LoadEffectParameters(t2[13]), t2[15] && sceneGraphExportDataMap.set(this, { childrenData: t2[15][1], zIndexData: t2[15][2] }), t2[16]) {
+        const e = t2[16];
         this.CreateMesh(e[0], e[1]);
         const s = this.GetSourceMesh(), i = e[2];
         for (let t3 = 0, e2 = i.length; t3 < e2; ++t3) {
           const e3 = i[t3];
           for (let i2 = 0, n = e3.length; i2 < n; ++i2) {
             const n2 = e3[i2], r2 = s.GetMeshPointAt(i2, t3);
-            r2.SetX(n2[0]), r2.SetY(n2[1]), r2.SetZElevation(n2[2]), r2.SetU(n2[3]), r2.SetV(n2[4]);
+            r2.SetX(n2[0]), r2.SetY(n2[1]), r2.SetZ(n2[2]), r2.SetU(n2[3]), r2.SetV(n2[4]);
           }
         }
       }
-      if (t2[16]) {
-        const e = t2[16][0], s = t2[16][1], i = !!s, n = !i, r2 = this._runtime.GetTemplateManager();
+      if (t2[17]) {
+        const e = t2[17][0], s = t2[17][1], i = !!s, n = !i, r2 = this._runtime.GetTemplateManager();
         i && r2 && r2.MapInstanceToTemplateName(this.GetInstance(), s), n && r2 && r2.MapInstanceToTemplateName(this.GetInstance(), e);
       }
-      enableUpdateRendererStateGroup = true, this._UpdateRendererStateGroup();
+      this.GetLayout().IsCreatingInitialInstances() || this._UpdateActiveSamplingMode(), enableUpdateRendererStateGroup = true, this._UpdateRendererStateGroup();
     }
     InitNoData() {
-      this._x = 0, this._y = 0, this._zElevation = 0, this._w = 0, this._h = 0, this._depth = 0, this._a = 0, this._sinA = 0, this._cosA = 1, this._ox = 0, this._oy = 0, this._UpdateRendererStateGroup();
+      this._x = 0, this._y = 0, this._z = 0, this._w = 0, this._h = 0, this._depth = 0, this._a = 0, this._sinA = 0, this._cosA = 1, this.#t = 0, this.#e = 0, this.#s = 0, this.GetLayout().IsCreatingInitialInstances() || this._UpdateActiveSamplingMode(), this._UpdateRendererStateGroup();
     }
     GetRuntime() {
       return this._runtime;
@@ -27830,41 +29339,53 @@ var ValidateInternalAPIToken2;
         }
       } else this._x = t2, this._y = e;
     }
+    SetXYZ(t2, e, s) {
+      this.SetXY(t2, e), this.SetZ(s);
+    }
     GetXY() {
       return [this.GetX(), this.GetY()];
+    }
+    GetXYZ() {
+      return [this.GetX(), this.GetY(), this.GetZ()];
     }
     OffsetXY(t2, e) {
       t2 = +t2, e = +e, this.GetTransformWithParentXOrY() ? this.SetXY(this.GetX() + t2, this.GetY() + e) : (this._x += t2, this._y += e);
     }
+    OffsetXYZ(t2, e, s) {
+      this.OffsetXY(t2, e), this.OffsetZ(s);
+    }
     EqualsXY(t2, e) {
       return this.GetX() === t2 && this.GetY() === e;
     }
-    SetZElevation(t2) {
-      if (t2 = +t2, this.GetTransformWithParentZElevation() && (t2 -= this.GetParent().GetZElevation()), this._zElevation === t2) return;
-      this._zElevation = t2, this._UpdateZElevation();
+    EqualsXYZ(t2, e, s) {
+      return this.EqualsXY(t2, e) && this.GetZ() === s;
+    }
+    SetZ(t2) {
+      if (t2 = +t2, this.GetTransformWithParentZ() && (t2 -= this.GetParent().GetZ()), this._z === t2) return;
+      this._z = t2, this._UpdateZElevation();
       const e = this.GetLayer();
-      0 !== this._zElevation && e._SetAnyInstanceZElevated(), e.SetZIndicesChanged(this);
+      0 !== this._z && e._SetAnyInstanceZElevated(), e.SetZIndicesChanged(this);
     }
     _UpdateZElevation() {
       if (this._UpdateRendererStateGroup(), this.HasChildren()) {
         const t2 = this.GetChildren();
         for (let e = 0, s = t2.length; e < s; e++) {
           const s2 = t2[e];
-          s2.GetTransformWithParentZElevation() && s2._UpdateZElevation();
+          s2.GetTransformWithParentZ() && s2._UpdateZElevation();
         }
       }
     }
-    OffsetZElevation(t2) {
-      this.SetZElevation(this.GetZElevation() + t2);
+    OffsetZ(t2) {
+      this.SetZ(this.GetZ() + t2);
     }
-    GetZElevation() {
-      return this.GetTransformWithParentZElevation() ? this.GetParent().GetZElevation() + this._zElevation : this._zElevation;
+    GetZ() {
+      return this.GetTransformWithParentZ() ? this.GetParent().GetZ() + this._z : this._z;
     }
-    GetTotalZElevation() {
-      return this.GetLayer().GetZElevation() + this.GetZElevation();
+    GetTotalZ() {
+      return this.GetLayer().GetZElevation() + this.GetZ();
     }
     IsOriginalSizeKnown() {
-      return this.GetInstance().GetPlugin().GetSdkVersion() < 2 && this.GetInstance().GetSdkInstance().IsOriginalSizeKnown();
+      return this.GetInstance().IsOriginalSizeKnown();
     }
     SetWidth(t2) {
       if (t2 = +t2, this.GetTransformWithParentWidth()) {
@@ -27918,7 +29439,6 @@ var ValidateInternalAPIToken2;
       return this._depth;
     }
     SetDepth(t2) {
-      if (t2 < 0) throw new RangeError("invalid depth");
       this._depth = t2;
     }
     GetSceneGraphScale() {
@@ -27973,22 +29493,31 @@ var ValidateInternalAPIToken2;
       return this._MaybeUpdateSinCosAngle(), this._cosA;
     }
     SetOriginX(t2) {
-      this._ox = +t2;
+      this.#t = +t2;
     }
     OffsetOriginX(t2) {
-      this._ox += +t2;
+      this.#t += +t2;
     }
     GetOriginX() {
-      return this._ox;
+      return this.#t;
     }
     SetOriginY(t2) {
-      this._oy = +t2;
+      this.#e = +t2;
     }
     OffsetOriginY(t2) {
-      this._oy += +t2;
+      this.#e += +t2;
     }
     GetOriginY() {
-      return this._oy;
+      return this.#e;
+    }
+    SetOriginZ(t2) {
+      this.#s = +t2;
+    }
+    OffsetOriginZ(t2) {
+      this.#s += +t2;
+    }
+    GetOriginZ() {
+      return this.#s;
     }
     _SetColor(t2) {
       this._color.equals(t2) || (this._color === DEFAULT_COLOR ? (this._color = C32.New(C32.Color, t2), this._colorPremultiplied = C32.New(C32.Color, t2), this._colorPremultiplied.premultiply()) : t2.equalsRgba(1, 1, 1, 1) ? (this._color = DEFAULT_COLOR, this._colorPremultiplied = DEFAULT_COLOR) : (this._color.set(t2), this._colorPremultiplied.set(t2), this._colorPremultiplied.premultiply()), this._UpdateRendererStateGroup());
@@ -28032,6 +29561,24 @@ var ValidateInternalAPIToken2;
     GetPremultipliedColor() {
       return this._colorPremultiplied;
     }
+    SetSamplingMode(t2) {
+      if (!this.GetInstance().GetPlugin().SupportsChangingSampling()) throw new Error("object does not support changing sampling");
+      const e = C32.Gfx.RendererBase.SamplingModeToNumber(t2);
+      this.#i !== e && (this.#i = e, this._runtime.UpdateRender(), this._UpdateActiveSamplingMode());
+    }
+    GetSamplingMode() {
+      return C32.Gfx.RendererBase.SamplingNumberToMode(this.#i);
+    }
+    _UpdateActiveSamplingMode() {
+      let t2;
+      t2 = this.HasParent() ? C32.Gfx.RendererBase.SamplingNumberToMode(this.GetParent().GetActiveSampling()) : this.GetLayer().GetActiveSampling();
+      const e = this.GetSamplingMode();
+      "auto" !== e && (t2 = e), this.#n = C32.Gfx.RendererBase.SamplingModeToNumber(t2);
+      for (const t3 of this.children()) t3._UpdateActiveSamplingMode();
+    }
+    GetActiveSampling() {
+      return this.#n;
+    }
     GetDestroyWithParent() {
       return !!(512 & this._flags);
     }
@@ -28071,10 +29618,10 @@ var ValidateInternalAPIToken2;
     SetTransformWithParentAngle(t2) {
       this._SetFlag(16384, t2);
     }
-    GetTransformWithParentZElevation() {
+    GetTransformWithParentZ() {
       return !!(32768 & this._flags);
     }
-    SetTransformWithParentZElevation(t2) {
+    SetTransformWithParentZ(t2) {
       this._SetFlag(32768, t2);
     }
     GetTransformWithParentOpacity() {
@@ -28097,8 +29644,8 @@ var ValidateInternalAPIToken2;
       if (t2.HasParent()) return false;
       if (this._HasChildRecursive(t2)) return false;
       if (this._HasAnyParent(t2)) return false;
-      const s = t2.GetX(), i = t2.GetY(), n = t2.GetWidth(), r2 = t2.GetHeight(), h2 = t2.GetAngle(), a2 = t2.GetZElevation(), o2 = t2.GetOpacity();
-      t2._SetParent(this), t2.SetTransformWithParentX(e.transformX), t2.SetTransformWithParentY(e.transformY), t2.SetTransformWithParentWidth(e.transformWidth), t2.SetTransformWithParentHeight(e.transformHeight), t2.SetTransformWithParentAngle(e.transformAngle), t2.SetTransformWithParentZElevation(e.transformZElevation), t2.SetTransformWithParentOpacity(e.transformOpacity), t2.SetTransformWithParentVisibility(e.transformVisibility), t2.SetDestroyWithParent(e.destroyWithParent);
+      const s = t2.GetX(), i = t2.GetY(), n = t2.GetZ(), r2 = t2.GetWidth(), h2 = t2.GetHeight(), a2 = t2.GetAngle(), o2 = t2.GetOpacity();
+      t2._SetParent(this), t2.SetTransformWithParentX(e.transformX), t2.SetTransformWithParentY(e.transformY), t2.SetTransformWithParentZ(e.transformZ), t2.SetTransformWithParentWidth(e.transformWidth), t2.SetTransformWithParentHeight(e.transformHeight), t2.SetTransformWithParentAngle(e.transformAngle), t2.SetTransformWithParentOpacity(e.transformOpacity), t2.SetTransformWithParentVisibility(e.transformVisibility), t2.SetDestroyWithParent(e.destroyWithParent);
       const l = s - this.GetX(), _2 = i - this.GetY(), G = -this.GetAngle(), c2 = Math.cos(G), d2 = Math.sin(G);
       if (e.transformX && (e.transformAngle ? t2._x = l * c2 - _2 * d2 : t2._x = l, e.transformWidth)) {
         const e2 = this.GetWidth() / this._sceneGraphInfo._GetStartWidth();
@@ -28108,20 +29655,20 @@ var ValidateInternalAPIToken2;
         const e2 = this.GetHeight() / this._sceneGraphInfo._GetStartHeight();
         0 !== e2 && (t2._y /= e2);
       }
-      if (e.transformWidth) {
+      if (e.transformZ && (t2._z = n - this.GetZ()), e.transformWidth) {
         const e2 = this.GetWidth();
-        0 === e2 || e2 === Number.EPSILON ? (t2._w = 1, t2._sceneGraphInfo.SetStartScaleX(1)) : (t2._w = n / this.GetWidth(), t2._sceneGraphInfo.SetStartScaleX(t2._w));
+        0 === e2 || e2 === Number.EPSILON ? (t2._w = 1, t2._sceneGraphInfo.SetStartScaleX(1)) : (t2._w = r2 / this.GetWidth(), t2._sceneGraphInfo.SetStartScaleX(t2._w));
       }
       if (e.transformHeight) {
         const e2 = this.GetHeight();
-        0 === e2 || e2 === Number.EPSILON ? (t2._h = 1, t2._sceneGraphInfo.SetStartScaleY(1)) : (t2._h = r2 / this.GetHeight(), t2._sceneGraphInfo.SetStartScaleY(t2._h));
+        0 === e2 || e2 === Number.EPSILON ? (t2._h = 1, t2._sceneGraphInfo.SetStartScaleY(1)) : (t2._h = h2 / this.GetHeight(), t2._sceneGraphInfo.SetStartScaleY(t2._h));
       }
-      return e.transformAngle && (t2._a = h2 - this.GetAngle()), e.transformZElevation && (t2._zElevation = a2 - this.GetZElevation()), e.transformOpacity && t2._sceneGraphInfo.SetOwnOpacity(o2), e.transformVisibility && t2.SetVisible(this.IsVisible()), this._AddChildToSceneGraphInfo(t2), this.SetBboxChanged(), this._SetOpacityOfChildren(), true;
+      return e.transformAngle && (t2._a = a2 - this.GetAngle()), e.transformOpacity && t2._sceneGraphInfo.SetOwnOpacity(o2), e.transformVisibility && t2.SetVisible(this.IsVisible()), this._AddChildToSceneGraphInfo(t2), this.SetBboxChanged(), this._SetOpacityOfChildren(), true;
     }
     RemoveChild(t2) {
       if (t2.GetParent() !== this) return;
-      const e = t2.GetX(), s = t2.GetY(), i = t2.GetWidth(), n = t2.GetHeight(), r2 = t2.GetAngle(), h2 = t2.GetZElevation(), a2 = t2.GetOpacity();
-      t2._SetParent(null), t2._ClearAllSceneGraphFlags(), t2.SetXY(e, s), t2.SetSize(i, n), t2.SetAngle(r2), t2.SetZElevation(h2), t2.SetOpacity(a2), this._RemoveChildFromSceneGraphInfo(t2), this.SetBboxChanged();
+      const e = t2.GetX(), s = t2.GetY(), i = t2.GetZ(), n = t2.GetWidth(), r2 = t2.GetHeight(), h2 = t2.GetAngle(), a2 = t2.GetOpacity();
+      t2._SetParent(null), t2._ClearAllSceneGraphFlags(), t2.SetXYZ(e, s, i), t2.SetSize(n, r2), t2.SetAngle(h2), t2.SetOpacity(a2), this._RemoveChildFromSceneGraphInfo(t2), this.SetBboxChanged();
     }
     GetTmpHierarchyPosition() {
       return this._tmpHierarchyPosition;
@@ -28220,6 +29767,8 @@ var ValidateInternalAPIToken2;
     }
     _SetParent(t2) {
       t2 ? (t2._CreateSceneGraphInfo(null), this._CreateSceneGraphInfo(t2)) : (this._sceneGraphInfo && this._sceneGraphInfo.SetParent(null), this.HasChildren() || this._ReleaseSceneGraphInfo());
+      const e = this.GetLayout();
+      e && !e.IsCreatingInitialInstances() && this._UpdateActiveSamplingMode();
     }
     _HasAnyParent(t2) {
       if (!this.HasParent()) return false;
@@ -28260,7 +29809,7 @@ var ValidateInternalAPIToken2;
       if (!enableUpdateRendererStateGroup) return;
       const t2 = this._runtime.GetRenderer();
       let e;
-      this._stateGroup && t2.ReleaseStateGroup(this._stateGroup), e = 524288 & this._flags ? t2.GetPointsRenderingProgram() || "<point>" : t2.GetTextureFillShaderProgram() || "<default>", this._stateGroup = t2.AcquireStateGroup(e, this.GetBlendMode(), this._colorPremultiplied, this.GetZElevation(), this.IsBackFaceCulling() ? 1 : 0, 0);
+      this._stateGroup && t2.ReleaseStateGroup(this._stateGroup), e = 524288 & this._flags ? t2.GetPointsRenderingProgram() || "<point>" : t2.GetTextureFillShaderProgram() || "<default>", this._stateGroup = t2.AcquireStateGroup(e, this.GetBlendMode(), this._colorPremultiplied, this.GetZ(), this.IsBackFaceCulling() ? 1 : 0, 0);
     }
     GetRendererStateGroup() {
       return this._stateGroup;
@@ -28277,7 +29826,7 @@ var ValidateInternalAPIToken2;
     }
     _SetLayer(t2, e) {
       const s = e && this._layer !== t2;
-      s && this._RemoveFromRenderCells(), this._objectClass._OnWorldInstanceLayerChanged(this, this._layer, t2), this._layer = t2, s && this._UpdateRenderCell(), 0 !== this.GetZElevation() && this._layer._SetAnyInstanceZElevated();
+      s && this._RemoveFromRenderCells(), this._objectClass._OnWorldInstanceLayerChanged(this, this._layer, t2), this._layer = t2, s && this._UpdateRenderCell(), 0 !== this.GetZ() && this._layer._SetAnyInstanceZElevated(), this._UpdateActiveSamplingMode();
     }
     GetLayer() {
       return this._layer;
@@ -28334,7 +29883,10 @@ var ValidateInternalAPIToken2;
     }
     CalculateBbox(t2, e, s) {
       const i = this.GetX(), n = this.GetY(), r2 = this.GetWidth(), h2 = this.GetHeight(), a2 = this.GetAngle();
-      t2.setWH(i - this._ox * r2, n - this._oy * h2, r2, h2), s && this.HasMesh() && this._ExpandBboxForMesh(t2), 0 === a2 ? e.setFromRect(t2) : (t2.offset(-i, -n), e.setFromRotatedRectPrecalc(t2, this.GetSinAngle(), this.GetCosAngle()), e.offset(i, n), e.getBoundingBox(t2)), t2.normalize();
+      if (tempRect.setWH(i - this.#t * r2, n - this.#e * h2, r2, h2), s && this.HasMesh() && this.#r(tempRect), 0 === a2 ? (e.setFromRect(tempRect), tempRect.normalize()) : (tempRect.offset(-i, -n), e.setFromRotatedRectPrecalc(tempRect, this.GetSinAngle(), this.GetCosAngle()), e.offset(i, n), e.getBoundingBox(tempRect)), t2) {
+        const e2 = this.GetDepth(), s2 = this.#s * e2, i2 = this.GetTotalZ(), n2 = i2 - s2, r3 = i2 + e2 - s2;
+        t2.setFromRect(tempRect, Math.min(n2, r3), Math.max(n2, r3));
+      }
     }
     _UpdateBbox() {
       const t2 = this._flags;
@@ -28351,7 +29903,7 @@ var ValidateInternalAPIToken2;
       return 0 === i && 0 === n ? t2 : (tempQuad.copy(t2), tempQuad.offset(i, n), tempQuad);
     }
     OverwriteBoundingBox(t2) {
-      this._boundingBox.copy(t2), this._boundingQuad.setFromRect(this._boundingBox), this._flags &= -3, this._UpdateCollisionCell(), this._UpdateRenderCell();
+      this._boundingBox.copyAABB3D(t2), this._boundingQuad.setFromAABB3DIgnoringZ(this._boundingBox), this._flags &= -3, this._UpdateCollisionCell(), this._UpdateRenderCell();
     }
     SetBboxChangeEventEnabled(t2) {
       this._SetFlag(4, t2);
@@ -28360,15 +29912,15 @@ var ValidateInternalAPIToken2;
       return !!(4 & this._flags);
     }
     IsInViewport(t2, e, s) {
-      return e && 0 !== this.GetDepth() ? this.IsInViewport3D(this.GetLayer()._GetViewFrustum()) : 0 === this.GetZElevation() || s ? t2.intersectsRect(this.GetBoundingBox()) : this._IsInViewport_ZElevated();
+      const i = this.GetBoundingBox(), n = i.getBack();
+      return e && 0 !== n ? this.GetLayer()._GetViewFrustum().ContainsAABB(i) : 0 === n || s ? t2.intersectsAABB3D(i) : this.#h(i, n);
     }
-    _IsInViewport_ZElevated() {
-      const t2 = this.GetLayer(), e = this.GetTotalZElevation();
-      return !(e >= t2.Get2DCameraZ()) && (t2.GetViewportForZ(e, tempRect), tempRect.intersectsRect(this.GetBoundingBox()));
+    #h(t2, e) {
+      const s = this.GetLayer();
+      return !(e >= s.Get2DCameraZ()) && (s.GetViewportForZ(e, tempRect), tempRect.intersectsAABB3D(t2));
     }
     IsInViewport3D(t2) {
-      const e = this.GetBoundingBox(), s = e.getLeft(), i = e.getRight(), n = e.getTop(), r2 = e.getBottom(), h2 = this.GetTotalZElevation(), a2 = h2 + this.GetDepth();
-      return t2.ContainsAABB(s, n, h2, i, r2, a2);
+      return t2.ContainsAABB(this.GetBoundingBox());
     }
     IsInViewport2() {
       const t2 = this.GetLayer();
@@ -28432,7 +29984,7 @@ var ValidateInternalAPIToken2;
     }
     CreateMesh(t2, e) {
       if (t2 = Math.floor(t2), e = Math.floor(e), !this.GetInstance().GetPlugin().SupportsMesh()) throw new Error("object does not support mesh");
-      this.ReleaseMesh(), this._meshInfo = { sourceMesh: C32.New(C32.Gfx.Mesh, t2, e), transformedMesh: C32.New(C32.Gfx.Mesh, t2, e), meshPoly: null };
+      this.ReleaseMesh(), this._meshInfo = { sourceMesh: C32.New(C32.Gfx.DeformMesh, t2, e), transformedMesh: C32.New(C32.Gfx.DeformMesh, t2, e), meshPoly: null };
     }
     HasMesh() {
       return null !== this._meshInfo;
@@ -28457,7 +30009,7 @@ var ValidateInternalAPIToken2;
     IsPhysicsBodyChanged() {
       return !!(131072 & this._flags);
     }
-    _ExpandBboxForMesh(t2) {
+    #r(t2) {
       const e = this._meshInfo.sourceMesh, s = Math.min(e.GetMinX(), 0), i = Math.min(e.GetMinY(), 0), n = Math.max(e.GetMaxX(), 1), r2 = Math.max(e.GetMaxY(), 1), h2 = t2.width(), a2 = t2.height();
       t2.offsetLeft(s * h2), t2.offsetTop(i * a2), t2.offsetRight((n - 1) * h2), t2.offsetBottom((r2 - 1) * a2), this._depth = e.GetMaxZ();
     }
@@ -28470,19 +30022,19 @@ var ValidateInternalAPIToken2;
       if (!VALID_SET_MESH_POINT_MODES.has(i)) throw new Error("invalid mode");
       const n = "relative" === i;
       let r2 = s.x, h2 = s.y;
-      const a2 = s.zElevation;
+      const a2 = s.z;
       let o2 = "number" == typeof s.u ? s.u : n ? 0 : -1, l = "number" == typeof s.v ? s.v : n ? 0 : -1;
       if (!this.HasMesh()) return false;
       const _2 = this.GetSourceMesh(), G = _2.GetMeshPointAt(t2, e);
       if (null === G) return false;
       let c2 = false;
-      return "number" == typeof a2 && G.GetZElevation() !== a2 && (G.SetZElevation(a2), c2 = true), n && (r2 += t2 / (_2.GetHSize() - 1), h2 += e / (_2.GetVSize() - 1)), -1 !== o2 || n ? (n && (o2 += t2 / (_2.GetHSize() - 1)), o2 = C32.clamp(o2, 0, 1)) : o2 = G.GetU(), -1 !== l || n ? (n && (l += e / (_2.GetVSize() - 1)), l = C32.clamp(l, 0, 1)) : l = G.GetV(), G.GetX() === r2 && G.GetY() === h2 && G.GetU() === o2 && G.GetV() === l ? c2 : (G.SetX(r2), G.SetY(h2), G.SetU(o2), G.SetV(l), this._DiscardTransformedCollisionPoly(), true);
+      return "number" == typeof a2 && G.GetZ() !== a2 && (G.SetZ(a2), c2 = true), n && (r2 += t2 / (_2.GetHSize() - 1), h2 += e / (_2.GetVSize() - 1)), -1 !== o2 || n ? (n && (o2 += t2 / (_2.GetHSize() - 1)), o2 = C32.clamp(o2, 0, 1)) : o2 = G.GetU(), -1 !== l || n ? (n && (l += e / (_2.GetVSize() - 1)), l = C32.clamp(l, 0, 1)) : l = G.GetV(), G.GetX() === r2 && G.GetY() === h2 && G.GetU() === o2 && G.GetV() === l ? c2 : (G.SetX(r2), G.SetY(h2), G.SetU(o2), G.SetV(l), this._DiscardTransformedCollisionPoly(), true);
     }
     HasTilemap() {
       return this._inst.HasTilemap();
     }
     ContainsPoint(t2, e) {
-      return !!this.GetBoundingBox().containsPoint(t2, e) && (!!this.GetBoundingQuad().containsPoint(t2, e) && (this.HasTilemap() ? this._inst.GetSdkInstance().TestPointOverlapTile(t2, e) : !this.HasOwnCollisionPoly() || this.GetTransformedCollisionPoly().containsPoint(t2 - this.GetX(), e - this.GetY())));
+      return !!this.GetBoundingBox().containsPoint2d(t2, e) && (!!this.GetBoundingQuad().containsPoint(t2, e) && (this.HasTilemap() ? this._inst.GetSdkInstance().TestPointOverlapTile(t2, e) : !this.HasOwnCollisionPoly() || this.GetTransformedCollisionPoly().containsPoint(t2 - this.GetX(), e - this.GetY())));
     }
     _IsCollisionCellChanged() {
       return !!(16 & this._flags);
@@ -28556,15 +30108,15 @@ var ValidateInternalAPIToken2;
     }
     _SaveToJson(t2, e = null) {
       const s = { "x": this.GetX(), "y": this.GetY(), "w": this.GetWidth(), "h": this.GetHeight(), "l": this.GetLayer().GetSID(), "zi": this.GetZIndex() };
-      0 !== this.GetZElevation() && (s["ze"] = this.GetZElevation()), 0 !== this.GetAngle() && (s["a"] = this._GetAngleNoReflect()), this.HasDefaultColor() || (s["c"] = this._color.toJSON()), 0.5 !== this.GetOriginX() && (s["oX"] = this.GetOriginX()), 0.5 !== this.GetOriginY() && (s["oY"] = this.GetOriginY()), 0 !== this.GetBlendMode() && (s["bm"] = this.GetBlendMode()), this.IsVisible() || (s["v"] = this.IsVisible()), this.IsCollisionEnabled() || (s["ce"] = this.IsCollisionEnabled()), this.IsBboxChangeEventEnabled() && (s["be"] = this.IsBboxChangeEventEnabled()), this._instanceEffectList && (s["fx"] = this._instanceEffectList._SaveToJson());
+      0 !== this.GetZ() && (s["ze"] = this.GetZ()), 0 !== this.GetDepth() && (s["d"] = this.GetDepth()), 0 !== this.GetAngle() && (s["a"] = this._GetAngleNoReflect()), this.HasDefaultColor() || (s["c"] = this._color.toJSON()), 0.5 !== this.GetOriginX() && (s["oX"] = this.GetOriginX()), 0.5 !== this.GetOriginY() && (s["oY"] = this.GetOriginY()), 0 !== this.GetOriginZ() && (s["oZ"] = this.GetOriginZ()), 0 !== this.GetBlendMode() && (s["bm"] = this.GetBlendMode()), this.IsVisible() || (s["v"] = this.IsVisible()), "auto" !== this.GetSamplingMode() && (s["samp"] = this.GetSamplingMode()), this.IsCollisionEnabled() || (s["ce"] = this.IsCollisionEnabled()), this.IsBboxChangeEventEnabled() && (s["be"] = this.IsBboxChangeEventEnabled()), this._instanceEffectList && (s["fx"] = this._instanceEffectList._SaveToJson());
       const i = !!(32 & this._flags);
       return i && (s["sfi"] = i), this._solidFilterTags && (s["sft"] = [...this._solidFilterTags].join(" ")), this._sceneGraphInfo && "visual-state" !== t2 && (s["sgi"] = this._sceneGraphInfo._SaveToJson(t2, e), sceneGraphExportDataMap.has(this) && (s["sgcd"] = sceneGraphExportDataMap.get(this).childrenData, s["sgzid"] = sceneGraphExportDataMap.get(this).zIndexData)), this.HasMesh() && (s["mesh"] = this.GetSourceMesh().SaveToJson()), s;
     }
     _SaveSceneGraphPropertiesToJson() {
-      return { "x": this._x, "y": this._y, "z": this._zElevation, "w": this._w, "h": this._h, "a": this._a, "sgi": this._GetSceneGraphInfo() ? this._GetSceneGraphInfo()._SaveToJsonProperties() : null };
+      return { "x": this._x, "y": this._y, "z": this._z, "w": this._w, "h": this._h, "d": this._depth, "a": this._a, "sgi": this._GetSceneGraphInfo() ? this._GetSceneGraphInfo()._SaveToJsonProperties() : null };
     }
     _LoadSceneGraphPropertiesFromJson(t2) {
-      t2 && (this._x = t2["x"], this._y = t2["y"], this._zElevation = t2["z"], this._w = t2["w"], this._h = t2["h"], this._a = t2["a"], t2["sgi"] && this._GetSceneGraphInfo() && this._GetSceneGraphInfo()._LoadFromJson(t2["sgi"]), this._MarkSinCosAngleChanged(), this.SetBboxChanged());
+      t2 && (this._x = t2["x"], this._y = t2["y"], this._z = t2["z"], this._w = t2["w"], this._h = t2["h"], t2.hasOwnProperty("d") && (this._depth = t2["d"]), this._a = t2["a"], t2["sgi"] && this._GetSceneGraphInfo() && this._GetSceneGraphInfo()._LoadFromJson(t2["sgi"]), this._MarkSinCosAngleChanged(), this.SetBboxChanged());
     }
     _SetupSceneGraphConnectionsOnChangeOfLayout() {
       this._ReleaseTmpSceneGraphInfo(), this._ResetAllSceneGraphState(), this._CreateSceneGraphInfo(null), this._sceneGraphInfo && this._sceneGraphInfo._SetTmpSceneGraphChildren(this._tmpSceneGraphChildren, this._tmpSceneGraphChildrenIndexes);
@@ -28587,7 +30139,7 @@ var ValidateInternalAPIToken2;
       }
     }
     _LoadFromJson(t2, e, s = null) {
-      if (enableUpdateRendererStateGroup = false, this.SetX(t2["x"]), this.SetY(t2["y"]), this.SetWidth(t2["w"]), this.SetHeight(t2["h"]), this._SetZIndex(t2["zi"]), this.SetZElevation(t2.hasOwnProperty("ze") ? t2["ze"] : 0), this.SetAngle(t2.hasOwnProperty("a") ? t2["a"] : 0), t2.hasOwnProperty("c") ? tempColor.setFromJSON(t2["c"]) : t2.hasOwnProperty("o") ? (tempColor.copyRgb(this._color), tempColor.a = t2["o"]) : tempColor.setRgba(1, 1, 1, 1), this._SetColor(tempColor), this.SetOriginX(t2.hasOwnProperty("oX") ? t2["oX"] : 0.5), this.SetOriginY(t2.hasOwnProperty("oY") ? t2["oY"] : 0.5), this.SetBlendMode(t2.hasOwnProperty("bm") ? t2["bm"] : 0), this.SetVisible(!t2.hasOwnProperty("v") || t2["v"]), this.SetCollisionEnabled(!t2.hasOwnProperty("ce") || t2["ce"]), this.SetBboxChangeEventEnabled(!!t2.hasOwnProperty("be") && t2["be"]), this.SetSolidCollisionFilter(!!t2.hasOwnProperty("sfi") && t2["sfi"], t2.hasOwnProperty("sft") ? t2["sft"] : ""), this._instanceEffectList && t2.hasOwnProperty("fx") && this._instanceEffectList._LoadFromJson(t2["fx"]), t2.hasOwnProperty("sgi") && "visual-state" !== e) {
+      if (enableUpdateRendererStateGroup = false, this.SetX(t2["x"]), this.SetY(t2["y"]), this.SetZ(t2.hasOwnProperty("ze") ? t2["ze"] : 0), this.SetWidth(t2["w"]), this.SetHeight(t2["h"]), this.SetDepth(t2["d"] ?? 0), this._SetZIndex(t2["zi"]), this.SetAngle(t2.hasOwnProperty("a") ? t2["a"] : 0), t2.hasOwnProperty("c") ? tempColor.setFromJSON(t2["c"]) : t2.hasOwnProperty("o") ? (tempColor.copyRgb(this._color), tempColor.a = t2["o"]) : tempColor.setRgba(1, 1, 1, 1), this._SetColor(tempColor), this.SetOriginX(t2["oX"] ?? 0.5), this.SetOriginY(t2["oY"] ?? 0.5), this.SetOriginZ(t2["oZ"] ?? 0), this.SetBlendMode(t2["bm"] ?? 0), this.SetVisible(t2["v"] ?? true), this.#i = C32.Gfx.RendererBase.SamplingModeToNumber(t2["samp"] ?? "auto"), this.SetCollisionEnabled(!t2.hasOwnProperty("ce") || t2["ce"]), this.SetBboxChangeEventEnabled(!!t2.hasOwnProperty("be") && t2["be"]), this.SetSolidCollisionFilter(!!t2.hasOwnProperty("sfi") && t2["sfi"], t2.hasOwnProperty("sft") ? t2["sft"] : ""), this._instanceEffectList && t2.hasOwnProperty("fx") && this._instanceEffectList._LoadFromJson(t2["fx"]), t2.hasOwnProperty("sgi") && "visual-state" !== e) {
         this._CreateSceneGraphInfo(null);
         const e2 = this._sceneGraphInfo, s2 = t2["sgi"];
         e2._LoadFromJson(s2), e2._SetTmpSceneGraphChildren(this._tmpSceneGraphChildren, this._tmpSceneGraphChildrenIndexes), this._SetSceneGraphExportData(t2["sgcd"], t2["sgzid"]);
@@ -28947,7 +30499,7 @@ var ValidateInternalAPIToken2;
     constructor(e, t2) {
       super(), this._inst = e, this._wi = t2, this._effectList = e.GetObjectClass().GetEffectList(), this._needsRebuildSteps = true, this._wasDefaultColor = true, this._was3D = false, this._wasRotatedOrNegativeSize = false, this._wasTexRotated = false, this._wasMustPreDraw = false, this._effectChain = C32.New(C32.Gfx.EffectChain, e.GetRuntime().GetCanvasManager().GetEffectChainManager(), { drawContent: (e2, t3) => {
         const s = t3.GetContentObject(), f2 = s.GetWorldInfo();
-        e2.SetColor(f2.GetPremultipliedColor()), e2.SetCurrentZ(f2.GetTotalZElevation()), s.Draw(e2), e2.SetCurrentZ(0);
+        e2.SetColor(f2.GetPremultipliedColor()), e2.SetCurrentZ(f2.GetTotalZ()), s.Draw(e2), e2.SetCurrentZ(0);
       }, getSourceTextureInfo: (e2) => {
         const t3 = e2.GetCurrentTexRect(), [s, f2] = e2.GetCurrentSurfaceSize();
         return { srcTexRect: t3, srcWidth: s, srcHeight: f2 };
@@ -29076,7 +30628,7 @@ var ValidateInternalAPIToken2;
   };
 }
 {
-  const C32 = self.C3, tempCandidates = [], tileCollRectCandidates = [], tempJumpthruRet = [], tempPolyA = C32.New(C32.CollisionPoly), tempPolyB = C32.New(C32.CollisionPoly), tempQuad = C32.New(C32.Quad), tempRect = C32.New(C32.Rect), tempRect2 = C32.New(C32.Rect);
+  const C32 = self.C3, tempCandidates = [], tileCollRectCandidates = [], tempJumpthruRet = [], tempPolyA = C32.New(C32.CollisionPoly), tempPolyB = C32.New(C32.CollisionPoly), tempQuad = C32.New(C32.Quad2D), tempRect = C32.New(C32.Rect), tempRect2 = C32.New(C32.Rect);
   let tempPolyC = null, tempRect3 = null, tempQuadB = null;
   C32.CollisionEngine = class extends C32.DefendedBase {
     constructor(e) {
@@ -29132,7 +30684,7 @@ var ValidateInternalAPIToken2;
       return l.IsTransformCompatibleWith(o2) ? this._TestOverlap_SameLayers(s, n) : this._TestOverlap_DifferentLayers(s, n);
     }
     _TestOverlap_SameLayers(e, t2) {
-      if (!e.GetBoundingBox().intersectsRect(t2.GetBoundingBox())) return false;
+      if (!e.GetBoundingBox().intersectsAABB3DIgnoringZ(t2.GetBoundingBox())) return false;
       if (this._polyCheckCount++, !e.GetBoundingQuad().intersectsQuad(t2.GetBoundingQuad())) return false;
       if (e.HasTilemap() && t2.HasTilemap()) return false;
       if (e.HasTilemap()) return this.TestTilemapOverlap(e, t2);
@@ -29164,9 +30716,9 @@ var ValidateInternalAPIToken2;
     }
     TestTilemapOverlapDifferentLayers(e, t2) {
       const s = e.GetLayer(), n = t2.GetLayer();
-      tempPolyC || (tempPolyC = C32.New(C32.CollisionPoly)), tempRect3 || (tempRect3 = C32.New(C32.Rect)), tempQuadB || (tempQuadB = C32.New(C32.Quad));
+      tempPolyC || (tempPolyC = C32.New(C32.CollisionPoly)), tempRect3 || (tempRect3 = C32.New(C32.Rect)), tempQuadB || (tempQuadB = C32.New(C32.Quad2D));
       const l = t2.GetX(), o2 = t2.GetY(), [i, r2] = n.LayerToCanvasCss(l, o2), [a2, c2] = s.CanvasCssToLayer(i, r2), C2 = a2 - l, d2 = c2 - o2;
-      if (tempRect3.copy(t2.GetBoundingBox()), tempRect3.offset(C2, d2), !e.GetBoundingBox().intersectsRect(tempRect3)) return false;
+      if (tempRect3.setFromAABB3D(t2.GetBoundingBox()), tempRect3.offset(C2, d2), !e.GetBoundingBox().intersectsRect(tempRect3)) return false;
       if (tempQuadB.copy(t2.GetBoundingQuad()), tempQuadB.offset(C2, d2), this._polyCheckCount++, !e.GetBoundingQuad().intersectsQuad(tempQuadB)) return false;
       tempPolyC.copy(t2.GetTransformedCollisionPoly());
       const u2 = tempPolyC.pointsArr();
@@ -29177,7 +30729,7 @@ var ValidateInternalAPIToken2;
       return tempPolyC.setBboxChanged(), this.TestTilemapOverlap(e, t2, a2, c2, tempPolyC, tempRect3, tempQuadB);
     }
     TestTilemapOverlap(e, t2, s, n, l, o2, i) {
-      const r2 = void 0 !== o2 ? o2 : t2.GetBoundingBox(), a2 = e.GetX(), c2 = e.GetY(), C2 = e.GetInstance().GetSdkInstance(), d2 = void 0 !== s ? s : t2.GetX(), u2 = void 0 !== n ? n : t2.GetY(), h2 = t2.HasOwnCollisionPoly(), p2 = void 0 !== i ? i : t2.GetBoundingQuad(), f2 = tileCollRectCandidates;
+      const r2 = void 0 !== o2 ? o2 : t2.GetBoundingBox().toRect(), a2 = e.GetX(), c2 = e.GetY(), C2 = e.GetInstance().GetSdkInstance(), d2 = void 0 !== s ? s : t2.GetX(), u2 = void 0 !== n ? n : t2.GetY(), h2 = t2.HasOwnCollisionPoly(), p2 = void 0 !== i ? i : t2.GetBoundingQuad(), f2 = tileCollRectCandidates;
       C2.GetCollisionRectCandidates(r2, f2);
       for (let e2 = 0, s2 = f2.length; e2 < s2; ++e2) {
         const s3 = f2[e2], n2 = s3.GetRect();
@@ -29207,7 +30759,7 @@ var ValidateInternalAPIToken2;
           const e2 = l2.GetWorldInfo(), r2 = e2.GetLayer();
           let a2 = false;
           if (i.IsInteractive(r2) && e2.IsInViewport2() && (a2 = t2.some(([t3, s2]) => {
-            const [n2, l3] = i.CanvasCssToLayer(r2, t3, s2, e2.GetTotalZElevation());
+            const [n2, l3] = i.CanvasCssToLayer(r2, t3, s2, e2.GetTotalZ());
             return e2.ContainsPoint(n2, l3);
           })), a2) {
             if (s) return false;
@@ -29222,7 +30774,7 @@ var ValidateInternalAPIToken2;
           const c3 = e2[l2], C2 = c3.GetWorldInfo(), d2 = C2.GetLayer();
           let u2 = false;
           if (i.IsInteractive(d2) && C2.IsInViewport2() && (u2 = t2.some(([e3, t3]) => {
-            const [s2, n2] = i.CanvasCssToLayer(d2, e3, t3, C2.GetTotalZElevation());
+            const [s2, n2] = i.CanvasCssToLayer(d2, e3, t3, C2.GetTotalZ());
             return C2.ContainsPoint(s2, n2);
           })), u2) {
             if (s) return false;
@@ -29606,10 +31158,11 @@ var ValidateInternalAPIToken2;
   };
 }
 {
-  const C32 = self.C3, VALID_FULLSCREEN_MODES = /* @__PURE__ */ new Set(["off", "crop", "scale-inner", "scale-outer", "letterbox-scale", "letterbox-integer-scale"]), VALID_FULLSCREEN_SCALING_QUALITIES = /* @__PURE__ */ new Set(["high", "low"]), glMatrix = self.glMatrix, mat4 = glMatrix.mat4, vec3 = glMatrix.vec3, tempProjection = mat4.create(), PERCENTTEXT_WIDTH = 300, PERCENTTEXT_HEIGHT = 200, PROGRESSBAR_WIDTH = 120, PROGRESSBAR_HEIGHT = 8, tempQuad = C32.New(C32.Quad), tempRect = C32.New(C32.Rect), SPLASH_MIN_DISPLAY_TIME = 3e3, SPLASH_AFTER_FADEOUT_WAIT_TIME = 200, SPLASH_FADE_DURATION = 300;
+  const C32 = self.C3, VALID_FULLSCREEN_MODES = /* @__PURE__ */ new Set(["off", "crop", "scale-inner", "integer-scale-inner", "scale-outer", "integer-scale-outer", "letterbox-scale", "letterbox-integer-scale"]), VALID_FULLSCREEN_SCALING_QUALITIES = /* @__PURE__ */ new Set(["high", "low"]), glMatrix = self.glMatrix, mat4 = glMatrix.mat4, vec3 = glMatrix.vec3, tempProjection = mat4.create(), PERCENTTEXT_WIDTH = 300, PERCENTTEXT_HEIGHT = 200, PROGRESSBAR_WIDTH = 120, PROGRESSBAR_HEIGHT = 8, tempQuad = C32.New(C32.Quad2D), tempRect = C32.New(C32.Rect), SPLASH_MIN_DISPLAY_TIME = 3e3, SPLASH_AFTER_FADEOUT_WAIT_TIME = 200, SPLASH_FADE_DURATION = 300, RENDERER_THROTTLE_FRAME_INTERVAL = 8;
   C32.CanvasManager = class extends C32.DefendedBase {
+    #e = null;
     constructor(e) {
-      super(), this._runtime = e, this._canvasLayers = [], this._isWebGPUEnabled = false, this._webglRenderer = null, this._webgpuRenderer = null, this._iRenderer = null, this._gpuPreference = "high-performance", this._isLimitedToWebGL1 = false, this._multitexturingMode = "auto", this._windowInnerWidth = 0, this._windowInnerHeight = 0, this._cssDisplayMode = "", this._canvasCssWidth = 0, this._canvasCssHeight = 0, this._canvasDeviceWidth = 0, this._canvasDeviceHeight = 0, this._canvasCssOffsetX = 0, this._canvasCssOffsetY = 0, this._zAxisScale = "normalized", this._initFieldOfView = 0, this._zNear = 1, this._zFar = 1e4, this._enableMipmaps = true, this._textureAnisotropy = 0, this._drawWidth = 0, this._drawHeight = 0, this._fullscreenMode = "letterbox-scale", this._documentFullscreenMode = "letterbox-scale", this._deviceTransformOffX = 0, this._deviceTransformOffY = 0, this._defaultProjectionMatrix = mat4.create(), this._wantFullscreenScalingQuality = "high", this._fullscreenScalingQuality = this._wantFullscreenScalingQuality, this._isDocumentFullscreen = false, this._availableAdditionalRenderTargets = [], this._usedAdditionalRenderTargets = /* @__PURE__ */ new Set(), this._shaderData = self["C3_Shaders"], this._effectChainManager = C32.New(C32.Gfx.EffectChainManager, { getDrawSize: () => [this.GetDrawWidth(), this.GetDrawHeight()], getRenderTarget: () => this.GetEffectCompositorRenderTarget(), releaseRenderTarget: (e2) => this.ReleaseEffectCompositorRenderTarget(e2), getTime: () => this.GetRuntime().GetGameTime(), redraw: () => this.GetRuntime().UpdateRender() }), this._gpuTimeStartFrame = 0, this._gpuTimeEndFrame = 0, this._gpuLastUtilisation = NaN, this._gpuFrameTimingsBuffer = null, this._layersGpuProfile = /* @__PURE__ */ new Map(), this._gpuCurUtilisation = NaN, this._webgpuFrameTimings = /* @__PURE__ */ new Map(), this._snapshotFormat = "", this._snapshotQuality = 1, this._snapshotArea = C32.New(C32.Rect), this._snapshotUrl = "", this._snapshotPromise = null, this._snapshotResolve = null, this._isPastingToDrawingCanvas = 0, this._loaderStartTime = 0, this._rafId = -1, this._loadingProgress = 0, this._loadingprogress_handler = (e2) => this._loadingProgress = e2.progress, this._percentText = null, this._splashTextures = { logo: null, powered: null, website: null }, this._splashFrameNumber = 0, this._splashFadeInFinishTime = 0, this._splashFadeOutStartTime = 0, this._splashState = "fade-in", this._splashDoneResolve = null, this._splashDonePromise = new Promise((e2) => this._splashDoneResolve = e2);
+      super(), this._runtime = e, this._canvasLayers = [], this._isWebGPUEnabled = false, this._webglRenderer = null, this._webgpuRenderer = null, this._iRenderer = null, this._gpuPreference = "high-performance", this._isLimitedToWebGL1 = false, this._multitexturingMode = "auto", this._windowInnerWidth = 0, this._windowInnerHeight = 0, this._cssDisplayMode = "", this._canvasCssWidth = 0, this._canvasCssHeight = 0, this._canvasDeviceWidth = 0, this._canvasDeviceHeight = 0, this._canvasCssOffsetX = 0, this._canvasCssOffsetY = 0, this._zAxisScale = "normalized", this._initFieldOfView = 0, this._zNear = 1, this._zFar = 1e4, this._enableMipmaps = true, this._textureAnisotropy = 1, this._drawWidth = 0, this._drawHeight = 0, this._fullscreenMode = "letterbox-scale", this._documentFullscreenMode = "letterbox-scale", this._deviceTransformOffX = 0, this._deviceTransformOffY = 0, this._defaultProjectionMatrix = mat4.create(), this._wantFullscreenScalingQuality = "high", this._fullscreenScalingQuality = this._wantFullscreenScalingQuality, this._isDocumentFullscreen = false, this._availableAdditionalRenderTargets = [], this._usedAdditionalRenderTargets = /* @__PURE__ */ new Set(), this._shaderData = self["C3_Shaders"], this._effectChainManager = C32.New(C32.Gfx.EffectChainManager, { getDrawSize: () => [this.GetDrawWidth(), this.GetDrawHeight()], getRenderTarget: () => this.GetEffectCompositorRenderTarget(), releaseRenderTarget: (e2) => this.ReleaseEffectCompositorRenderTarget(e2), getTime: () => this.GetRuntime().GetGameTime(), redraw: () => this.GetRuntime().UpdateRender() }), this._gpuTimeStartFrame = 0, this._gpuTimeEndFrame = 0, this._gpuLastUtilisation = NaN, this._gpuFrameTimingsBuffer = null, this._layersGpuProfile = /* @__PURE__ */ new Map(), this._gpuCurUtilisation = NaN, this._webgpuTimingPromises = /* @__PURE__ */ new Map(), this._snapshotFormat = "", this._snapshotQuality = 1, this._snapshotArea = C32.New(C32.Rect), this._snapshotUrl = "", this._snapshotPromise = null, this._snapshotResolve = null, this._isPastingToDrawingCanvas = 0, this._loaderStartTime = 0, this._rafId = -1, this._loadingProgress = 0, this._loadingprogress_handler = (e2) => this._loadingProgress = e2.progress, this._percentText = null, this._splashTextures = { logo: null, powered: null, website: null }, this._splashFrameNumber = 0, this._splashFadeInFinishTime = 0, this._splashFadeOutStartTime = 0, this._splashState = "fade-in", this._splashDoneResolve = null, this._splashDonePromise = new Promise((e2) => this._splashDoneResolve = e2);
     }
     _SetGPUPowerPreference(e) {
       this._gpuPreference = e;
@@ -29671,10 +31224,8 @@ var ValidateInternalAPIToken2;
       const t2 = { nearZ: this._zNear, farZ: this._zFar };
       let s = true;
       "no" === this._multitexturingMode ? s = false : "auto" === this._multitexturingMode && (s = C32.Platform.IsDesktop);
-      let i = "nearest";
-      this._runtime.UsesAnyCrossSampling() && "nearest" !== this._runtime.GetSampling() && (i = "bilinear");
-      const r2 = { powerPreference: this._gpuPreference, depth: this._runtime.Uses3DFeatures(), failIfMajorPerformanceCaveat: e, usesBackgroundBlending: this._runtime.UsesAnyBackgroundBlending(), canSampleBackbuffer: this._runtime.UsesAnyCrossSampling(), backTextureSampling: i, canSampleDepth: this._runtime.UsesAnyDepthSampling(), isMultiTexturingAllowed: s };
-      this._webgpuRenderer = C32.New(C32.Gfx.WebGPURenderer, t2), await this._webgpuRenderer.Create(this._canvasLayers[0].canvas, r2);
+      const i = { powerPreference: this._gpuPreference, depth: this._runtime.Uses3DFeatures(), failIfMajorPerformanceCaveat: e, usesBackgroundBlending: this._runtime.UsesAnyBackgroundBlending(), canSampleBackbuffer: this._runtime.UsesAnyCrossSampling(), canSampleDepth: this._runtime.UsesAnyDepthSampling(), isMultiTexturingAllowed: s };
+      this._webgpuRenderer = C32.New(C32.Gfx.WebGPURenderer, t2), await this._webgpuRenderer.Create(this._canvasLayers[0].canvas, i);
     }
     async _InitWebGLContext(e) {
       const t2 = { alpha: true, powerPreference: this._gpuPreference, enableGpuProfiling: "xbox-uwp-webview2" !== this._runtime.GetExportType(), depth: this._runtime.Uses3DFeatures(), canSampleDepth: this._runtime.UsesAnyDepthSampling(), failIfMajorPerformanceCaveat: e, nearZ: this._zNear, farZ: this._zFar };
@@ -29798,12 +31349,16 @@ var ValidateInternalAPIToken2;
       else {
         let t2, s;
         if ("off" === this.GetCurrentFullscreenMode() ? (t2 = this._runtime.GetViewportWidth(), s = this._runtime.GetViewportHeight()) : (t2 = this._runtime.GetOriginalViewportWidth(), s = this._runtime.GetOriginalViewportHeight()), this._canvasDeviceWidth < t2 || this._canvasDeviceHeight < s) this._drawWidth = this._canvasDeviceWidth, this._drawHeight = this._canvasDeviceHeight, this._fullscreenScalingQuality = "high";
-        else if (this._drawWidth = t2, this._drawHeight = s, this._fullscreenScalingQuality = "low", "scale-inner" === e) {
-          const e2 = t2 / s, i = this._windowInnerWidth / this._windowInnerHeight;
-          i < e2 ? this._drawWidth = this._drawHeight * i : i > e2 && (this._drawHeight = this._drawWidth / i);
-        } else if ("scale-outer" === e) {
-          const e2 = t2 / s, i = this._windowInnerWidth / this._windowInnerHeight;
-          i > e2 ? this._drawWidth = this._drawHeight * i : i < e2 && (this._drawHeight = this._drawWidth / i);
+        else {
+          const i = this.GetDisplayScale(), r2 = this._runtime.GetDevicePixelRatio();
+          if (this._drawWidth = t2, this._drawHeight = s, this._fullscreenScalingQuality = "low", "scale-inner" === e) {
+            const e2 = t2 / s, i2 = this._windowInnerWidth / this._windowInnerHeight;
+            i2 < e2 ? this._drawWidth = this._drawHeight * i2 : i2 > e2 && (this._drawHeight = this._drawWidth / i2);
+          } else if ("scale-outer" === e) {
+            const e2 = t2 / s, i2 = this._windowInnerWidth / this._windowInnerHeight;
+            i2 > e2 ? this._drawWidth = this._drawHeight * i2 : i2 < e2 && (this._drawHeight = this._drawWidth / i2);
+          } else "integer-scale-inner" !== e && "integer-scale-outer" !== e || (this._drawWidth = this._windowInnerWidth / i, this._drawHeight = this._windowInnerHeight / i);
+          "scale-inner" !== e && "scale-outer" !== e && "integer-scale-inner" !== e && "integer-scale-outer" !== e || (this._drawWidth !== Math.ceil(this._drawWidth) && (this._drawWidth = Math.ceil(this._drawWidth), this._canvasDeviceWidth = Math.round(this._drawWidth * i * r2), this._canvasCssWidth = this._canvasDeviceWidth / r2), this._drawHeight !== Math.ceil(this._drawHeight) && (this._drawHeight = Math.ceil(this._drawHeight), this._canvasDeviceHeight = Math.round(this._drawHeight * i * r2), this._canvasCssHeight = this._canvasDeviceHeight / r2), this._runtime.SetViewportSize(this._drawWidth, this._drawHeight));
         }
       }
     }
@@ -29862,10 +31417,14 @@ var ValidateInternalAPIToken2;
         case 2:
           return "scale-inner";
         case 3:
-          return "scale-outer";
+          return "integer-scale-inner";
         case 4:
-          return "letterbox-scale";
+          return "scale-outer";
         case 5:
+          return "integer-scale-outer";
+        case 6:
+          return "letterbox-scale";
+        case 7:
           return "letterbox-integer-scale";
         default:
           throw new Error("invalid fullscreen mode");
@@ -29894,6 +31453,9 @@ var ValidateInternalAPIToken2;
     }
     GetTextureAnisotropy() {
       return this._textureAnisotropy;
+    }
+    SetAnisotropicFiltering(e) {
+      this._textureAnisotropy !== e && (this._textureAnisotropy = e, this.GetRenderer().SetTexturesAnisotropy(this._textureAnisotropy), this._runtime.UpdateRender());
     }
     IsRendererContextLost() {
       return this.GetRenderer().IsContextLost();
@@ -29936,7 +31498,8 @@ var ValidateInternalAPIToken2;
       const e = this.GetCurrentFullscreenMode();
       if ("off" === e || "crop" === e) return 1;
       const t2 = this._runtime.GetOriginalViewportWidth(), s = this._runtime.GetOriginalViewportHeight(), i = t2 / s, r2 = this._canvasDeviceWidth / this._canvasDeviceHeight;
-      return "scale-inner" !== e && r2 > i || "scale-inner" === e && r2 < i ? this._canvasCssHeight / s : this._canvasCssWidth / t2;
+      let a2;
+      return a2 = "scale-inner" !== e && "integer-scale-inner" !== e && r2 > i || ("scale-inner" === e || "integer-scale-inner" === e) && r2 < i ? this._canvasCssHeight / s : this._canvasCssWidth / t2, "integer-scale-outer" === e ? Math.floor(a2) : "integer-scale-inner" === e ? Math.ceil(a2) : a2;
     }
     GetEffectLayerScaleParam() {
       return "low" === this.GetCurrentFullscreenScalingQuality() ? 1 : this.GetDisplayScale();
@@ -30017,7 +31580,7 @@ var ValidateInternalAPIToken2;
       this._usedAdditionalRenderTargets.delete(e), this._availableAdditionalRenderTargets.push(e);
     }
     GetEffectCompositorRenderTarget() {
-      const e = { sampling: this._runtime.GetSampling() };
+      const e = {};
       return "low" === this.GetCurrentFullscreenScalingQuality() && (e.width = this.GetDrawWidth(), e.height = this.GetDrawHeight()), this.GetAdditionalRenderTarget(e);
     }
     ReleaseEffectCompositorRenderTarget(e) {
@@ -30067,45 +31630,54 @@ var ValidateInternalAPIToken2;
     }
     _UpdateTick_WebGPU() {
       if (0 === this._gpuTimeEndFrame) return;
-      for (let e2 = this._gpuTimeStartFrame; e2 < this._gpuTimeEndFrame; ++e2) {
-        const t3 = this._webgpuFrameTimings.get(e2);
-        if (t3 && !t3.HasResult()) return;
-      }
-      const e = this._runtime.GetMainRunningLayout(), t2 = C32.MakeFilledArray(e.GetLayerCount() + 1, 0);
-      let s = 0;
-      for (let e2 = this._gpuTimeStartFrame; e2 < this._gpuTimeEndFrame; ++e2) {
-        const i = this._webgpuFrameTimings.get(e2);
-        if (!i) continue;
-        const r2 = i.GetResult();
-        let a2 = BigInt(0), n = BigInt(0);
-        const h2 = BigInt(0);
-        for (let e3 = 0, s2 = Math.min(t2.length, r2.length / 2); e3 < s2; ++e3) {
-          const s3 = r2[2 * e3], i2 = r2[2 * e3 + 1];
-          s3 !== h2 && (a2 === h2 || s3 < a2) && (a2 = s3), i2 > n && (n = i2);
-          const o2 = Number(i2 - s3) / 1e9;
-          t2[e3] += o2;
-        }
-        s += Number(n - a2) / 1e9;
-      }
-      if (this._gpuLastUtilisation = C32.clamp(s, 0, 1), this._runtime.IsDebug()) {
-        const s2 = e.GetLayers(), i = /* @__PURE__ */ new Map();
-        for (let e2 = 0, r3 = Math.min(s2.length, t2.length - 1); e2 < r3; ++e2) {
-          const r4 = t2[e2 + 1];
-          i.set(s2[e2], r4);
-        }
-        const r2 = [], a2 = /* @__PURE__ */ new Map();
-        for (const [e2, t3] of i) {
-          const s3 = [...e2.selfAndAllSubLayers()].reduce((e3, t4) => e3 + (i.get(t4) || 0), 0);
-          a2.set(e2, s3), r2.push({ name: e2.GetName(), lastSelfUtilisation: C32.clamp(t3, 0, 1), lastTotalUtilisation: C32.clamp(s3, 0, 1) });
-        }
-        const n = this._gpuLastUtilisation - e._GetRootLayers().reduce((e2, t3) => e2 + (a2.get(t3) || 0), 0);
-        self.C3Debugger.UpdateGPUProfile(C32.clamp(n, 0, 1), this._gpuLastUtilisation, r2);
-      }
-      for (let e2 = this._gpuTimeStartFrame; e2 < this._gpuTimeEndFrame; ++e2) this._webgpuFrameTimings.delete(e2);
-      this._gpuTimeStartFrame = this._gpuTimeEndFrame, this._gpuTimeEndFrame = 0;
+      const e = [];
+      for (let t2 = this._gpuTimeStartFrame; t2 < this._gpuTimeEndFrame; ++t2) e.push(this._webgpuTimingPromises.get(t2)), this._webgpuTimingPromises.delete(t2);
+      this._gpuTimeStartFrame = this._gpuTimeEndFrame, this._gpuTimeEndFrame = 0, this.#t(e);
     }
-    _AddWebGPUFrameTiming(e) {
-      this._webgpuFrameTimings.set(this._webgpuRenderer.GetFrameNumber(), e);
+    async #t(e) {
+      let t2;
+      try {
+        t2 = await Promise.all(e);
+      } catch (e2) {
+        return void console.error("[WebGPU] Error reading frame timing results: ", e2);
+      }
+      const s = this._runtime.GetMainRunningLayout(), i = C32.MakeFilledArray(s.GetLayerCount() + 1, 0);
+      let r2 = 0;
+      for (const e2 of t2) {
+        if (!e2) continue;
+        let t3 = BigInt(0), s2 = BigInt(0);
+        const a2 = BigInt(0);
+        for (let r3 = 0, n = Math.min(i.length, e2.length / 2); r3 < n; ++r3) {
+          const n2 = e2[2 * r3], h2 = e2[2 * r3 + 1];
+          n2 !== a2 && (t3 === a2 || n2 < t3) && (t3 = n2), h2 > s2 && (s2 = h2);
+          const o2 = Number(h2 - n2) / 1e9;
+          i[r3] += o2;
+        }
+        r2 += Number(s2 - t3) / 1e9;
+      }
+      if (this._gpuLastUtilisation = C32.clamp(r2, 0, 1), this._runtime.IsDebug()) {
+        const e2 = s.GetLayers(), t3 = /* @__PURE__ */ new Map();
+        for (let s2 = 0, r4 = Math.min(e2.length, i.length - 1); s2 < r4; ++s2) {
+          const r5 = i[s2 + 1];
+          t3.set(e2[s2], r5);
+        }
+        const r3 = [], a2 = /* @__PURE__ */ new Map();
+        for (const [e3, s2] of t3) {
+          const i2 = [...e3.selfAndAllSubLayers()].reduce((e4, s3) => e4 + (t3.get(s3) || 0), 0);
+          a2.set(e3, i2), r3.push({ name: e3.GetName(), lastSelfUtilisation: C32.clamp(s2, 0, 1), lastTotalUtilisation: C32.clamp(i2, 0, 1) });
+        }
+        const n = this._gpuLastUtilisation - s._GetRootLayers().reduce((e3, t4) => e3 + (a2.get(t4) || 0), 0);
+        self.C3Debugger.UpdateGPUProfile(C32.clamp(n, 0, 1), this._gpuLastUtilisation, r3);
+      }
+    }
+    _AddWebGPUFrameTimingResultPromise(e) {
+      this._webgpuTimingPromises.set(this._webgpuRenderer.GetFrameNumber(), e);
+    }
+    _GetRendererThrottlePromise() {
+      const e = this.GetRenderer();
+      if (e.GetFrameNumber() % 8 != 0) return null;
+      const t2 = this.#e;
+      return this.#e = e.WaitForSubmittedWorkDone(), t2;
     }
     GetGPUUtilisation() {
       return this._gpuLastUtilisation;
@@ -30218,32 +31790,58 @@ var ValidateInternalAPIToken2;
       const n = this._runtime.IsPreview() || this._runtime.IsFBInstantAvailable() && !this._runtime.IsCordova(), h2 = n ? 0 : 200, o2 = n ? 0 : 3e3;
       let l = 1;
       "fade-in" === this._splashState ? l = Math.min((a2 - this._loaderStartTime) / 300, 1) : "fade-out" === this._splashState && (l = Math.max(1 - (a2 - this._splashFadeOutStartTime) / 300, 0)), t2.SetColorFillMode(), t2.SetColorRgba(0.231 * l, 0.251 * l, 0.271 * l, l), tempRect.set(0, 0, this._canvasCssWidth, this._canvasCssHeight), t2.Rect(tempRect);
-      const c2 = Math.ceil(this._canvasCssWidth), _2 = Math.ceil(this._canvasCssHeight);
-      let d2, u2;
-      this._canvasCssHeight > 256 ? (t2.SetColorRgba(0.302 * l, 0.334 * l, 0.365 * l, l), d2 = c2, u2 = Math.max(5e-3 * _2, 2), tempRect.setWH(0, 0.8 * _2 - u2 / 2, d2, u2), t2.Rect(tempRect), e ? t2.SetColorRgba(l, 0, 0, l) : t2.SetColorRgba(0.161 * l, 0.953 * l, 0.816 * l, l), d2 = c2 * this._loadingProgress, tempRect.setWH(0.5 * c2 - d2 / 2, 0.8 * _2 - u2 / 2, d2, u2), t2.Rect(tempRect), t2.SetColorRgba(l, l, l, l), t2.SetTextureFillMode(), i && (d2 = 1.5 * C32.clamp(0.22 * _2, 105, 0.6 * c2), u2 = d2 / 8, tempRect.setWH(0.5 * c2 - d2 / 2, 0.2 * _2 - u2 / 2, d2, u2), t2.SetTexture(i), t2.Rect(tempRect)), s && (d2 = Math.min(0.395 * _2, 0.95 * c2), u2 = d2, tempRect.setWH(0.5 * c2 - d2 / 2, 0.485 * _2 - u2 / 2, d2, u2), t2.SetTexture(s), t2.Rect(tempRect)), r2 && (d2 = 1.5 * C32.clamp(0.22 * _2, 105, 0.6 * c2), u2 = d2 / 8, tempRect.setWH(0.5 * c2 - d2 / 2, 0.868 * _2 - u2 / 2, d2, u2), t2.SetTexture(r2), t2.Rect(tempRect))) : (t2.SetColorRgba(0.302 * l, 0.334 * l, 0.365 * l, l), d2 = c2, u2 = Math.max(5e-3 * _2, 2), tempRect.setWH(0, 0.85 * _2 - u2 / 2, d2, u2), t2.Rect(tempRect), e ? t2.SetColorRgba(l, 0, 0, l) : t2.SetColorRgba(0.161 * l, 0.953 * l, 0.816 * l, l), d2 = c2 * this._loadingProgress, tempRect.setWH(0.5 * c2 - d2 / 2, 0.85 * _2 - u2 / 2, d2, u2), t2.Rect(tempRect), t2.SetColorRgba(l, l, l, l), t2.SetTextureFillMode(), s && (d2 = 0.55 * _2, u2 = d2, tempRect.setWH(0.5 * c2 - d2 / 2, 0.45 * _2 - u2 / 2, d2, u2), t2.SetTexture(s), t2.Rect(tempRect))), this._splashFrameNumber++, "fade-in" === this._splashState && a2 - this._loaderStartTime >= 300 && this._splashFrameNumber >= 2 && (this._splashState = "wait", this._splashFadeInFinishTime = a2), "wait" === this._splashState && a2 - this._splashFadeInFinishTime >= o2 && this._loadingProgress >= 1 && (this._splashState = "fade-out", this._splashFadeOutStartTime = a2), ("fade-out" === this._splashState && a2 - this._splashFadeOutStartTime >= 300 + h2 || n && this._loadingProgress >= 1 && a2 - this._loaderStartTime < 500) && this._splashDoneResolve();
+      const c2 = Math.ceil(this._canvasCssWidth), d2 = Math.ceil(this._canvasCssHeight);
+      let _2, u2;
+      this._canvasCssHeight > 256 ? (t2.SetColorRgba(0.302 * l, 0.334 * l, 0.365 * l, l), _2 = c2, u2 = Math.max(5e-3 * d2, 2), tempRect.setWH(0, 0.8 * d2 - u2 / 2, _2, u2), t2.Rect(tempRect), e ? t2.SetColorRgba(l, 0, 0, l) : t2.SetColorRgba(0.161 * l, 0.953 * l, 0.816 * l, l), _2 = c2 * this._loadingProgress, tempRect.setWH(0.5 * c2 - _2 / 2, 0.8 * d2 - u2 / 2, _2, u2), t2.Rect(tempRect), t2.SetColorRgba(l, l, l, l), t2.SetTextureFillMode(), i && (_2 = 1.5 * C32.clamp(0.22 * d2, 105, 0.6 * c2), u2 = _2 / 8, tempRect.setWH(0.5 * c2 - _2 / 2, 0.2 * d2 - u2 / 2, _2, u2), t2.SetTexture(i), t2.Rect(tempRect)), s && (_2 = Math.min(0.395 * d2, 0.95 * c2), u2 = _2, tempRect.setWH(0.5 * c2 - _2 / 2, 0.485 * d2 - u2 / 2, _2, u2), t2.SetTexture(s), t2.Rect(tempRect)), r2 && (_2 = 1.5 * C32.clamp(0.22 * d2, 105, 0.6 * c2), u2 = _2 / 8, tempRect.setWH(0.5 * c2 - _2 / 2, 0.868 * d2 - u2 / 2, _2, u2), t2.SetTexture(r2), t2.Rect(tempRect))) : (t2.SetColorRgba(0.302 * l, 0.334 * l, 0.365 * l, l), _2 = c2, u2 = Math.max(5e-3 * d2, 2), tempRect.setWH(0, 0.85 * d2 - u2 / 2, _2, u2), t2.Rect(tempRect), e ? t2.SetColorRgba(l, 0, 0, l) : t2.SetColorRgba(0.161 * l, 0.953 * l, 0.816 * l, l), _2 = c2 * this._loadingProgress, tempRect.setWH(0.5 * c2 - _2 / 2, 0.85 * d2 - u2 / 2, _2, u2), t2.Rect(tempRect), t2.SetColorRgba(l, l, l, l), t2.SetTextureFillMode(), s && (_2 = 0.55 * d2, u2 = _2, tempRect.setWH(0.5 * c2 - _2 / 2, 0.45 * d2 - u2 / 2, _2, u2), t2.SetTexture(s), t2.Rect(tempRect))), this._splashFrameNumber++, "fade-in" === this._splashState && a2 - this._loaderStartTime >= 300 && this._splashFrameNumber >= 2 && (this._splashState = "wait", this._splashFadeInFinishTime = a2), "wait" === this._splashState && a2 - this._splashFadeInFinishTime >= o2 && this._loadingProgress >= 1 && (this._splashState = "fade-out", this._splashFadeOutStartTime = a2), ("fade-out" === this._splashState && a2 - this._splashFadeOutStartTime >= 300 + h2 || n && this._loadingProgress >= 1 && a2 - this._loaderStartTime < 500) && this._splashDoneResolve();
     }
   };
 }
 {
-  const C32 = self.C3, C3Debugger = self.C3Debugger, assert = self.assert, ISDKBehaviorInstanceBase = self.ISDKBehaviorInstanceBase, DEFAULT_RUNTIME_OPTS = { "messagePort": null, "runtimeBaseUrl": "", "headless": false, "hasDom": true, "isInWorker": false, "useAudio": true, "exportType": "" };
+  let CreateRuntime = function(e) {
+    return new C32.Runtime(e);
+  }, InitRuntime = function(e, t2) {
+    return e.Init(t2);
+  };
+  CreateRuntime2 = CreateRuntime, InitRuntime2 = InitRuntime;
+  const C32 = globalThis.C3, C3X = globalThis.C3X, C3Debugger = globalThis.C3Debugger, assert = globalThis.assert, ISDKBehaviorInstanceBase = globalThis.ISDKBehaviorInstanceBase, DEFAULT_RUNTIME_OPTS = { "messagePort": null, "runtimeBaseUrl": "", "headless": false, "hasDom": true, "isInWorker": false, "useAudio": true, "exportType": "" };
   let ife = true;
   C32.Runtime = class extends C32.DefendedBase {
+    #e = "trilinear";
+    #t = /* @__PURE__ */ new WeakMap();
+    #s = { "pretick": C32.New(C32.Event, "pretick", false), "tick": C32.New(C32.Event, "tick", false), "tick2": C32.New(C32.Event, "tick2", false), "instancecreate": C32.New(C32.Event, "instancecreate", false), "instancedestroy": C32.New(C32.Event, "instancedestroy", false), "beforelayoutchange": C32.New(C32.Event, "beforelayoutchange", false), "layoutchange": C32.New(C32.Event, "layoutchange", false), "beforerender": C32.New(C32.Event, "beforerender", false), "beforerender2": C32.New(C32.Event, "beforerender2", false), "afterrender": C32.New(C32.Event, "afterrender", false) };
+    #i;
+    #n;
+    #a;
+    #r;
+    #o;
+    #h;
+    #l;
+    #d;
+    #c;
+    #g;
+    #u;
+    #_;
+    #m = /* @__PURE__ */ new WeakMap();
+    #p = [];
+    #f = "vsync";
+    #C = -1;
+    #S = -1;
+    #I = -1;
+    #v = 30;
+    #T = -1e3;
     constructor(e) {
-      e = Object.assign({}, DEFAULT_RUNTIME_OPTS, e), super(), this._messagePort = e["messagePort"], this._runtimeBaseUrl = e["runtimeBaseUrl"], this._previewUrl = e["previewUrl"], this._isHeadless = !!e["headless"], this._hasDom = !!e["hasDom"], this._isInWorker = !!e["isInWorker"], ife = e["ife"], this._useAudio = !!e["useAudio"], this._exportType = e["exportType"], this._isiOSCordova = !!e["isiOSCordova"], this._isiOSWebView = !!e["isiOSWebView"], this._isWindowsWebView2 = !!e["isWindowsWebView2"], this._isAnyWebView2Wrapper = !!e["isAnyWebView2Wrapper"], this._isFBInstantAvailable = !!e["isFBInstantAvailable"], this._isDebug = !("preview" !== this._exportType || !e["isDebug"]), this._breakpointsEnabled = this._isDebug, this._isDebugging = this._isDebug, this._debuggingDisabled = 0, this._additionalLoadPromises = [], this._additionalCreatePromises = [], this._isUsingCreatePromises = false, this._projectName = "", this._projectVersion = "", this._projectUniqueId = "", this._appId = "", this._exportTimestamp = 0, this._originalViewportWidth = 0, this._originalViewportHeight = 0, this._devicePixelRatio = self.devicePixelRatio, this._parallaxXorigin = 0, this._parallaxYorigin = 0, this._viewportWidth = 0, this._viewportHeight = 0, this._loaderStyle = 0, this._usesLoaderLayout = false, this._isLoading = true, this._usesAnyBackgroundBlending = false, this._usesAnyCrossSampling = false, this._usesAnyDepthSampling = false, this._loadingLogoAsset = null, this._assetManager = C32.New(C32.AssetManager, this, e), this._layoutManager = C32.New(C32.LayoutManager, this), this._eventSheetManager = C32.New(C32.EventSheetManager, this), this._addonManager = C32.New(C32.AddonManager, this, e["wrapperComponentIds"]), this._collisionEngine = C32.New(C32.CollisionEngine, this), this._timelineManager = C32.New(C32.TimelineManager, this), this._transitionManager = C32.New(C32.TransitionManager, this), this._templateManager = C32.New(C32.TemplateManager, this), this._flowchartManager = C32.New(C32.FlowchartManager, this), this._textIconManager = C32.New(C32.TextIconManager, { getIconSetMeta: (e2) => this._GetTextIconSetMeta(e2), getIconSetContent: (e2) => this._GetTextIconSetContent(e2) }), this._iconChangeHandlers = /* @__PURE__ */ new Map(), this._allObjectClasses = [], this._objectClassesByName = /* @__PURE__ */ new Map(), this._objectClassesBySid = /* @__PURE__ */ new Map(), this._familyCount = 0, this._allContainers = [], this._allEffectLists = /* @__PURE__ */ new Set(), this._currentLayoutStack = [], this._instancesPendingCreate = [], this._instancesPendingDestroy = /* @__PURE__ */ new Map(), this._hasPendingInstances = false, this._isFlushingPendingInstances = false, this._objectCount = 0, this._nextUid = 0, this._instancesByUid = /* @__PURE__ */ new Map(), this._instancesPendingRelease = /* @__PURE__ */ new Set(), this._instancesPendingReleaseAffectedObjectClasses = /* @__PURE__ */ new Set(), this._objectReferenceTable = [], this._jsPropNameTable = [], this._canvasManager = null, this._uses3dFeatures = false, this._framerateMode = "vsync", this._sampling = "trilinear", this._isPixelRoundingEnabled = false, this._needRender = true, this._pauseOnBlur = false, this._isPausedOnBlur = false, this._exportToVideo = null, this._tickCallbacks = { normal: (e2) => {
-        this._rafId = -1, this._ruafId = -1, this.Tick(e2);
+      e = Object.assign({}, DEFAULT_RUNTIME_OPTS, e), super(), this._messagePort = e["messagePort"], this._runtimeBaseUrl = e["runtimeBaseUrl"], this._previewUrl = e["previewUrl"], this._isHeadless = !!e["headless"], this._hasDom = !!e["hasDom"], this._isInWorker = !!e["isInWorker"], ife = e["ife"], this._useAudio = !!e["useAudio"], this._exportType = e["exportType"], this._isiOSCordova = !!e["isiOSCordova"], this._isiOSWebView = !!e["isiOSWebView"], this._isWindowsWebView2 = !!e["isWindowsWebView2"], this._isAnyWebView2Wrapper = !!e["isAnyWebView2Wrapper"], this._isFBInstantAvailable = !!e["isFBInstantAvailable"], this._isDebug = !("preview" !== this._exportType || !e["isDebug"]), this._breakpointsEnabled = this._isDebug, this._isDebugging = this._isDebug, this._debuggingDisabled = 0, this._additionalLoadPromises = [], this._additionalCreatePromises = [], this._isUsingCreatePromises = false, this._projectName = "", this._projectVersion = "", this._projectUniqueId = "", this._appId = "", this._exportTimestamp = 0, this._originalViewportWidth = 0, this._originalViewportHeight = 0, this._devicePixelRatio = self.devicePixelRatio, this._parallaxXorigin = 0, this._parallaxYorigin = 0, this._viewportWidth = 0, this._viewportHeight = 0, this._loaderStyle = 0, this._usesLoaderLayout = false, this._isLoading = true, this._usesAnyBackgroundBlending = false, this._usesAnyCrossSampling = false, this._usesAnyDepthSampling = false, this._loadingLogoAsset = null, this.#n = C32.New(C32.AssetManager, this, e), this.#a = C32.New(C32.LayoutManager, this), this.#r = C32.New(C32.EventSheetManager, this), this.#o = C32.New(C32.AddonManager, this, e["wrapperComponentIds"]), this.#h = C32.New(C32.CollisionEngine, this), this.#l = C32.New(C32.TimelineManager, this), this.#d = C32.New(C32.TransitionManager, this), this.#c = C32.New(C32.TemplateManager, this), this.#g = C32.New(C32.FlowchartManager, this), C32.Model3dManager && (this.#u = C32.New(C32.Model3dManager, this)), this._textIconManager = C32.New(C32.TextIconManager, { getIconSetMeta: (e2) => this._GetTextIconSetMeta(e2), getIconSetContent: (e2) => this._GetTextIconSetContent(e2) }), this._iconChangeHandlers = /* @__PURE__ */ new Map(), this._allObjectClasses = [], this._objectClassesByName = /* @__PURE__ */ new Map(), this._objectClassesBySid = /* @__PURE__ */ new Map(), this._familyCount = 0, this._allContainers = [], this._allEffectLists = /* @__PURE__ */ new Set(), this._currentLayoutStack = [], this._instancesPendingCreate = [], this._instancesPendingDestroy = /* @__PURE__ */ new Map(), this._hasPendingInstances = false, this._isFlushingPendingInstances = false, this._objectCount = 0, this._nextUid = 0, this._instancesByUid = /* @__PURE__ */ new Map(), this._instancesPendingRelease = /* @__PURE__ */ new Set(), this._instancesPendingReleaseAffectedObjectClasses = /* @__PURE__ */ new Set(), this._objectReferenceTable = [], this._jsPropNameTable = [], this._uses3dFeatures = false, this._isPixelRoundingEnabled = false, this._needRender = true, this._pauseOnBlur = false, this._isPausedOnBlur = false, this._exportToVideo = null, this._tickCallbacks = { normal: (e2) => {
+        this.#C = -1, this.#S = -1, this.#I = -1, this.Tick(e2);
       }, tickOnly: (e2) => {
-        this._ruafId = -1, this.Tick(e2, false, "skip-render");
+        this.#S = -1, this.Tick(e2, false, "skip-render");
       }, renderOnly: () => {
-        this._rafId = -1, this.Render();
-      } }, this._rafId = -1, this._ruafId = -1, this._tickCount = 0, this._tickCountNoSave = 0, this._hasStarted = false, this._isInTick = false, this._hasStartedTicking = false, this._isLayoutFirstTick = true, this._isAutoSuspendEnabled = true, this._isPageVisibilitySuspended = false, this._suspendCount = 0, this._scheduleTriggersThrottle = new C32.PromiseThrottle(1), this._randomNumberCallback = () => Math.random(), this._startTime = 0, this._lastTickTime = 0, this._dtRaw = 0, this._dt1 = 0, this._dt = 0, this._timeScale = 1, this._maxDt = 1 / 30, this._minDt = 0, this._gameTime = C32.New(C32.KahanSum), this._gameTimeRaw = C32.New(C32.KahanSum), this._wallTime = C32.New(C32.KahanSum), this._instanceTimes = /* @__PURE__ */ new Map(), this._fpsFrameCount = -1, this._fpsLastTime = 0, this._fps = 0, this._tpsTickCount = -1, this._tps = 0, this._mainThreadTimeCounter = 0, this._mainThreadTime = 0, this._isLoadingState = false, this._saveToSlotName = "", this._saveToJsonString = false, this._loadFromSlotName = "", this._loadFromJson = null, this._lastSaveJson = "", this._projectStorage = null, this._savegamesStorage = null, this._dispatcher = C32.New(C32.Event.Dispatcher), this._domEventHandlers = /* @__PURE__ */ new Map(), this._pendingResponsePromises = /* @__PURE__ */ new Map(), this._nextDomResponseId = 0, this._didRequestDeviceOrientationEvent = false, this._didRequestDeviceMotionEvent = false, this._isReadyToHandleEvents = false, this._waitingToHandleEvents = [], this._eventObjects = { "pretick": C32.New(C32.Event, "pretick", false), "tick": C32.New(C32.Event, "tick", false), "tick2": C32.New(C32.Event, "tick2", false), "instancecreate": C32.New(C32.Event, "instancecreate", false), "instancedestroy": C32.New(C32.Event, "instancedestroy", false), "beforelayoutchange": C32.New(C32.Event, "beforelayoutchange", false), "layoutchange": C32.New(C32.Event, "layoutchange", false), "beforerender": C32.New(C32.Event, "beforerender", false), "afterrender": C32.New(C32.Event, "afterrender", false) }, this._eventObjects["instancecreate"].instance = null, this._eventObjects["instancedestroy"].instance = null, this._userScriptDispatcher = C32.New(C32.Event.Dispatcher), this._userScriptEventObjects = null;
+        this.#C = -1, this.Render();
+      } }, this._tickCount = 0, this._tickCountNoSave = 0, this._hasStarted = false, this._isInTick = false, this._hasStartedTicking = false, this._isLayoutFirstTick = true, this._isAutoSuspendEnabled = true, this._isPageVisibilitySuspended = false, this._suspendCount = 0, this._scheduleTriggersThrottle = new C32.PromiseThrottle(1), this._randomNumberCallback = () => Math.random(), this._startTime = 0, this._lastTickTime = 0, this._dtRaw = 0, this._dt1 = 0, this._dt = 0, this._timeScale = 1, this._maxDt = 1 / 30, this._minDt = 0, this._gameTime = C32.New(C32.KahanSum), this._gameTimeRaw = C32.New(C32.KahanSum), this._wallTime = C32.New(C32.KahanSum), this._instanceTimes = /* @__PURE__ */ new Map(), this._fpsFrameCount = -1, this._fpsLastTime = 0, this._fps = 0, this._tpsTickCount = -1, this._tps = 0, this._mainThreadTimeCounter = 0, this._mainThreadTime = 0, this._isLoadingState = false, this._saveToSlotName = "", this._saveToJsonString = false, this._loadFromSlotName = "", this._loadFromJson = null, this._lastSaveJson = "", this._projectStorage = null, this._savegamesStorage = null, this._dispatcher = C32.New(C32.Event.Dispatcher), this._domEventHandlers = /* @__PURE__ */ new Map(), this._pendingResponsePromises = /* @__PURE__ */ new Map(), this._nextDomResponseId = 0, this._didRequestDeviceOrientationEvent = false, this._didRequestDeviceMotionEvent = false, this._isReadyToHandleEvents = false, this._waitingToHandleEvents = [], this.#s["instancecreate"].instance = null, this.#s["instancedestroy"].instance = null, this._userScriptDispatcher = C32.New(C32.Event.Dispatcher), this._userScriptEventObjects = null;
       const t2 = (e2, t3) => C32.BehaviorInstance.SortByTickSequence(this, e2, t3);
-      this._behInstsToTick = C32.New(C32.RedBlackSet, t2), this._behInstsToPostTick = C32.New(C32.RedBlackSet, t2), this._behInstsToTick2 = C32.New(C32.RedBlackSet, t2), this._jobScheduler = C32.New(C32.JobSchedulerRuntime, this, e["jobScheduler"]), e["canvas"] && (this._canvasManager = C32.New(C32.CanvasManager, this)), this._messagePort.onmessage = (e2) => this["_OnMessageFromDOM"](e2.data), this.AddDOMComponentMessageHandler("runtime", "visibilitychange", (e2) => this._OnVisibilityChange(e2)), this.AddDOMComponentMessageHandler("runtime", "wrapper-extension-message", (e2) => this._OnWrapperExtensionMessage(e2)), this.AddDOMComponentMessageHandler("runtime", "get-remote-preview-status-info", () => this._GetRemotePreviewStatusInfo()), this.AddDOMComponentMessageHandler("runtime", "js-invoke-function", (e2) => this._InvokeFunctionFromJS(e2)), this.AddDOMComponentMessageHandler("runtime", "go-to-last-error-script", self["goToLastErrorScript"]), this.AddDOMComponentMessageHandler("runtime", "offline-audio-render-completed", (e2) => this._OnOfflineAudioRenderCompleted(e2)), this._dispatcher.addEventListener("window-blur", (e2) => this._OnWindowBlur(e2)), this._dispatcher.addEventListener("window-focus", () => this._OnWindowFocus()), this._timelineManager.AddRuntimeListeners(), this._templateManager.AddRuntimeListeners(), this._iRuntime = null, this._constructVersionCode = 0, this._interfaceMap = /* @__PURE__ */ new WeakMap(), this._commonScriptInterfaces = { keyboard: null, mouse: null, touch: null, timelineController: null }, this._instancesNeedingAfterLoadMap = /* @__PURE__ */ new WeakMap(), this._instancesNeedingAfterLoadArray = [];
-    }
-    static Create(e) {
-      return C32.New(C32.Runtime, e);
+      this._behInstsToTick = C32.New(C32.RedBlackSet, t2), this._behInstsToPostTick = C32.New(C32.RedBlackSet, t2), this._behInstsToTick2 = C32.New(C32.RedBlackSet, t2), this.#_ = C32.New(C32.JobSchedulerRuntime, this, e["jobScheduler"]), e["canvas"] && (this.#i = C32.New(C32.CanvasManager, this)), this._messagePort.onmessage = (e2) => this["_OnMessageFromDOM"](e2.data), this.AddDOMComponentMessageHandler("runtime", "visibilitychange", (e2) => this._OnVisibilityChange(e2)), this.AddDOMComponentMessageHandler("runtime", "wrapper-extension-message", (e2) => this._OnWrapperExtensionMessage(e2)), this.AddDOMComponentMessageHandler("runtime", "get-remote-preview-status-info", () => this._GetRemotePreviewStatusInfo()), this.AddDOMComponentMessageHandler("runtime", "js-invoke-function", (e2) => this._InvokeFunctionFromJS(e2)), this.AddDOMComponentMessageHandler("runtime", "go-to-last-error-script", self["goToLastErrorScript"]), this.AddDOMComponentMessageHandler("runtime", "offline-audio-render-completed", (e2) => this._OnOfflineAudioRenderCompleted(e2)), this._dispatcher.addEventListener("window-blur", (e2) => this._OnWindowBlur(e2)), this._dispatcher.addEventListener("window-focus", () => this._OnWindowFocus()), this.#l.AddRuntimeListeners(), this.#c.AddRuntimeListeners(), this._iRuntime = null, this._constructVersionCode = 0, this._commonScriptInterfaces = { keyboard: null, mouse: null, touch: null, timelineController: null };
     }
     Release() {
-      C32.clearArray(this._allObjectClasses), this._objectClassesByName.clear(), this._objectClassesBySid.clear(), this._layoutManager.Release(), this._layoutManager = null, this._eventSheetManager.Release(), this._eventSheetManager = null, this._addonManager.Release(), this._addonManager = null, this._assetManager.Release(), this._assetManager = null, this._collisionEngine.Release(), this._collisionEngine = null, this._timelineManager.Release(), this._timelineManager = null, this._transitionManager.Release(), this._transitionManager = null, this._templateManager.Release(), this._templateManager = null, this._flowchartManager.Release(), this._flowchartManager = null, this._textIconManager.Release(), this._textIconManager = null, this._canvasManager && (this._canvasManager.Release(), this._canvasManager = null), this._dispatcher.Release(), this._dispatcher = null, this._tickEvent = null;
+      C32.clearArray(this._allObjectClasses), this._objectClassesByName.clear(), this._objectClassesBySid.clear(), this.#a.Release(), this.#a = null, this.#r.Release(), this.#r = null, this.#o.Release(), this.#o = null, this.#n.Release(), this.#n = null, this.#h.Release(), this.#h = null, this.#l.Release(), this.#l = null, this.#d.Release(), this.#d = null, this.#c.Release(), this.#c = null, this.#g.Release(), this.#g = null, this._textIconManager.Release(), this._textIconManager = null, this.#u && (this.#u.Release(), this.#u = null), this.#i && (this.#i.Release(), this.#i = null), this._dispatcher.Release(), this._dispatcher = null, this._tickEvent = null;
     }
     "_OnMessageFromDOM"(e) {
       const t2 = e["type"];
@@ -30271,15 +31869,15 @@ var ValidateInternalAPIToken2;
       if (!h2) return void (a2 || r2 || console.warn(`[Runtime] No DOM event handlers for component '${t2}'`));
       const l = h2.get(s);
       if (!l) return void (a2 || r2 || console.warn(`[Runtime] No DOM handler '${s}' for component '${t2}'`));
-      let c2 = null;
+      let d2 = null;
       try {
-        c2 = l(i);
+        d2 = l(i);
       } catch (e2) {
         return console.error(`Exception in '${t2}' handler '${s}':`, e2), void (null !== o2 && this._PostResultToDOM(o2, false, "" + e2));
       }
-      null !== o2 && (c2 && c2.then ? c2.then((e2) => this._PostResultToDOM(o2, true, e2)).catch((e2) => {
+      null !== o2 && (d2 && d2.then ? d2.then((e2) => this._PostResultToDOM(o2, true, e2)).catch((e2) => {
         console.error(`Rejection from '${t2}' handler '${s}':`, e2), this._PostResultToDOM(o2, false, "" + e2);
-      }) : this._PostResultToDOM(o2, true, c2));
+      }) : this._PostResultToDOM(o2, true, d2));
     }
     _PostResultToDOM(e, t2, s) {
       this._messagePort.postMessage({ "type": "result", "responseId": e, "isOk": t2, "result": s });
@@ -30324,7 +31922,7 @@ var ValidateInternalAPIToken2;
       this.AddDOMComponentMessageHandler("wrapper-extension:" + e, t2, s);
     }
     HasWrapperComponentId(e) {
-      return this._addonManager.HasWrapperComponentId(e);
+      return this.#o.HasWrapperComponentId(e);
     }
     PostToDebugger(e) {
       if (!this.IsDebug()) throw new Error("not in debug mode");
@@ -30332,17 +31930,17 @@ var ValidateInternalAPIToken2;
     }
     async Init(e) {
       C32.CommonACES_SetRuntime(this), this.IsDebug() ? await C3Debugger.Init(this) : self.C3Debugger && self.C3Debugger.InitPreview(this);
-      const t2 = await this._assetManager.FetchJson("data.json");
+      const t2 = await this.#n.FetchJson("data.json");
       if (await this._LoadDataJson(t2), await this._InitialiseCanvas(e), this.IsPreview() || console.info("%cMade with Construct, the game and animation creation tool. Visit: https://www.construct.net", "font-weight: bold"), this.GetWebGLRenderer()) {
         const e2 = this.GetWebGLRenderer();
         console.info(`[C3 runtime] Hosted in ${this.IsInWorker() ? "worker" : "DOM"}, rendering with WebGL ${e2.GetWebGLVersionNumber()} [${e2.GetUnmaskedRenderer()}]`);
       } else this.GetWebGPURenderer() && console.info(`[C3 runtime] Hosted in ${this.IsInWorker() ? "worker" : "DOM"}, rendering with WebGPU [${this.GetWebGPURenderer().GetAdapterInfoString()}]`);
       this.GetRenderer().HasMajorPerformanceCaveat() && console.warn("[C3 runtime] The renderer indicates a major performance caveat. Software rendering may be in use. This can result in significantly degraded performance."), this._isReadyToHandleEvents = true;
       for (const e2 of this._waitingToHandleEvents) this._OnEventFromDOM(e2);
-      C32.clearArray(this._waitingToHandleEvents), this._canvasManager && this._canvasManager.StartLoadingScreen();
+      C32.clearArray(this._waitingToHandleEvents), this.#i && this.#i.StartLoadingScreen();
       for (const t3 of e["runOnStartupFunctions"]) this._additionalLoadPromises.push(this._RunOnStartupFunction(t3));
-      if (await Promise.all([this._assetManager.WaitForAllToLoad(false), ...this._additionalLoadPromises]), C32.clearArray(this._additionalLoadPromises), !this._assetManager.HasHadErrorLoading()) return this._canvasManager && await this._canvasManager.EndLoadingScreen(), await this._dispatcher.dispatchEventAndWaitAsync(new C32.Event("beforeruntimestart")), await this.Start(), this._messagePort.postMessage({ "type": "runtime-ready" }), this;
-      this._canvasManager && this._canvasManager.HideCordovaSplashScreen();
+      if (await Promise.all([this.#n.WaitForAllToLoad(false), ...this._additionalLoadPromises]), C32.clearArray(this._additionalLoadPromises), !this.#n.HasHadErrorLoading()) return this.#i && await this.#i.EndLoadingScreen(), await this._dispatcher.dispatchEventAndWaitAsync(new C32.Event("beforeruntimestart")), await this.Start(), this._messagePort.postMessage({ "type": "runtime-ready" }), this;
+      this.#i && this.#i.HideCordovaSplashScreen();
     }
     async _RunOnStartupFunction(e) {
       try {
@@ -30355,15 +31953,20 @@ var ValidateInternalAPIToken2;
       const t2 = e["project"];
       this._projectName = t2[0], this._projectVersion = t2[16], this._projectUniqueId = t2[31], this._appId = t2[38], this._exportTimestamp = t2[36];
       const s = t2[39] || "loading-logo.png";
-      this._isPixelRoundingEnabled = !!t2[9], this._originalViewportWidth = this._viewportWidth = t2[10], this._originalViewportHeight = this._viewportHeight = t2[11], this._collisionEngine._InitCollisionCellSize(this._originalViewportWidth, this._originalViewportHeight), this._parallaxXorigin = this._originalViewportWidth / 2, this._parallaxYorigin = this._originalViewportHeight / 2, this._framerateMode = t2[37], this._uses3dFeatures = !!t2[40], this._sampling = t2[14], this._usesAnyBackgroundBlending = t2[15], this._usesAnyCrossSampling = t2[42], this._usesAnyDepthSampling = t2[17], this._usesLoaderLayout = !!t2[18], this._loaderStyle = t2[19], this._nextUid = t2[21], this._pauseOnBlur = t2[22], this._constructVersionCode = t2[51];
-      const i = this._assetManager;
-      i._SetAudioFiles(t2[7], t2[25]), i._SetMediaSubfolder(t2[8]), i._SetFontsSubfolder(t2[32]), i._SetIconsSubfolder(t2[28]), i._SetWebFonts(t2[29]), i._SetExportedFileList(t2[45]), 0 === this._loaderStyle && s && (this._loadingLogoAsset = i.LoadImage({ url: s })), this._canvasManager && (this._canvasManager.SetFullscreenMode(C32.CanvasManager._FullscreenModeNumberToString(t2[12])), this._canvasManager.SetFullscreenScalingQuality(t2[23] ? "high" : "low"), this._canvasManager.SetMipmapsEnabled(0 !== t2[24]), this._canvasManager._SetGPUPowerPreference(t2[34]), this._canvasManager._SetTextureAnisotropy(t2[41]), this._canvasManager._SetWebGPUEnabled(t2[13]), this._canvasManager._SetZAxisScale(t2[30]), this._canvasManager._SetZDistances(t2[46], t2[47]), this._canvasManager._SetInitFieldOfView(t2[26]), this._canvasManager._SetLimitedToWebGL1(t2[48]), this._canvasManager._SetMultitexturingMode(t2[50]));
-      const n = t2[43];
-      n && await this._LoadExportToVideoData(n), this._InitScriptInterfaces(), this._addonManager.CreateSystemPlugin(), this._objectReferenceTable = self.C3_GetObjectRefTable();
-      const a2 = t2[2];
-      for (const e2 of a2[1]) this._addonManager.CreateBehavior(e2);
-      for (const e2 of a2[0]) this._addonManager.CreatePlugin(e2);
-      this._objectReferenceTable = self.C3_GetObjectRefTable(), this._LoadJsPropNameTable(), this._addonManager._InitAddonScriptInterfaces();
+      this._isPixelRoundingEnabled = !!t2[9], this._originalViewportWidth = this._viewportWidth = t2[10], this._originalViewportHeight = this._viewportHeight = t2[11], this.#h._InitCollisionCellSize(this._originalViewportWidth, this._originalViewportHeight), this._parallaxXorigin = this._originalViewportWidth / 2, this._parallaxYorigin = this._originalViewportHeight / 2;
+      const [i, n] = t2[37];
+      this.#f = i, this.#v = n, this._uses3dFeatures = !!t2[40], this.#e = t2[14], this._usesAnyBackgroundBlending = t2[15], this._usesAnyCrossSampling = t2[42], this._usesAnyDepthSampling = t2[17], this._usesLoaderLayout = !!t2[18], this._loaderStyle = t2[19], this._nextUid = t2[21], this._pauseOnBlur = t2[22], this._constructVersionCode = t2[51];
+      const a2 = this.#n;
+      a2._SetAudioFiles(t2[7], t2[25]), a2._SetMediaSubfolder(t2[8]), a2._SetFontsSubfolder(t2[32]), a2._SetIconsSubfolder(t2[28]), a2._SetWebFonts(t2[29]), a2._SetExportedFileList(t2[45]), 0 === this._loaderStyle && s && (this._loadingLogoAsset = a2.LoadImage({ url: s })), this.#i && (this.#i.SetFullscreenMode(C32.CanvasManager._FullscreenModeNumberToString(t2[12])), this.#i.SetFullscreenScalingQuality(t2[23] ? "high" : "low"), this.#i.SetMipmapsEnabled(0 !== t2[24]), this.#i._SetGPUPowerPreference(t2[34]), this.#i._SetTextureAnisotropy(t2[41]), this.#i._SetWebGPUEnabled(t2[13]), this.#i._SetZAxisScale(t2[30]), this.#i._SetZDistances(t2[46], t2[47]), this.#i._SetInitFieldOfView(t2[26]), this.#i._SetLimitedToWebGL1(t2[48]), this.#i._SetMultitexturingMode(t2[50]));
+      const r2 = t2[43];
+      r2 && await this._LoadExportToVideoData(r2), this._InitScriptInterfaces(), this.#o.CreateSystemPlugin(), this._objectReferenceTable = self.C3_GetObjectRefTable();
+      const o2 = t2[2];
+      for (const e2 of o2[1]) this.#o.CreateBehavior(e2);
+      for (const e2 of o2[0]) this.#o.CreatePlugin(e2);
+      if (this._objectReferenceTable = self.C3_GetObjectRefTable(), this._LoadJsPropNameTable(), this.#o._InitAddonScriptInterfaces(), this.#u) {
+        for (const e2 of t2[52]) this.#u.Create(e2);
+        this.#u.HasModels3d() || (this.#u.Release(), this.#u = null);
+      }
       for (const e2 of t2[3]) {
         const t3 = C32.ObjectClass.Create(this, this._allObjectClasses.length, e2);
         this._allObjectClasses.push(t3), this._objectClassesByName.set(t3.GetName().toLowerCase(), t3), this._objectClassesBySid.set(t3.GetSID(), t3);
@@ -30377,27 +31980,27 @@ var ValidateInternalAPIToken2;
       }
       this._InitObjectsScriptInterface();
       for (const e2 of this._allObjectClasses) e2._OnAfterCreate();
-      for (const e2 of t2[5]) this._layoutManager.Create(e2);
-      const r2 = t2[1];
-      if (r2) {
-        const e2 = this._layoutManager.GetLayoutByName(r2);
-        e2 && this._layoutManager.SetFirstLayout(e2);
+      for (const e2 of t2[5]) this.#a.Create(e2);
+      const h2 = t2[1];
+      if (h2) {
+        const e2 = this.#a.GetLayoutByName(h2);
+        e2 && this.#a.SetFirstLayout(e2);
       }
-      for (const e2 of t2[35]) this._transitionManager.Create(e2);
-      for (const e2 of t2[33]) this._timelineManager.Create(e2);
-      for (const e2 of t2[44]) this._templateManager.Create(e2);
-      this._templateManager.HasTemplates() || (this._templateManager.Release(), this._templateManager = null);
-      for (const e2 of t2[49]) this._flowchartManager.Create(e2);
-      this._flowchartManager.HasFlowcharts() || (this._flowchartManager.Release(), this._flowchartManager = null);
-      for (const e2 of t2[6]) this._eventSheetManager.Create(e2);
-      this._eventSheetManager._PostInit(), this._InitGlobalVariableScriptInterface(), C32.clearArray(this._objectReferenceTable), this.FlushPendingInstances();
-      let o2 = "any";
-      const h2 = t2[20];
-      1 === h2 ? o2 = "portrait" : 2 === h2 && (o2 = "landscape"), this.PostComponentMessageToDOM("runtime", "set-target-orientation", { "targetOrientation": o2 });
+      for (const e2 of t2[35]) this.#d.Create(e2);
+      for (const e2 of t2[33]) this.#l.Create(e2);
+      for (const e2 of t2[44]) this.#c.Create(e2);
+      this.#c.HasTemplates() || (this.#c.Release(), this.#c = null);
+      for (const e2 of t2[49]) this.#g.Create(e2);
+      this.#g.HasFlowcharts() || (this.#g.Release(), this.#g = null);
+      for (const e2 of t2[6]) this.#r.Create(e2);
+      this.#r._PostInit(), this._InitGlobalVariableScriptInterface(), C32.clearArray(this._objectReferenceTable), this.FlushPendingInstances();
+      let l = "any";
+      const d2 = t2[20];
+      1 === d2 ? l = "portrait" : 2 === d2 && (l = "landscape"), this.PostComponentMessageToDOM("runtime", "set-target-orientation", { "targetOrientation": l });
     }
     async _LoadExportToVideoData(e) {
       const t2 = e["format"];
-      "image-sequence" === t2 ? this._exportToVideo = new self.C3ExportToImageSequence(this, e) : "image-sequence-gif" === t2 ? this._exportToVideo = new self.C3ExportToGIF(this, e) : "webm" === t2 ? this._exportToVideo = new self.C3ExportToWebMVideo(this, e) : "mp4" === t2 && (this._exportToVideo = new self.C3ExportToMP4Video(this, e)), this._framerateMode = "unlimited-frame", this._canvasManager.SetFullscreenMode("off"), this._devicePixelRatio = 1, self.devicePixelRatio = 1, await this.PostComponentMessageToDOMAsync("runtime", "set-exporting-to-video", { "message": this._exportToVideo.GetExportingMessageForPercent(0), "duration": this._exportToVideo.GetDuration() });
+      "image-sequence" === t2 ? this._exportToVideo = new self.C3ExportToImageSequence(this, e) : "image-sequence-gif" === t2 ? this._exportToVideo = new self.C3ExportToGIF(this, e) : "webm" === t2 ? this._exportToVideo = new self.C3ExportToWebMVideo(this, e) : "mp4" === t2 && (this._exportToVideo = new self.C3ExportToMP4Video(this, e)), this.#f = "unlimited-frame", this.#i.SetFullscreenMode("off"), this._devicePixelRatio = 1, self.devicePixelRatio = 1, await this.PostComponentMessageToDOMAsync("runtime", "set-exporting-to-video", { "message": this._exportToVideo.GetExportingMessageForPercent(0), "duration": this._exportToVideo.GetDuration() });
     }
     GetLoaderStyle() {
       return this._loaderStyle;
@@ -30412,11 +32015,11 @@ var ValidateInternalAPIToken2;
       return this._exportToVideo.GetFramerate();
     }
     _InitExportToVideo() {
-      return this._exportToVideo.Init({ width: this._canvasManager.GetDeviceWidth(), height: this._canvasManager.GetDeviceHeight() });
+      return this._exportToVideo.Init({ width: this.#i.GetDeviceWidth(), height: this.#i.GetDeviceHeight() });
     }
     _ExportToVideoAddFrame() {
       const e = this._tickCount / this.GetExportVideoFramerate();
-      return this._exportToVideo.AddFrame(this._canvasManager.GetMainCanvas(), e);
+      return this._exportToVideo.AddFrame(this.#i.GetMainCanvas(), e);
     }
     _ExportToVideoAddKeyframe() {
       this._exportToVideo && this._exportToVideo.AddKeyframe();
@@ -30461,7 +32064,7 @@ var ValidateInternalAPIToken2;
       return this._allEffectLists;
     }
     async _InitialiseCanvas(e) {
-      this._canvasManager && (await this._canvasManager.CreateCanvas(e), this._canvasManager.InitLoadingScreen(this._loaderStyle));
+      this.#i && (await this.#i.CreateCanvas(e), this.#i.InitLoadingScreen(this._loaderStyle));
     }
     async Start() {
       this._hasStarted = true, this._startTime = Date.now();
@@ -30470,13 +32073,13 @@ var ValidateInternalAPIToken2;
       if (this._usesLoaderLayout) {
         for (const e2 of this._allObjectClasses) e2.IsFamily() || e2.IsOnLoaderLayout() || !e2.IsWorldType() || e2.OnCreate();
         (async () => {
-          await this._assetManager.WaitForAllToLoad(true), await t2, this._isLoading = false, this._OnLoadFinished();
+          await this.#n.WaitForAllToLoad(true), await t2, this._isLoading = false, this._OnLoadFinished();
         })();
       } else this._isLoading = false;
-      this._assetManager.SetInitialLoadFinished(), this.IsDebug() && C3Debugger.RuntimeInit(ife);
-      for (const e2 of this._layoutManager.GetAllLayouts()) e2._CreateGlobalNonWorlds();
+      this.#n.SetInitialLoadFinished(), this.IsDebug() && C3Debugger.RuntimeInit(ife);
+      for (const e2 of this.#a.GetAllLayouts()) e2._CreateGlobalNonWorlds();
       this.IsExportToVideo() && await this._InitExportToVideo();
-      const s = this._layoutManager.GetFirstLayout();
+      const s = this.#a.GetFirstLayout();
       await s._Load(null, this.GetRenderer()), await s._StartRunning(true), this._fpsLastTime = performance.now(), e(), this._usesLoaderLayout || this._OnLoadFinished();
       (await this.PostComponentMessageToDOMAsync("runtime", "before-start-ticking"))["isSuspended"] && !this.IsExportToVideo() ? (this._suspendCount++, this._isPageVisibilitySuspended = true) : this.Tick();
     }
@@ -30517,31 +32120,31 @@ var ValidateInternalAPIToken2;
       return this._previewUrl;
     }
     GetEventSheetManager() {
-      return this._eventSheetManager;
+      return this.#r;
     }
     GetEventStack() {
-      return this._eventSheetManager.GetEventStack();
+      return this.#r.GetEventStack();
     }
     GetCurrentEventStackFrame() {
-      return this._eventSheetManager.GetCurrentEventStackFrame();
+      return this.#r.GetCurrentEventStackFrame();
     }
     GetCurrentEvent() {
-      return this._eventSheetManager.GetCurrentEvent();
+      return this.#r.GetCurrentEvent();
     }
     GetCurrentCondition() {
-      return this._eventSheetManager.GetCurrentCondition();
+      return this.#r.GetCurrentCondition();
     }
     IsCurrentConditionFirst() {
       return 0 === this.GetCurrentEventStackFrame().GetConditionIndex();
     }
     GetCurrentAction() {
-      return this._eventSheetManager.GetCurrentAction();
+      return this.#r.GetCurrentAction();
     }
     GetAddonManager() {
-      return this._addonManager;
+      return this.#o;
     }
     GetSystemPlugin() {
-      return this._addonManager.GetSystemPlugin();
+      return this.#o.GetSystemPlugin();
     }
     GetObjectClassByIndex(e) {
       if ((e = Math.floor(e)) < 0 || e >= this._allObjectClasses.length) throw new RangeError("invalid index");
@@ -30571,7 +32174,7 @@ var ValidateInternalAPIToken2;
     }
     DispatchUserScriptEvent(e) {
       e.runtime = this.GetIRuntime();
-      const t2 = this.IsDebug() && !this._eventSheetManager.IsInEventEngine();
+      const t2 = this.IsDebug() && !this.#r.IsInEventEngine();
       t2 && C3Debugger.StartMeasuringScriptTime(), this._userScriptDispatcher.dispatchEvent(e), t2 && C3Debugger.AddScriptTime();
     }
     DispatchUserScriptEventAsyncWait(e) {
@@ -30614,46 +32217,46 @@ var ValidateInternalAPIToken2;
       return this._parallaxYorigin;
     }
     GetCanvasManager() {
-      return this._canvasManager;
+      return this.#i;
     }
     GetDrawWidth() {
-      return this._canvasManager ? this._canvasManager.GetDrawWidth() : this._viewportWidth;
+      return this.#i ? this.#i.GetDrawWidth() : this._viewportWidth;
     }
     GetDrawHeight() {
-      return this._canvasManager ? this._canvasManager.GetDrawHeight() : this._viewportHeight;
+      return this.#i ? this.#i.GetDrawHeight() : this._viewportHeight;
     }
     GetRenderScale() {
-      return this._canvasManager ? this._canvasManager.GetRenderScale() : 1;
+      return this.#i ? this.#i.GetRenderScale() : 1;
     }
     GetDisplayScale() {
-      return this._canvasManager ? this._canvasManager.GetDisplayScale() : 1;
+      return this.#i ? this.#i.GetDisplayScale() : 1;
     }
     GetEffectLayerScaleParam() {
-      return this._canvasManager ? this._canvasManager.GetEffectLayerScaleParam() : 1;
+      return this.#i ? this.#i.GetEffectLayerScaleParam() : 1;
     }
     GetEffectDevicePixelRatioParam() {
-      return this._canvasManager ? this._canvasManager.GetEffectDevicePixelRatioParam() : 1;
+      return this.#i ? this.#i.GetEffectDevicePixelRatioParam() : 1;
     }
     GetCanvasClientX() {
-      return this._canvasManager ? this._canvasManager.GetCanvasClientX() : 0;
+      return this.#i ? this.#i.GetCanvasClientX() : 0;
     }
     GetCanvasClientY() {
-      return this._canvasManager ? this._canvasManager.GetCanvasClientY() : 0;
+      return this.#i ? this.#i.GetCanvasClientY() : 0;
     }
     GetCanvasCssWidth() {
-      return this._canvasManager ? this._canvasManager.GetCssWidth() : 0;
+      return this.#i ? this.#i.GetCssWidth() : 0;
     }
     GetCanvasCssHeight() {
-      return this._canvasManager ? this._canvasManager.GetCssHeight() : 0;
+      return this.#i ? this.#i.GetCssHeight() : 0;
     }
     GetFullscreenMode() {
-      return this._canvasManager ? this._canvasManager.GetFullscreenMode() : "off";
+      return this.#i ? this.#i.GetFullscreenMode() : "off";
     }
     GetAdditionalRenderTarget(e) {
-      return this._canvasManager ? this._canvasManager.GetAdditionalRenderTarget(e) : null;
+      return this.#i ? this.#i.GetAdditionalRenderTarget(e) : null;
     }
     ReleaseAdditionalRenderTarget(e) {
-      this._canvasManager && this._canvasManager.ReleaseAdditionalRenderTarget(e);
+      this.#i && this.#i.ReleaseAdditionalRenderTarget(e);
     }
     UsesAnyBackgroundBlending() {
       return this._usesAnyBackgroundBlending;
@@ -30665,19 +32268,29 @@ var ValidateInternalAPIToken2;
       return this._usesAnyDepthSampling;
     }
     GetGPUUtilisation() {
-      return this._canvasManager ? this._canvasManager.GetGPUUtilisation() : NaN;
-    }
-    IsLinearSampling() {
-      return "nearest" !== this.GetSampling();
+      return this.#i ? this.#i.GetGPUUtilisation() : NaN;
     }
     GetFramerateMode() {
-      return this._framerateMode;
+      return this.#f;
     }
     _SetFramerateMode(e) {
-      this._framerateMode !== e && (this._framerateMode = e, -1 === this._rafId && -1 === this._ruafId || (this._CancelAnimationFrame(), this._RequestAnimationFrame()));
+      this.#f !== e && (this.#f = e, -1 === this.#C && -1 === this.#S && -1 === this.#I || (this._CancelAnimationFrame(), this._RequestAnimationFrame()));
     }
-    GetSampling() {
-      return this._sampling;
+    _SetFixedFramerate(e) {
+      e = C32.clamp(e, 1, 1e3), this.#v !== e && (this.#v = e, "fixed" === this.GetFramerateMode() && (this._CancelAnimationFrame(), this.#T = performance.now(), this._RequestAnimationFrame()));
+    }
+    GetFixedFramerate() {
+      return this.#v;
+    }
+    SetSamplingMode(e) {
+      if (!C32.Gfx.RendererBase.IsValidSamplingMode(e) || "auto" === e) throw new Error(`invalid sampling mode '${e}'`);
+      this.#e !== e && (this.#e = e, this.#M(), this.UpdateRender());
+    }
+    GetSamplingMode() {
+      return this.#e;
+    }
+    #M() {
+      for (const e of this.GetLayoutManager().GetAllLayouts()) e._UpdateActiveSamplingModes();
     }
     UsesLoaderLayout() {
       return this._usesLoaderLayout;
@@ -30689,70 +32302,70 @@ var ValidateInternalAPIToken2;
       this._loadingLogoAsset && (this._loadingLogoAsset.ReleaseTexture(), this._loadingLogoAsset.Release(), this._loadingLogoAsset = null);
     }
     GetLayoutManager() {
-      return this._layoutManager;
+      return this.#a;
     }
     GetMainRunningLayout() {
-      return this._layoutManager.GetMainRunningLayout();
+      return this.#a.GetMainRunningLayout();
     }
     GetTimelineManager() {
-      return this._timelineManager;
-    }
-    GetTransitionManager() {
-      return this._transitionManager;
+      return this.#l;
     }
     GetTemplateManager() {
-      return this._templateManager;
+      return this.#c;
     }
     GetFlowchartManager() {
-      return this._flowchartManager;
+      return this.#g;
+    }
+    GetModel3dManager() {
+      return this.#u;
     }
     GetAssetManager() {
-      return this._assetManager;
+      return this.#n;
     }
     LoadImage(e) {
-      return this._assetManager.LoadImage(e);
+      return this.#n.LoadImage(e);
     }
     CreateInstance(e, t2, s, i, n, a2) {
-      if (a2 && this._templateManager) {
+      if (a2 && this.#c) {
         if (e instanceof C32.ObjectClass && e.IsFamily()) {
           const r3 = e.GetFamilyMembers(), o2 = Math.floor(this.Random() * r3.length);
           return this.CreateInstance(r3[o2], t2, s, i, n, a2);
         }
-        const r2 = this._templateManager.GetTemplateData(e, a2);
+        const r2 = this.#c.GetTemplateData(e, a2);
         if (r2) {
           const e2 = this.CreateInstanceFromData(r2, t2, false, s, i, false, n, void 0, n);
-          return this._templateManager.MapInstanceToTemplateName(e2, a2), e2;
+          return this.#c.MapInstanceToTemplateName(e2, a2), e2;
         }
       }
       return this.CreateInstanceFromData(e, t2, false, s, i, false, n, void 0, n);
     }
     CreateInstanceFromData(e, t2, s, i, n, a2, r2, o2, h2) {
-      let l = null, c2 = null;
+      let l = null, d2 = null;
       if (e instanceof C32.ObjectClass) {
-        if (c2 = e, c2.IsFamily()) {
-          const e2 = c2.GetFamilyMembers();
-          c2 = e2[Math.floor(this.Random() * e2.length)];
+        if (d2 = e, d2.IsFamily()) {
+          const e2 = d2.GetFamilyMembers();
+          d2 = e2[Math.floor(this.Random() * e2.length)];
         }
-        l = c2.GetDefaultInstanceData();
-      } else l = e, c2 = this.GetObjectClassByIndex(l[1]);
-      const d2 = c2.GetPlugin().IsWorldType();
-      if (this._isLoading && d2 && !c2.IsOnLoaderLayout()) return null;
-      const _2 = t2;
+        l = d2.GetDefaultInstanceData();
+      } else l = e, d2 = this.GetObjectClassByIndex(l[1]);
+      const c2 = d2.GetPlugin().IsWorldType();
+      if (this._isLoading && c2 && !d2.IsOnLoaderLayout()) return null;
+      const g2 = t2;
       let u2;
-      d2 || (t2 = null), u2 = s && !a2 && l && !this._instancesByUid.has(l[2]) ? l[2] : this._nextUid++;
-      const g2 = l ? l[0] : null, m2 = C32.New(C32.Instance, { runtime: this, objectType: c2, layer: t2, worldData: g2, instVarData: l ? l[3] : null, uid: u2, tags: l ? l[6] : null });
+      c2 || (t2 = null), u2 = s && !a2 && l && !this._instancesByUid.has(l[2]) ? l[2] : this._nextUid++;
+      const _2 = l ? l[0] : null, m2 = C32.New(C32.Instance, { runtime: this, objectType: d2, layer: t2, worldData: _2, instVarData: l ? l[3] : null, uid: u2, tags: l ? l[6] : null });
       this._instancesByUid.set(u2, m2);
       let p2 = null;
-      if (d2 && (p2 = m2.GetWorldInfo(), void 0 !== i && void 0 !== n && (p2.SetX(i), p2.SetY(n)), c2._SetAnyCollisionCellChanged(true)), t2 && (h2 || t2._AddInstance(m2, true), t2.GetLayout().MaybeLoadTexturesFor(c2)), this._objectCount++, c2.IsInContainer() && !s && !a2) {
+      if (c2 && (p2 = m2.GetWorldInfo(), void 0 !== i && void 0 !== n && (p2.SetX(i), p2.SetY(n)), d2._SetAnyCollisionCellChanged(true)), t2 && (h2 || t2._AddInstance(m2, true), t2.GetLayout().MaybeLoadTexturesFor(d2)), this._objectCount++, d2.IsInContainer() && !s && !a2) {
         const e2 = /* @__PURE__ */ new Set();
-        for (const t3 of c2.GetContainer().objectTypes()) {
-          if (t3 === c2) continue;
+        for (const t3 of d2.GetContainer().objectTypes()) {
+          if (t3 === d2) continue;
           const s2 = this._MaybeGetChildInstanceForObjectTypeData(t3, p2, e2);
           if (s2) {
-            const e3 = this.CreateInstanceFromData(s2, _2, false, p2 ? p2.GetX() : i, p2 ? p2.GetY() : n, true, false, void 0, h2);
+            const e3 = this.CreateInstanceFromData(s2, g2, false, p2 ? p2.GetX() : i, p2 ? p2.GetY() : n, true, false, void 0, h2);
             m2._AddSibling(e3);
           } else {
-            const e3 = this.CreateInstanceFromData(t3, _2, false, p2 ? p2.GetX() : i, p2 ? p2.GetY() : n, true, false, void 0, h2);
+            const e3 = this.CreateInstanceFromData(t3, g2, false, p2 ? p2.GetX() : i, p2 ? p2.GetY() : n, true, false, void 0, h2);
             m2._AddSibling(e3);
           }
         }
@@ -30761,31 +32374,31 @@ var ValidateInternalAPIToken2;
           for (const t3 of m2.siblings()) e3 !== t3 && e3._AddSibling(t3);
         }
       }
-      if (d2 && !s && r2 && this._CreateChildInstancesFromData(m2, g2, p2, t2, i, n, h2), c2.IsInContainer() && !s && !a2 && r2) for (const e2 of m2.siblings()) {
+      if (c2 && !s && r2 && this._CreateChildInstancesFromData(m2, _2, p2, t2, i, n, h2), d2.IsInContainer() && !s && !a2 && r2) for (const e2 of m2.siblings()) {
         const s2 = e2.GetWorldInfo();
         if (!s2) continue;
         const i2 = e2.GetPlugin(), n2 = e2.GetObjectClass().GetDefaultInstanceData()[0];
         i2.IsWorldType() ? this._CreateChildInstancesFromData(e2, n2, s2, t2, s2.GetX(), s2.GetY(), h2) : this._CreateChildInstancesFromData(e2, n2, s2, t2, void 0, void 0, h2);
       }
       if (!a2 && r2) {
-        void 0 === i && (i = g2[0]), void 0 === n && (n = g2[1]);
+        void 0 === i && (i = _2[0]), void 0 === n && (n = _2[1]);
         const e2 = p2.GetTopParent(), t3 = i - p2.GetX() + e2.GetX(), s2 = n - p2.GetY() + e2.GetY();
         e2.SetXY(t3, s2);
       }
-      c2._SetIIDsStale();
-      const f2 = l ? C32.cloneArray(l[5]) : null, C2 = l ? l[4].map((e2) => C32.cloneArray(e2)) : null, S2 = d2 && g2 && g2[13];
+      d2._SetIIDsStale();
+      const f2 = l ? C32.cloneArray(l[5]) : null, C2 = l ? l[4].map((e2) => C32.cloneArray(e2)) : null, S2 = c2 && _2 && _2[14];
       if (S2 && m2._SetHasTilemap(), m2._CreateSdkInstance(f2, C2), S2) {
-        const e2 = g2[13];
+        const e2 = _2[14];
         m2.GetSdkInstance().LoadTilemapData(e2[2], e2[0], e2[1]);
       }
       this._instancesPendingCreate.push(m2), this._hasPendingInstances = true, this.IsDebug() && C3Debugger.InstanceCreated(m2);
-      const I2 = this._eventObjects["instancecreate"];
+      const I2 = this.#s["instancecreate"];
       return I2.instance = m2, this._dispatcher.dispatchEvent(I2), m2;
     }
     _GetInstanceData(e) {
       const t2 = e[0], s = e[1], i = e[2], n = e[6];
       if (n) return n;
-      return this._layoutManager.GetLayoutBySID(t2).GetLayer(s).GetInitialInstanceData(i);
+      return this.#a.GetLayoutBySID(t2).GetLayer(s).GetInitialInstanceData(i);
     }
     _MaybeGetChildInstanceForObjectTypeData(e, t2, s) {
       const i = t2?.GetSceneGraphChildrenExportData() ?? [];
@@ -30798,23 +32411,23 @@ var ValidateInternalAPIToken2;
       const o2 = s.GetSceneGraphZIndexExportData(), h2 = s.GetSceneGraphChildrenExportData();
       if (e.GetWorldInfo().SetSceneGraphZIndex(o2), !h2) return;
       void 0 === n && (n = t2[0]), void 0 === a2 && (a2 = t2[1]);
-      const l = /* @__PURE__ */ new Set(), c2 = t2[0], d2 = t2[1];
+      const l = /* @__PURE__ */ new Set(), d2 = t2[0], c2 = t2[1];
       for (const t3 of h2) {
-        const s2 = t3[0], o3 = t3[1], h3 = t3[2], _2 = t3[3], u2 = !!t3[4], g2 = t3[5], m2 = t3[6];
+        const s2 = t3[0], o3 = t3[1], h3 = t3[2], g2 = t3[3], u2 = !!t3[4], _2 = t3[5], m2 = t3[6];
         let p2;
         if (m2) p2 = m2;
         else {
-          p2 = this._layoutManager.GetLayoutBySID(s2).GetLayer(o3).GetInitialInstanceData(h3);
+          p2 = this.#a.GetLayoutBySID(s2).GetLayer(o3).GetInitialInstanceData(h3);
         }
         const f2 = this.GetObjectClassByIndex(p2[1]), C2 = e.HasSibling(f2), S2 = l.has(f2);
         if (C2 && !S2 && u2) {
           const t4 = e.GetSibling(f2);
           t4.GetWorldInfo().Init(p2[0]);
-          const s3 = n + p2[0][0] - c2, i2 = a2 + p2[0][1] - d2;
-          t4.GetWorldInfo().SetXY(s3, i2), t4.GetWorldInfo().SetSceneGraphZIndex(g2), e.AddChild(t4, { transformX: !!(1 & _2), transformY: !!(_2 >> 1 & 1), transformWidth: !!(_2 >> 2 & 1), transformHeight: !!(_2 >> 3 & 1), transformAngle: !!(_2 >> 4 & 1), destroyWithParent: !!(_2 >> 5 & 1), transformZElevation: !!(_2 >> 6 & 1), transformOpacity: !!(_2 >> 7 & 1), transformVisibility: !!(_2 >> 8 & 1) }), l.add(f2);
+          const s3 = n + p2[0][0] - d2, i2 = a2 + p2[0][1] - c2;
+          t4.GetWorldInfo().SetXY(s3, i2), t4.GetWorldInfo().SetSceneGraphZIndex(_2), e.AddChild(t4, { transformX: !!(1 & g2), transformY: !!(g2 >> 1 & 1), transformZ: !!(g2 >> 6 & 1), transformWidth: !!(g2 >> 2 & 1), transformHeight: !!(g2 >> 3 & 1), transformAngle: !!(g2 >> 4 & 1), destroyWithParent: !!(g2 >> 5 & 1), transformOpacity: !!(g2 >> 7 & 1), transformVisibility: !!(g2 >> 8 & 1) }), l.add(f2);
         } else {
-          const t4 = n + p2[0][0] - c2, s3 = a2 + p2[0][1] - d2, o4 = this.CreateInstanceFromData(p2, i, false, t4, s3, false, true, e, r2);
-          o4.GetWorldInfo().SetSceneGraphZIndex(g2), e.AddChild(o4, { transformX: !!(1 & _2), transformY: !!(_2 >> 1 & 1), transformWidth: !!(_2 >> 2 & 1), transformHeight: !!(_2 >> 3 & 1), transformAngle: !!(_2 >> 4 & 1), destroyWithParent: !!(_2 >> 5 & 1), transformZElevation: !!(_2 >> 6 & 1), transformOpacity: !!(_2 >> 7 & 1), transformVisibility: !!(_2 >> 8 & 1) });
+          const t4 = n + p2[0][0] - d2, s3 = a2 + p2[0][1] - c2, o4 = this.CreateInstanceFromData(p2, i, false, t4, s3, false, true, e, r2);
+          o4.GetWorldInfo().SetSceneGraphZIndex(_2), e.AddChild(o4, { transformX: !!(1 & g2), transformY: !!(g2 >> 1 & 1), transformZ: !!(g2 >> 6 & 1), transformWidth: !!(g2 >> 2 & 1), transformHeight: !!(g2 >> 3 & 1), transformAngle: !!(g2 >> 4 & 1), destroyWithParent: !!(g2 >> 5 & 1), transformOpacity: !!(g2 >> 7 & 1), transformVisibility: !!(g2 >> 8 & 1) });
         }
       }
     }
@@ -30828,11 +32441,11 @@ var ValidateInternalAPIToken2;
       } else s = /* @__PURE__ */ new Set(), s.add(e), this._instancesPendingDestroy.set(t2, s);
       if (this.IsDebug() && C3Debugger.InstanceDestroyed(e), e._MarkDestroyed(), this._hasPendingInstances = true, e.IsInContainer()) for (const t3 of e.siblings()) this.DestroyInstance(t3);
       for (const t3 of e.children()) t3.GetDestroyWithParent() && this.DestroyInstance(t3);
-      if (!this._layoutManager.IsEndingLayout() && !this._isLoadingState) {
+      if (!this.#a.IsEndingLayout() && !this._isLoadingState) {
         const t3 = this.GetEventSheetManager();
         t3.BlockFlushingInstances(true), e._TriggerOnDestroyed(), t3.BlockFlushingInstances(false);
       }
-      e._FireDestroyedScriptEvents(this._layoutManager.IsEndingLayout());
+      e._FireDestroyedScriptEvents(this.#a.IsEndingLayout());
     }
     FlushPendingInstances() {
       this._hasPendingInstances && (this._isFlushingPendingInstances = true, this._FlushInstancesPendingCreate(), this._FlushInstancesPendingDestroy(), this._isFlushingPendingInstances = false, this._hasPendingInstances = false, this.UpdateRender());
@@ -30852,7 +32465,7 @@ var ValidateInternalAPIToken2;
     }
     _FlushInstancesPendingDestroyForObjectClass(e, t2) {
       for (const e2 of t2) {
-        const t3 = this._eventObjects["instancedestroy"];
+        const t3 = this.#s["instancedestroy"];
         t3.instance = e2, this._dispatcher.dispatchEvent(t3), this._instancesByUid.delete(e2.GetUID()), this._instanceTimes.delete(e2);
         const s = e2.GetWorldInfo();
         s && (s._RemoveFromCollisionCells(), s._RemoveFromRenderCells(), s._MarkDestroyed()), this._instancesPendingRelease.add(e2), this._objectCount--;
@@ -30904,10 +32517,19 @@ var ValidateInternalAPIToken2;
     }
     _RequestAnimationFrame() {
       const e = this._tickCallbacks;
-      "vsync" === this._framerateMode ? -1 === this._rafId && (this._rafId = self.requestAnimationFrame(e.normal)) : "unlimited-tick" === this._framerateMode ? (-1 === this._ruafId && (this._ruafId = C32.RequestUnlimitedAnimationFrame(e.tickOnly)), -1 === this._rafId && (this._rafId = self.requestAnimationFrame(e.renderOnly))) : -1 === this._ruafId && (this._ruafId = C32.RequestUnlimitedAnimationFrame(e.normal));
+      if ("vsync" === this.#f) -1 === this.#C && (this.#C = globalThis.requestAnimationFrame(e.normal));
+      else if ("fixed" === this.#f) {
+        if (-1 === this.#I) {
+          const t2 = 1e3 / this.#v;
+          this.#T += t2;
+          const s = performance.now();
+          let i = 0;
+          this.#T < s ? this.#T = s + t2 : i = this.#T - s, this.#I = globalThis.setTimeout(() => e.normal(performance.now()), i);
+        }
+      } else "unlimited-tick" === this.#f ? (-1 === this.#S && (this.#S = C32.RequestUnlimitedAnimationFrame(e.tickOnly)), -1 === this.#C && (this.#C = globalThis.requestAnimationFrame(e.renderOnly))) : -1 === this.#S && (this.#S = C32.RequestUnlimitedAnimationFrame(e.normal));
     }
     _CancelAnimationFrame() {
-      -1 !== this._rafId && (self.cancelAnimationFrame(this._rafId), this._rafId = -1), -1 !== this._ruafId && (C32.CancelUnlimitedAnimationFrame(this._ruafId), this._ruafId = -1);
+      -1 !== this.#C && (globalThis.cancelAnimationFrame(this.#C), this.#C = -1), -1 !== this.#S && (C32.CancelUnlimitedAnimationFrame(this.#S), this.#S = -1), -1 !== this.#I && (globalThis.clearTimeout(this.#I), this.#I = -1);
     }
     IsSuspended() {
       return this._suspendCount > 0;
@@ -31010,38 +32632,58 @@ var ValidateInternalAPIToken2;
       this._isInTick = true, this._MeasureDt(e || 0), this._tpsTickCount++, this._ReleasePendingInstances();
       const h2 = this.Step_BeforePreTick();
       this.IsDebugging() && await h2;
-      const l = this._dispatcher.dispatchEventAndWait_AsyncOptional(this._eventObjects["pretick"]);
+      const l = this._dispatcher.dispatchEventAndWait_AsyncOptional(this.#s["pretick"]);
       l instanceof Promise && await l, this.DispatchUserScriptEvent(this._userScriptEventObjects["pretick"]);
-      const c2 = this.Step_AfterPreTick();
-      this.IsDebugging() && await c2, this._NeedsHandleSaveOrLoad() && await this._HandleSaveOrLoad(), a2.IsPendingChangeMainLayout() && await this._MaybeChangeLayout();
-      const d2 = this.Step_RunEventsEtc();
-      this.IsDebugging() && await d2;
-      const _2 = a2.GetMainRunningLayout(), u2 = _2._GetPendingSetHTMLLayerCount();
-      let g2 = false;
-      if (-1 !== u2 && (_2._ResetPendingHTMLLayerCount(), r2.GetHTMLLayerCount() !== u2)) {
+      const d2 = this.Step_AfterPreTick();
+      this.IsDebugging() && await d2, this._NeedsHandleSaveOrLoad() && await this._HandleSaveOrLoad(), a2.IsPendingChangeMainLayout() && await this._MaybeChangeLayout();
+      const c2 = this.Step_RunEventsEtc();
+      this.IsDebugging() && await c2;
+      const g2 = a2.GetMainRunningLayout(), u2 = g2._GetPendingSetHTMLLayerCount();
+      let _2 = false;
+      if (-1 !== u2 && (g2._ResetPendingHTMLLayerCount(), r2.GetHTMLLayerCount() !== u2)) {
         const e2 = this.GetCanvasManager().SetHTMLLayerCount(u2);
-        this.IsInWorker() && (g2 = true, await e2);
+        this.IsInWorker() && (_2 = true, await e2);
       }
-      this.PostComponentMessageToDOM("canvas", "update-html-layer-dom-state", { "layersDomState": _2._GetRootLayers().filter((e2) => e2.IsHTMLElementsLayer()).map((e2) => e2._GetHTMLLayerDOMState()) }), n && this.Render(), g2 && this.PostComponentMessageToDOM("canvas", "cleanup-html-layers"), this.IsExportToVideo() && (await this._ExportToVideoAddFrame(), this.GetGameTime() >= this.GetExportVideoDuration()) ? this._ExportToVideoFinish() : (this.IsSuspended() || i || this._RequestAnimationFrame(), this._tickCount++, this._tickCountNoSave++, this._isInTick = false, this._mainThreadTimeCounter += performance.now() - o2);
+      if (this.PostComponentMessageToDOM("canvas", "update-html-layer-dom-state", { "layersDomState": g2._GetRootLayers().filter((e2) => e2.IsHTMLElementsLayer()).map((e2) => e2._GetHTMLLayerDOMState()) }), n && this.Render(), _2 && this.PostComponentMessageToDOM("canvas", "cleanup-html-layers"), this.IsExportToVideo() && (await this._ExportToVideoAddFrame(), this.GetGameTime() >= this.GetExportVideoDuration())) this._ExportToVideoFinish();
+      else {
+        if (!this.IsSuspended() && !i) {
+          if ("unlimited-frame" === this.GetFramerateMode()) {
+            const e2 = this.#i._GetRendererThrottlePromise();
+            if (e2) {
+              const t3 = this.GetRenderer(), s2 = t3.IsWebGL();
+              let i2 = false;
+              if (s2) {
+                const e3 = () => {
+                  t3._CheckPendingPolls(), i2 || C32.RequestUnlimitedAnimationFrame(e3, "background");
+                };
+                e3();
+              }
+              await e2, i2 = true;
+            }
+          }
+          this._RequestAnimationFrame();
+        }
+        this._tickCount++, this._tickCountNoSave++, this._isInTick = false, this._mainThreadTimeCounter += performance.now() - o2;
+      }
     }
     async Step_BeforePreTick() {
-      const e = this._eventSheetManager, t2 = this.IsDebug();
+      const e = this.#r, t2 = this.IsDebug();
       this.FlushPendingInstances(), e.BlockFlushingInstances(true), this.PushCurrentLayout(this.GetMainRunningLayout()), t2 && C3Debugger.StartMeasuringTime(), this.IsDebugging() ? await e.DebugRunScheduledWaits() : e.RunScheduledWaits(), t2 && C3Debugger.AddEventsTime(), this.PopCurrentLayout(), e.BlockFlushingInstances(false), this.FlushPendingInstances(), e.BlockFlushingInstances(true);
     }
     async Step_AfterPreTick() {
-      const e = this._eventSheetManager, t2 = this.IsDebug(), s = this.IsDebugging(), i = this._dispatcher, n = this._eventObjects, a2 = this._userScriptEventObjects;
+      const e = this.#r, t2 = this.IsDebug(), s = this.IsDebugging(), i = this._dispatcher, n = this.#s, a2 = this._userScriptEventObjects;
       t2 && C3Debugger.StartMeasuringTime(), s ? await this.DebugIterateAndBreak(this._DebugBehaviorTick()) : this._BehaviorTick(), s ? await this.DebugIterateAndBreak(this._DebugBehaviorPostTick()) : this._BehaviorPostTick(), t2 && C3Debugger.AddBehaviorTotalTickTime(), t2 && C3Debugger.StartMeasuringTime(), s ? await this.DebugFireGeneratorEventAndBreak(n["tick"]) : i.dispatchEvent(n["tick"]), t2 && C3Debugger.AddPluginTotalTickTime(), e.BlockFlushingInstances(false), this.DispatchUserScriptEvent(a2["tick"]);
     }
     async Step_RunEventsEtc() {
-      const e = this._eventSheetManager, t2 = this._dispatcher, s = this._eventObjects, i = this._userScriptEventObjects, n = this.IsDebug(), a2 = this.IsDebugging();
-      n && C3Debugger.StartMeasuringTime(), a2 ? await e.DebugRunEvents(this._layoutManager) : e.RunEvents(this._layoutManager), n && C3Debugger.AddEventsTime(), this._collisionEngine.ClearRegisteredCollisions(), this._ReleasePendingInstances(), this._isLayoutFirstTick = false, e.BlockFlushingInstances(true), n && C3Debugger.StartMeasuringTime(), a2 ? await this.DebugIterateAndBreak(this._DebugBehaviorTick2()) : this._BehaviorTick2(), n && C3Debugger.AddBehaviorTotalTickTime(), n && C3Debugger.StartMeasuringTime(), a2 ? await this.DebugFireGeneratorEventAndBreak(s["tick2"]) : t2.dispatchEvent(s["tick2"]), n && C3Debugger.AddPluginTotalTickTime(), e.BlockFlushingInstances(false), this.DispatchUserScriptEvent(i["tick2"]), a2 && await e.RunQueuedDebugTriggersAsync(), this.FlushPendingInstances(), this._ReleasePendingInstances();
+      const e = this.#r, t2 = this._dispatcher, s = this.#s, i = this._userScriptEventObjects, n = this.IsDebug(), a2 = this.IsDebugging();
+      n && C3Debugger.StartMeasuringTime(), a2 ? await e.DebugRunEvents(this.#a) : e.RunEvents(this.#a), n && C3Debugger.AddEventsTime(), this.#h.ClearRegisteredCollisions(), this._ReleasePendingInstances(), this._isLayoutFirstTick = false, e.BlockFlushingInstances(true), n && C3Debugger.StartMeasuringTime(), a2 ? await this.DebugIterateAndBreak(this._DebugBehaviorTick2()) : this._BehaviorTick2(), n && C3Debugger.AddBehaviorTotalTickTime(), n && C3Debugger.StartMeasuringTime(), a2 ? await this.DebugFireGeneratorEventAndBreak(s["tick2"]) : t2.dispatchEvent(s["tick2"]), n && C3Debugger.AddPluginTotalTickTime(), e.BlockFlushingInstances(false), this.DispatchUserScriptEvent(i["tick2"]), a2 && await e.RunQueuedDebugTriggersAsync(), this.FlushPendingInstances(), this._ReleasePendingInstances();
     }
     _ReleasePendingInstances() {
       if (0 === this._instancesPendingRelease.size) return;
       const e = this._dispatcher;
       e.SetDelayRemoveEventsEnabled(true);
       for (const e2 of this._instancesPendingReleaseAffectedObjectClasses) e2.GetSolStack().RemoveInstances(this._instancesPendingRelease);
-      this._instancesPendingReleaseAffectedObjectClasses.clear(), this._eventSheetManager._OnInstancesReleased(this._instancesPendingRelease);
+      this._instancesPendingReleaseAffectedObjectClasses.clear(), this.#r._OnInstancesReleased(this._instancesPendingRelease);
       for (const e2 of this._instancesPendingRelease) e2.Release();
       this._instancesPendingRelease.clear(), e.SetDelayRemoveEventsEnabled(false);
     }
@@ -31052,13 +32694,13 @@ var ValidateInternalAPIToken2;
     }
     _MeasureDt(e) {
       let t2 = 0;
-      if (this.IsExportToVideo()) t2 = 1 / this.GetExportVideoFramerate(), this._dtRaw = t2, this._dt1 = t2;
+      if (this.IsExportToVideo() && (t2 = 1 / this.GetExportVideoFramerate(), this._dtRaw = t2, this._dt1 = t2), "fixed" === this.GetFramerateMode()) t2 = 1 / this.GetFixedFramerate(), this._dtRaw = t2, this._dt1 = t2;
       else if (0 !== this._lastTickTime) {
         t2 = Math.max(e - this._lastTickTime, 0) / 1e3, t2 > 0.5 && (t2 = 0), this._dtRaw = t2, this._dt1 = C32.clamp(t2, this._minDt, this._maxDt);
       }
       this._lastTickTime = e, this._dt = this._dt1 * this._timeScale, this._gameTime.Add(this._dt), this._gameTimeRaw.Add(t2 * this._timeScale), this._wallTime.Add(this._dt1);
       for (const [e2, t3] of this._instanceTimes) t3.Add(this._dt1 * e2.GetTimeScale());
-      this._canvasManager && this._canvasManager._UpdateTick(), e - this._fpsLastTime >= 1e3 && (this._fpsLastTime += 1e3, e - this._fpsLastTime >= 1e3 && (this._fpsLastTime = e), this._fps = this._fpsFrameCount, this._fpsFrameCount = 0, this._tps = this._tpsTickCount, this._tpsTickCount = 0, this._mainThreadTime = Math.min(this._mainThreadTimeCounter / 1e3, 1), this._mainThreadTimeCounter = 0, this._canvasManager && this._canvasManager._Update1sFrameRange(), this._collisionEngine._Update1sStats(), this.IsDebug() && C3Debugger.Update1sPerfStats());
+      this.#i && this.#i._UpdateTick(), e - this._fpsLastTime >= 1e3 && (this._fpsLastTime += 1e3, e - this._fpsLastTime >= 1e3 && (this._fpsLastTime = e), this._fps = this._fpsFrameCount, this._fpsFrameCount = 0, this._tps = this._tpsTickCount, this._tpsTickCount = 0, this._mainThreadTime = Math.min(this._mainThreadTimeCounter / 1e3, 1), this._mainThreadTimeCounter = 0, this.#i && this.#i._Update1sFrameRange(), this.#h._Update1sStats(), this.IsDebug() && C3Debugger.Update1sPerfStats());
     }
     _SetTrackingInstanceTime(e, t2) {
       if (t2) {
@@ -31074,51 +32716,51 @@ var ValidateInternalAPIToken2;
     }
     async _DoChangeLayout(e) {
       const t2 = this._dispatcher, s = this.GetLayoutManager().GetMainRunningLayout();
-      await s._StopRunning(), s._Unload(e, this.GetRenderer()), s === e && this._eventSheetManager.ClearAllScheduledWaits(), this._collisionEngine.ClearRegisteredCollisions(), this._ReleasePendingInstances(), t2.dispatchEvent(this._eventObjects["beforelayoutchange"]), C32.Asyncify.SetHighThroughputMode(true), await e._Load(s, this.GetRenderer()), C32.Asyncify.SetHighThroughputMode(false), await e._StartRunning(false), t2.dispatchEvent(this._eventObjects["layoutchange"]), this.UpdateRender(), this._isLayoutFirstTick = true, this.FlushPendingInstances(), this._ExportToVideoAddKeyframe();
+      await s._StopRunning(), s._Unload(e, this.GetRenderer()), s === e && this.#r.ClearAllScheduledWaits(), this.#h.ClearRegisteredCollisions(), this._ReleasePendingInstances(), t2.dispatchEvent(this.#s["beforelayoutchange"]), C32.Asyncify.SetHighThroughputMode(true), await e._Load(s, this.GetRenderer()), C32.Asyncify.SetHighThroughputMode(false), await e._StartRunning(false), t2.dispatchEvent(this.#s["layoutchange"]), this.UpdateRender(), this._isLayoutFirstTick = true, this.FlushPendingInstances(), this._ExportToVideoAddKeyframe();
     }
     UpdateRender() {
       this._needRender = true;
     }
     GetWebGLRenderer() {
-      return this._canvasManager ? this._canvasManager.GetWebGLRenderer() : null;
+      return this.#i ? this.#i.GetWebGLRenderer() : null;
     }
     GetWebGPURenderer() {
-      return this._canvasManager ? this._canvasManager.GetWebGPURenderer() : null;
+      return this.#i ? this.#i.GetWebGPURenderer() : null;
     }
     GetRenderer() {
-      return this._canvasManager ? this._canvasManager.GetRenderer() : null;
+      return this.#i ? this.#i.GetRenderer() : null;
     }
     Render() {
-      const e = this._canvasManager;
+      const e = this.#i;
       if (!e || e.IsRendererContextLost()) return;
       const t2 = this.GetRenderer(), s = t2.SupportsGPUProfiling(), i = s && t2.IsWebGL(), n = s && t2.IsWebGPU();
-      if (i && t2.CheckForQueryResults(), !this._needRender && !this.IsExportToVideo()) return void t2.IncrementFrameNumber();
-      const a2 = this._layoutManager.GetMainRunningLayout();
-      this._fpsFrameCount++, t2.Start();
-      const r2 = this.IsDebug();
-      r2 && C3Debugger.StartMeasuringTime(), this._needRender = false;
-      let o2 = null;
-      i && (o2 = e.GetGPUFrameTimingsBuffer().AddTimeElapsedQuery(), t2.StartQuery(o2));
+      if (i && t2.CheckForQueryResults(), !this._needRender && !this.IsExportToVideo() && "unlimited-frame" !== this.GetFramerateMode()) return void t2.IncrementFrameNumber();
+      const a2 = this.#a.GetMainRunningLayout();
+      this._fpsFrameCount++;
+      let r2 = "nearest";
+      this.UsesAnyCrossSampling() && "nearest" !== a2.GetActiveSampling() && (r2 = "bilinear"), t2.Start(r2);
+      const o2 = this.IsDebug();
+      o2 && C3Debugger.StartMeasuringTime(), this._needRender = false;
       let h2 = null;
-      n && (h2 = t2.StartFrameTiming(2 * (1 + a2.GetLayerCount())), t2.StartMeasuringRenderPassTime(0, 1)), this.Uses3DFeatures() && "low" === e.GetCurrentFullscreenScalingQuality() ? t2.SetFixedSizeDepthBuffer(e.GetDrawWidth(), e.GetDrawHeight()) : t2.SetAutoSizeDepthBuffer(), this._Render(this.GetRenderer(), a2), o2 && t2.EndQuery(o2), n && (t2.StopMeasuringRenderPassTime(), this._canvasManager._AddWebGPUFrameTiming(h2)), t2.Finish(), r2 && (C3Debugger.AddDrawCallsTime(), C3Debugger.UpdateInspectHighlight()), e && e._MaybeTakeSnapshot();
+      i && (h2 = e.GetGPUFrameTimingsBuffer().AddTimeElapsedQuery(), t2.StartQuery(h2)), n && (t2.StartFrameTiming(2 * (1 + a2.GetLayerCount())), t2.StartMeasuringRenderPassTime(0, 1)), this.Uses3DFeatures() && "low" === e.GetCurrentFullscreenScalingQuality() ? t2.SetFixedSizeDepthBuffer(e.GetDrawWidth(), e.GetDrawHeight()) : t2.SetAutoSizeDepthBuffer(), this._Render(this.GetRenderer(), a2), h2 && t2.EndQuery(h2), n && t2.StopMeasuringRenderPassTime(), t2.Finish(), n && this.#i._AddWebGPUFrameTimingResultPromise(t2.FinishFrameTiming()), o2 && (C3Debugger.AddDrawCallsTime(), C3Debugger.UpdateInspectHighlight()), e && e._MaybeTakeSnapshot();
     }
     _NeedsHTMLLayerCompositing(e) {
       return "low" === this.GetCanvasManager().GetCurrentFullscreenScalingQuality() || e.IsWebGL() && (this.UsesAnyBackgroundBlending() || this.Uses3DFeatures());
     }
     _Render(e, t2) {
-      e.SetTextureFillMode(), e.SetAlphaBlend(), e.ResetCullState(), e.SetColorRgba(1, 1, 1, 1), e.SetRenderTarget(null), e.SetTexture(null), e.SetDepthEnabled(this.Uses3DFeatures()), this.Dispatcher().dispatchEvent(this._eventObjects["beforerender"]), this._NeedsHTMLLayerCompositing(e) && t2._MaybeStartDrawToOwnTexture(e);
+      e.SetTextureFillMode(), e.SetAlphaBlend(), e.ResetCullState(), e.SetColorRgba(1, 1, 1, 1), e.SetRenderTarget(null), e.SetTexture(null), e.SetDepthEnabled(this.Uses3DFeatures()), this.Dispatcher().dispatchEvent(this.#s["beforerender"]), this.Dispatcher().dispatchEvent(this.#s["beforerender2"]), this._NeedsHTMLLayerCompositing(e) && t2._MaybeStartDrawToOwnTexture(e);
       const s = t2.GetHTMLLayerCount();
       for (let i = 1; i < s; ++i) t2.DrawForHTMLLayerIndex(e, i), e.IsWebGPU() && e.Restart();
-      this._NeedsHTMLLayerCompositing(e) || t2._MaybeStartDrawToOwnTexture(e), t2.DrawMain(e), this.Dispatcher().dispatchEvent(this._eventObjects["afterrender"]);
+      this._NeedsHTMLLayerCompositing(e) || t2._MaybeStartDrawToOwnTexture(e), t2.DrawMain(e), this.Dispatcher().dispatchEvent(this.#s["afterrender"]);
     }
     Trigger(e, t2, s) {
       if (!this._hasStarted) return false;
-      const i = !this._isInTick && !this._eventSheetManager.IsInTrigger();
+      const i = !this._isInTick && !this.#r.IsInTrigger();
       let n = 0;
       i && (n = performance.now());
       const a2 = this.IsDebug();
       a2 && this.SetDebuggingEnabled(false);
-      const r2 = this._eventSheetManager._Trigger(this._layoutManager, e, t2, s);
+      const r2 = this.#r._Trigger(this.#a, e, t2, s);
       if (i) {
         const e2 = performance.now() - n;
         this._mainThreadTimeCounter += e2, a2 && C3Debugger.AddTriggersTime(e2);
@@ -31128,27 +32770,27 @@ var ValidateInternalAPIToken2;
     DebugTrigger(e, t2, s) {
       if (!this.IsDebugging()) return this.Trigger(e, t2, s);
       if (this.HitBreakpoint()) throw new Error("called DebugTrigger() while stopped on breakpoint");
-      if (!this._isInTick && !this._eventSheetManager.IsInTrigger()) throw new Error("called DebugTrigger() outside of event code - use TriggerAsync() instead");
-      return this._eventSheetManager._DebugTrigger(this._layoutManager, e, t2, s);
+      if (!this._isInTick && !this.#r.IsInTrigger()) throw new Error("called DebugTrigger() outside of event code - use TriggerAsync() instead");
+      return this.#r._DebugTrigger(this.#a, e, t2, s);
     }
     async TriggerAsync(e, t2, s) {
       if (!this.IsDebugging()) return this.Trigger(e, t2, s);
       if (!this._hasStarted) return false;
-      if (this.HitBreakpoint()) return this._eventSheetManager.QueueDebugTrigger(e, t2, s);
-      if (!this.GetMainRunningLayout()) return this._eventSheetManager.QueueTrigger(e, t2, s);
-      const i = performance.now(), n = this._eventSheetManager._DebugTrigger(this._layoutManager, e, t2, s);
+      if (this.HitBreakpoint()) return this.#r.QueueDebugTrigger(e, t2, s);
+      if (!this.GetMainRunningLayout()) return this.#r.QueueTrigger(e, t2, s);
+      const i = performance.now(), n = this.#r._DebugTrigger(this.#a, e, t2, s);
       let a2 = n.next();
       for (; !a2.done; ) await this.DebugBreak(a2.value), a2 = n.next();
-      return this.IsSuspended() || this._eventSheetManager.IsInTrigger() || (await this._eventSheetManager.RunQueuedDebugTriggersAsync(), this._hasStartedTicking && !this._isInTick && this._RequestAnimationFrame()), this._mainThreadTimeCounter += performance.now() - i, a2.value;
+      return this.IsSuspended() || this.#r.IsInTrigger() || (await this.#r.RunQueuedDebugTriggersAsync(), this._hasStartedTicking && !this._isInTick && this._RequestAnimationFrame()), this._mainThreadTimeCounter += performance.now() - i, a2.value;
     }
     FastTrigger(e, t2, s) {
       const i = this.IsDebug();
       i && this.SetDebuggingEnabled(false);
-      const n = this._eventSheetManager._FastTrigger(this._layoutManager, e, t2, s);
+      const n = this.#r._FastTrigger(this.#a, e, t2, s);
       return i && this.SetDebuggingEnabled(true), n;
     }
     DebugFastTrigger(e, t2, s) {
-      return this._eventSheetManager._DebugFastTrigger(this._layoutManager, e, t2, s);
+      return this.#r._DebugFastTrigger(this.#a, e, t2, s);
     }
     ScheduleTriggers(e) {
       return this._scheduleTriggersThrottle.Add(e);
@@ -31278,13 +32920,13 @@ var ValidateInternalAPIToken2;
       return this._isAnyWebView2Wrapper;
     }
     GetCollisionEngine() {
-      return this._collisionEngine;
+      return this.#h;
     }
     GetSolidBehavior() {
-      return this._addonManager.GetSolidBehavior();
+      return this.#o.GetSolidBehavior();
     }
     GetJumpthruBehavior() {
-      return this._addonManager.GetJumpthruBehavior();
+      return this.#o.GetJumpthruBehavior();
     }
     Uses3DFeatures() {
       return this._uses3dFeatures;
@@ -31402,9 +33044,9 @@ var ValidateInternalAPIToken2;
       }
     }
     async _SaveToJsonString() {
-      const e = { "c3save": true, "version": 1, "rt": { "time": this.GetGameTime(), "timeRaw": this.GetGameTimeRaw(), "walltime": this.GetWallTime(), "timescale": this.GetTimeScale(), "tickcount": this.GetTickCount(), "next_uid": this._nextUid, "running_layout": this.GetMainRunningLayout().GetSID(), "start_time_offset": Date.now() - this._startTime }, "types": {}, "layouts": {}, "events": this._eventSheetManager._SaveToJson(), "timelines": this._timelineManager._SaveToJson(), "user_script_data": null };
+      const e = { "c3save": true, "version": 1, "rt": { "time": this.GetGameTime(), "timeRaw": this.GetGameTimeRaw(), "walltime": this.GetWallTime(), "timescale": this.GetTimeScale(), "tickcount": this.GetTickCount(), "next_uid": this._nextUid, "running_layout": this.GetMainRunningLayout().GetSID(), "start_time_offset": Date.now() - this._startTime, "samplingMode": this.GetSamplingMode() }, "types": {}, "layouts": {}, "events": this.#r._SaveToJson(), "timelines": this.#l._SaveToJson(), "user_script_data": null };
       for (const t3 of this._allObjectClasses) t3.IsFamily() || t3.HasNoSaveBehavior() || (e["types"][t3.GetSID().toString()] = t3._SaveToJson());
-      for (const t3 of this._layoutManager.GetAllLayouts()) e["layouts"][t3.GetSID().toString()] = t3._SaveToJson();
+      for (const t3 of this.#a.GetAllLayouts()) e["layouts"][t3.GetSID().toString()] = t3._SaveToJson();
       const t2 = this._CreateUserScriptEvent("save");
       return t2.saveData = null, await this.DispatchUserScriptEventAsyncWait(t2), e["user_script_data"] = t2.saveData, JSON.stringify(e);
     }
@@ -31421,7 +33063,7 @@ var ValidateInternalAPIToken2;
         e2.GetObjectClass().HasNoSaveBehavior() || e2._OnBeforeLoad();
       }
       const i = s["rt"];
-      this._gameTime.Set(i["time"]), i.hasOwnProperty("timeRaw") && this._gameTimeRaw.Set(i["timeRaw"]), this._wallTime.Set(i["walltime"]), this._timeScale = i["timescale"], this._tickCount = i["tickcount"], this._startTime = Date.now() - i["start_time_offset"];
+      this._gameTime.Set(i["time"]), i.hasOwnProperty("timeRaw") && this._gameTimeRaw.Set(i["timeRaw"]), this._wallTime.Set(i["walltime"]), this._timeScale = i["timescale"], this._tickCount = i["tickcount"], this._startTime = Date.now() - i["start_time_offset"], i.hasOwnProperty("samplingMode") && (this.#e = i["samplingMode"]);
       const n = i["running_layout"];
       this._isLoadingState = true;
       let a2 = false;
@@ -31439,7 +33081,7 @@ var ValidateInternalAPIToken2;
         const s2 = parseInt(e2, 10), i2 = this.GetObjectClassBySID(s2);
         !i2 || i2.IsFamily() || i2.HasNoSaveBehavior() || i2._LoadFromJson(t3, r2);
       }
-      for (const e2 of this._layoutManager.GetAllLayouts()) for (const t3 of e2.allLayers()) t3._LoadFromJsonAfterInstances();
+      for (const e2 of this.#a.GetAllLayouts()) for (const t3 of e2.allLayers()) t3._LoadFromJsonAfterInstances();
       if (this.FlushPendingInstances(), this._RefreshUidMap(), this._isLoadingState = false, a2) {
         for (const e2 of this.allInstances()) e2.SetupInitialSceneGraphConnections();
         for (const [e2, t3] of Object.entries(s["types"])) {
@@ -31447,7 +33089,7 @@ var ValidateInternalAPIToken2;
           !i2 || i2.IsFamily() || i2.HasNoSaveBehavior() || i2._SetupSceneGraphConnectionsOnChangeOfLayout(t3);
         }
       }
-      this._nextUid = i["next_uid"], this._eventSheetManager._LoadFromJson(s["events"]);
+      this._nextUid = i["next_uid"], this.#r._LoadFromJson(s["events"]);
       for (const e2 of this._allObjectClasses) if (!e2.IsFamily() && e2.IsInContainer()) for (const t3 of e2.GetInstances()) {
         const s2 = t3.GetIID();
         t3._ClearSiblings();
@@ -31458,11 +33100,11 @@ var ValidateInternalAPIToken2;
           t3._AddSibling(n2[s2]);
         }
       }
-      this._timelineManager._LoadFromJson(s["timelines"]), t2.SetAllLayerProjectionChanged(), t2.SetAllLayerMVChanged();
+      this.#l._LoadFromJson(s["timelines"]), t2.SetAllLayerProjectionChanged(), t2.SetAllLayerMVChanged();
       for (const e2 of r2) e2._OnCreatedForLoadingSavegame();
-      this.DoAfterLoad(), this._dispatcher.dispatchEvent(C32.New(C32.Event, "afterload")), this.DispatchUserScriptEvent(this._CreateUserScriptEvent("afterload"));
-      for (const [e2, t3] of Object.entries(s["types"])) {
-        const t4 = parseInt(e2, 10), s2 = this.GetObjectClassBySID(t4);
+      this.DoAfterLoad(), this.#M(), this._dispatcher.dispatchEvent(C32.New(C32.Event, "afterload")), this.DispatchUserScriptEvent(this._CreateUserScriptEvent("afterload"));
+      for (const e2 of Object.keys(s["types"])) {
+        const t3 = parseInt(e2, 10), s2 = this.GetObjectClassBySID(t3);
         s2 && s2._ClearLoadInstancesJson();
       }
       const o2 = this._CreateUserScriptEvent("load");
@@ -31472,39 +33114,39 @@ var ValidateInternalAPIToken2;
       return t2.GetWorldInfo().GetTmpHierarchyPosition() - e.GetWorldInfo().GetTmpHierarchyPosition();
     }
     AddInstanceNeedingAfterLoad(e, t2) {
-      e.GetWorldInfo() && (this._instancesNeedingAfterLoadMap.has(e) || (this._instancesNeedingAfterLoadMap.set(e, t2), this._instancesNeedingAfterLoadArray.push(e)));
+      e.GetWorldInfo() && (this.#m.has(e) || (this.#m.set(e, t2), this.#p.push(e)));
     }
     ClearIntancesNeedingAfterLoad() {
-      this._instancesNeedingAfterLoadMap = /* @__PURE__ */ new WeakMap(), C32.clearArray(this._instancesNeedingAfterLoadArray), C32.SceneGraphInfo.ClearUpdatedInstances();
+      this.#m = /* @__PURE__ */ new WeakMap(), C32.clearArray(this.#p), C32.SceneGraphInfo.ClearUpdatedInstances();
     }
     DoAfterLoad(e = "full", t2 = null) {
-      this._instancesNeedingAfterLoadArray.sort(this.SortOnTmpHierarchyPosition), t2 || (t2 = {}), t2.processedWorldInfo = /* @__PURE__ */ new Set();
-      const s = this._instancesNeedingAfterLoadArray.length;
-      for (const s2 of this._instancesNeedingAfterLoadArray) s2._OnAfterLoad(this._instancesNeedingAfterLoadMap.get(s2), e, t2);
-      for (const s2 of this._instancesNeedingAfterLoadArray) s2._OnAfterLoad2(this._instancesNeedingAfterLoadMap.get(s2), e, t2);
+      this.#p.sort(this.SortOnTmpHierarchyPosition), t2 || (t2 = {}), t2.processedWorldInfo = /* @__PURE__ */ new Set();
+      const s = this.#p.length;
+      for (const s2 of this.#p) s2._OnAfterLoad(this.#m.get(s2), e, t2);
+      for (const s2 of this.#p) s2._OnAfterLoad2(this.#m.get(s2), e, t2);
       if (this.ClearIntancesNeedingAfterLoad(), s) {
         this.FlushPendingInstances(), this._RefreshUidMap();
-        for (const e2 of this._layoutManager.GetAllLayouts()) for (const t3 of e2.allLayers()) t3._SortInstancesByLastCachedZIndex(), t3.SetZIndicesChanged();
+        for (const e2 of this.#a.GetAllLayouts()) for (const t3 of e2.allLayers()) t3._SortInstancesByLastCachedZIndex(), t3.SetZIndicesChanged();
       }
     }
     async AddJobWorkerScripts(e) {
       const t2 = e.map((e2) => new URL(e2, location.href).toString());
-      this._jobScheduler.ImportScriptsToJobWorkers(t2);
+      this.#_.ImportScriptsToJobWorkers(t2);
     }
     AddJobWorkerBlob(e, t2) {
-      this._jobScheduler.SendBlobToJobWorkers(e, t2);
+      this.#_.SendBlobToJobWorkers(e, t2);
     }
     AddJobWorkerBuffer(e, t2) {
-      this._jobScheduler.SendBufferToJobWorkers(e, t2);
+      this.#_.SendBufferToJobWorkers(e, t2);
     }
     AddJob(e, t2, s, i) {
-      return this._jobScheduler.AddJob(e, t2, s, null, null, i);
+      return this.#_.AddJob(e, t2, s, null, null, i);
     }
     BroadcastJob(e, t2, s, i) {
-      return this._jobScheduler.BroadcastJob(e, t2, s, i);
+      return this.#_.BroadcastJob(e, t2, s, i);
     }
     GetMaxNumJobWorkers() {
-      return this._jobScheduler.GetMaxNumWorkers();
+      return this.#_.GetMaxNumWorkers();
     }
     InvokeDownload(e, t2) {
       this.PostComponentMessageToDOM("runtime", "invoke-download", { "url": e, "filename": t2 });
@@ -31574,7 +33216,7 @@ var ValidateInternalAPIToken2;
       return this.DebugIterateAndBreak(this._dispatcher.dispatchGeneratorEvent(e));
     }
     _InvokeFunctionFromJS(e) {
-      return this._eventSheetManager._InvokeFunctionFromJS(e["name"], e["params"]);
+      return this.#r._InvokeFunctionFromJS(e["name"], e["params"]);
     }
     _GetHTMLLayerWrapElement(e) {
       if (this.IsInWorker()) throw new Error("not supported in worker mode");
@@ -31607,10 +33249,10 @@ var ValidateInternalAPIToken2;
       return this._commonScriptInterfaces;
     }
     _MapScriptInterface(e, t2) {
-      this._interfaceMap.set(e, t2);
+      this.#t.set(e, t2);
     }
     _UnwrapScriptInterface(e) {
-      return this._interfaceMap.get(e);
+      return this.#t.get(e);
     }
     _UnwrapIObjectClass(e) {
       if (!(e instanceof self.IObjectClass)) throw new TypeError("expected IObjectClass");
@@ -31625,13 +33267,15 @@ var ValidateInternalAPIToken2;
       return t2;
     }
     _UnwrapIWorldInstance(e) {
-      if (!(e instanceof self.IWorldInstance)) throw new TypeError("expected IWorldInstance");
+      C3X.RequireIWorldInstance(e);
       const t2 = this._UnwrapScriptInterface(e);
       if (!(t2 && t2 instanceof C32.Instance)) throw new Error("invalid IInstance");
       return t2;
     }
-  }, self["C3_CreateRuntime"] = C32.Runtime.Create, self["C3_InitRuntime"] = (e, t2) => e.Init(t2);
+  }, globalThis["C3_SetInitFunctions"](CreateRuntime, InitRuntime);
 }
+var CreateRuntime2;
+var InitRuntime2;
 {
   const C32 = self.C3;
   C32.JobSchedulerRuntime = class extends C32.DefendedBase {
@@ -31737,21 +33381,6 @@ var ValidateInternalAPIToken2;
     supports3dDirectRendering: false,
     animated: false,
     parameters: [["intensity", 0, "percent"]]
-  };
-  self["C3_Shaders"]["setcolor"] = {
-    glsl: "varying mediump vec2 vTex;\nuniform lowp sampler2D samplerFront;\nuniform lowp vec3 setColor;\nvoid main(void)\n{\nlowp float a = texture2D(samplerFront, vTex).a;\ngl_FragColor = vec4(setColor.r * a, setColor.g * a, setColor.b * a, a);\n}",
-    glslWebGL2: "",
-    wgsl: "%%SAMPLERFRONT_BINDING%% var samplerFront : sampler;\n%%TEXTUREFRONT_BINDING%% var textureFront : texture_2d<f32>;\nstruct ShaderParams {\nsetColor : vec3<f32>\n};\n%%SHADERPARAMS_BINDING%% var<uniform> shaderParams : ShaderParams;\n%%FRAGMENTINPUT_STRUCT%%\n%%FRAGMENTOUTPUT_STRUCT%%\n@fragment\nfn main(input : FragmentInput) -> FragmentOutput\n{\nvar a : f32 = textureSample(textureFront, samplerFront, input.fragUV).a;\nvar output : FragmentOutput;\noutput.color = vec4<f32>(shaderParams.setColor * a, a);\nreturn output;\n}",
-    blendsBackground: false,
-    usesDepth: false,
-    extendBoxHorizontal: 0,
-    extendBoxVertical: 0,
-    crossSampling: false,
-    mustPreDraw: false,
-    preservesOpaqueness: true,
-    supports3dDirectRendering: false,
-    animated: false,
-    parameters: [["setColor", 0, "color"]]
   };
   self["C3_Shaders"]["pulse"] = {
     glsl: "#ifdef GL_FRAGMENT_PRECISION_HIGH\n#define highmedp highp\n#else\n#define highmedp mediump\n#endif\nvarying mediump vec2 vTex;\nuniform lowp sampler2D samplerFront;\nuniform mediump vec2 srcStart;\nuniform mediump vec2 srcEnd;\nuniform lowp float intensity;\nuniform lowp float lighting;\nuniform mediump float frequency;\nuniform mediump float speed;\nuniform mediump float centerX;\nuniform mediump float centerY;\nuniform mediump vec2 pixelSize;\nuniform mediump float devicePixelRatio;\nuniform mediump float layerScale;\nuniform highmedp float seconds;\nvoid main(void)\n{\nmediump vec2 srcSize = srcEnd - srcStart;\nmediump vec2 tex = (vTex - srcStart) / srcSize;\nmediump vec2 res = 1.0 / pixelSize;\nmediump vec2 halfres = res / 2.0;\nmediump vec2 cPos = (tex - vec2(centerX, 1.0 - centerY)) * res;\nmediump float cLength = length(cPos);\nmediump vec2 uv = tex+(cPos/cLength)*sin(cLength/frequency/(devicePixelRatio*layerScale)-seconds*speed)/25.0;\ntex = mix(tex, uv, intensity);\ntex = clamp(tex, 0.0, 1.0);\ntex = tex * srcSize + srcStart;\nlowp vec4 front = texture2D(samplerFront, tex);\nlowp vec3 col = mix(front.rgb, front.rgb*50.0/cLength, lighting * intensity);\ngl_FragColor = vec4(col,front.a);\n}",
@@ -32085,17 +33714,17 @@ var ValidateInternalAPIToken2;
       h2.truncateArray(r2, s), a2.SetArrayPicked(r2);
       const o2 = !!r2.length;
       return h2.clearArray(r2), n.Pop(), e.ApplySolToContainer(), o2;
-    }, PickByHighestLowestValue(e, t2, n) {
+    }, PickByHighestLowestValue(e, t2, n, r2) {
       if (!e) return false;
-      const r2 = e.GetCurrentSol(), a2 = r2.GetInstances();
-      if (0 === a2.length) return false;
-      const i = this._runtime.GetCurrentCondition();
-      let s = null, o2 = 0;
-      for (let e2 = 0, r3 = a2.length; e2 < r3; ++e2) {
-        const r4 = a2[e2];
-        n = i.ReevaluateParameter(2, e2), (null === s || 0 === t2 && n < o2 || 1 === t2 && n > o2) && (o2 = n, s = r4);
+      const a2 = e.GetCurrentSol(), i = a2.GetInstances();
+      if (0 === i.length) return false;
+      const s = this._runtime.GetCurrentCondition(), o2 = [];
+      let u2 = 0;
+      for (let e2 = 0, a3 = i.length; e2 < a3; ++e2) {
+        const a4 = i[e2];
+        n = s.ReevaluateParameter(2, e2), 0 === o2.length || 0 === t2 && n < u2 || 1 === t2 && n > u2 ? (u2 = n, h2.clearArray(o2), o2.push(a4)) : r2 && n === u2 && o2.push(a4);
       }
-      return r2.PickOne(s), e.ApplySolToContainer(), true;
+      return r2 ? a2.SetArrayPicked(o2) : a2.PickOne(o2[0]), e.ApplySolToContainer(), true;
     }, PickNth(e, t2) {
       if (!e) return false;
       const n = e.GetCurrentSol(), r2 = n.GetInstances();
@@ -32270,12 +33899,17 @@ var ValidateInternalAPIToken2;
       for (const e of this._runtime.GetLayoutManager().GetAllLayouts()) e.ResetPersistData();
     }, SetPixelRounding(e) {
       this._runtime.SetPixelRoundingEnabled(0 !== e);
+    }, SetProjectSampling(e) {
+      this._runtime.SetSamplingMode(S2.Gfx.RendererBase.SamplingNumberToMode(e + 1));
+    }, SetAnisotropicFiltering(e) {
+      const t2 = this._runtime.GetCanvasManager();
+      t2 && t2.SetAnisotropicFiltering([4, 1, 2, 3, 4, 8, 18][e]);
     }, SetFramerateMinMax(e, t2) {
       this._runtime.SetMaxDt(1 / e), this._runtime.SetMinDt(1 / t2);
     }, SetDeltaTimeMinMax(e, t2) {
       this._runtime.SetMinDt(e), this._runtime.SetMaxDt(t2);
-    }, SetFramerateMode(e) {
-      this._runtime._SetFramerateMode(["vsync", "unlimited-tick", "unlimited-frame"][e]);
+    }, SetFramerateMode(e, t2) {
+      this._runtime._SetFramerateMode(["vsync", "fixed", "unlimited-tick", "unlimited-frame"][e]), this._runtime._SetFixedFramerate(t2);
     }, SortZOrderByInstVar(e, t2) {
       if (!e) return;
       const n = e.GetCurrentSol().GetInstances(), r2 = d2, a2 = p2, i = this._runtime.GetCurrentLayout(), s = e.IsFamily(), o2 = e.GetFamilyIndex();
@@ -32318,6 +33952,45 @@ var ValidateInternalAPIToken2;
       if (this._runtime.IsLoading()) return;
       const e = this._runtime.GetLayoutManager();
       e.IsPendingChangeMainLayout() || (e.ChangeMainLayout(e.GetMainRunningLayout()), this._runtime.GetEventSheetManager().ResetAllGroupsInitialActivation());
+    }, SetLayoutScale(e) {
+      this._runtime.GetCurrentLayout().SetScale(+e);
+    }, SetLayoutAngle(e) {
+      this._runtime.GetCurrentLayout().SetAngle(S2.toRadians(+e));
+    }, SetLayoutEffectEnabled(e, t2) {
+      const n = this._runtime.GetCurrentLayout(), r2 = n.GetEffectList().GetEffectTypeByName(t2);
+      if (!r2) return;
+      const a2 = 1 === e;
+      r2.IsActive() !== a2 && (r2.SetActive(a2), n.UpdateActiveEffects(), this._runtime.UpdateRender());
+    }, SetLayoutEffectParam(e, t2, n) {
+      const r2 = this._runtime.GetCurrentLayout().GetEffectList(), a2 = r2.GetEffectTypeByName(e);
+      if (!a2) return;
+      t2 = Math.floor(t2);
+      const i = a2.GetShaderProgram().GetParameterType(t2);
+      if (!i) return;
+      "color" === i ? (G.setFromRgbValue(n), n = G) : "percent" === i && (n /= 100);
+      r2.SetEffectParameter(a2.GetIndex(), t2, n) && a2.IsActive() && this._runtime.UpdateRender();
+    }, SetLayoutVanishingPoint(e, t2) {
+      this._runtime.GetCurrentLayout().SetVanishingPointXY(e / 100, t2 / 100);
+    }, SetLayoutProjection(e) {
+      const t2 = this._runtime.GetCurrentLayout();
+      0 === e ? t2.SetPerspectiveProjection() : t2.SetOrthographicProjection();
+    }, SetLayoutSampling(e) {
+      this._runtime.GetCurrentLayout().SetSamplingMode(S2.Gfx.RendererBase.SamplingNumberToMode(e));
+    }, ScrollX(e) {
+      this._runtime.GetCurrentLayout().SetScrollX(e);
+    }, ScrollY(e) {
+      this._runtime.GetCurrentLayout().SetScrollY(e);
+    }, Scroll(e, t2) {
+      const n = this._runtime.GetCurrentLayout();
+      n.SetScrollX(e), n.SetScrollY(t2);
+    }, ScrollToObject(e) {
+      if (!e) return;
+      const t2 = e.GetFirstPicked();
+      if (!t2) return;
+      const n = t2.GetWorldInfo();
+      if (!n) return;
+      const r2 = this._runtime.GetCurrentLayout();
+      r2.SetScrollX(n.GetX()), r2.SetScrollY(n.GetY());
     }, SetLayerVisible(e, t2) {
       e && e.SetVisible(t2);
     }, SetLayerInteractive(e, t2) {
@@ -32342,6 +34015,8 @@ var ValidateInternalAPIToken2;
       e && e.SetZElevation(+t2);
     }, SetLayerRenderingMode(e, t2) {
       e && e.SetRenderAs3D(1 === t2);
+    }, SetLayerSampling(e, t2) {
+      e && e.SetSamplingMode(S2.Gfx.RendererBase.SamplingNumberToMode(t2));
     }, SetLayerBackground(e, t2) {
       if (!e) return;
       G.setFromRgbValue(t2), G.clamp();
@@ -32368,43 +34043,6 @@ var ValidateInternalAPIToken2;
       a2.SetEffectParameter(i.GetIndex(), n, r2) && i.IsActive() && this._runtime.UpdateRender();
     }, SetLayerForceOwnTexture(e, t2) {
       e && e.SetForceOwnTexture(t2);
-    }, SetLayoutScale(e) {
-      this._runtime.GetCurrentLayout().SetScale(+e);
-    }, SetLayoutAngle(e) {
-      this._runtime.GetCurrentLayout().SetAngle(S2.toRadians(+e));
-    }, SetLayoutEffectEnabled(e, t2) {
-      const n = this._runtime.GetCurrentLayout(), r2 = n.GetEffectList().GetEffectTypeByName(t2);
-      if (!r2) return;
-      const a2 = 1 === e;
-      r2.IsActive() !== a2 && (r2.SetActive(a2), n.UpdateActiveEffects(), this._runtime.UpdateRender());
-    }, SetLayoutEffectParam(e, t2, n) {
-      const r2 = this._runtime.GetCurrentLayout().GetEffectList(), a2 = r2.GetEffectTypeByName(e);
-      if (!a2) return;
-      t2 = Math.floor(t2);
-      const i = a2.GetShaderProgram().GetParameterType(t2);
-      if (!i) return;
-      "color" === i ? (G.setFromRgbValue(n), n = G) : "percent" === i && (n /= 100);
-      r2.SetEffectParameter(a2.GetIndex(), t2, n) && a2.IsActive() && this._runtime.UpdateRender();
-    }, SetLayoutVanishingPoint(e, t2) {
-      this._runtime.GetCurrentLayout().SetVanishingPointXY(e / 100, t2 / 100);
-    }, SetLayoutProjection(e) {
-      const t2 = this._runtime.GetCurrentLayout();
-      0 === e ? t2.SetPerspectiveProjection() : t2.SetOrthographicProjection();
-    }, ScrollX(e) {
-      this._runtime.GetCurrentLayout().SetScrollX(e);
-    }, ScrollY(e) {
-      this._runtime.GetCurrentLayout().SetScrollY(e);
-    }, Scroll(e, t2) {
-      const n = this._runtime.GetCurrentLayout();
-      n.SetScrollX(e), n.SetScrollY(t2);
-    }, ScrollToObject(e) {
-      if (!e) return;
-      const t2 = e.GetFirstPicked();
-      if (!t2) return;
-      const n = t2.GetWorldInfo();
-      if (!n) return;
-      const r2 = this._runtime.GetCurrentLayout();
-      r2.SetScrollX(n.GetX()), r2.SetScrollY(n.GetY());
     }, AddLayer(e, t2, n) {
       const r2 = this._runtime.GetCurrentLayout();
       try {
@@ -32532,7 +34170,7 @@ var ValidateInternalAPIToken2;
         "number" == typeof r3 && (t2 > r3 && (t2 = r3));
       }
       return t2;
-    }, clamp: (e, t2, n) => f2.clamp(e, t2, n), distance: (e, t2, n, r2) => f2.distanceTo(e, t2, n, r2), angle: (e, t2, n, r2) => f2.toDegrees(f2.angleTo(e, t2, n, r2)), lerp: (e, t2, n) => f2.lerp(e, t2, n), unlerp: (e, t2, n) => f2.unlerp(e, t2, n), qarp: (e, t2, n, r2) => f2.qarp(e, t2, n, r2), cubic: (e, t2, n, r2, a2) => f2.cubic(e, t2, n, r2, a2), cosp: (e, t2, n) => f2.cosp(e, t2, n), anglediff: (e, t2) => f2.toDegrees(f2.angleDiff(f2.toRadians(e), f2.toRadians(t2))), anglelerp: (e, t2, n) => f2.toDegrees(f2.angleLerp(f2.toRadians(e), f2.toRadians(t2), n)), anglerotate: (e, t2, n) => f2.toDegrees(f2.angleRotate(f2.toRadians(e), f2.toRadians(t2), f2.toRadians(n))), setbit: (e, t2, n) => (e |= 0) & ~(1 << (t2 |= 0)) | (n = 0 !== n ? 1 : 0) << t2, togglebit: (e, t2) => (e |= 0) ^ 1 << (t2 |= 0), getbit: (e, t2) => (e |= 0) & 1 << (t2 |= 0) ? 1 : 0, newline: () => "\n", uppercase: (e) => "string" == typeof e ? e.toUpperCase() : "", lowercase: (e) => "string" == typeof e ? e.toLowerCase() : "", left: (e, t2) => "string" == typeof e ? e.substr(0, t2) : "", mid: (e, t2, n) => "string" != typeof e ? "" : n < 0 ? e.substr(t2) : e.substr(t2, n), right: (e, t2) => "string" == typeof e ? e.substr(Math.max(e.length - t2, 0)) : "", trim: (e) => "string" == typeof e ? e.trim() : "", tokenat(e, t2, n) {
+    }, clamp: (e, t2, n) => f2.clamp(e, t2, n), distance: (e, t2, n, r2) => f2.distanceTo(e, t2, n, r2), distance3d: (e, t2, n, r2, a2, i) => f2.distanceTo3d(e, t2, n, r2, a2, i), angle: (e, t2, n, r2) => f2.toDegrees(f2.angleTo(e, t2, n, r2)), lerp: (e, t2, n) => f2.lerp(e, t2, n), unlerp: (e, t2, n) => f2.unlerp(e, t2, n), qarp: (e, t2, n, r2) => f2.qarp(e, t2, n, r2), cubic: (e, t2, n, r2, a2) => f2.cubic(e, t2, n, r2, a2), cosp: (e, t2, n) => f2.cosp(e, t2, n), anglediff: (e, t2) => f2.toDegrees(f2.angleDiff(f2.toRadians(e), f2.toRadians(t2))), anglelerp: (e, t2, n) => f2.toDegrees(f2.angleLerp(f2.toRadians(e), f2.toRadians(t2), n)), anglerotate: (e, t2, n) => f2.toDegrees(f2.angleRotate(f2.toRadians(e), f2.toRadians(t2), f2.toRadians(n))), setbit: (e, t2, n) => (e |= 0) & ~(1 << (t2 |= 0)) | (n = 0 !== n ? 1 : 0) << t2, togglebit: (e, t2) => (e |= 0) ^ 1 << (t2 |= 0), getbit: (e, t2) => (e |= 0) & 1 << (t2 |= 0) ? 1 : 0, newline: () => "\n", uppercase: (e) => "string" == typeof e ? e.toUpperCase() : "", lowercase: (e) => "string" == typeof e ? e.toLowerCase() : "", left: (e, t2) => "string" == typeof e ? e.substr(0, t2) : "", mid: (e, t2, n) => "string" != typeof e ? "" : n < 0 ? e.substr(t2) : e.substr(t2, n), right: (e, t2) => "string" == typeof e ? e.substr(Math.max(e.length - t2, 0)) : "", trim: (e) => "string" == typeof e ? e.trim() : "", tokenat(e, t2, n) {
       if ("string" != typeof e || "string" != typeof n) return "";
       let r2 = e.split(n);
       return (t2 = Math.floor(t2)) < 0 || t2 >= r2.length ? "" : r2[t2];
@@ -32787,29 +34425,29 @@ var SortInstancesByValue2;
     };
   }
   {
-    const e = self.C3, t2 = self.C3X, i = [0, 0, 0], r2 = 0, s = 1, n = 2, a2 = 3, o2 = 4, h2 = 5, _2 = 6, l = 7, c2 = 8, d2 = 9, g2 = 10, u2 = 11, T2 = 12, S2 = 13, p2 = 15, x2 = ["left", "center", "right"], G = ["top", "center", "bottom"], m2 = ["ltr", "rtl"], f2 = ["word", "cjk", "character"], w2 = new e.Rect(), I2 = new e.Quad(), R = new e.Color(), y2 = e.New(e.Vector2), b2 = /* @__PURE__ */ new Map([["b", "strong"], ["i", "em"], ["s", "s"], ["u", "u"], ["iconoffsety", null]]);
+    const e = self.C3, t2 = self.C3X, i = [0, 0, 0], r2 = 0, s = 1, n = 2, a2 = 3, o2 = 4, h2 = 5, _2 = 6, l = 7, d2 = 8, c2 = 9, g2 = 10, u2 = 11, T2 = 12, S2 = 13, p2 = 15, x2 = ["left", "center", "right"], f2 = ["top", "center", "bottom"], G = ["ltr", "rtl"], m2 = ["word", "cjk", "character"], w2 = new e.Rect(), I2 = new e.Quad2D(), b2 = new e.Color(), R = e.New(e.Vector2), y2 = /* @__PURE__ */ new Map([["b", "strong"], ["i", "em"], ["s", "s"], ["u", "u"], ["iconoffsety", null]]);
     e.Plugins.Text.Instance = class extends e.SDKWorldInstanceBase {
       constructor(t3, i2) {
-        if (super(t3), this._text = "", this._enableBBcode = true, this._faceName = "Arial", this._ptSize = 12, this._lineHeightOffset = 0, this._isBold = false, this._isItalic = false, this._color = e.New(e.Color), this._horizontalAlign = 0, this._verticalAlign = 0, this._wrapMode = "word", this._textDirection = 0, this._resolutionMode = "auto", this._fixedScaleFactor = 1, this._iconObjectClass = null, this._htmlString = "", this._isHtmlStringUpToDate = false, this._readAloud = false, this._screenReaderText = null, this._typewriterStartTime = -1, this._typewriterEndTime = -1, this._typewriterLength = 0, this._rendererText = e.New(e.Gfx.RendererText, this._runtime.GetRenderer(), { timeout: 5 }), this._rendererText.ontextureupdate = () => this._runtime.UpdateRender(), this._animationframeimagechange_handler = () => this._OnIconObjectClassImageChanged(), this._pendingUpdateIconSet = false, this._beforerender_handler = () => this._OnBeforeRender(), i2) {
-          this._text = i2[r2], this._enableBBcode = !!i2[s], this._faceName = i2[n], this._ptSize = i2[a2], this._lineHeightOffset = i2[o2], this._isBold = !!i2[h2], this._isItalic = !!i2[_2], this._horizontalAlign = i2[c2], this._verticalAlign = i2[d2], this._wrapMode = f2[i2[g2]], this._textDirection = i2[u2], this._SetIconObjectClass(this._runtime.GetObjectClassBySID(i2[T2]));
+        if (super(t3), this._text = "", this._enableBBcode = true, this._faceName = "Arial", this._ptSize = 12, this._lineHeightOffset = 0, this._isBold = false, this._isItalic = false, this._color = e.New(e.Color), this._horizontalAlign = 0, this._verticalAlign = 0, this._wrapMode = "word", this._textDirection = 0, this._resolutionMode = "auto", this._fixedScaleFactor = 1, this._iconObjectClass = null, this._htmlString = "", this._isHtmlStringUpToDate = false, this._readAloud = false, this._screenReaderText = null, this._typewriterStartTime = -1, this._typewriterEndTime = -1, this._typewriterLength = 0, this._rendererText = e.New(e.Gfx.RendererText, this._runtime.GetRenderer(), { timeout: 5 }), this._rendererText.ontextureupdate = () => this._runtime.UpdateRender(), this._animationframeimagechange_handler = () => this._OnIconObjectClassImageChanged(), this._pendingUpdateIconSet = false, this._didUpdateTextCanvas = false, this._beforerender_handler = () => this._OnBeforeRender(), this._beforerender2_handler = () => this._OnBeforeRender2(), i2) {
+          this._text = i2[r2], this._enableBBcode = !!i2[s], this._faceName = i2[n], this._ptSize = i2[a2], this._lineHeightOffset = i2[o2], this._isBold = !!i2[h2], this._isItalic = !!i2[_2], this._horizontalAlign = i2[d2], this._verticalAlign = i2[c2], this._wrapMode = m2[i2[g2]], this._textDirection = i2[u2], this._SetIconObjectClass(this._runtime.GetObjectClassBySID(i2[T2]));
           const e2 = i2[l];
           this._color.setRgb(e2[0], e2[1], e2[2]), this.GetWorldInfo().SetVisible(i2[S2]), this._readAloud = !!i2[p2];
         }
-        this._UpdateTextSettings(), this._UpdateScreenReaderText(), this._runtime.Dispatcher().addEventListener("beforerender", this._beforerender_handler);
+        this._UpdateTextSettings(), this._UpdateScreenReaderText(), this._runtime.Dispatcher().addEventListener("beforerender", this._beforerender_handler), this._runtime.Dispatcher().addEventListener("beforerender2", this._beforerender2_handler);
       }
       Release() {
-        this._runtime.Dispatcher().removeEventListener("beforerender", this._beforerender_handler), this._beforerender_handler = null, this._SetIconObjectClass(null), this._CancelTypewriter(), this._screenReaderText && (this._screenReaderText.Release(), this._screenReaderText = null), this._rendererText.Release(), this._rendererText = null, super.Release();
+        this._runtime.Dispatcher().removeEventListener("beforerender2", this._beforerender2_handler), this._beforerender2_handler = null, this._runtime.Dispatcher().removeEventListener("beforerender", this._beforerender_handler), this._beforerender_handler = null, this._SetIconObjectClass(null), this._CancelTypewriter(), this._screenReaderText && (this._screenReaderText.Release(), this._screenReaderText = null), this._rendererText.Release(), this._rendererText = null, super.Release();
       }
       _UpdateTextSettings() {
         const e2 = this._rendererText;
-        e2.SetText(this._text), e2.SetBBCodeEnabled(this._enableBBcode), this._rendererText.IsBBCodeEnabled() && this._iconObjectClass ? this._rendererText.SetIconSet(this.GetRuntime().GetTextIconSet(this._iconObjectClass)) : this._rendererText.SetIconSet(null), e2.SetIconSmoothing("nearest" !== this._runtime.GetSampling()), e2.SetFontName(this._faceName), e2.SetLineHeight(this._lineHeightOffset), e2.SetBold(this._isBold), e2.SetItalic(this._isItalic), e2.SetColor(this._color), e2.SetHorizontalAlignment(x2[this._horizontalAlign]), e2.SetVerticalAlignment(G[this._verticalAlign]), e2.SetWordWrapMode(this._wrapMode), e2.SetTextDirection(m2[this._textDirection]);
+        e2.SetText(this._text), e2.SetBBCodeEnabled(this._enableBBcode), this._rendererText.IsBBCodeEnabled() && this._iconObjectClass ? this._rendererText.SetIconSet(this.GetRuntime().GetTextIconSet(this._iconObjectClass)) : this._rendererText.SetIconSet(null), e2.SetFontName(this._faceName), e2.SetLineHeight(this._lineHeightOffset), e2.SetBold(this._isBold), e2.SetItalic(this._isItalic), e2.SetColor(this._color), e2.SetHorizontalAlignment(x2[this._horizontalAlign]), e2.SetVerticalAlignment(f2[this._verticalAlign]), e2.SetWordWrapMode(this._wrapMode), e2.SetTextDirection(G[this._textDirection]);
       }
       _UpdateTextSize() {
         const e2 = this.GetWorldInfo();
         this._rendererText.SetText(this._text), this._rendererText.SetFontSize(this._ptSize), this._rendererText.SetFontSizeScale(e2.GetSceneGraphScale());
         const t3 = e2.GetLayer();
         let i2;
-        "auto" === this._resolutionMode ? (i2 = t3.GetResolutionScaleFactorToZ(e2.GetTotalZElevation()), this._rendererText.SetMipMapEnabled(false)) : "fixed" === this._resolutionMode && (i2 = this._fixedScaleFactor, this._rendererText.SetMipMapEnabled(true)), e2.HasMesh() && i2 !== this._rendererText.GetZoom() && e2.SetMeshChanged(true), this._rendererText.SetSize(e2.GetWidth(), e2.GetHeight(), i2);
+        "auto" === this._resolutionMode ? (i2 = t3.GetResolutionScaleFactorToZ(e2.GetTotalZ()), this._rendererText.SetMipMapEnabled(false)) : "fixed" === this._resolutionMode && (i2 = this._fixedScaleFactor, this._rendererText.SetMipMapEnabled(true)), e2.HasMesh() && i2 !== this._rendererText.GetZoom() && e2.SetMeshChanged(true), this._rendererText.SetSize(e2.GetWidth(), e2.GetHeight(), i2);
       }
       _SetIconObjectClass(t3) {
         t3 && (t3.IsFamily() || t3.GetPlugin().constructor !== e.Plugins.Sprite) || t3 !== this._iconObjectClass && (this._iconObjectClass && this._iconObjectClass.Dispatcher().removeEventListener("animationframeimagechange", this._animationframeimagechange_handler), this._iconObjectClass = t3, this._iconObjectClass && this._iconObjectClass.Dispatcher().addEventListener("animationframeimagechange", this._animationframeimagechange_handler), this._UpdateTextSettings(), this._isHtmlStringUpToDate = false, this._runtime.UpdateRender());
@@ -32824,11 +34462,15 @@ var SortInstancesByValue2;
         } else this._screenReaderText && (this._screenReaderText.Release(), this._screenReaderText = null);
       }
       _OnBeforeRender() {
+        this._didUpdateTextCanvas = false;
         const e2 = this.GetWorldInfo(), t3 = e2.GetLayer(), i2 = e2.GetLayout();
-        e2.IsVisible() && e2.IsInViewport(t3.GetViewport(), i2.HasVanishingPointOutsideViewport(), i2.IsOrthographicProjection()) && (this._UpdateTextForDraw(), this._rendererText.GetTexture());
+        e2.IsVisible() && t3.IsVisible() && e2.IsInViewport(t3.GetViewport(), i2.HasVanishingPointOutsideViewport(), i2.IsOrthographicProjection()) && (this._UpdateTextForDraw(), this._didUpdateTextCanvas = this._rendererText.MaybeUpdateCanvas());
+      }
+      _OnBeforeRender2() {
+        this._didUpdateTextCanvas && this._rendererText.GetTexture();
       }
       _UpdateTextForDraw() {
-        this._UpdateTextSize(), this._pendingUpdateIconSet && (this._pendingUpdateIconSet = false, this._rendererText.IsBBCodeEnabled() && this._iconObjectClass && this._rendererText.SetIconSet(this.GetRuntime().GetTextIconSet(this._iconObjectClass)));
+        this._UpdateTextSize(), this._rendererText.SetIconSmoothing(1 !== this.GetWorldInfo().GetActiveSampling()), this._pendingUpdateIconSet && (this._pendingUpdateIconSet = false, this._rendererText.IsBBCodeEnabled() && this._iconObjectClass && this._rendererText.SetIconSet(this.GetRuntime().GetTextIconSet(this._iconObjectClass)));
       }
       Draw(e2) {
         const t3 = this._runtime.GetCanvasManager().IsPastingToDrawingCanvas();
@@ -32836,12 +34478,12 @@ var SortInstancesByValue2;
         const i2 = this._rendererText.GetTexture();
         if (!i2) return;
         const r3 = this.GetWorldInfo(), s2 = r3.GetLayer();
-        if (0 !== r3.GetAngle() || 0 !== s2.GetAngle() || 0 !== r3.GetTotalZElevation() || r3.HasMesh() || !s2.RendersIn2DMode() || t3) e2.SetTexture(i2), r3.HasMesh() ? this._DrawMesh(r3, e2) : this._DrawStandard(r3, e2);
+        if (0 !== r3.GetAngle() || 0 !== s2.GetAngle() || 0 !== r3.GetTotalZ() || r3.HasMesh() || !s2.RendersIn2DMode() || t3) e2.SetTexture(i2, r3.GetActiveSampling()), r3.HasMesh() ? this._DrawMesh(r3, e2) : this._DrawStandard(r3, e2);
         else {
           const t4 = r3.GetBoundingQuad(), [n2, a3] = s2.LayerToDrawSurface(t4.getTlx(), t4.getTly()), [o3, h3] = s2.LayerToDrawSurface(t4.getBrx(), t4.getBry()), _3 = n2 - Math.round(n2), l2 = a3 - Math.round(a3);
           w2.set(n2, a3, o3, h3), w2.offset(-_3, -l2), I2.setFromRect(w2);
-          const [c3, d3] = e2.GetRenderTargetSize(e2.GetRenderTarget());
-          e2.IsWebGL() ? this._runtime.GetCanvasManager().SetDeviceTransform(e2, c3, d3) : (e2.SetNormalizedCoordsProgramVariant(true), I2.divide(c3, d3)), e2.SetTexture(i2), e2.Quad3(I2, this._rendererText.GetTexRect()), e2.IsWebGL() ? s2._SetTransform(e2) : e2.SetNormalizedCoordsProgramVariant(false);
+          const [d3, c3] = e2.GetRenderTargetSize(e2.GetRenderTarget());
+          e2.IsWebGL() ? this._runtime.GetCanvasManager().SetDeviceTransform(e2, d3, c3) : (e2.SetNormalizedCoordsProgramVariant(true), I2.divide(d3, c3)), e2.SetTexture(i2, r3.GetActiveSampling()), e2.Quad3(I2, this._rendererText.GetTexRect()), e2.IsWebGL() ? s2._SetTransform(e2) : e2.SetNormalizedCoordsProgramVariant(false);
         }
       }
       _DrawStandard(e2, t3) {
@@ -32851,11 +34493,11 @@ var SortInstancesByValue2;
       _DrawMesh(e2, t3) {
         const i2 = e2.GetTransformedMesh();
         if (e2.IsMeshChanged()) {
-          e2.CalculateBbox(w2, I2, false);
+          e2.CalculateBbox(null, I2, false);
           let t4 = I2;
           this._runtime.IsPixelRoundingEnabled() && (t4 = this._PixelRoundQuad(t4)), i2.CalculateTransformedMesh(e2.GetSourceMesh(), t4, this._rendererText.GetTexRect()), e2.SetMeshChanged(false);
         }
-        i2.Draw(t3, e2.GetTotalZElevation());
+        i2.Draw(t3, e2.GetTotalZ());
       }
       _PixelRoundQuad(e2) {
         const t3 = e2.getTlx() - Math.round(e2.getTlx()), i2 = e2.getTly() - Math.round(e2.getTly());
@@ -32908,9 +34550,9 @@ var SortInstancesByValue2;
             return this._IsItalic();
           case l:
             return i[0] = this._color.getR(), i[1] = this._color.getG(), i[2] = this._color.getB(), i;
-          case c2:
-            return this._GetHAlign();
           case d2:
+            return this._GetHAlign();
+          case c2:
             return this._GetVAlign();
           case g2:
             return this._GetWrapMode();
@@ -32947,10 +34589,10 @@ var SortInstancesByValue2;
             if (e3.getR() === i2[0] && e3.getG() === i2[1] && e3.getB() === i2[2]) return;
             this._color.setRgb(i2[0], i2[1], i2[2]), this._UpdateTextSettings();
             break;
-          case c2:
+          case d2:
             this._SetHAlign(t3);
             break;
-          case d2:
+          case c2:
             this._SetVAlign(t3);
             break;
           case g2:
@@ -33024,7 +34666,7 @@ var SortInstancesByValue2;
         return this._verticalAlign;
       }
       _SetWrapModeByIndex(e2) {
-        this._SetWrapMode(f2[e2]);
+        this._SetWrapMode(m2[e2]);
       }
       _SetWrapMode(e2) {
         this._wrapMode !== e2 && (this._wrapMode = e2, this._UpdateTextSettings(), this._runtime.UpdateRender());
@@ -33065,8 +34707,8 @@ var SortInstancesByValue2;
       _GetTagAtPosition(e2, t3) {
         this._UpdateTextSize();
         const i2 = this.GetWorldInfo();
-        y2.set(e2 - i2.GetX(), t3 - i2.GetY()), y2.rotate(-i2.GetAngle()), y2.offset(i2.GetWidth() * i2.GetOriginX(), i2.GetHeight() * i2.GetOriginY()), y2.divide(i2.GetWidth(), i2.GetHeight()), y2.scale(this._rendererText.GetWidth(), this._rendererText.GetHeight());
-        const r3 = this._rendererText.HitTestFragment(y2.getX(), y2.getY());
+        R.set(e2 - i2.GetX(), t3 - i2.GetY()), R.rotate(-i2.GetAngle()), R.offset(i2.GetWidth() * i2.GetOriginX(), i2.GetHeight() * i2.GetOriginY()), R.divide(i2.GetWidth(), i2.GetHeight()), R.scale(this._rendererText.GetWidth(), this._rendererText.GetHeight());
+        const r3 = this._rendererText.HitTestFragment(R.getX(), R.getY());
         if (r3) {
           const e3 = r3.GetStyleTag("tag");
           if (e3) return e3.param;
@@ -33082,17 +34724,17 @@ var SortInstancesByValue2;
         const i2 = this._rendererText.FindFragmentWithTag(e2, t3);
         if (!i2) return null;
         const r3 = this.GetWorldInfo(), s2 = this._rendererText.GetDrawScale(), n2 = i2.GetPosX(), a3 = i2.GetPosY() - (i2.GetHeight() - i2.GetFontBoundingBoxDescent()) * s2, o3 = i2.GetWidth() * s2 / this._rendererText.GetWidth() * r3.GetWidth(), h3 = i2.GetHeight() * s2 / this._rendererText.GetHeight() * r3.GetHeight();
-        return y2.set(n2, a3), y2.divide(this._rendererText.GetWidth(), this._rendererText.GetHeight()), y2.scale(r3.GetWidth(), r3.GetHeight()), y2.offset(-r3.GetWidth() * r3.GetOriginX(), -r3.GetHeight() * r3.GetOriginY()), y2.rotate(r3.GetAngle()), y2.offset(r3.GetX(), r3.GetY()), { x: y2.getX(), y: y2.getY(), width: o3, height: h3 };
+        return R.set(n2, a3), R.divide(this._rendererText.GetWidth(), this._rendererText.GetHeight()), R.scale(r3.GetWidth(), r3.GetHeight()), R.offset(-r3.GetWidth() * r3.GetOriginX(), -r3.GetHeight() * r3.GetOriginY()), R.rotate(r3.GetAngle()), R.offset(r3.GetX(), r3.GetY()), { x: R.getX(), y: R.getY(), width: o3, height: h3 };
       }
       _GetTagCount(e2) {
         return this._UpdateTextSize(), this._rendererText.CountFragmentsWithTag(e2);
       }
       _GetHTMLCloseTag(e2) {
-        let t3 = b2.get(e2);
+        let t3 = y2.get(e2);
         return null === t3 ? "" : (t3 || (t3 = "span"), `</${t3 || "span"}>`);
       }
       _GetHTMLOpenTag(e2, t3) {
-        let i2 = b2.get(e2);
+        let i2 = y2.get(e2);
         if (null === i2) return "";
         switch (i2 || (i2 = "span"), e2) {
           case "color":
@@ -33169,7 +34811,7 @@ var SortInstancesByValue2;
                   let e3 = o5.trim();
                   a4 = e3.endsWith("%") ? parseFloat(e3) / 100 + "em" : e3 + "px";
                 }
-                i3.push(`top: ${a4}`), "nearest" === this._runtime.GetSampling() && i3.push("image-rendering: pixelated"), r3 += `<img class="c3-text-icon" data-icon="${s3.GetIconParameter()}" width="${e2.GetWidth()}" height="${e2.GetHeight()}" style="${i3.join(";")}" src="${n3}">`;
+                i3.push(`top: ${a4}`), 1 === this.GetWorldInfo().GetActiveSampling() && i3.push("image-rendering: pixelated"), r3 += `<img class="c3-text-icon" data-icon="${s3.GetIconParameter()}" width="${e2.GetWidth()}" height="${e2.GetHeight()}" style="${i3.join(";")}" src="${n3}">`;
               }
             }
           }
@@ -33243,7 +34885,7 @@ var SortInstancesByValue2;
       }
       set fontColor(e2) {
         if (t2.RequireArray(e2), e2.length < 3) throw new Error("expected 3 elements");
-        R.setRgb(e2[0], e2[1], e2[2]), C2.get(this)._SetFontColor(R);
+        b2.setRgb(e2[0], e2[1], e2[2]), C2.get(this)._SetFontColor(b2);
       }
       get fontColor() {
         const e2 = C2.get(this)._GetFontColor();
@@ -33271,10 +34913,10 @@ var SortInstancesByValue2;
         C2.get(this)._SetVAlign(i2);
       }
       get verticalAlign() {
-        return G[C2.get(this)._GetVAlign()];
+        return f2[C2.get(this)._GetVAlign()];
       }
       set wordWrapMode(e2) {
-        if (!f2.includes(e2)) throw new Error("invalid mode");
+        if (!m2.includes(e2)) throw new Error("invalid mode");
         C2.get(this)._SetWrapMode(e2);
       }
       get wordWrapMode() {
@@ -33457,8 +35099,7 @@ var SortInstancesByValue2;
         for (const t3 of this._animations) t3.LoadAllAssets(this._runtime);
       }
       LoadTextures(t3) {
-        const e2 = { sampling: this._runtime.GetSampling() };
-        return Promise.all(this._animations.map((n2) => n2.LoadAllTextures(t3, e2)));
+        return Promise.all(this._animations.map((e2) => e2.LoadAllTextures(t3)));
       }
       ReleaseTextures() {
         for (const t3 of this._animations) t3.ReleaseAllTextures();
@@ -33488,7 +35129,7 @@ var SortInstancesByValue2;
       }
       _AddAnimation(t3) {
         const e2 = this.GetObjectClass().AddAnimation(t3), n2 = this.GetRuntime();
-        return e2.GetFrameAt(0).GetImageInfo().LoadStaticTexture(n2.GetRenderer(), { sampling: n2.GetSampling() }).then(() => this._UpdateAllCurrentTexture()), e2;
+        return e2.GetFrameAt(0).GetImageInfo().LoadStaticTexture(n2.GetRenderer()).then(() => this._UpdateAllCurrentTexture()), e2;
       }
       _RemoveAnimation(t3) {
         for (const e2 of this._objectClass.instancesIncludingPendingCreate()) e2.GetSdkInstance()._OnAnimationRemoved(t3);
@@ -33502,7 +35143,7 @@ var SortInstancesByValue2;
         const a2 = t2.AnimationFrameInfo.CreateDynamic(this.GetRuntime());
         i2.InsertFrameAt(a2, r2);
         const s = this.GetRuntime();
-        a2.GetImageInfo().LoadStaticTexture(s.GetRenderer(), { sampling: s.GetSampling() }).then(() => this._UpdateAllCurrentTexture());
+        a2.GetImageInfo().LoadStaticTexture(s.GetRenderer()).then(() => this._UpdateAllCurrentTexture());
         for (const t3 of this._objectClass.instancesIncludingPendingCreate()) t3.GetSdkInstance()._OnAnimationFramesChanged();
         return a2;
       }
@@ -33548,14 +35189,14 @@ var SortInstancesByValue2;
     };
   }
   {
-    const t2 = self.C3, e = self.C3X, n = 0, i = 1, r2 = 2, a2 = 3, s = t2.New(t2.Rect), o2 = t2.New(t2.Quad), m2 = t2.New(t2.Vector2), h2 = 1, u2 = 2, c2 = 4;
+    const t2 = self.C3, e = self.C3X, n = 0, i = 1, r2 = 2, a2 = 3, s = t2.New(t2.Quad2D), o2 = t2.New(t2.Vector2), m2 = 1, h2 = 2, u2 = 4;
     t2.Plugins.Sprite.Instance = class extends t2.SDKWorldInstanceBase {
       constructor(e2, s2) {
         super(e2);
-        let o3 = true, m3 = "", c3 = 0, l2 = true;
-        s2 && (o3 = !!s2[n], m3 = s2[i], c3 = s2[r2], l2 = s2[a2]), this._currentAnimation = this._objectClass.GetAnimationByName(m3) || this._objectClass.GetAnimations()[0], this._currentFrameIndex = t2.clamp(c3, 0, this._currentAnimation.GetFrameCount() - 1), this._currentAnimationFrame = this._currentAnimation.GetFrameAt(this._currentFrameIndex);
-        const d3 = this._currentAnimationFrame.GetImageInfo();
-        this._currentTexture = d3.GetTexture(), this._currentRcTex = d3.GetTexRect(), this._currentQuadTex = d3.GetTexQuad(), this.HandleRendererContextLoss(), e2.SetFlag(u2, true), e2.SetFlag(h2, this._currentAnimation.GetSpeed() >= 0), this._currentAnimationSpeed = Math.abs(this._currentAnimation.GetSpeed()), this._currentAnimationRepeatTo = this._currentAnimation.GetRepeatTo(), this._animationTimer = t2.New(t2.KahanSum), this._frameStartTime = 0, this._animationRepeats = 0, this._animTriggerName = "", this._changeAnimFrameIndex = -1, this._changeAnimationName = "", this._changeAnimationFrom = 0;
+        let o3 = true, u3 = "", c3 = 0, l2 = true;
+        s2 && (o3 = !!s2[n], u3 = s2[i], c3 = s2[r2], l2 = s2[a2]), this._currentAnimation = this._objectClass.GetAnimationByName(u3) || this._objectClass.GetAnimations()[0], this._currentFrameIndex = t2.clamp(c3, 0, this._currentAnimation.GetFrameCount() - 1), this._currentAnimationFrame = this._currentAnimation.GetFrameAt(this._currentFrameIndex);
+        const d2 = this._currentAnimationFrame.GetImageInfo();
+        this._currentTexture = d2.GetTexture(), this._currentRcTex = d2.GetTexRect(), this._currentQuadTex = d2.GetTexQuad(), this.HandleRendererContextLoss(), e2.SetFlag(h2, true), e2.SetFlag(m2, this._currentAnimation.GetSpeed() >= 0), this._currentAnimationSpeed = Math.abs(this._currentAnimation.GetSpeed()), this._currentAnimationRepeatTo = this._currentAnimation.GetRepeatTo(), this._animationTimer = t2.New(t2.KahanSum), this._frameStartTime = 0, this._animationRepeats = 0, this._animTriggerName = "", this._changeAnimFrameIndex = -1, this._changeAnimationName = "", this._changeAnimationFrom = 0;
         const g2 = this.GetWorldInfo();
         this._bquadRef = g2.GetBoundingQuad(), g2.SetVisible(o3), g2.SetCollisionEnabled(l2), g2.SetOriginX(this._currentAnimationFrame.GetOriginX()), g2.SetOriginY(this._currentAnimationFrame.GetOriginY()), g2.SetSourceCollisionPoly(this._currentAnimationFrame.GetCollisionPoly()), g2.SetBboxChanged(), 1 === this._objectClass.GetAnimationCount() && 1 === this._objectClass.GetAnimations()[0].GetFrameCount() || 0 === this._currentAnimationSpeed || this._StartTicking();
       }
@@ -33577,9 +35218,8 @@ var SortInstancesByValue2;
       Draw(t3) {
         const e2 = this._currentTexture;
         if (null === e2) return;
-        t3.SetTexture(e2);
         const n2 = this.GetWorldInfo();
-        n2.HasMesh() ? this._DrawMesh(n2, t3) : this._DrawStandard(n2, t3);
+        t3.SetTexture(e2, n2.GetActiveSampling()), n2.HasMesh() ? this._DrawMesh(n2, t3) : this._DrawStandard(n2, t3);
       }
       _DrawStandard(t3, e2) {
         let n2 = this._bquadRef;
@@ -33588,32 +35228,32 @@ var SortInstancesByValue2;
       _DrawMesh(t3, e2) {
         const n2 = t3.GetTransformedMesh();
         if (t3.IsMeshChanged()) {
-          t3.CalculateBbox(s, o2, false);
-          let e3 = o2;
+          t3.CalculateBbox(null, s, false);
+          let e3 = s;
           this._runtime.IsPixelRoundingEnabled() && (e3 = t3.PixelRoundQuad(e3)), n2.CalculateTransformedMesh(t3.GetSourceMesh(), e3, this._currentQuadTex), t3.SetMeshChanged(false);
         }
-        n2.Draw(e2, t3.GetTotalZElevation());
+        n2.Draw(e2, t3.GetTotalZ());
       }
       GetAnimationTime() {
         return this._animationTimer.Get();
       }
       IsAnimationPlaying() {
-        return this._inst.GetFlag(u2);
-      }
-      SetAnimationPlaying(t3) {
-        this._inst.SetFlag(u2, t3);
-      }
-      IsPlayingForwards() {
         return this._inst.GetFlag(h2);
       }
-      SetPlayingForwards(t3) {
+      SetAnimationPlaying(t3) {
         this._inst.SetFlag(h2, t3);
       }
+      IsPlayingForwards() {
+        return this._inst.GetFlag(m2);
+      }
+      SetPlayingForwards(t3) {
+        this._inst.SetFlag(m2, t3);
+      }
       IsInAnimationTrigger() {
-        return this._inst.GetFlag(c2);
+        return this._inst.GetFlag(u2);
       }
       SetInAnimationTrigger(t3) {
-        this._inst.SetFlag(c2, t3);
+        this._inst.SetFlag(u2, t3);
       }
       Tick() {
         this._changeAnimationName && this._DoChangeAnimation(), this._changeAnimFrameIndex >= 0 && this._DoChangeAnimFrame();
@@ -33724,13 +35364,13 @@ var SortInstancesByValue2;
           if ("number" != typeof t3) throw new TypeError("expected string or number");
           i2 = e2.GetImagePointByIndex(t3 - 1);
         }
-        let r3 = n2.GetTotalZElevation();
+        let r3 = n2.GetTotalZ();
         if (!i2) return [n2.GetX(), n2.GetY(), r3];
-        if (m2.copy(i2.GetVec2()), n2.HasMesh()) {
-          const [t4, e3, i3] = n2.GetSourceMesh().TransformPoint(m2.getX(), m2.getY());
-          m2.set(t4, e3), r3 += i3;
+        if (o2.copy(i2.GetVec2()), n2.HasMesh()) {
+          const [t4, e3, i3] = n2.GetSourceMesh().TransformPoint(o2.getX(), o2.getY());
+          o2.set(t4, e3), r3 += i3;
         }
-        return m2.offset(-e2.GetOriginX(), -e2.GetOriginY()), m2.scale(n2.GetWidth(), n2.GetHeight()), m2.rotate(n2.GetAngle()), m2.offset(n2.GetX(), n2.GetY()), [m2.getX(), m2.getY(), r3];
+        return o2.offset(-e2.GetOriginX(), -e2.GetOriginY()), o2.scale(n2.GetWidth(), n2.GetHeight()), o2.rotate(n2.GetAngle()), o2.offset(n2.GetX(), n2.GetY()), [o2.getX(), o2.getY(), r3];
       }
       GetCollisionPolyPointCount() {
         return this.GetWorldInfo().GetTransformedCollisionPoly().pointCount();
@@ -33806,13 +35446,13 @@ var SortInstancesByValue2;
         return self.ISpriteInstance;
       }
     };
-    const l = /* @__PURE__ */ new WeakMap(), d2 = /* @__PURE__ */ new Map([["current-frame", 0], ["beginning", 1]]);
+    const c2 = /* @__PURE__ */ new WeakMap(), l = /* @__PURE__ */ new Map([["current-frame", 0], ["beginning", 1]]);
     self.ISpriteInstance = class extends self.IWorldInstance {
       constructor() {
-        super(), l.set(this, self.IInstance._GetInitInst().GetSdkInstance());
+        super(), c2.set(this, self.IInstance._GetInitInst().GetSdkInstance());
       }
       getImagePointCount() {
-        return l.get(this).GetImagePointCount();
+        return c2.get(this).GetImagePointCount();
       }
       getImagePointX(t3) {
         return this.getImagePoint(t3)[0];
@@ -33825,92 +35465,92 @@ var SortInstancesByValue2;
       }
       getImagePoint(t3) {
         if ("string" != typeof t3 && "number" != typeof t3) throw new TypeError("expected string or number");
-        return l.get(this).GetImagePoint(t3);
+        return c2.get(this).GetImagePoint(t3);
       }
       getPolyPointCount() {
-        return l.get(this).GetCollisionPolyPointCount();
+        return c2.get(this).GetCollisionPolyPointCount();
       }
       getPolyPointX(t3) {
-        return e.RequireFiniteNumber(t3), l.get(this).GetCollisionPolyPoint(t3)[0];
+        return e.RequireFiniteNumber(t3), c2.get(this).GetCollisionPolyPoint(t3)[0];
       }
       getPolyPointY(t3) {
-        return e.RequireFiniteNumber(t3), l.get(this).GetCollisionPolyPoint(t3)[1];
+        return e.RequireFiniteNumber(t3), c2.get(this).GetCollisionPolyPoint(t3)[1];
       }
       getPolyPoint(t3) {
-        return e.RequireFiniteNumber(t3), l.get(this).GetCollisionPolyPoint(t3);
+        return e.RequireFiniteNumber(t3), c2.get(this).GetCollisionPolyPoint(t3);
       }
       stopAnimation() {
-        l.get(this).SetAnimationPlaying(false);
+        c2.get(this).SetAnimationPlaying(false);
       }
       startAnimation(t3 = "current-frame") {
         e.RequireString(t3);
-        const n2 = d2.get(t3);
+        const n2 = l.get(t3);
         if (void 0 === n2) throw new Error("invalid mode");
-        l.get(this)._StartAnim(n2);
+        c2.get(this)._StartAnim(n2);
       }
       setAnimation(t3, n2 = "beginning") {
         e.RequireString(t3), e.RequireString(n2);
-        const i2 = d2.get(n2);
+        const i2 = l.get(n2);
         if (void 0 === i2) throw new Error("invalid mode");
-        const r3 = l.get(this);
+        const r3 = c2.get(this);
         if (!r3.GetObjectClass().GetAnimationByName(t3)) throw new Error(`animation name "${t3}" does not exist`);
         r3._SetAnim(t3, i2);
       }
       getAnimation(t3) {
         e.RequireString(t3);
-        const n2 = l.get(this).GetObjectClass().GetAnimationByName(t3);
+        const n2 = c2.get(this).GetObjectClass().GetAnimationByName(t3);
         return n2 ? n2.GetIAnimation() : null;
       }
       get animation() {
-        return l.get(this)._GetCurrentAnimation().GetIAnimation();
+        return c2.get(this)._GetCurrentAnimation().GetIAnimation();
       }
       get animationName() {
-        return l.get(this)._GetCurrentAnimationName();
+        return c2.get(this)._GetCurrentAnimationName();
       }
       set animationFrame(t3) {
-        e.RequireFiniteNumber(t3), l.get(this)._SetAnimFrame(t3);
+        e.RequireFiniteNumber(t3), c2.get(this)._SetAnimFrame(t3);
       }
       get animationFrame() {
-        return l.get(this)._GetAnimFrame();
+        return c2.get(this)._GetAnimFrame();
       }
       set animationFrameTag(t3) {
-        e.RequireString(t3), l.get(this)._SetAnimFrame(t3);
+        e.RequireString(t3), c2.get(this)._SetAnimFrame(t3);
       }
       get animationFrameTag() {
-        return l.get(this)._GetAnimFrameTag();
+        return c2.get(this)._GetAnimFrameTag();
       }
       set animationSpeed(t3) {
-        e.RequireFiniteNumber(t3), l.get(this)._SetAnimSpeed(t3);
+        e.RequireFiniteNumber(t3), c2.get(this)._SetAnimSpeed(t3);
       }
       get animationSpeed() {
-        return l.get(this)._GetAnimSpeed();
+        return c2.get(this)._GetAnimSpeed();
       }
       set animationRepeatToFrame(t3) {
-        e.RequireFiniteNumber(t3), l.get(this)._SetAnimRepeatToFrame(t3);
+        e.RequireFiniteNumber(t3), c2.get(this)._SetAnimRepeatToFrame(t3);
       }
       get animationRepeatToFrame() {
-        return l.get(this)._GetAnimRepeatToFrame();
+        return c2.get(this)._GetAnimRepeatToFrame();
       }
       get imageWidth() {
-        return l.get(this).GetCurrentImageInfo().GetWidth();
+        return c2.get(this).GetCurrentImageInfo().GetWidth();
       }
       get imageHeight() {
-        return l.get(this).GetCurrentImageInfo().GetHeight();
+        return c2.get(this).GetCurrentImageInfo().GetHeight();
       }
       getImageSize() {
-        const t3 = l.get(this).GetCurrentImageInfo();
+        const t3 = c2.get(this).GetCurrentImageInfo();
         return [t3.GetWidth(), t3.GetHeight()];
       }
       async replaceCurrentAnimationFrame(n2) {
         e.RequireInstanceOf(n2, Blob);
-        const i2 = l.get(this), r3 = i2.GetRuntime(), a3 = i2.GetCurrentImageInfo(), s2 = t2.New(t2.ImageInfo);
-        if (s2.LoadDynamicBlobAsset(r3, n2), await s2.LoadStaticTexture(r3.GetRenderer(), { sampling: r3.GetSampling() }), i2.WasReleased()) return void s2.Release();
+        const i2 = c2.get(this), r3 = i2.GetRuntime(), a3 = i2.GetCurrentImageInfo(), s2 = t2.New(t2.ImageInfo);
+        if (s2.LoadDynamicBlobAsset(r3, n2), await s2.LoadStaticTexture(r3.GetRenderer()), i2.WasReleased()) return void s2.Release();
         a3.ReplaceWith(s2);
         const o3 = i2.GetSdkType();
         o3._UpdateAllCurrentTexture(), o3.GetObjectClass().Dispatcher().dispatchEvent(new t2.Event("animationframeimagechange")), r3.UpdateRender();
       }
       setSolidCollisionFilter(e2, n2) {
-        "string" == typeof n2 && (n2 = t2.splitStringAndNormalize(n2)), l.get(this).GetWorldInfo().SetSolidCollisionFilter(!!e2, n2);
+        "string" == typeof n2 && (n2 = t2.splitStringAndNormalize(n2)), c2.get(this).GetWorldInfo().SetSolidCollisionFilter(!!e2, n2);
       }
     };
   }
@@ -33988,7 +35628,7 @@ var SortInstancesByValue2;
       try {
         if (await m2.LoadDynamicAsset(s, e), !m2.IsLoaded()) throw new Error("image failed to load");
         if (this.WasReleased()) return void m2.Release();
-        await m2.LoadStaticTexture(s.GetRenderer(), { sampling: s.GetSampling() });
+        await m2.LoadStaticTexture(s.GetRenderer());
       } catch (e2) {
         return console.error("Load image from URL failed: ", e2), void (this.WasReleased() || this.Trigger(t2.Plugins.Sprite.Cnds.OnURLFailed));
       }
@@ -34588,7 +36228,7 @@ var SortInstancesByValue2;
         this.GetImageInfo().LoadAsset(this._runtime);
       }
       LoadTextures(e) {
-        return this.GetImageInfo().LoadStaticTexture(e, { sampling: this._runtime.GetSampling(), wrapX: this._wrapX, wrapY: this._wrapY });
+        return this.GetImageInfo().LoadStaticTexture(e, { wrapX: this._wrapX, wrapY: this._wrapY });
       }
       ReleaseTextures() {
         this.GetImageInfo().ReleaseTexture();
@@ -34602,10 +36242,10 @@ var SortInstancesByValue2;
     };
   }
   {
-    const i = globalThis.C3, a2 = globalThis.C3X, n = 0, s = 4, r2 = 5, l = 6, g2 = 7, m2 = 8, h2 = 9, d2 = 10, o2 = 11, _2 = 12, u2 = 13, R = 14, S2 = i.New(i.Rect), f2 = i.New(i.Quad), I2 = i.New(i.Rect), c2 = i.New(i.Quad);
+    const i = globalThis.C3, a2 = globalThis.C3X, n = 0, s = 4, r2 = 5, l = 6, g2 = 7, m2 = 8, d2 = 9, h2 = 10, o2 = 11, _2 = 12, u2 = 13, R = 14, S2 = i.New(i.Quad2D), f2 = i.New(i.Rect), I2 = i.New(i.Quad2D);
     i.Plugins.TiledBg.Instance = class extends i.SDKWorldInstanceBase {
       constructor(e, t2) {
-        super(e), this._imageOffsetX = 0, this._imageOffsetY = 0, this._imageScaleX = 1, this._imageScaleY = 1, this._imageAngle = 0, this._enableTileRandomization = false, this._tileXRandom = 0, this._tileYRandom = 0, this._tileAngleRandom = 0, this._tileBlendMarginX = 0, this._tileBlendMarginY = 0, this._ownImageInfo = null, t2 && (this.GetWorldInfo().SetVisible(!!t2[n]), this._imageOffsetX = t2[s], this._imageOffsetY = t2[r2], this._imageScaleX = t2[l], this._imageScaleY = t2[g2], this._imageAngle = i.toRadians(t2[m2]), this._enableTileRandomization = !!t2[h2], this._tileXRandom = t2[d2], this._tileYRandom = t2[o2], this._tileAngleRandom = t2[_2], this._tileBlendMarginX = t2[u2], this._tileBlendMarginY = t2[R]);
+        super(e), this._imageOffsetX = 0, this._imageOffsetY = 0, this._imageScaleX = 1, this._imageScaleY = 1, this._imageAngle = 0, this._enableTileRandomization = false, this._tileXRandom = 0, this._tileYRandom = 0, this._tileAngleRandom = 0, this._tileBlendMarginX = 0, this._tileBlendMarginY = 0, this._ownImageInfo = null, t2 && (this.GetWorldInfo().SetVisible(!!t2[n]), this._imageOffsetX = t2[s], this._imageOffsetY = t2[r2], this._imageScaleX = t2[l], this._imageScaleY = t2[g2], this._imageAngle = i.toRadians(t2[m2]), this._enableTileRandomization = !!t2[d2], this._tileXRandom = t2[h2], this._tileYRandom = t2[o2], this._tileAngleRandom = t2[_2], this._tileBlendMarginX = t2[u2], this._tileBlendMarginY = t2[R]);
       }
       Release() {
         this._ReleaseOwnImage(), super.Release();
@@ -34615,7 +36255,7 @@ var SortInstancesByValue2;
       }
       CalculateTextureCoordsFor3DFace(e, t2, i2) {
         const a3 = this.GetCurrentImageInfo(), n2 = a3.GetWidth(), s2 = a3.GetHeight(), r3 = this._imageOffsetX / n2, l2 = this._imageOffsetY / s2, g3 = this._imageAngle;
-        I2.set(0, 0, e / (n2 * this._imageScaleX), t2 / (s2 * this._imageScaleY)), I2.offset(-r3, -l2), 0 === g3 ? i2.setFromRect(I2) : i2.setFromRotatedRect(I2, -g3);
+        f2.set(0, 0, e / (n2 * this._imageScaleX), t2 / (s2 * this._imageScaleY)), f2.offset(-r3, -l2), 0 === g3 ? i2.setFromRect(f2) : i2.setFromRotatedRect(f2, -g3);
       }
       SetTilingShaderProgram(e, t2 = true) {
         if (this._enableTileRandomization) {
@@ -34626,27 +36266,27 @@ var SortInstancesByValue2;
       Draw(e) {
         const t2 = this.GetCurrentImageInfo(), i2 = t2.GetTexture();
         if (null === i2) return;
-        this.SetTilingShaderProgram(e), e.SetTexture(i2);
-        const a3 = t2.GetWidth(), n2 = t2.GetHeight();
-        let s2 = this._imageOffsetX / a3, r3 = this._imageOffsetY / n2;
-        0 !== this._imageAngle || this._enableTileRandomization || ("repeat" === this.GetSdkType().GetWrapModeX() && (s2 %= 1), "repeat" === this.GetSdkType().GetWrapModeY() && (r3 %= 1));
-        const l2 = this.GetWorldInfo();
-        I2.set(0, 0, l2.GetWidth() / (a3 * this._imageScaleX), l2.GetHeight() / (n2 * this._imageScaleY)), I2.offset(-s2, -r3), l2.HasMesh() ? this._DrawMesh(l2, e) : this._DrawStandard(l2, e);
+        this.SetTilingShaderProgram(e);
+        const a3 = this.GetWorldInfo();
+        e.SetTexture(i2, a3.GetActiveSampling());
+        const n2 = t2.GetWidth(), s2 = t2.GetHeight();
+        let r3 = this._imageOffsetX / n2, l2 = this._imageOffsetY / s2;
+        0 !== this._imageAngle || this._enableTileRandomization || ("repeat" === this.GetSdkType().GetWrapModeX() && (r3 %= 1), "repeat" === this.GetSdkType().GetWrapModeY() && (l2 %= 1)), f2.set(0, 0, a3.GetWidth() / (n2 * this._imageScaleX), a3.GetHeight() / (s2 * this._imageScaleY)), f2.offset(-r3, -l2), a3.HasMesh() ? this._DrawMesh(a3, e) : this._DrawStandard(a3, e);
       }
       _DrawStandard(e, t2) {
         let i2 = e.GetBoundingQuad();
-        this._runtime.IsPixelRoundingEnabled() && (i2 = e.PixelRoundQuad(i2)), 0 === this._imageAngle ? t2.Quad3(i2, I2) : (c2.setFromRotatedRect(I2, -this._imageAngle), t2.Quad4(i2, c2));
+        this._runtime.IsPixelRoundingEnabled() && (i2 = e.PixelRoundQuad(i2)), 0 === this._imageAngle ? t2.Quad3(i2, f2) : (I2.setFromRotatedRect(f2, -this._imageAngle), t2.Quad4(i2, I2));
       }
       _DrawMesh(e, t2) {
         const i2 = e.GetTransformedMesh();
         if (e.IsMeshChanged()) {
-          e.CalculateBbox(S2, f2, false);
-          let t3 = f2;
+          e.CalculateBbox(null, S2, false);
+          let t3 = S2;
           this._runtime.IsPixelRoundingEnabled() && (t3 = e.PixelRoundQuad(t3));
-          let a3 = I2;
-          0 !== this._imageAngle && (c2.setFromRotatedRect(I2, -this._imageAngle), a3 = c2), i2.CalculateTransformedMesh(e.GetSourceMesh(), t3, a3), e.SetMeshChanged(false);
+          let a3 = f2;
+          0 !== this._imageAngle && (I2.setFromRotatedRect(f2, -this._imageAngle), a3 = I2), i2.CalculateTransformedMesh(e.GetSourceMesh(), t3, a3), e.SetMeshChanged(false);
         }
-        i2.Draw(t2, e.GetTotalZElevation());
+        i2.Draw(t2, e.GetTotalZ());
       }
       GetCurrentImageInfo() {
         return this._ownImageInfo || this._objectClass.GetImageInfo();
@@ -34749,9 +36389,9 @@ var SortInstancesByValue2;
             return this._GetImageScaleY();
           case m2:
             return this._GetImageAngle();
-          case h2:
-            return this._IsTileRandomizationEnabled();
           case d2:
+            return this._IsTileRandomizationEnabled();
+          case h2:
             return this._GetTileXRandom();
           case o2:
             return this._GetTileYRandom();
@@ -34780,10 +36420,10 @@ var SortInstancesByValue2;
           case m2:
             this._SetImageAngle(t2);
             break;
-          case h2:
+          case d2:
             this._SetTileRandomizationEnabled(!!t2);
             break;
-          case d2:
+          case h2:
             this._SetTileXRandom(t2);
             break;
           case o2:
@@ -34928,7 +36568,7 @@ var SortInstancesByValue2;
       async replaceImage(e) {
         a2.RequireInstanceOf(e, Blob);
         const t2 = this.#e, n2 = t2.GetRuntime(), s2 = i.New(i.ImageInfo);
-        s2.LoadDynamicBlobAsset(n2, e), await s2.LoadStaticTexture(n2.GetRenderer(), { sampling: n2.GetSampling(), wrapX: t2.GetSdkType().GetWrapModeX(), wrapY: t2.GetSdkType().GetWrapModeY() }), t2.WasReleased() ? s2.Release() : (t2._ReleaseOwnImage(), t2._ownImageInfo = s2, n2.UpdateRender());
+        s2.LoadDynamicBlobAsset(n2, e), await s2.LoadStaticTexture(n2.GetRenderer(), { wrapX: t2.GetSdkType().GetWrapModeX(), wrapY: t2.GetSdkType().GetWrapModeY() }), t2.WasReleased() ? s2.Release() : (t2._ReleaseOwnImage(), t2._ownImageInfo = s2, n2.UpdateRender());
       }
     };
   }
@@ -34936,8 +36576,8 @@ var SortInstancesByValue2;
     return this._IsTileRandomizationEnabled();
   } };
   {
-    const T2 = self.C3;
-    T2.Plugins.TiledBg.Acts = { SetImageOffsetX(e) {
+    const c2 = self.C3;
+    c2.Plugins.TiledBg.Acts = { SetImageOffsetX(e) {
       this._SetImageOffsetX(e);
     }, SetImageOffsetY(e) {
       this._SetImageOffsetY(e);
@@ -34946,7 +36586,7 @@ var SortInstancesByValue2;
     }, SetImageScaleY(e) {
       this._SetImageScaleY(e / 100);
     }, SetImageAngle(e) {
-      this._SetImageAngle(T2.toRadians(e));
+      this._SetImageAngle(c2.toRadians(e));
     }, SetTileRandomizationEnabled(e) {
       this._SetTileRandomizationEnabled(e);
     }, SetTilePosRandom(e, t2) {
@@ -34959,20 +36599,20 @@ var SortInstancesByValue2;
       this.GetWorldInfo().SetBlendMode(e), this._runtime.UpdateRender();
     }, async LoadURL(e, t2) {
       if (this._ownImageInfo && this._ownImageInfo.GetURL() === e) return;
-      const i = this._runtime, a2 = T2.New(T2.ImageInfo);
+      const i = this._runtime, a2 = c2.New(c2.ImageInfo);
       try {
         if (await a2.LoadDynamicAsset(i, e, true), !a2.IsLoaded()) throw new Error("image failed to load");
         if (this.WasReleased()) return a2.Release(), null;
-        if (!await a2.LoadStaticTexture(i.GetRenderer(), { sampling: i.GetSampling(), wrapX: this.GetSdkType().GetWrapModeX(), wrapY: this.GetSdkType().GetWrapModeY() })) return;
+        if (!await a2.LoadStaticTexture(i.GetRenderer(), { wrapX: this.GetSdkType().GetWrapModeX(), wrapY: this.GetSdkType().GetWrapModeY() })) return;
       } catch (e2) {
-        return console.error("Load image from URL failed: ", e2), void (this.WasReleased() || this.Trigger(T2.Plugins.TiledBg.Cnds.OnURLFailed));
+        return console.error("Load image from URL failed: ", e2), void (this.WasReleased() || this.Trigger(c2.Plugins.TiledBg.Cnds.OnURLFailed));
       }
-      this.WasReleased() ? a2.Release() : (this._ReleaseOwnImage(), this._ownImageInfo = a2, i.UpdateRender(), await this.TriggerAsync(T2.Plugins.TiledBg.Cnds.OnURLLoaded));
+      this.WasReleased() ? a2.Release() : (this._ReleaseOwnImage(), this._ownImageInfo = a2, i.UpdateRender(), await this.TriggerAsync(c2.Plugins.TiledBg.Cnds.OnURLLoaded));
     } };
   }
   {
-    const p2 = self.C3;
-    p2.Plugins.TiledBg.Exps = { ImageWidth() {
+    const T2 = self.C3;
+    T2.Plugins.TiledBg.Exps = { ImageWidth() {
       return this.GetCurrentImageInfo().GetWidth();
     }, ImageHeight() {
       return this.GetCurrentImageInfo().GetHeight();
@@ -34985,7 +36625,7 @@ var SortInstancesByValue2;
     }, ImageScaleY() {
       return 100 * this._imageScaleY;
     }, ImageAngle() {
-      return p2.toDegrees(this._imageAngle);
+      return T2.toDegrees(this._imageAngle);
     }, TileXRandom() {
       return 100 * this._GetTileXRandom();
     }, TileYRandom() {
@@ -35025,7 +36665,7 @@ var WrapModeToStr2;
         this.GetImageInfo().LoadAsset(this._runtime);
       }
       LoadTextures(t2) {
-        return this.GetImageInfo().LoadStaticTexture(t2, { sampling: this._runtime.GetSampling() });
+        return this.GetImageInfo().LoadStaticTexture(t2);
       }
       ReleaseTextures() {
         this.GetImageInfo().ReleaseTexture();
@@ -35101,7 +36741,7 @@ var WrapModeToStr2;
       return e;
     };
     RunLengthDecode2 = RunLengthDecode;
-    const a2 = self.C3, n = self.C3X, r2 = 0, o2 = 1, _2 = 2, u2 = 3, d2 = 4, g2 = 5, p2 = 6, c2 = a2.Plugins.Tilemap.TILE_FLIPPED_HORIZONTAL, T2 = a2.Plugins.Tilemap.TILE_FLIPPED_VERTICAL, f2 = a2.Plugins.Tilemap.TILE_FLIPPED_DIAGONAL, m2 = a2.Plugins.Tilemap.TILE_FLAGS_MASK, M2 = a2.Plugins.Tilemap.TILE_ID_MASK, G = a2.New(a2.Rect), I2 = a2.New(a2.Rect), y2 = a2.New(a2.Rect);
+    const a2 = self.C3, n = self.C3X, r2 = 0, o2 = 1, _2 = 2, u2 = 3, d2 = 4, g2 = 5, p2 = 6, c2 = a2.Plugins.Tilemap.TILE_FLIPPED_HORIZONTAL, T2 = a2.Plugins.Tilemap.TILE_FLIPPED_VERTICAL, f2 = a2.Plugins.Tilemap.TILE_FLIPPED_DIAGONAL, m2 = a2.Plugins.Tilemap.TILE_FLAGS_MASK, M2 = a2.Plugins.Tilemap.TILE_ID_MASK, G = new a2.Rect(), I2 = new a2.Rect(), y2 = new a2.Rect(), W = new a2.AABB3D();
     a2.Plugins.Tilemap.Instance = class extends a2.SDKWorldInstanceBase {
       constructor(t2, e) {
         super(t2);
@@ -35273,7 +36913,7 @@ var WrapModeToStr2;
         if (i) return i;
         const s = t2 & M2, h2 = 0 !== (t2 & c2), l = 0 !== (t2 & T2), n2 = 0 !== (t2 & f2), r3 = this.GetCurrentImageInfo(), o3 = r3.GetWidth(), _3 = this._tileWidth, u3 = this._tileXoffset, d3 = this._tileXspacing, g3 = Math.floor((o3 - u3) / (_3 + d3) * _3) + d3, p3 = Math.floor(g3 / _3), m3 = s % p3, I3 = Math.floor(s / p3), y3 = r3.GetOffsetX() + this._tileXoffset + (this._tileWidth + this._tileXspacing) * m3, W2 = r3.GetOffsetY() + this._tileYoffset + (this._tileHeight + this._tileYspacing) * I3;
         G.setWH(y3, W2, this._tileWidth, this._tileHeight), G.divide(r3.GetSheetWidth(), r3.GetSheetHeight());
-        const C4 = a2.New(a2.Quad);
+        const C4 = a2.New(a2.Quad2D);
         return C4.setFromRect(G), n2 && C4.diag(), h2 && C4.mirror(), l && C4.flip(), C4.offset(m3, I3), e.set(t2, C4), C4;
       }
       _OnDynamicTextureLoadComplete() {
@@ -35282,16 +36922,18 @@ var WrapModeToStr2;
       Draw(t2) {
         const e = this.GetCurrentImageInfo(), i = e.GetTexture();
         if (!i) return;
-        G.copy(e.GetTexRect()), G.offsetLeft(this._tileXoffset / i.GetWidth()), G.offsetTop(this._tileYoffset / i.GetHeight()), t2.SetTilemapFillMode(), t2.SetTilemapInfo(G, i.GetWidth(), i.GetHeight(), this._tileWidth, this._tileHeight, this._tileXspacing, this._tileYspacing), t2.SetTexture(i);
-        const s = this.GetWorldInfo(), h2 = s.GetLayer();
+        G.copy(e.GetTexRect()), G.offsetLeft(this._tileXoffset / i.GetWidth()), G.offsetTop(this._tileYoffset / i.GetHeight());
+        const s = this.GetWorldInfo();
+        t2.SetTilemapFillMode(), t2.SetTilemapInfo(G, i.GetWidth(), i.GetHeight(), this._tileWidth, this._tileHeight, this._tileXspacing, this._tileYspacing), t2.SetTexture(i, s.GetActiveSampling());
+        const h2 = s.GetLayer();
         s.GetWidth() === this._lastWidth && s.GetHeight() === this._lastHeight || (this._SetPhysicsChanged(), this._SetAllQuadMapChanged(), this._lastWidth = s.GetWidth(), this._lastHeight = s.GetHeight());
         let l = s.GetX(), a3 = s.GetY();
         this._runtime.IsPixelRoundingEnabled() && (l = Math.round(l), a3 = Math.round(a3));
-        const n2 = this._cellWidth * this._tileWidth, r3 = this._cellHeight * this._tileHeight, o3 = s.GetTotalZElevation(), _3 = I2;
+        const n2 = this._cellWidth * this._tileWidth, r3 = this._cellHeight * this._tileHeight, o3 = s.GetTotalZ(), _3 = I2;
         if (h2.Has3DCamera()) {
           _3.set(-1 / 0, -1 / 0, 1 / 0, 1 / 0);
           const e2 = y2, i2 = h2._GetViewFrustum();
-          for (const s2 of this._tileCells) for (const h3 of s2) h3.GetLayoutRect(e2), i2.ContainsAABB(e2.getLeft(), e2.getTop(), o3, e2.getRight(), e2.getBottom(), o3) && (h3.MaybeBuildQuadMap(), h3.Draw(t2, _3, l, a3));
+          for (const s2 of this._tileCells) for (const h3 of s2) h3.GetLayoutRect(e2), W.setFromRect(e2, o3, o3), i2.ContainsAABB(W) && (h3.MaybeBuildQuadMap(), h3.Draw(t2, _3, l, a3));
         } else {
           h2.GetViewportForZ(o3, _3);
           const e2 = Math.floor((_3.getLeft() - l) / n2), i2 = Math.floor((_3.getRight() - l) / n2), s2 = Math.floor((_3.getTop() - a3) / r3), u3 = Math.floor((_3.getBottom() - a3) / r3);
@@ -35382,75 +37024,75 @@ var WrapModeToStr2;
         this._tileTexQuads.clear(), this._SetAllQuadMapChanged(), this._MaybeBuildAllQuadMap();
       }
       GetScriptInterfaceClass() {
-        return C2;
+        return P2;
       }
     };
-    const W = /* @__PURE__ */ new WeakMap(), C2 = self.ITilemapInstance = class extends self.IWorldInstance {
+    const C2 = /* @__PURE__ */ new WeakMap(), P2 = self.ITilemapInstance = class extends self.IWorldInstance {
       constructor() {
-        super(), W.set(this, self.IInstance._GetInitInst().GetSdkInstance());
+        super(), C2.set(this, self.IInstance._GetInitInst().GetSdkInstance());
       }
       get mapWidth() {
-        return W.get(this).GetMapWidth();
+        return C2.get(this).GetMapWidth();
       }
       get mapHeight() {
-        return W.get(this).GetMapHeight();
+        return C2.get(this).GetMapHeight();
       }
       getMapSize() {
-        const t2 = W.get(this);
+        const t2 = C2.get(this);
         return [t2.GetMapWidth(), t2.GetMapHeight()];
       }
       get mapDisplayWidth() {
-        return W.get(this).GetMapDisplayWidth();
+        return C2.get(this).GetMapDisplayWidth();
       }
       get mapDisplayHeight() {
-        return W.get(this).GetMapDisplayHeight();
+        return C2.get(this).GetMapDisplayHeight();
       }
       getMapDisplaySize() {
-        const t2 = W.get(this);
+        const t2 = C2.get(this);
         return [t2.GetMapDisplayWidth(), t2.GetMapDisplayHeight()];
       }
       get tileWidth() {
-        return W.get(this).GetTileWidth();
+        return C2.get(this).GetTileWidth();
       }
       get tileHeight() {
-        return W.get(this).GetTileHeight();
+        return C2.get(this).GetTileHeight();
       }
       getTileSize() {
-        const t2 = W.get(this);
+        const t2 = C2.get(this);
         return [t2.GetTileWidth(), t2.GetTileHeight()];
       }
       getTileAt(t2, e) {
-        return n.RequireFiniteNumber(t2), n.RequireFiniteNumber(e), W.get(this).GetTileAt(t2, e);
+        return n.RequireFiniteNumber(t2), n.RequireFiniteNumber(e), C2.get(this).GetTileAt(t2, e);
       }
       setTileAt(t2, e, i) {
         n.RequireFiniteNumber(t2), n.RequireFiniteNumber(e), n.RequireFiniteNumber(i);
-        const s = W.get(this);
+        const s = C2.get(this);
         s._MaybeResizeTilemap(), s.SetTileAt(t2, e, i);
       }
       async replaceImage(t2) {
         n.RequireInstanceOf(t2, Blob);
-        const e = W.get(this), i = e.GetRuntime(), s = a2.New(a2.ImageInfo);
-        s.LoadDynamicBlobAsset(i, t2), await s.LoadStaticTexture(i.GetRenderer(), { sampling: i.GetSampling() }), e.WasReleased() ? s.Release() : (e._ReleaseOwnImage(), e._ownImageInfo = s, e._tileTexQuads.clear(), e._SetAllQuadMapChanged(), i.UpdateRender());
+        const e = C2.get(this), i = e.GetRuntime(), s = a2.New(a2.ImageInfo);
+        s.LoadDynamicBlobAsset(i, t2), await s.LoadStaticTexture(i.GetRenderer()), e.WasReleased() ? s.Release() : (e._ReleaseOwnImage(), e._ownImageInfo = s, e._tileTexQuads.clear(), e._SetAllQuadMapChanged(), i.UpdateRender());
       }
     };
-    C2.TILE_FLIPPED_HORIZONTAL = c2, C2.TILE_FLIPPED_VERTICAL = T2, C2.TILE_FLIPPED_DIAGONAL = f2, C2.TILE_FLAGS_MASK = m2, C2.TILE_ID_MASK = M2;
+    P2.TILE_FLIPPED_HORIZONTAL = c2, P2.TILE_FLIPPED_VERTICAL = T2, P2.TILE_FLIPPED_DIAGONAL = f2, P2.TILE_FLAGS_MASK = m2, P2.TILE_ID_MASK = M2;
   }
   {
-    const P2 = self.C3, S2 = P2.Plugins.Tilemap.TILE_FLAGS_MASK, A = P2.Plugins.Tilemap.TILE_ID_MASK;
-    P2.Plugins.Tilemap.Cnds = { CompareTileAt(t2, e, i, s) {
+    const S2 = self.C3, A = S2.Plugins.Tilemap.TILE_FLAGS_MASK, b2 = S2.Plugins.Tilemap.TILE_ID_MASK;
+    S2.Plugins.Tilemap.Cnds = { CompareTileAt(t2, e, i, s) {
       let h2 = this.GetTileAt(t2, e);
-      return -1 !== h2 && (h2 &= A), P2.compare(h2, i, s);
+      return -1 !== h2 && (h2 &= b2), S2.compare(h2, i, s);
     }, CompareTileStateAt(t2, e, i) {
       const s = this.GetTileAt(t2, e);
       let h2 = 0;
-      return -1 !== s && (h2 = s & S2), h2 === this.StateComboToFlags(i);
+      return -1 !== s && (h2 = s & A), h2 === this.StateComboToFlags(i);
     }, OnURLLoaded: () => true, OnURLFailed: () => true, BrushExists(t2) {
-      return this._brushManager || (this._brushManager = new P2.Plugins.Tilemap.BrushManager(this, this._sdkType)), this._brushManager.BrushExists(t2);
+      return this._brushManager || (this._brushManager = new S2.Plugins.Tilemap.BrushManager(this, this._sdkType)), this._brushManager.BrushExists(t2);
     } };
   }
   {
-    const b2 = self.C3, L = b2.Plugins.Tilemap.TILE_ID_MASK;
-    b2.Plugins.Tilemap.Acts = { EraseTile(t2, e) {
+    const H = self.C3, L = H.Plugins.Tilemap.TILE_ID_MASK;
+    H.Plugins.Tilemap.Acts = { EraseTile(t2, e) {
       this._MaybeResizeTilemap(), this.SetTileAt(t2, e, -1);
     }, SetTile(t2, e, i, s) {
       this._MaybeResizeTilemap(), this.SetTileAt(t2, e, i & L | this.StateComboToFlags(s));
@@ -35484,19 +37126,19 @@ var WrapModeToStr2;
       this._runtime.InvokeDownload(e, t2);
     }, async LoadURL(t2, e) {
       if (this._ownImageInfo && this._ownImageInfo.GetURL() === t2) return;
-      const i = this._runtime, s = b2.New(b2.ImageInfo);
+      const i = this._runtime, s = H.New(H.ImageInfo);
       try {
         if (await s.LoadDynamicAsset(i, t2), !s.IsLoaded()) throw new Error("image failed to load");
         if (this.WasReleased()) return s.Release(), null;
-        if (!await s.LoadStaticTexture(i.GetRenderer(), { sampling: i.GetSampling() })) return;
+        if (!await s.LoadStaticTexture(i.GetRenderer())) return;
       } catch (t3) {
-        return console.error("Load image from URL failed: ", t3), void (this.WasReleased() || this.Trigger(b2.Plugins.Tilemap.Cnds.OnURLFailed));
+        return console.error("Load image from URL failed: ", t3), void (this.WasReleased() || this.Trigger(H.Plugins.Tilemap.Cnds.OnURLFailed));
       }
-      this.WasReleased() ? s.Release() : (this._ReleaseOwnImage(), this._ownImageInfo = s, i.UpdateRender(), this._tileTexQuads.clear(), this._SetAllQuadMapChanged(), await this.TriggerAsync(b2.Plugins.Tilemap.Cnds.OnURLLoaded));
+      this.WasReleased() ? s.Release() : (this._ReleaseOwnImage(), this._ownImageInfo = s, i.UpdateRender(), this._tileTexQuads.clear(), this._SetAllQuadMapChanged(), await this.TriggerAsync(H.Plugins.Tilemap.Cnds.OnURLLoaded));
     }, SetEffect(t2) {
       t2 >= 2 && t2++, this.GetWorldInfo().SetBlendMode(t2), this._runtime.UpdateRender();
     }, SetTileWithBrush(t2, e, i) {
-      if (this._MaybeResizeTilemap(), this._brushManager || (this._brushManager = new b2.Plugins.Tilemap.BrushManager(this, this._sdkType)), this._brushManager.BrushExists(i)) switch (this._brushManager.GetBrushType(i)) {
+      if (this._MaybeResizeTilemap(), this._brushManager || (this._brushManager = new H.Plugins.Tilemap.BrushManager(this, this._sdkType)), this._brushManager.BrushExists(i)) switch (this._brushManager.GetBrushType(i)) {
         case 0:
         case 1:
           this._brushManager.SetAutoTile(t2, e, i);
@@ -35505,9 +37147,9 @@ var WrapModeToStr2;
           this._brushManager.SetPatchTile(t2, e, i);
       }
     }, SetTileWithPatchBrush(t2, e, i, s, h2, l, a2) {
-      if (this._MaybeResizeTilemap(), this._brushManager || (this._brushManager = new b2.Plugins.Tilemap.BrushManager(this, this._sdkType)), this._brushManager.BrushExists(i) && 2 === this._brushManager.GetBrushType(i)) this._brushManager.SetPatchTile(t2, e, i, s, h2, l, a2);
+      if (this._MaybeResizeTilemap(), this._brushManager || (this._brushManager = new H.Plugins.Tilemap.BrushManager(this, this._sdkType)), this._brushManager.BrushExists(i) && 2 === this._brushManager.GetBrushType(i)) this._brushManager.SetPatchTile(t2, e, i, s, h2, l, a2);
     }, EraseTileWithBrush(t2, e, i) {
-      if (this._MaybeResizeTilemap(), this._brushManager || (this._brushManager = new b2.Plugins.Tilemap.BrushManager(this, this._sdkType)), this._brushManager.BrushExists(i)) switch (this._brushManager.GetBrushType(i)) {
+      if (this._MaybeResizeTilemap(), this._brushManager || (this._brushManager = new H.Plugins.Tilemap.BrushManager(this, this._sdkType)), this._brushManager.BrushExists(i)) switch (this._brushManager.GetBrushType(i)) {
         case 0:
         case 1:
           this._brushManager.EraseAutoTile(t2, e, i);
@@ -35516,22 +37158,22 @@ var WrapModeToStr2;
           this._brushManager.ErasePatchTile(t2, e, i);
       }
     }, EraseTileWithPatchBrush(t2, e, i, s, h2, l) {
-      if (this._MaybeResizeTilemap(), this._brushManager || (this._brushManager = new b2.Plugins.Tilemap.BrushManager(this, this._sdkType)), this._brushManager.BrushExists(i) && 2 === this._brushManager.GetBrushType(i)) this._brushManager.ErasePatchTile(t2, e, i, s, h2, l);
+      if (this._MaybeResizeTilemap(), this._brushManager || (this._brushManager = new H.Plugins.Tilemap.BrushManager(this, this._sdkType)), this._brushManager.BrushExists(i) && 2 === this._brushManager.GetBrushType(i)) this._brushManager.ErasePatchTile(t2, e, i, s, h2, l);
     }, SetTileWithPatchBrushByName(t2, e, i, s, h2, l, a2) {
-      b2.Plugins.Tilemap.Acts.SetTileWithPatchBrush.call(this, t2, e, i, s, h2, l, a2);
+      H.Plugins.Tilemap.Acts.SetTileWithPatchBrush.call(this, t2, e, i, s, h2, l, a2);
     }, EraseTileWithPatchBrushByName(t2, e, i, s, h2, l) {
-      b2.Plugins.Tilemap.Acts.EraseTileWithPatchBrush.call(this, t2, e, i, s, h2, l);
+      H.Plugins.Tilemap.Acts.EraseTileWithPatchBrush.call(this, t2, e, i, s, h2, l);
     }, SetTileWithBrushByName(t2, e, i) {
-      b2.Plugins.Tilemap.Acts.SetTileWithBrush.call(this, t2, e, i);
+      H.Plugins.Tilemap.Acts.SetTileWithBrush.call(this, t2, e, i);
     }, EraseTileWithBrushByName(t2, e, i) {
-      b2.Plugins.Tilemap.Acts.EraseTileWithBrush.call(this, t2, e, i);
+      H.Plugins.Tilemap.Acts.EraseTileWithBrush.call(this, t2, e, i);
     } };
   }
   {
-    const H = self.C3, R = H.Plugins.Tilemap.TILE_ID_MASK;
-    H.Plugins.Tilemap.Exps = { TileAt(t2, e) {
+    const R = self.C3, x2 = R.Plugins.Tilemap.TILE_ID_MASK;
+    R.Plugins.Tilemap.Exps = { TileAt(t2, e) {
       const i = this.GetTileAt(t2, e);
-      return -1 === i ? -1 : i & R;
+      return -1 === i ? -1 : i & x2;
     }, PositionToTileX(t2) {
       return this.WorldToTileX(t2);
     }, PositionToTileY(t2) {
@@ -35557,15 +37199,15 @@ var WrapModeToStr2;
     }, MapDisplayHeight() {
       return this.GetMapDisplayHeight();
     }, BrushWidth(t2) {
-      return this._brushManager || (this._brushManager = new H.Plugins.Tilemap.BrushManager(this, this._sdkType)), this._brushManager.BrushExists(t2) && 2 === this._brushManager.GetBrushType(t2) ? this._brushManager.GetBrushWidth(t2) : 0;
+      return this._brushManager || (this._brushManager = new R.Plugins.Tilemap.BrushManager(this, this._sdkType)), this._brushManager.BrushExists(t2) && 2 === this._brushManager.GetBrushType(t2) ? this._brushManager.GetBrushWidth(t2) : 0;
     }, BrushHeight(t2) {
-      return this._brushManager || (this._brushManager = new H.Plugins.Tilemap.BrushManager(this, this._sdkType)), this._brushManager.BrushExists(t2) && 2 === this._brushManager.GetBrushType(t2) ? this._brushManager.GetBrushHeight(t2) : 0;
+      return this._brushManager || (this._brushManager = new R.Plugins.Tilemap.BrushManager(this, this._sdkType)), this._brushManager.BrushExists(t2) && 2 === this._brushManager.GetBrushType(t2) ? this._brushManager.GetBrushHeight(t2) : 0;
     } };
   }
 }
 var RunLengthDecode2;
 {
-  const C32 = self.C3, TILE_FLIPPED_HORIZONTAL = C32.Plugins.Tilemap.TILE_FLIPPED_HORIZONTAL, TILE_FLIPPED_VERTICAL = C32.Plugins.Tilemap.TILE_FLIPPED_VERTICAL, TILE_FLIPPED_DIAGONAL = C32.Plugins.Tilemap.TILE_FLIPPED_DIAGONAL, TILE_ID_MASK = C32.Plugins.Tilemap.TILE_ID_MASK, tempRect = C32.New(C32.Rect), tempQuad = C32.New(C32.Quad);
+  const C32 = self.C3, TILE_FLIPPED_HORIZONTAL = C32.Plugins.Tilemap.TILE_FLIPPED_HORIZONTAL, TILE_FLIPPED_VERTICAL = C32.Plugins.Tilemap.TILE_FLIPPED_VERTICAL, TILE_FLIPPED_DIAGONAL = C32.Plugins.Tilemap.TILE_FLIPPED_DIAGONAL, TILE_ID_MASK = C32.Plugins.Tilemap.TILE_ID_MASK, tempRect = C32.New(C32.Rect), tempQuad = C32.New(C32.Quad2D);
   C32.Plugins.Tilemap.TileQuad = class extends C32.DefendedBase {
     constructor() {
       super(), this._id = -1, this._tileId = -1, this._isHorizFlip = false, this._isVertFlip = false, this._isDiagFlip = false, this._rc = C32.New(C32.Rect), this._uv = null;
@@ -35712,7 +37354,7 @@ var RunLengthDecode2;
     get ERASE_MODE() {
       return 1;
     }
-    GetSdkIntance() {
+    GetSdkInstance() {
       return this._sdkInst;
     }
     GetSdkType() {
@@ -35746,13 +37388,13 @@ var RunLengthDecode2;
       return !!this.GetSdkType().GetBrushData(t2);
     }
     GetTile(t2, e) {
-      return this.GetSdkIntance().GetTileAt(t2, e);
+      return this.GetSdkInstance().GetTileAt(t2, e);
     }
     _SetTile(t2, e, s) {
-      this.GetSdkIntance().SetTileAt(t2, e, s);
+      this.GetSdkInstance().SetTileAt(t2, e, s);
     }
     _EraseTile(t2, e) {
-      this.GetSdkIntance().SetTileAt(t2, e, -1);
+      this.GetSdkInstance().SetTileAt(t2, e, -1);
     }
     _SetAutoTilePatch(t2, e, s) {
       s && (this._SetTile(t2 - 1, e - 1, s[0][0]), this._SetTile(t2, e - 1, s[1][0]), this._SetTile(t2 + 1, e - 1, s[2][0]), this._SetTile(t2 - 1, e, s[0][1]), this._SetTile(t2, e, s[1][1]), this._SetTile(t2 + 1, e, s[2][1]), this._SetTile(t2 - 1, e + 1, s[0][2]), this._SetTile(t2, e + 1, s[1][2]), this._SetTile(t2 + 1, e + 1, s[2][2]));
@@ -35830,7 +37472,7 @@ var RunLengthDecode2;
       }
       const a2 = this._manager.GetProbabilityTable();
       a2.Clear();
-      for (let [e2, t3] of r2) e2 > this._manager.GetSdkIntance().GetMaxTileIndex() || ("number" != typeof t3 && (t3 = 1), a2.AddItem(t3, e2));
+      for (let [e2, t3] of r2) e2 > this._manager.GetSdkInstance().GetMaxTileIndex() || ("number" != typeof t3 && (t3 = 1), a2.AddItem(t3, e2));
       return a2.Sample();
     }
     _IsTileIndexInBrush(e, t2) {
@@ -35939,8 +37581,8 @@ var RunLengthDecode2;
     GetBrushHeight(r2) {
       return r2.tileData.length;
     }
-    TransformPatch(r2, t2 = false, i = false, e = 0, a2 = 0, s = 0) {
-      switch (r2 = this._SetTransformState(0, 0, e, r2), this._indexTransformMirror = this._mirror, this._indexTransformFlip = this._flip, this._indexTransformDiagonal = this._diagonal, this._diagonal && (r2 = this._TransposePatch(r2)), this._mirror && (r2 = this._MirrorPatch(r2, s === this._manager.PAINT_MODE)), this._flip && (r2 = this._FlipPatch(r2, s === this._manager.PAINT_MODE)), r2 = this._SetTransformState(t2 ? 1 : 0, i ? 1 : 0, 0, r2), e) {
+    TransformPatch(r2, t2 = false, i = false, e = 0, s = 0, a2 = 0) {
+      switch (r2 = this._SetTransformState(0, 0, e, r2), this._indexTransformMirror = this._mirror, this._indexTransformFlip = this._flip, this._indexTransformDiagonal = this._diagonal, this._diagonal && (r2 = this._TransposePatch(r2)), this._mirror && (r2 = this._MirrorPatch(r2, a2 === this._manager.PAINT_MODE)), this._flip && (r2 = this._FlipPatch(r2, a2 === this._manager.PAINT_MODE)), r2 = this._SetTransformState(t2 ? 1 : 0, i ? 1 : 0, 0, r2), e) {
         case 0:
           this._indexTransformMirror = this._mirror, this._indexTransformFlip = this._flip;
           break;
@@ -35953,29 +37595,29 @@ var RunLengthDecode2;
         case 3:
           this._indexTransformMirror = this._mirror, this._indexTransformFlip = 1 ^ this._flip;
       }
-      return this._mirror && (r2 = this._MirrorPatch(r2, s === this._manager.PAINT_MODE)), this._flip && (r2 = this._FlipPatch(r2, s === this._manager.PAINT_MODE)), r2;
+      return this._mirror && (r2 = this._MirrorPatch(r2, a2 === this._manager.PAINT_MODE)), this._flip && (r2 = this._FlipPatch(r2, a2 === this._manager.PAINT_MODE)), r2;
     }
     BuildPatch(r2, t2, i) {
-      const e = i.tileData[0].length, a2 = i.tileData.length, s = Array.from({ length: a2 }, () => new Array(e).fill(this._manager.EMPTY_INDEX)), n = this._manager.GetProbabilityTable();
+      const e = i.tileData[0].length, s = i.tileData.length, a2 = Array.from({ length: s }, () => new Array(e).fill(this._manager.EMPTY_INDEX)), n = this._manager.GetProbabilityTable();
       n.Clear();
-      for (let r3 = 0; r3 < a2; r3++) for (let t3 = 0; t3 < e; t3++) {
+      for (let r3 = 0; r3 < s; r3++) for (let t3 = 0; t3 < e; t3++) {
         const e2 = i.tileData[r3][t3];
         switch (this._mode) {
           case this._manager.PAINT_MODE:
             if (1 === e2.length) {
               const i2 = e2[0][0];
-              if (i2 > this._manager.GetSdkIntance().GetMaxTileIndex()) continue;
-              s[r3][t3] = i2;
+              if (i2 > this._manager.GetSdkInstance().GetMaxTileIndex()) continue;
+              a2[r3][t3] = i2;
             } else {
-              for (let [r4, t4] of e2) r4 > this._manager.GetSdkIntance().GetMaxTileIndex() || ("number" != typeof t4 && (t4 = 1), n.AddItem(t4, r4));
-              s[r3][t3] = n.Sample();
+              for (let [r4, t4] of e2) r4 > this._manager.GetSdkInstance().GetMaxTileIndex() || ("number" != typeof t4 && (t4 = 1), n.AddItem(t4, r4));
+              a2[r3][t3] = n.Sample();
             }
             break;
           case this._manager.ERASE_MODE:
-            i.tileData[r3][t3][0][0] === this._manager.EMPTY_INDEX ? s[r3][t3] = this._manager.IGNORE_INDEX : s[r3][t3] = this._manager.EMPTY_INDEX;
+            i.tileData[r3][t3][0][0] === this._manager.EMPTY_INDEX ? a2[r3][t3] = this._manager.IGNORE_INDEX : a2[r3][t3] = this._manager.EMPTY_INDEX;
         }
       }
-      return s;
+      return a2;
     }
     _SetTransformState(r2, t2, i, e) {
       switch (i) {
@@ -36022,9 +37664,9 @@ var RunLengthDecode2;
     }
     _TransposePatch(r2) {
       let t2 = [], i = r2.length, e = r2[0].length;
-      for (let a2 = 0; a2 < e; a2++) {
+      for (let s = 0; s < e; s++) {
         let e2 = [];
-        for (let t3 = 0; t3 < i; t3++) e2.push(r2[t3][a2]);
+        for (let t3 = 0; t3 < i; t3++) e2.push(r2[t3][s]);
         t2.push(e2);
       }
       return t2;
@@ -36056,7 +37698,7 @@ var RunLengthDecode2;
         this.GetImageInfo().LoadAsset(this._runtime);
       }
       LoadTextures(e) {
-        return this.GetImageInfo().LoadStaticTexture(e, { sampling: this._runtime.GetSampling() });
+        return this.GetImageInfo().LoadStaticTexture(e);
       }
       ReleaseTextures() {
         this.GetImageInfo().ReleaseTexture();
@@ -36065,10 +37707,10 @@ var RunLengthDecode2;
   }
   {
     let GetParticleEngine = function(e) {
-      return w2.get(e).GetParticleEngine();
+      return D2.get(e).GetParticleEngine();
     };
     GetParticleEngine2 = GetParticleEngine;
-    const i = self.C3, n = self.C3X, a2 = 0, r2 = 1, s = 2, o2 = 3, c2 = 4, l = 5, S2 = 6, d2 = 7, p2 = 8, G = 9, m2 = 10, u2 = 11, h2 = 12, g2 = 13, R = 14, I2 = 15, y2 = 16, _2 = 17, E2 = 18, P2 = 19, f2 = 20, b2 = 0, C2 = 1, O2 = i.New(i.Rect);
+    const i = self.C3, n = self.C3X, a2 = 0, r2 = 1, s = 2, o2 = 3, c2 = 4, l = 5, S2 = 6, d2 = 7, p2 = 8, G = 9, m2 = 10, u2 = 11, h2 = 12, g2 = 13, R = 14, I2 = 15, y2 = 16, _2 = 17, E2 = 18, P2 = 19, f2 = 20, b2 = 0, C2 = 1, O2 = new i.Rect(), w2 = new i.AABB3D();
     i.Plugins.Particles.Instance = class extends i.SDKWorldInstanceBase {
       constructor(e, t2) {
         super(e), this._isFirstTick = true;
@@ -36078,7 +37720,7 @@ var RunLengthDecode2;
         t2 && (n2.SetRate(t2[a2]), n2.SetSprayCone(i.toRadians(t2[r2])), n2.SetSprayType(t2[s] ? "one-shot" : "continuous-spray"), this._SetParticleObjectClass(this._runtime.GetObjectClassBySID(t2[o2])), b3 = t2[c2], n2.SetInitSpeed(t2[l]), n2.SetInitSize(t2[S2]), n2.SetInitOpacity(t2[d2] / 100), n2.SetGrowRate(t2[p2]), n2.SetInitXRandom(t2[G]), n2.SetInitYRandom(t2[m2]), n2.SetInitSpeedRandom(t2[u2]), n2.SetInitSizeRandom(t2[h2]), n2.SetGrowRandom(t2[g2]), n2.SetAcceleration(t2[R]), n2.SetGravity(t2[I2]), n2.SetLifeAngleRandom(t2[y2]), n2.SetLifeSpeedRandom(t2[_2]), n2.SetLifeOpacityRandom(t2[E2]), n2.SetDestroyModeIndex(t2[P2]), n2.SetTimeout(t2[f2])), this._UpdateEngineParameters(), this._spawnObjectClass && (this._hasAnyDefaultParticle = false), "one-shot" === n2.GetSprayType() ? n2.CreateOneShotSpray() : n2.SetSpraying(true);
         const C4 = this.GetWorldInfo();
         C4.SetVisible(b3), C4.SetBboxChangeEventEnabled(true), this._inst.Dispatcher().addEventListener("bboxchange", () => {
-          C4.OverwriteBoundingBox(this._particleEngine.GetBoundingBox());
+          w2.setFromRect(this._particleEngine.GetBoundingBox()), C4.OverwriteBoundingBox(w2);
         }), this.GetRuntime().GetRenderer().IsWebGPU() && C4.SetUsePointsShaderProgram(), this._afterLoad = (e2) => this._OnAfterLoad(e2), this.GetRuntime().Dispatcher().addEventListener("afterload", this._afterLoad), this._StartTicking();
       }
       Release() {
@@ -36105,8 +37747,8 @@ var RunLengthDecode2;
         const t2 = this._objectClass.GetImageInfo(), i2 = t2.GetTexture();
         if (!i2) return;
         const n2 = this.GetWorldInfo(), a3 = n2.GetLayer(), r3 = O2;
-        this._runtime.GetCanvasManager().IsPastingToDrawingCanvas() ? r3.set(-1 / 0, -1 / 0, 1 / 0, 1 / 0) : a3.Has3DCamera() ? a3.CalculateViewport3D(n2.GetTotalZElevation(), r3) : a3.GetViewportForZ(n2.GetTotalZElevation(), r3), e.SetTexture(i2);
-        const s2 = a3.Get2DScaleFactorToZ(n2.GetTotalZElevation());
+        this._runtime.GetCanvasManager().IsPastingToDrawingCanvas() ? r3.set(-1 / 0, -1 / 0, 1 / 0, 1 / 0) : a3.Has3DCamera() ? a3.CalculateViewport3D(n2.GetTotalZ(), r3) : a3.GetViewportForZ(n2.GetTotalZ(), r3), e.SetTexture(i2, n2.GetActiveSampling());
+        const s2 = a3.Get2DScaleFactorToZ(n2.GetTotalZ());
         this._particleEngine.SetParticleScale(a3.GetRenderScale() * s2), this._particleEngine.Draw(e, t2.GetTexQuad(), r3, a3.Has3DCamera());
       }
       SaveToJson() {
@@ -36278,10 +37920,10 @@ var RunLengthDecode2;
         return self.IParticlesInstance;
       }
     };
-    const w2 = /* @__PURE__ */ new WeakMap();
+    const D2 = /* @__PURE__ */ new WeakMap();
     self.IParticlesInstance = class extends self.IWorldInstance {
       constructor() {
-        super(), w2.set(this, self.IInstance._GetInitInst().GetSdkInstance());
+        super(), D2.set(this, self.IInstance._GetInitInst().GetSdkInstance());
       }
       set isSpraying(e) {
         GetParticleEngine(this).SetSpraying(!!e);
@@ -36290,7 +37932,7 @@ var RunLengthDecode2;
         return GetParticleEngine(this).IsSpraying();
       }
       set rate(e) {
-        n.RequireFiniteNumber(e), w2.get(this)._SetRate(e);
+        n.RequireFiniteNumber(e), D2.get(this)._SetRate(e);
       }
       get rate() {
         return GetParticleEngine(this).GetRate();
@@ -36392,10 +38034,10 @@ var RunLengthDecode2;
         return GetParticleEngine(this).GetTimeout();
       }
       fastForward(e) {
-        n.RequireFiniteNumber(e), w2.get(this)._FastForward(e);
+        n.RequireFiniteNumber(e), D2.get(this)._FastForward(e);
       }
       setParticleObjectClass(e) {
-        const t2 = w2.get(this);
+        const t2 = D2.get(this);
         e ? t2._SetParticleObjectClass(t2.GetRuntime()._UnwrapIObjectClass(e)) : t2._SetParticleObjectClass(null);
       }
     };
@@ -36452,13 +38094,13 @@ var RunLengthDecode2;
     } };
   }
   {
-    const D2 = self.C3;
-    D2.Plugins.Particles.Exps = { ParticleCount() {
+    const A = self.C3;
+    A.Plugins.Particles.Exps = { ParticleCount() {
       return this._particleEngine.GetParticleCount();
     }, Rate() {
       return this._particleEngine.GetRate();
     }, SprayCone() {
-      return D2.toDegrees(this._particleEngine.GetSprayCone());
+      return A.toDegrees(this._particleEngine.GetSprayCone());
     }, InitSpeed() {
       return this._particleEngine.GetInitSpeed();
     }, InitSize() {
@@ -36781,7 +38423,7 @@ var GetParticleEngine2;
   };
   randomOffset2 = randomOffset;
   const C32 = self.C3, ParticleEngine = self.ParticleEngine;
-  const tmpQuad = new C32.Quad(), tmpColor = new C32.Color();
+  const tmpQuad = new C32.Quad2D(), tmpColor = new C32.Color();
   let didChangeColor = false;
   self.Particle = class {
     constructor(t2) {
@@ -36940,7 +38582,7 @@ var randomOffset2;
         const e2 = this.GetWorldInfo();
         this._lastKnownX === e2.GetX() && this._lastKnownY === e2.GetY() || (this._lightX = e2.GetX(), this._lightY = e2.GetY());
         const s2 = w2;
-        e2.GetLayer().GetViewportForZ(e2.GetTotalZElevation(), s2), this._maxExtrude = 15 * t2.distanceTo(s2.getLeft(), s2.getTop(), s2.getRight(), s2.getBottom());
+        e2.GetLayer().GetViewportForZ(e2.GetTotalZ(), s2), this._maxExtrude = 15 * t2.distanceTo(s2.getLeft(), s2.getTop(), s2.getRight(), s2.getBottom());
         const i2 = s2.midX(), h3 = s2.midY();
         let r3 = s2.width() + this._maxExtrude, a3 = s2.height() + this._maxExtrude;
         e2.HasParent() ? (r3 += 2 * Math.abs(e2.GetX() - i2), a3 += 2 * Math.abs(e2.GetY() - h3), r3 === e2.GetWidth() && a3 === e2.GetHeight() || (e2.SetSize(r3, a3), e2.SetBboxChanged())) : i2 === e2.GetX() && h3 === e2.GetY() && r3 === e2.GetWidth() && a3 === e2.GetHeight() || (e2.SetXY(i2, h3), e2.SetSize(r3, a3), e2.SetBboxChanged()), this._lastKnownX = e2.GetX(), this._lastKnownY = e2.GetY();
@@ -37144,7 +38786,7 @@ var randomOffset2;
   IsBackFace2 = IsBackFace, SegmentIntersectionAt2 = SegmentIntersectionAt;
   const C32 = self.C3;
   let segmentIntersectX = 0, segmentIntersectY = 0;
-  let posQuad = new C32.Quad(), uvQuad = new C32.Quad();
+  let posQuad = new C32.Quad2D(), uvQuad = new C32.Quad2D();
   const VALID_CASTFROM = /* @__PURE__ */ new Set(["all", "same-tag", "different-tag"]);
   self.ShadowRenderer = class {
     constructor() {
@@ -37616,10 +39258,15 @@ var StringFromCharCode2;
     const o2 = self.C3, i = "mouse";
     let r2 = null;
     o2.Plugins.Mouse.Instance = class extends o2.SDKInstanceBase {
+      #e = false;
+      #t = false;
+      #s = false;
+      #n = 0;
+      #o = 0;
       constructor(e, t2) {
-        super(e, i), this._buttonMap = [false, false, false, false, false], this._mouseXcanvas = 0, this._mouseYcanvas = 0, this._triggerButton = 0, this._triggerType = 0, this._triggerDir = 0, this._wheelDeltaX = 0, this._wheelDeltaY = 0, this._wheelDeltaZ = 0, this._hasPointerLock = false, this._movementX = 0, this._movementY = 0, this.AddDOMMessageHandlers([["pointer-lock-change", (e2) => this._OnPointerLockChange(e2)], ["pointer-lock-error", (e2) => this._OnPointerLockError(e2)]]);
+        super(e, i), this._buttonMap = [false, false, false, false, false], this._mouseXcanvas = 0, this._mouseYcanvas = 0, this._triggerButton = 0, this._triggerType = 0, this._triggerDir = 0, this._wheelDeltaX = 0, this._wheelDeltaY = 0, this._wheelDeltaZ = 0, this.#s = this._runtime.IsWindowsWebView2() || "macos-wkwebview" === this._runtime.GetExportType() || "linux-cef" === this._runtime.GetExportType(), this.AddDOMMessageHandlers([["pointer-lock-change", (e2) => this._OnPointerLockChange(e2)], ["pointer-lock-error", (e2) => this._OnPointerLockError(e2)], ["wrapper-pointer-lock-movement", (e2) => this.#i(e2)]]);
         const s = this.GetRuntime().Dispatcher();
-        this._disposables = new o2.CompositeDisposable(o2.Disposable.From(s, "pointermove", (e2) => this._OnPointerMove(e2.data)), o2.Disposable.From(s, "pointerdown", (e2) => this._OnPointerDown(e2.data)), o2.Disposable.From(s, "pointerup", (e2) => this._OnPointerUp(e2.data)), o2.Disposable.From(s, "dblclick", (e2) => this._OnDoubleClick(e2.data)), o2.Disposable.From(s, "wheel", (e2) => this._OnMouseWheel(e2.data)), o2.Disposable.From(s, "window-blur", () => this._OnWindowBlur()));
+        this._disposables = new o2.CompositeDisposable(o2.Disposable.From(s, "pointermove", (e2) => this._OnPointerMove(e2.data)), o2.Disposable.From(s, "pointerdown", (e2) => this._OnPointerDown(e2.data)), o2.Disposable.From(s, "pointerup", (e2) => this._OnPointerUp(e2.data)), o2.Disposable.From(s, "dblclick", (e2) => this._OnDoubleClick(e2.data)), o2.Disposable.From(s, "wheel", (e2) => this._OnMouseWheel(e2.data)), o2.Disposable.From(s, "window-blur", () => this._OnWindowBlur())), this._runtime.AddLoadPromise(this.PostToDOMAsync("init", { "isPointerLockWrapperPolyfill": this.#s }));
       }
       Release() {
         super.Release();
@@ -37627,8 +39274,11 @@ var StringFromCharCode2;
       _OnPointerDown(e) {
         "mouse" === e["pointerType"] && (this._mouseXcanvas = e["pageX"] - this._runtime.GetCanvasClientX(), this._mouseYcanvas = e["pageY"] - this._runtime.GetCanvasClientY(), this._CheckButtonChanges(e["lastButtons"], e["buttons"]));
       }
+      #r(e, t2) {
+        this.#n = e, this.#o = t2, this.Trigger(o2.Plugins.Mouse.Cnds.OnMovement), this.#n = 0, this.#o = 0;
+      }
       _OnPointerMove(e) {
-        this._movementX = e["movementX"], this._movementY = e["movementY"], this.Trigger(o2.Plugins.Mouse.Cnds.OnMovement), this._movementX = 0, this._movementY = 0, "mouse" === e["pointerType"] && (this._mouseXcanvas = e["pageX"] - this._runtime.GetCanvasClientX(), this._mouseYcanvas = e["pageY"] - this._runtime.GetCanvasClientY(), this._CheckButtonChanges(e["lastButtons"], e["buttons"]));
+        this.#s && (this.#e || this.#t) || this.#r(e["movementX"], e["movementY"]), "mouse" === e["pointerType"] && (this._mouseXcanvas = e["pageX"] - this._runtime.GetCanvasClientX(), this._mouseYcanvas = e["pageY"] - this._runtime.GetCanvasClientY(), this._CheckButtonChanges(e["lastButtons"], e["buttons"]));
       }
       _OnPointerUp(e) {
         "mouse" === e["pointerType"] && this._CheckButtonChanges(e["lastButtons"], e["buttons"]);
@@ -37687,14 +39337,32 @@ var StringFromCharCode2;
         const i2 = `url(${await n.ExtractImageToBlobURL()}) ${Math.round(s.GetOriginX() * n.GetWidth())} ${Math.round(s.GetOriginY() * n.GetHeight())}, auto`;
         this.PostToDOM("cursor", i2);
       }
+      _RequestPointerLock(e) {
+        this.#e || this.#t || (this.#t = true, this._PostToDOMMaybeSync("request-pointer-lock", { "unadjustedMovement": e }));
+      }
+      _ReleasePointerLock() {
+        this.#e && (this.#t = false, this.PostToDOM("release-pointer-lock"));
+      }
+      _GetMovementX() {
+        return this.#n;
+      }
+      _GetMovementY() {
+        return this.#o;
+      }
       _OnPointerLockChange(e) {
-        this._UpdatePointerLockState(e["has-pointer-lock"]);
+        this._UpdatePointerLockState(e["hasPointerLock"]);
       }
       _OnPointerLockError(e) {
-        this._UpdatePointerLockState(e["has-pointer-lock"]), this.Trigger(o2.Plugins.Mouse.Cnds.OnPointerLockError);
+        this._UpdatePointerLockState(e["hasPointerLock"]), this.Trigger(o2.Plugins.Mouse.Cnds.OnPointerLockError);
       }
       _UpdatePointerLockState(e) {
-        this._hasPointerLock !== e && (this._hasPointerLock = e, this._hasPointerLock ? this.Trigger(o2.Plugins.Mouse.Cnds.OnPointerLocked) : this.Trigger(o2.Plugins.Mouse.Cnds.OnPointerUnlocked));
+        this.#t = false, this.#e !== e && (this.#e = e, this.#e ? this.Trigger(o2.Plugins.Mouse.Cnds.OnPointerLocked) : this.Trigger(o2.Plugins.Mouse.Cnds.OnPointerUnlocked));
+      }
+      _HasPointerLock() {
+        return this.#e;
+      }
+      #i(e) {
+        this.#r(e["movementX"], e["movementY"]);
       }
       GetDebuggerProperties() {
         const e = "plugins.mouse";
@@ -37703,8 +39371,8 @@ var StringFromCharCode2;
     };
   }
   {
-    const u2 = self.C3;
-    u2.Plugins.Mouse.Cnds = { OnClick(e, t2) {
+    const a2 = self.C3;
+    a2.Plugins.Mouse.Cnds = { OnClick(e, t2) {
       return this._triggerButton === e && this._triggerType === t2;
     }, OnAnyClick: () => true, IsButtonDown(e) {
       return this._buttonMap[e];
@@ -37712,7 +39380,7 @@ var StringFromCharCode2;
       return this._triggerButton === e;
     }, IsOverObject(e) {
       const t2 = this._runtime.GetCurrentCondition().IsInverted(), s = [];
-      return this._IsMouseOverCanvas() && s.push([this._mouseXcanvas, this._mouseYcanvas]), u2.xor(this._runtime.GetCollisionEngine().TestAndSelectCanvasPointOverlap(e, s, t2), t2);
+      return this._IsMouseOverCanvas() && s.push([this._mouseXcanvas, this._mouseYcanvas]), a2.xor(this._runtime.GetCollisionEngine().TestAndSelectCanvasPointOverlap(e, s, t2), t2);
     }, OnObjectClicked(e, t2, s) {
       if (e !== this._triggerButton || t2 !== this._triggerType) return false;
       if (!this._IsMouseOverCanvas()) return false;
@@ -37721,21 +39389,21 @@ var StringFromCharCode2;
     }, OnWheel(e) {
       return 2 === e || this._triggerDir === e;
     }, OnPointerLocked: () => true, OnPointerUnlocked: () => true, OnPointerLockError: () => true, HasPointerLock() {
-      return this._hasPointerLock;
+      return this._HasPointerLock();
     }, OnMovement: () => true };
   }
   {
-    const a2 = self.C3, h2 = ["auto", "pointer", "text", "crosshair", "move", "help", "wait", "none"], l = ["auto", "all-scroll", "none", "help", "pointer", "progress", "wait", "cell", "crosshair", "text", "vertical-text", "alias", "copy", "move", "not-allowed", "grab", "grabbing", "col-resize", "row-resize", "ew-resize", "ns-resize", "nesw-resize", "nwse-resize", "zoom-in", "zoom-out"];
-    a2.Plugins.Mouse.Acts = { SetCursor(e) {
+    const u2 = self.C3, h2 = ["auto", "pointer", "text", "crosshair", "move", "help", "wait", "none"], l = ["auto", "all-scroll", "none", "help", "pointer", "progress", "wait", "cell", "crosshair", "text", "vertical-text", "alias", "copy", "move", "not-allowed", "grab", "grabbing", "col-resize", "row-resize", "ew-resize", "ns-resize", "nesw-resize", "nwse-resize", "zoom-in", "zoom-out"];
+    u2.Plugins.Mouse.Acts = { SetCursor(e) {
       this.SetCursorStyle(h2[e]);
     }, SetCursor2(e) {
       this.SetCursorStyle(l[e]);
     }, SetCursorSprite(e) {
       this.SetCursorObjectClass(e);
     }, RequestPointerLock(e) {
-      this._PostToDOMMaybeSync("request-pointer-lock", { "unadjustedMovement": e });
+      this._RequestPointerLock(e);
     }, ReleasePointerLock() {
-      this.PostToDOM("release-pointer-lock");
+      this._ReleasePointerLock();
     } };
   }
   self.C3.Plugins.Mouse.Exps = { X(e) {
@@ -37747,9 +39415,9 @@ var StringFromCharCode2;
   }, AbsoluteY() {
     return this._mouseYcanvas;
   }, MovementX() {
-    return this._movementX;
+    return this._GetMovementX();
   }, MovementY() {
-    return this._movementY;
+    return this._GetMovementY();
   }, WheelDeltaX() {
     return this._wheelDeltaX;
   }, WheelDeltaY() {
@@ -37859,10 +39527,12 @@ var GetMouseSdkInstance2;
       }
     }
     t2.Plugins.gamepad.Instance = class extends t2.SDKInstanceBase {
+      #t = false;
+      #e = -1;
       constructor(s2, n2) {
-        super(s2, e), this._deadZone = 25, this._lastButton = 0, this._lastIndex = -1, this._gamepads = /* @__PURE__ */ new Map(), n2 && (this._deadZone = n2[0]), this.AddDOMMessageHandler("gamepad-connected", (t3) => this._OnGamepadConnected(t3)), this.AddDOMMessageHandler("gamepad-disconnected", (t3) => this._OnGamepadDisconnected(t3)), this.AddDOMMessageHandler("input-update", (t3) => this._OnInputUpdate(t3));
+        super(s2, e), this.SetWrapperExtensionComponentId("scirra-gameinput"), this._deadZone = 25, this._lastButton = 0, this._lastIndex = -1, this._gamepads = /* @__PURE__ */ new Map(), n2 && (this._deadZone = n2[0]), this.#t = "windows-webview2" === this._runtime.GetExportType() && this.IsWrapperExtensionAvailable(), this.#t ? this.AddWrapperExtensionMessageHandlers([["gamepad-disconnected", (t3) => this.#s(t3)], ["input-update", (t3) => this.#n(t3)]]) : this.AddDOMMessageHandlers([["gamepad-connected", (t3) => this._OnGamepadConnected(t3)], ["gamepad-disconnected", (t3) => this._OnGamepadDisconnected(t3)], ["input-update", (t3) => this._OnInputUpdate(t3)]]);
         const a2 = this.GetRuntime().Dispatcher();
-        this._disposables = new t2.CompositeDisposable(t2.Disposable.From(a2, "tick2", () => this._OnTick2()), t2.Disposable.From(a2, "suspend", () => this._OnSuspend()), t2.Disposable.From(a2, "resume", () => this._OnResume())), this.PostToDOM("ready");
+        this._disposables = new t2.CompositeDisposable(t2.Disposable.From(a2, "tick2", () => this._OnTick2()), t2.Disposable.From(a2, "suspend", () => this._OnSuspend()), t2.Disposable.From(a2, "resume", () => this._OnResume()), t2.Disposable.From(a2, "afterfirstlayoutstart", () => this.#a())), this.#t || this.PostToDOM("ready");
       }
       Release() {
         super.Release();
@@ -37899,10 +39569,39 @@ var GetMouseSdkInstance2;
         for (const t3 of this._gamepads.values()) t3.ResetButtonPressAndReleaseFlags();
       }
       _OnSuspend() {
-        this.PostToDOM("suspend");
+        this.#t ? this.#o(false) : this.PostToDOM("suspend");
       }
       _OnResume() {
-        this.PostToDOM("resume");
+        this.#t ? this.#o(true) : this.PostToDOM("resume");
+      }
+      async #a() {
+        if (this.#t) {
+          (await this.SendWrapperExtensionMessageAsync("init"))["isOk"] && this.#o(true);
+        }
+      }
+      #o(t3) {
+        if (t3) {
+          if (-1 !== this.#e) return;
+          this.#e = globalThis.setInterval(() => this.#i(), 4);
+        } else {
+          if (-1 === this.#e) return;
+          globalThis.clearInterval(this.#e), this.#e = -1;
+        }
+      }
+      #i() {
+        this.SendWrapperExtensionMessage("poll-gamepad-state");
+      }
+      #s(t3) {
+        this._OnGamepadDisconnected({ "index": t3["index"] });
+      }
+      #n(t3) {
+        let e2;
+        try {
+          e2 = JSON.parse(t3["data"]);
+        } catch (t4) {
+          return void console.error("[Gamepad] Invalid data from wrapper extension: ", t4);
+        }
+        this._OnInputUpdate(e2["gamepads"]);
       }
       GetDebuggerProperties() {
         const t3 = "plugins.gamepad";
@@ -37933,22 +39632,22 @@ var GetMouseSdkInstance2;
       s = Math.floor(s);
       const o2 = this._GetGamepadByIndex(e);
       if (!o2) return false;
-      let r2 = o2.GetAxisAt(s), i = 0;
-      return i = s % 2 == 0 ? o2.GetAxisAt(s + 1) : o2.GetAxisAt(s - 1), r2 *= 100, i *= 100, Math.hypot(r2, i) <= this._deadZone && (r2 = 0), t2.compare(r2, n, a2);
+      let i = o2.GetAxisAt(s), r2 = 0;
+      return r2 = s % 2 == 0 ? o2.GetAxisAt(s + 1) : o2.GetAxisAt(s - 1), i *= 100, r2 *= 100, Math.hypot(i, r2) <= this._deadZone && (i = 0), t2.compare(i, n, a2);
     }, OnAnyButtonDown(t3) {
       const e = this._GetAllGamepadsByIndex(t3);
       if (0 === e.length) return false;
-      const s = this._runtime, n = s.GetEventSheetManager(), a2 = s.GetCurrentEvent(), o2 = a2.GetSolModifiers(), r2 = s.GetEventStack(), i = r2.GetCurrentStackFrame(), u2 = r2.Push(a2);
+      const s = this._runtime, n = s.GetEventSheetManager(), a2 = s.GetCurrentEvent(), o2 = a2.GetSolModifiers(), i = s.GetEventStack(), r2 = i.GetCurrentStackFrame(), u2 = i.Push(a2);
       s.SetDebuggingEnabled(false);
-      for (const t4 of e) for (let e2 = 0, s2 = t4.GetButtonCount(); e2 < s2; ++e2) t4.HasButtonBecomePressed(e2) && (this._lastIndex = t4.GetIndex(), this._lastButton = e2, n.PushCopySol(o2), a2.Retrigger(i, u2), n.PopSol(o2), this._lastIndex = -1);
-      return s.SetDebuggingEnabled(true), r2.Pop(), false;
+      for (const t4 of e) for (let e2 = 0, s2 = t4.GetButtonCount(); e2 < s2; ++e2) t4.HasButtonBecomePressed(e2) && (this._lastIndex = t4.GetIndex(), this._lastButton = e2, n.PushCopySol(o2), a2.Retrigger(r2, u2), n.PopSol(o2), this._lastIndex = -1);
+      return s.SetDebuggingEnabled(true), i.Pop(), false;
     }, OnAnyButtonUp(t3) {
       const e = this._GetAllGamepadsByIndex(t3);
       if (0 === e.length) return false;
-      const s = this._runtime, n = s.GetEventSheetManager(), a2 = s.GetCurrentEvent(), o2 = a2.GetSolModifiers(), r2 = s.GetEventStack(), i = r2.GetCurrentStackFrame(), u2 = r2.Push(a2);
+      const s = this._runtime, n = s.GetEventSheetManager(), a2 = s.GetCurrentEvent(), o2 = a2.GetSolModifiers(), i = s.GetEventStack(), r2 = i.GetCurrentStackFrame(), u2 = i.Push(a2);
       s.SetDebuggingEnabled(false);
-      for (const t4 of e) for (let e2 = 0, s2 = t4.GetButtonCount(); e2 < s2; ++e2) t4.HasButtonBecomeReleased(e2) && (this._lastIndex = t4.GetIndex(), this._lastButton = e2, n.PushCopySol(o2), a2.Retrigger(i, u2), n.PopSol(o2), this._lastIndex = -1);
-      return s.SetDebuggingEnabled(true), r2.Pop(), false;
+      for (const t4 of e) for (let e2 = 0, s2 = t4.GetButtonCount(); e2 < s2; ++e2) t4.HasButtonBecomeReleased(e2) && (this._lastIndex = t4.GetIndex(), this._lastButton = e2, n.PushCopySol(o2), a2.Retrigger(r2, u2), n.PopSol(o2), this._lastIndex = -1);
+      return s.SetDebuggingEnabled(true), i.Pop(), false;
     }, IsButtonIndexDown(t3, e) {
       e = Math.floor(e);
       const s = this._GetGamepadByIndex(t3);
@@ -37978,8 +39677,8 @@ var GetMouseSdkInstance2;
     const t2 = self.C3;
     t2.Plugins.gamepad.Acts = { VibrateDualRumble(e, s, n, a2) {
       this.PostToDOM("vibrate-dual-rumble", { "index": e, "duration": s, "weakMag": t2.clamp(n / 100, 0, 1), "strongMag": t2.clamp(a2 / 100, 0, 1) });
-    }, VibrateTriggerRumble(e, s, n, a2, o2, r2) {
-      this.PostToDOM("vibrate-trigger-rumble", { "index": e, "duration": s, "weakMag": t2.clamp(n / 100, 0, 1), "strongMag": t2.clamp(a2 / 100, 0, 1), "leftMag": t2.clamp(o2 / 100, 0, 1), "rightMag": t2.clamp(r2 / 100, 0, 1) });
+    }, VibrateTriggerRumble(e, s, n, a2, o2, i) {
+      this.PostToDOM("vibrate-trigger-rumble", { "index": e, "duration": s, "weakMag": t2.clamp(n / 100, 0, 1), "strongMag": t2.clamp(a2 / 100, 0, 1), "leftMag": t2.clamp(o2 / 100, 0, 1), "rightMag": t2.clamp(i / 100, 0, 1) });
     }, ResetVibrate(t3) {
       this.PostToDOM("reset-vibrate", { "index": t3 });
     } };
@@ -38231,7 +39930,7 @@ var GetMouseSdkInstance2;
       GetInstancePans() {
         return this._lastAIState.filter((t2) => -1 !== t2["uid"]).map((t2) => this._runtime.GetInstanceByUID(t2["uid"])).filter((t2) => t2).map((t2) => {
           const e = t2.GetWorldInfo(), s = e.GetLayer().GetAngle(), [i, a2] = this.rotatePtAround(e.GetX(), e.GetY(), -s, this._listenerPos[0], this._listenerPos[1]);
-          return { "uid": t2.GetUID(), "x": i, "y": a2, "z": e.GetTotalZElevation(), "angle": e.GetAngle() - s };
+          return { "uid": t2.GetUID(), "x": i, "y": a2, "z": e.GetTotalZ(), "angle": e.GetAngle() - s };
         });
       }
       GetAnalyserData(t2, e) {
@@ -38345,7 +40044,7 @@ var GetMouseSdkInstance2;
       if (!p2) return;
       const { playOffset: g2, isTrueClock: y2 } = this._GetScheduledPlayInfo(), m2 = this._MaybeMarkAsPlaying(t2[0], o2, f2, 0 !== e, this.DbToLinear(s));
       try {
-        await this.PostToDOMAsync("play", { "originalUrl": t2[0], "url": p2.url, "type": p2.type, "isMusic": f2, "tags": this._SplitTags(o2), "isLooping": 0 !== e, "vol": this.DbToLinear(s), "pos": 0, "off": g2, "trueClock": y2, "panning": { "x": d2, "y": _2, "z": u2.GetTotalZElevation(), "angle": u2.GetAngle() - c2, "innerAngle": l.toRadians(a2), "outerAngle": l.toRadians(n), "outerGain": this.DbToLinear(r2), "uid": h3.GetUID() } });
+        await this.PostToDOMAsync("play", { "originalUrl": t2[0], "url": p2.url, "type": p2.type, "isMusic": f2, "tags": this._SplitTags(o2), "isLooping": 0 !== e, "vol": this.DbToLinear(s), "pos": 0, "off": g2, "trueClock": y2, "panning": { "x": d2, "y": _2, "z": u2.GetTotalZ(), "angle": u2.GetAngle() - c2, "innerAngle": l.toRadians(a2), "outerAngle": l.toRadians(n), "outerGain": this.DbToLinear(r2), "uid": h3.GetUID() } });
       } finally {
         m2 && (m2["placeholder"] = this._runtime.GetTickCountNoSave());
       }
@@ -38379,7 +40078,7 @@ var GetMouseSdkInstance2;
       if (!g2) return;
       const { playOffset: y2, isTrueClock: m2 } = this._GetScheduledPlayInfo(), T2 = this._MaybeMarkAsPlaying(e, h3, p2, 0 !== s, this.DbToLinear(i));
       try {
-        await this.PostToDOMAsync("play", { "originalUrl": e, "url": g2.url, "type": g2.type, "isMusic": p2, "tags": this._SplitTags(h3), "isLooping": 0 !== s, "vol": this.DbToLinear(i), "pos": 0, "off": y2, "trueClock": m2, "panning": { "x": _2, "y": f2, "z": c2.GetTotalZElevation(), "angle": c2.GetAngle() - d2, "innerAngle": l.toRadians(n), "outerAngle": l.toRadians(r2), "outerGain": this.DbToLinear(o2), "uid": u2.GetUID() } });
+        await this.PostToDOMAsync("play", { "originalUrl": e, "url": g2.url, "type": g2.type, "isMusic": p2, "tags": this._SplitTags(h3), "isLooping": 0 !== s, "vol": this.DbToLinear(i), "pos": 0, "off": y2, "trueClock": m2, "panning": { "x": _2, "y": f2, "z": c2.GetTotalZ(), "angle": c2.GetAngle() - d2, "innerAngle": l.toRadians(n), "outerAngle": l.toRadians(r2), "outerGain": this.DbToLinear(o2), "uid": u2.GetUID() } });
       } finally {
         T2 && (T2["placeholder"] = this._runtime.GetTickCountNoSave());
       }
@@ -38511,6 +40210,256 @@ var GetMouseSdkInstance2;
 }
 var GetAudioSdkInstance2;
 var GetAudioDOMInterface2;
+{
+  {
+    const t2 = self.C3, e = "html-element";
+    t2.Plugins.HTMLElement = class extends t2.SDKDOMPluginBase {
+      constructor(t3) {
+        super(t3, e), this.AddElementMessageHandler("initial-content", (t4, e2) => t4._OnInitialContent(e2)), this.AddElementMessageHandler("click", (t4, e2) => t4._OnClick(e2)), this.AddElementMessageHandler("animationend", (t4, e2) => t4._OnAnimationEnd(e2));
+      }
+      Release() {
+        super.Release();
+      }
+    };
+  }
+  {
+    const t2 = self.C3;
+    t2.Plugins.HTMLElement.Type = class extends t2.SDKTypeBase {
+      constructor(t3) {
+        super(t3);
+      }
+      Release() {
+        super.Release();
+      }
+      OnCreate() {
+      }
+    };
+  }
+  {
+    const t2 = self.C3, e = self.C3X, n = 0, s = 1, i = 2, r2 = 3, a2 = 4, o2 = 5, l = 6, h2 = 7, c2 = 9, C2 = 10, g2 = 11, m2 = 12, _2 = 13, d2 = 14, u2 = 15, S2 = "html-element";
+    t2.Plugins.HTMLElement.Instance = class extends t2.SDKDOMInstanceBase {
+      constructor(e2, p3) {
+        super(e2, S2), this._tag = "div", this._htmlContent = "", this._textContent = "", this._id = "", this._className = "", this._targetId = "", this._targetClass = "", this._cssAnimationName = "";
+        let I3 = "";
+        this._initialType = "html";
+        let y3 = false, T3 = 0, E3 = false, f3 = t2.New(t2.Color), M2 = false, w2 = t2.New(t2.Color);
+        this._autoFontSize = true, this._autoFontSizeOffset = 0;
+        let x2 = false, G = "";
+        if (p3) {
+          this._tag = p3[n] || "div", I3 = p3[s];
+          const e3 = p3[i];
+          1 === e3 ? I3 = t2.New(t2.BBString, I3, { convertLineBreaks: true }).toHTML() : 2 === e3 && (this._initialType = "text"), this.GetWorldInfo().SetVisible(p3[r2]), this._id = p3[a2], this._className = p3[o2], y3 = p3[l], T3 = p3[h2], E3 = p3[c2], f3.setFromJSON(p3[C2]), M2 = p3[g2], w2.setFromJSON(p3[m2]), this._autoFontSize = p3[_2], x2 = p3[d2], G = p3[u2];
+        }
+        "html" === this._initialType ? this._htmlContent = I3 : this._textContent = I3, this.CreateElement({ "tag": this._tag, "str": I3, "type": this._initialType, "id": this._id, "className": this._className, "allow-context-menu": y3, "stop-input-events-mode": T3, "css-color": E3 ? f3.getCssRgb() : "", "css-background-color": M2 ? w2.getCssRgb() : "", "allow-text-selection": x2, "style-attribute": G });
+      }
+      Release() {
+        super.Release();
+      }
+      _GetStringContent(e2, n2) {
+        let s2 = "html";
+        return "bbcode" === n2 ? e2 = t2.New(t2.BBString, e2, { convertLineBreaks: true }).toHTML() : "text" === n2 && (s2 = "text"), { contentType: s2, str: e2 };
+      }
+      async _SetContent(t3, e2 = "html", n2 = "", s2 = false) {
+        const { contentType: i2, str: r3 } = this._GetStringContent(t3, e2);
+        if (!n2) {
+          if ("html" === i2) {
+            if ("html" === this._initialType && this._htmlContent === r3) return;
+            this._htmlContent = r3;
+          } else if ("text" === i2) {
+            if ("text" === this._initialType && this._textContent === r3) return;
+            this._textContent = r3;
+          }
+        }
+        await this._SendHTMLUpdateMessage("set-content", { "str": r3, "type": i2, "selector": n2, "is-all": s2 });
+      }
+      async _InsertContent(t3, e2 = "html", n2 = true, s2 = "", i2 = false) {
+        if (!t3) return;
+        const { contentType: r3, str: a3 } = this._GetStringContent(t3, e2);
+        await this._SendHTMLUpdateMessage("insert-content", { "str": a3, "type": r3, "at-end": n2, "selector": s2, "is-all": i2 });
+      }
+      async _RemoveContent(t3, e2 = false, n2 = false) {
+        await this._SendHTMLUpdateMessage("remove-content", { "selector": t3, "is-clear": e2, "is-all": n2 });
+      }
+      async _SetContentClass(t3, e2, n2, s2 = false) {
+        await this._SendHTMLUpdateMessage("set-content-class", { "mode": t3, "class-array": e2, "selector": n2, "is-all": s2 });
+      }
+      async _SetContentAttribute(t3, e2, n2, s2, i2 = false) {
+        await this._SendHTMLUpdateMessage("set-content-attribute", { "mode": t3, "attribute": e2, "value": n2, "selector": s2, "is-all": i2 });
+      }
+      async _SetContentCSSStyle(e2, n2, s2, i2 = false) {
+        await this._SendHTMLUpdateMessage("set-content-css-style", { "prop": t2.CSSToCamelCase(e2), "value": n2, "selector": s2, "is-all": i2 });
+      }
+      async _SendHTMLUpdateMessage(t3, e2) {
+        const n2 = await this.PostToDOMElementAsync(t3, e2);
+        n2["isOk"] && (this._htmlContent = n2["html"], this._textContent = n2["text"]);
+      }
+      async _PositionObjectAtElement(t3, e2) {
+        const n2 = await this.PostToDOMElementAsync("get-element-box", { "selector": e2 });
+        if (!n2["isOk"]) return;
+        const s2 = this._runtime.GetCanvasManager(), i2 = n2["left"] - s2.GetCanvasClientX(), r3 = n2["top"] - s2.GetCanvasClientY(), a3 = n2["right"] - s2.GetCanvasClientX(), o3 = n2["bottom"] - s2.GetCanvasClientY();
+        for (const e3 of t3) {
+          const t4 = e3.GetWorldInfo();
+          if (!t4) continue;
+          const n3 = t4.GetLayer(), [s3, l2] = n3.CanvasCssToLayer(i2, r3, t4.GetZ()), [h3, c3] = n3.CanvasCssToLayer(a3, o3, t4.GetZ());
+          if (!(isFinite(s3) && isFinite(l2) && isFinite(h3) && isFinite(c3))) continue;
+          const C4 = h3 - s3, g3 = c3 - l2, m3 = s3 + t4.GetOriginX() * C4, _3 = l2 + t4.GetOriginY() * g3;
+          t4.GetX() === m3 && t4.GetY() === _3 && t4.GetWidth() === C4 && t4.GetHeight() === g3 || (t4.SetXY(m3, _3), t4.SetSize(C4, g3), t4.SetBboxChanged());
+        }
+      }
+      async _CreateSpriteImgElement(t3, e2, n2, s2, i2) {
+        const r3 = t3.GetWorldInfo(), a3 = t3.GetCurrentImageInfo();
+        if (!r3 || !a3) return;
+        const o3 = await a3.ExtractImageToBlobURL(), l2 = await this.PostToDOMElementAsync("insert-img-element", { "blobUrl": o3, "width": a3.GetWidth(), "height": a3.GetHeight(), "selector": e2, "insertAt": n2, "id": s2, "class": i2 });
+        l2["isOk"] && (this._htmlContent = l2["html"], this._textContent = l2["text"]);
+      }
+      async _SetElementScrollPosition(t3, e2, n2) {
+        await this.PostToDOMElementAsync("set-scroll-position", { "selector": t3, "direction": e2, "position": n2 });
+      }
+      GetElementState() {
+        return { "html": this._htmlContent };
+      }
+      _OnInitialContent(t3) {
+        this._htmlContent = t3["html"], this._textContent = t3["text"];
+      }
+      _GetHTMLContent() {
+        return this._htmlContent;
+      }
+      _GetTextContent() {
+        return this._textContent;
+      }
+      async _OnClick(e2) {
+        const n2 = e2["chain"];
+        for (const e3 of n2) this._targetId = e3["targetId"], this._targetClass = e3["targetClass"], this.DispatchScriptEvent("click", true, { "targetId": this._targetId, "targetClass": this._targetClass }), this._targetId && await this.TriggerAsync(t2.Plugins.HTMLElement.Cnds.OnClickedID), this._targetClass && await this.TriggerAsync(t2.Plugins.HTMLElement.Cnds.OnClickedClass);
+        if (n2.length > 0) {
+          const t3 = n2[0];
+          this._targetId = t3["targetId"], this._targetClass = t3["targetClass"];
+        } else this._targetId = "", this._targetClass = "";
+        await this.TriggerAsync(t2.Plugins.HTMLElement.Cnds.OnClicked), this._targetId = "", this._targetClass = "";
+      }
+      async _OnAnimationEnd(e2) {
+        this._targetId = e2["targetId"], this._targetClass = e2["targetClass"], this._cssAnimationName = e2["animationName"], this.DispatchScriptEvent("animationend", true, { "targetId": this._targetId, "targetClass": this._targetClass, "animationName": this._cssAnimationName }), await this.TriggerAsync(t2.Plugins.HTMLElement.Cnds.OnCSSAnimationEnded), this._targetId = "", this._targetClass = "", this._cssAnimationName = "";
+      }
+      Draw(t3) {
+      }
+      SaveToJson() {
+        return { "t": this._tag, "h": this._htmlContent, "id": this._id, "c": this._className };
+      }
+      LoadFromJson(t3) {
+        this._tag = t3["t"], this._htmlContent = t3["h"], this._id = t3["id"], this._className = t3["c"], this.UpdateElementState();
+      }
+      GetPropertyValueByIndex(t3) {
+      }
+      SetPropertyValueByIndex(t3, e2) {
+      }
+      GetDebuggerProperties() {
+        return [];
+      }
+      GetScriptInterfaceClass() {
+        return self.IHTMLElementInstance;
+      }
+    };
+    const p2 = /* @__PURE__ */ new WeakMap(), I2 = /* @__PURE__ */ new Set(["html", "bbcode", "text"]), y2 = /* @__PURE__ */ new Set(["add", "toggle", "remove"]), T2 = /* @__PURE__ */ new Set(["set", "remove"]), E2 = ["start", "end", "replace"], f2 = /* @__PURE__ */ new Set(["left", "top"]);
+    self.IHTMLElementInstance = class extends self.IDOMInstance {
+      constructor() {
+        super(), p2.set(this, self.IInstance._GetInitInst().GetSdkInstance());
+      }
+      setContent(t3, n2 = "html", s2 = "", i2 = false) {
+        if (e.RequireString(t3), !I2.has(n2)) throw new Error("invalid type");
+        return e.RequireString(s2), p2.get(this)._SetContent(t3, n2, s2, !!i2);
+      }
+      insertContent(t3, n2 = "html", s2 = true, i2 = "", r3 = false) {
+        if (e.RequireString(t3), !I2.has(n2)) throw new Error("invalid type");
+        return e.RequireString(i2), p2.get(this)._InsertContent(t3, n2, !!s2, i2, !!r3);
+      }
+      setContentClass(t3, n2, s2, i2 = false) {
+        if (!y2.has(t3)) throw new Error("invalid mode");
+        return "string" == typeof n2 && (n2 = n2.split(" ")), e.RequireArray(n2), e.RequireString(s2), p2.get(this)._SetContentClass(t3, n2, s2, !!i2);
+      }
+      setContentAttribute(t3, n2, s2, i2, r3 = false) {
+        if (!T2.has(t3)) throw new Error("invalid type");
+        return e.RequireString(n2), s2 = s2.toString(), e.RequireString(i2), p2.get(this)._SetContentAttribute(t3, n2, s2, i2, !!r3);
+      }
+      setContentCssStyle(t3, n2, s2, i2) {
+        return e.RequireString(t3), n2 = n2.toString(), e.RequireString(s2), p2.get(this)._SetContentCSSStyle(t3, n2, s2, !!i2);
+      }
+      positionInstanceAtElement(t3, n2) {
+        e.RequireIWorldInstance(t3), e.RequireString(n2);
+        const s2 = p2.get(this).GetRuntime()._UnwrapIWorldInstance(t3);
+        return p2.get(this)._PositionObjectAtElement([s2], n2);
+      }
+      createSpriteImgElement(t3, n2, s2, i2, r3) {
+        e.RequireInstanceOf(t3, self.ISpriteInstance), e.RequireString(n2), e.RequireOptionalString(i2), e.RequireOptionalString(r3);
+        const a3 = E2.indexOf(s2);
+        if (a3 < 0) throw new Error("invalid insert position");
+        const o3 = p2.get(this).GetRuntime()._UnwrapIWorldInstance(t3);
+        return p2.get(this)._CreateSpriteImgElement(o3, n2, a3, i2, r3);
+      }
+      setScrollPosition(t3, n2, s2) {
+        if (e.RequireString("selector"), !f2.has(n2)) throw new Error("invalid direction");
+        return e.RequireNumber(s2), p2.get(this)._SetElementScrollPosition(t3, n2, s2);
+      }
+      get htmlContent() {
+        return p2.get(this)._GetHTMLContent();
+      }
+      set htmlContent(t3) {
+        p2.get(this)._SetContent(t3, "html", "", false);
+      }
+      get textContent() {
+        return p2.get(this)._GetTextContent();
+      }
+      set textContent(t3) {
+        p2.get(this)._SetContent(t3, "text", "", false);
+      }
+    };
+  }
+  {
+    const t2 = self.C3;
+    t2.Plugins.HTMLElement.Cnds = { OnClicked: () => true, OnClickedID(e) {
+      return t2.equalsNoCase(this._targetId, e);
+    }, OnClickedClass(t3) {
+      const e = this._targetClass.toLowerCase().split(" ");
+      return t3.toLowerCase().split(" ").every((t4) => e.includes(t4));
+    }, OnCSSAnimationEnded(e) {
+      return t2.equalsNoCase(this._cssAnimationName, e);
+    } };
+  }
+  {
+    const t2 = self.C3, e = ["html", "bbcode", "text"], n = ["add", "toggle", "remove"], s = ["set", "remove"];
+    t2.Plugins.HTMLElement.Acts = { SetContent(t3, n2, s2, i) {
+      return this._SetContent(n2, e[t3], s2, 0 !== i);
+    }, InsertContent(t3, n2, s2, i, r2) {
+      return this._InsertContent(n2, e[t3], 0 !== s2, i, 0 !== r2);
+    }, RemoveContent(t3, e2, n2) {
+      return this._RemoveContent(e2, 0 !== t3, 0 !== n2);
+    }, SetContentClass(t3, e2, s2, i) {
+      return this._SetContentClass(n[t3], e2.split(" "), s2, 0 !== i);
+    }, SetContentAttribute(t3, e2, n2, i, r2) {
+      return this._SetContentAttribute(s[t3], e2, n2.toString(), i, 0 !== r2);
+    }, SetContentCSSStyle(t3, e2, n2, s2) {
+      return this._SetContentCSSStyle(t3, e2, n2, 0 !== s2);
+    }, PositionObjectAtElement(t3, e2) {
+      if (t3) return this._PositionObjectAtElement(t3.GetCurrentSol().GetInstances(), e2);
+    }, CreateSpriteImgElement(t3, e2, n2, s2, i) {
+      if (!t3) return;
+      const r2 = t3.GetFirstPicked();
+      return r2 ? this._CreateSpriteImgElement(r2, e2, n2, s2, i) : void 0;
+    }, SetScrollPosition(t3, e2, n2) {
+      return this._SetElementScrollPosition(t3, ["left", "top"][e2], n2);
+    } };
+  }
+  {
+    const t2 = self.C3;
+    t2.Plugins.HTMLElement.Exps = { HTMLContent() {
+      return this._htmlContent;
+    }, TextContent() {
+      return this._textContent;
+    }, TargetID() {
+      return this._targetId;
+    }, TargetClass() {
+      return this._targetClass;
+    }, EscapeHTML: (e) => t2.EscapeHTML(e.toString()) };
+  }
+}
 {
   {
     const t2 = self.C3;
@@ -38706,7 +40655,7 @@ var GetAudioDOMInterface2;
           const s2 = this._propSet;
           s2.clear();
           for (const t3 of i) s2.add(t3);
-          this._dx = n.GetX() - a2.GetX(), this._dy = n.GetY() - a2.GetY(), this._dAngle = n.GetAngle() - a2.GetAngle(), this._lastKnownAngle = n.GetAngle(), this._dz = n.GetZElevation() - a2.GetZElevation(), s2.has("x") && s2.has("y") && (this._pinAngle = t2.angleTo(a2.GetX(), a2.GetY(), n.GetX(), n.GetY()) - a2.GetAngle(), this._pinDist = t2.distanceTo(a2.GetX(), a2.GetY(), n.GetX(), n.GetY())), s2.has("width-abs") ? this._dWidth = n.GetWidth() - a2.GetWidth() : s2.has("width-scale") && (this._dWidth = n.GetWidth() / a2.GetWidth()), s2.has("height-abs") ? this._dHeight = n.GetHeight() - a2.GetHeight() : s2.has("height-scale") && (this._dHeight = n.GetHeight() / a2.GetHeight());
+          this._dx = n.GetX() - a2.GetX(), this._dy = n.GetY() - a2.GetY(), this._dz = n.GetZ() - a2.GetZ(), this._dAngle = n.GetAngle() - a2.GetAngle(), this._lastKnownAngle = n.GetAngle(), s2.has("x") && s2.has("y") && (this._pinAngle = t2.angleTo(a2.GetX(), a2.GetY(), n.GetX(), n.GetY()) - a2.GetAngle(), this._pinDist = t2.distanceTo(a2.GetX(), a2.GetY(), n.GetX(), n.GetY())), s2.has("width-abs") ? this._dWidth = n.GetWidth() - a2.GetWidth() : s2.has("width-scale") && (this._dWidth = n.GetWidth() / a2.GetWidth()), s2.has("height-abs") ? this._dHeight = n.GetHeight() - a2.GetHeight() : s2.has("height-scale") && (this._dHeight = n.GetHeight() / a2.GetHeight());
         } else this._pinDist = t2.distanceTo(a2.GetX(), a2.GetY(), n.GetX(), n.GetY());
       }
       SaveToJson() {
@@ -38769,7 +40718,7 @@ var GetAudioDOMInterface2;
             const t3 = e.GetX() + Math.cos(e.GetAngle() + this._pinAngle) * this._pinDist, s2 = e.GetY() + Math.sin(e.GetAngle() + this._pinAngle) * this._pinDist;
             i.EqualsXY(t3, s2) || (i.SetXY(t3, s2), n = true);
           } else a2 = e.GetX() + this._dx, h3.has("x") && a2 !== i.GetX() && (i.SetX(a2), n = true), a2 = e.GetY() + this._dy, h3.has("y") && a2 !== i.GetY() && (i.SetY(a2), n = true);
-          h3.has("angle") && (this._lastKnownAngle !== i.GetAngle() && (this._dAngle = t2.clampAngle(this._dAngle + (i.GetAngle() - this._lastKnownAngle))), a2 = t2.clampAngle(e.GetAngle() + this._dAngle), a2 !== i.GetAngle() && (i.SetAngle(a2), n = true), this._lastKnownAngle = i.GetAngle()), h3.has("width-abs") && (a2 = e.GetWidth() + this._dWidth, a2 !== i.GetWidth() && (i.SetWidth(a2), n = true)), h3.has("width-scale") && (a2 = e.GetWidth() * this._dWidth, a2 !== i.GetWidth() && (i.SetWidth(a2), n = true)), h3.has("height-abs") && (a2 = e.GetHeight() + this._dHeight, a2 !== i.GetHeight() && (i.SetHeight(a2), n = true)), h3.has("height-scale") && (a2 = e.GetHeight() * this._dHeight, a2 !== i.GetHeight() && (i.SetHeight(a2), n = true)), h3.has("z") && (a2 = e.GetZElevation() + this._dz, a2 !== i.GetZElevation() && (i.SetZElevation(a2), this._runtime.UpdateRender()));
+          h3.has("z") && (a2 = e.GetZ() + this._dz, a2 !== i.GetZ() && (i.SetZ(a2), n = true)), h3.has("angle") && (this._lastKnownAngle !== i.GetAngle() && (this._dAngle = t2.clampAngle(this._dAngle + (i.GetAngle() - this._lastKnownAngle))), a2 = t2.clampAngle(e.GetAngle() + this._dAngle), a2 !== i.GetAngle() && (i.SetAngle(a2), n = true), this._lastKnownAngle = i.GetAngle()), h3.has("width-abs") && (a2 = e.GetWidth() + this._dWidth, a2 !== i.GetWidth() && (i.SetWidth(a2), n = true)), h3.has("width-scale") && (a2 = e.GetWidth() * this._dWidth, a2 !== i.GetWidth() && (i.SetWidth(a2), n = true)), h3.has("height-abs") && (a2 = e.GetHeight() + this._dHeight, a2 !== i.GetHeight() && (i.SetHeight(a2), n = true)), h3.has("height-scale") && (a2 = e.GetHeight() * this._dHeight, a2 !== i.GetHeight() && (i.SetHeight(a2), n = true));
         }
         n && i.SetBboxChanged();
       }
@@ -38787,8 +40736,8 @@ var GetAudioDOMInterface2;
   self.C3.Behaviors.Pin.Acts = { PinByDistance(t2, s) {
     this._Pin(t2, 0 === s ? "rope" : "bar");
   }, PinByProperties(t2, s, e, i, h2, n, a2) {
-    const o2 = [];
-    s && o2.push("x"), e && o2.push("y"), i && o2.push("angle"), a2 && o2.push("z"), 1 === h2 ? o2.push("width-abs") : 2 === h2 && o2.push("width-scale"), 1 === n ? o2.push("height-abs") : 2 === n && o2.push("height-scale"), 0 !== o2.length && this._Pin(t2, "properties", o2);
+    const d2 = [];
+    s && d2.push("x"), e && d2.push("y"), i && d2.push("angle"), a2 && d2.push("z"), 1 === h2 ? d2.push("width-abs") : 2 === h2 && d2.push("width-scale"), 1 === n ? d2.push("height-abs") : 2 === n && d2.push("height-scale"), 0 !== d2.length && this._Pin(t2, "properties", d2);
   }, PinByImagePoint(t2, s, e, i, h2, n) {
     const a2 = ["imagepoint"];
     e && a2.push("angle"), n && a2.push("z"), 1 === i ? a2.push("width-abs") : 2 === i && a2.push("width-scale"), 1 === h2 ? a2.push("height-abs") : 2 === h2 && a2.push("height-scale"), this._pinImagePoint = s, this._Pin(t2, "properties", a2);
@@ -38894,24 +40843,25 @@ var GetAudioDOMInterface2;
       }
       Tick2() {
         if (!this.IsEnabled()) return;
-        this._runtime.GetDt(this._inst);
         const t3 = this.GetBehavior(), s = t3.GetInstances();
-        let a2 = 0, i = 0, h2 = 0;
+        let a2 = 0, i = 0, h2 = 0, n = 0;
         for (const t4 of s) {
           const s2 = t4.GetBehaviorInstanceFromCtor(e.Behaviors.scrollto);
           if (!s2 || !s2.GetSdkInstance().IsEnabled()) continue;
-          const n2 = t4.GetWorldInfo();
-          a2 += n2.GetX(), i += n2.GetY(), ++h2;
+          n = Math.max(n, t4.GetActiveTimeScale());
+          const r3 = t4.GetWorldInfo();
+          a2 += r3.GetX(), i += r3.GetY(), ++h2;
         }
-        const n = this._inst.GetWorldInfo().GetLayout(), r2 = this._runtime.GetGameTime();
-        let o2 = 0, S2 = 0;
-        if (r2 >= t3.GetShakeStart() && r2 < t3.GetShakeEnd()) {
-          let e2 = t3.GetShakeMagnitude() * Math.min(this._runtime.GetTimeScale(), 1);
-          0 === t3.GetShakeMode() && (e2 *= 1 - (r2 - t3.GetShakeStart()) / (t3.GetShakeEnd() - t3.GetShakeStart()));
+        const r2 = this._inst.GetWorldInfo().GetLayout(), o2 = this._runtime.GetGameTime();
+        let S2 = 0, l = 0;
+        const d2 = (t3.GetShakeEnd() - t3.GetShakeStart()) / n;
+        if (o2 >= t3.GetShakeStart() && o2 < t3.GetShakeStart() + d2 && n > 0) {
+          let e2 = t3.GetShakeMagnitude() * Math.min(n, 1);
+          0 === t3.GetShakeMode() && (e2 *= 1 - (o2 - t3.GetShakeStart()) / d2);
           const s2 = this._runtime.Random() * Math.PI * 2, a3 = this._runtime.Random() * e2;
-          o2 = Math.cos(s2) * a3, S2 = Math.sin(s2) * a3;
+          S2 = Math.cos(s2) * a3, l = Math.sin(s2) * a3;
         }
-        n.SetScrollX(a2 / h2 + o2), n.SetScrollY(i / h2 + S2);
+        r2.SetScrollX(a2 / h2 + S2), r2.SetScrollY(i / h2 + l);
       }
       GetPropertyValueByIndex(e2) {
         if (e2 === t2) return this._isEnabled;
@@ -38961,10 +40911,10 @@ var GetAudioDOMInterface2;
     };
   }
   {
-    const e = self.C3, t2 = self.C3X, i = self.IBehaviorInstance, s = 0, a2 = 1, n = 2, h2 = 3, _2 = 4, r2 = 5, o2 = 6, l = 7, u2 = 8, d2 = 0, m2 = 1, g2 = 2, v2 = 3, c2 = 4, p2 = 5, G = 6, b2 = 7, S2 = 8, V = 9, w2 = 0, P2 = 1, M2 = 2, I2 = 3, f2 = 4, k = 2 * Math.PI, W = Math.PI / 2, E2 = 3 * Math.PI / 2, R = [0, 1, 8, 3, 4, 2, 5, 6, 9, 7];
+    const e = self.C3, t2 = self.C3X, i = self.IBehaviorInstance, s = 0, a2 = 1, n = 2, h2 = 3, _2 = 4, r2 = 5, o2 = 6, l = 7, u2 = 8, d2 = 0, m2 = 1, g2 = 2, v2 = 3, c2 = 4, p2 = 5, G = 6, b2 = 7, S2 = 8, V = 9, w2 = 0, P2 = 1, M2 = 2, I2 = 3, f2 = 4, k = 2 * Math.PI, W = Math.PI / 2, R = 3 * Math.PI / 2, E2 = [0, 1, 8, 3, 4, 2, 5, 6, 9, 7];
     e.Behaviors.Sin.Instance = class extends e.SDKBehaviorInstanceBase {
       constructor(t3, i2) {
-        super(t3), this._i = 0, this._movement = 0, this._wave = 0, this._period = 0, this._mag = 0, this._isEnabled = true, this._basePeriod = 0, this._basePeriodOffset = 0, this._baseMag = 0, this._periodRandom = 0, this._periodOffsetRandom = 0, this._magnitudeRandom = 0, this._initialValue = 0, this._initialValue2 = 0, this._lastKnownValue = 0, this._lastKnownValue2 = 0, this._ratio = 0, i2 && (this._movement = R[i2[s]], this._wave = i2[a2], this._periodRandom = this._runtime.Random() * i2[h2], this._basePeriod = i2[n], this._period = i2[n], this._period += this._periodRandom, this._basePeriodOffset = i2[_2], 0 !== this._period && (this._periodOffsetRandom = this._runtime.Random() * i2[r2], this._i = i2[_2] / this._period * k, this._i += this._periodOffsetRandom / this._period * k), this._magnitudeRandom = this._runtime.Random() * i2[l], this._baseMag = i2[o2], this._mag = i2[o2], this._mag += this._magnitudeRandom, this._isEnabled = !!i2[u2]), this._movement === p2 && (this._mag = e.toRadians(this._mag)), this.Init(), this._isEnabled && this._StartTicking();
+        super(t3), this._i = 0, this._movement = 0, this._wave = 0, this._period = 0, this._mag = 0, this._isEnabled = true, this._basePeriod = 0, this._basePeriodOffset = 0, this._baseMag = 0, this._periodRandom = 0, this._periodOffsetRandom = 0, this._magnitudeRandom = 0, this._initialValue = 0, this._initialValue2 = 0, this._lastKnownValue = 0, this._lastKnownValue2 = 0, this._ratio = 0, i2 && (this._movement = E2[i2[s]], this._wave = i2[a2], this._periodRandom = this._runtime.Random() * i2[h2], this._basePeriod = i2[n], this._period = i2[n], this._period += this._periodRandom, this._basePeriodOffset = i2[_2], 0 !== this._period && (this._periodOffsetRandom = this._runtime.Random() * i2[r2], this._i = i2[_2] / this._period * k, this._i += this._periodOffsetRandom / this._period * k), this._magnitudeRandom = this._runtime.Random() * i2[l], this._baseMag = i2[o2], this._mag = i2[o2], this._mag += this._magnitudeRandom, this._isEnabled = !!i2[u2]), this._movement === p2 && (this._mag = e.toRadians(this._mag)), this.Init(), this._isEnabled && this._StartTicking();
       }
       Release() {
         super.Release();
@@ -39006,7 +40956,7 @@ var GetAudioDOMInterface2;
             this._initialValue = e2.GetX(), this._initialValue2 = e2.GetY();
             break;
           case V:
-            this._initialValue = e2.GetZElevation();
+            this._initialValue = e2.GetZ();
         }
         this._lastKnownValue = this._initialValue, this._lastKnownValue2 = this._initialValue2;
       }
@@ -39015,7 +40965,7 @@ var GetAudioDOMInterface2;
           case w2:
             return Math.sin(e2);
           case P2:
-            return e2 <= W ? e2 / W : e2 <= E2 ? 1 - 2 * (e2 - W) / Math.PI : (e2 - E2) / W - 1;
+            return e2 <= W ? e2 / W : e2 <= R ? 1 - 2 * (e2 - W) / Math.PI : (e2 - R) / W - 1;
           case M2:
             return 2 * e2 / k - 1;
           case I2:
@@ -39057,7 +41007,7 @@ var GetAudioDOMInterface2;
             t3.GetX() !== this._lastKnownValue && (this._initialValue += t3.GetX() - this._lastKnownValue), t3.GetY() !== this._lastKnownValue2 && (this._initialValue2 += t3.GetY() - this._lastKnownValue2), t3.SetX(this._initialValue + Math.cos(t3.GetAngle()) * this.WaveFunc(this._i) * this._mag), t3.SetY(this._initialValue2 + Math.sin(t3.GetAngle()) * this.WaveFunc(this._i) * this._mag), this._lastKnownValue = t3.GetX(), this._lastKnownValue2 = t3.GetY();
             break;
           case V:
-            t3.SetZElevation(this._initialValue + this.WaveFunc(this._i) * this._mag);
+            t3.SetZ(this._initialValue + this.WaveFunc(this._i) * this._mag);
         }
         t3.SetBboxChanged();
       }
@@ -39123,7 +41073,7 @@ var GetAudioDOMInterface2;
       SetPropertyValueByIndex(t3, i2) {
         switch (t3) {
           case s:
-            this._movement = R[i2], this.Init();
+            this._movement = E2[i2], this.Init();
             break;
           case a2:
             this._wave = i2;
@@ -39701,16 +41651,16 @@ var GetAudioDOMInterface2;
         return this.#e.UsesInstanceTags();
       }
       set tags(t3) {
-        s.RequireString(t3), this.#e.SetTags(e.splitStringAndNormalize(t3));
+        this.runtime._logDeprecationWarning("ISolidBehaviorInstance.tags", "ISolidBehaviorInstance 'tags' property is deprecated. Use instance tags instead."), s.RequireString(t3), this.#e.SetTags(e.splitStringAndNormalize(t3));
       }
       get tags() {
-        return this.#e._GetTagsString();
+        return this.runtime._logDeprecationWarning("ISolidBehaviorInstance.tags", "ISolidBehaviorInstance 'tags' property is deprecated. Use instance tags instead."), this.#e._GetTagsString();
       }
       setAllTags(e2) {
-        this.#e.SetTags(e2);
+        this.runtime._logDeprecationWarning("ISolidBehaviorInstance.setAllTags", "ISolidBehaviorInstance 'setAllTags' method is deprecated. Use instance tags instead."), this.#e.SetTags(e2);
       }
       getAllTags() {
-        return new Set(this.#e.GetTags());
+        return this.runtime._logDeprecationWarning("ISolidBehaviorInstance.getAllTags", "ISolidBehaviorInstance 'getAllTags' method is deprecated. Use instance tags instead."), new Set(this.#e.GetTags());
       }
     };
   }
@@ -40065,11 +42015,11 @@ var GetAudioDOMInterface2;
       for (const s of e) if (t2.has(s)) return i;
       return !i;
     }, UnwrapIWorldInstance = function(t2, e) {
-      return k.get(t2).GetRuntime()._UnwrapIWorldInstance(e);
+      return x2.get(t2).GetRuntime()._UnwrapIWorldInstance(e);
     };
     CollisionTagsAllowCollision2 = CollisionTagsAllowCollision, UnwrapIWorldInstance2 = UnwrapIWorldInstance;
-    const _2 = self.C3, c2 = self.C3X, d2 = self.IBehaviorInstance, u2 = (self.assert, 0), y2 = 1, p2 = 2, g2 = 3, m2 = 4, b2 = 5, G = 6, I2 = 7, S2 = 8, C2 = 9, f2 = 10, A = 11, v2 = /* @__PURE__ */ new WeakMap(), D2 = /* @__PURE__ */ new WeakMap(), F = /* @__PURE__ */ new WeakMap();
-    const B2 = -2147483648, w2 = 1073741824, P2 = 536870912, T2 = 3758096384, M2 = _2.Behaviors.Physics.GetTempVec2A, R = _2.Behaviors.Physics.GetTempVec2B, E2 = _2.New(_2.Rect), x2 = _2.New(_2.Quad);
+    const _2 = self.C3, c2 = self.C3X, d2 = self.IBehaviorInstance, u2 = (self.assert, 0), y2 = 1, p2 = 2, g2 = 3, m2 = 4, b2 = 5, G = 6, I2 = 7, S2 = 8, C2 = 9, f2 = 10, A = 11, v2 = /* @__PURE__ */ new WeakMap(), D2 = /* @__PURE__ */ new WeakMap(), B2 = /* @__PURE__ */ new WeakMap();
+    const F = -2147483648, w2 = 1073741824, P2 = 536870912, T2 = 3758096384, M2 = _2.Behaviors.Physics.GetTempVec2A, R = _2.Behaviors.Physics.GetTempVec2B, E2 = _2.New(_2.Quad2D);
     _2.Behaviors.Physics.Instance = class extends _2.SDKBehaviorInstanceBase {
       constructor(t2, e) {
         super(t2);
@@ -40097,7 +42047,7 @@ var GetAudioDOMInterface2;
       }
       _GetBoundingQuadExcludingMesh() {
         const t2 = this.GetWorldInfo();
-        return t2.HasMesh() ? (t2.CalculateBbox(E2, x2, false), x2) : t2.GetBoundingQuad();
+        return t2.HasMesh() ? (t2.CalculateBbox(null, E2, false), E2) : t2.GetBoundingQuad();
       }
       _Destroy(t2) {
         this._box2d["destroy"](t2);
@@ -40153,12 +42103,12 @@ var GetAudioDOMInterface2;
         for (let r2 = 0, a2 = n.length; r2 < a2; ++r2) {
           const a3 = n[r2], l = a3.GetRect(), h2 = a3.GetPoly();
           if (h2) {
-            let n2 = F.get(h2);
+            let n2 = B2.get(h2);
             if (!n2) {
               const t3 = h2.pointsArr(), e2 = h2.pointCount();
               for (let s2 = 0; s2 < e2; ++s2) o2.push(i(t3[2 * s2], t3[2 * s2 + 1]));
               const r3 = a3.GetTileId() & T2;
-              (r3 === B2 || r3 === w2 || r3 === P2 || r3 & B2 && r3 & w2 && r3 & P2) && o2.reverse(), n2 = _2.Behaviors.Physics.Separator.Separate(o2, l.width() * l.height()), F.set(h2, n2);
+              (r3 === F || r3 === w2 || r3 === P2 || r3 & F && r3 & w2 && r3 & P2) && o2.reverse(), n2 = _2.Behaviors.Physics.Separator.Separate(o2, l.width() * l.height()), B2.set(h2, n2);
               for (const t4 of o2) s(t4);
               _2.clearArray(o2);
             }
@@ -40609,175 +42559,175 @@ var GetAudioDOMInterface2;
         return self.IPhysicsBehaviorInstance;
       }
     };
-    const k = /* @__PURE__ */ new WeakMap();
+    const x2 = /* @__PURE__ */ new WeakMap();
     self.IPhysicsBehaviorInstance = class extends d2 {
       constructor() {
-        super(), k.set(this, d2._GetInitInst().GetSdkInstance());
+        super(), x2.set(this, d2._GetInitInst().GetSdkInstance());
       }
       get isEnabled() {
-        return k.get(this)._IsEnabled();
+        return x2.get(this)._IsEnabled();
       }
       set isEnabled(t2) {
-        k.get(this)._SetEnabled(t2);
+        x2.get(this)._SetEnabled(t2);
       }
       applyForce(t2, e, i = 0) {
-        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), k.get(this)._ApplyForce(t2, e, i);
+        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), x2.get(this)._ApplyForce(t2, e, i);
       }
       applyForceTowardPosition(t2, e, i, s = 0) {
-        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), c2.RequireFiniteNumber(i), k.get(this)._ApplyForceToward(t2, e, i, s);
+        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), c2.RequireFiniteNumber(i), x2.get(this)._ApplyForceToward(t2, e, i, s);
       }
       applyForceAtAngle(t2, e, i = 0) {
-        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), k.get(this)._ApplyForceAtAngle(t2, e, i);
+        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), x2.get(this)._ApplyForceAtAngle(t2, e, i);
       }
       applyImpulse(t2, e, i = 0) {
-        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), k.get(this)._ApplyImpulse(t2, e, i);
+        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), x2.get(this)._ApplyImpulse(t2, e, i);
       }
       applyImpulseTowardPosition(t2, e, i, s = 0) {
-        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), c2.RequireFiniteNumber(i), k.get(this)._ApplyImpulseToward(t2, e, i, s);
+        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), c2.RequireFiniteNumber(i), x2.get(this)._ApplyImpulseToward(t2, e, i, s);
       }
       applyImpulseAtAngle(t2, e, i = 0) {
-        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), k.get(this)._ApplyImpulseAtAngle(t2, e, i);
+        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), x2.get(this)._ApplyImpulseAtAngle(t2, e, i);
       }
       applyTorque(t2) {
-        c2.RequireFiniteNumber(t2), k.get(this)._ApplyTorque(t2);
+        c2.RequireFiniteNumber(t2), x2.get(this)._ApplyTorque(t2);
       }
       applyTorqueToAngle(t2, e) {
-        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), k.get(this)._ApplyTorqueToAngle(t2, e);
+        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), x2.get(this)._ApplyTorqueToAngle(t2, e);
       }
       applyTorqueToPosition(t2, e, i) {
-        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), c2.RequireFiniteNumber(i), k.get(this)._ApplyTorqueToPosition(t2, e, i);
+        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), c2.RequireFiniteNumber(i), x2.get(this)._ApplyTorqueToPosition(t2, e, i);
       }
       set angularVelocity(t2) {
-        c2.RequireFiniteNumber(t2), k.get(this)._SetAngularVelocity(t2);
+        c2.RequireFiniteNumber(t2), x2.get(this)._SetAngularVelocity(t2);
       }
       get angularVelocity() {
-        return k.get(this)._GetAngularVelocity();
+        return x2.get(this)._GetAngularVelocity();
       }
       setVelocity(t2, e) {
-        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), k.get(this)._SetVelocity(t2, e);
+        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), x2.get(this)._SetVelocity(t2, e);
       }
       getVelocityX() {
-        return k.get(this)._GetVelocityX();
+        return x2.get(this)._GetVelocityX();
       }
       getVelocityY() {
-        return k.get(this)._GetVelocityY();
+        return x2.get(this)._GetVelocityY();
       }
       getVelocity() {
-        return k.get(this)._GetVelocity();
+        return x2.get(this)._GetVelocity();
       }
       teleport(t2, e) {
-        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), k.get(this)._Teleport(t2, e);
+        c2.RequireFiniteNumber(t2), c2.RequireFiniteNumber(e), x2.get(this)._Teleport(t2, e);
       }
       set density(t2) {
-        c2.RequireFiniteNumber(t2), k.get(this)._SetDensity(t2);
+        c2.RequireFiniteNumber(t2), x2.get(this)._SetDensity(t2);
       }
       get density() {
-        return k.get(this)._GetDensity();
+        return x2.get(this)._GetDensity();
       }
       set friction(t2) {
-        c2.RequireFiniteNumber(t2), k.get(this)._SetFriction(t2);
+        c2.RequireFiniteNumber(t2), x2.get(this)._SetFriction(t2);
       }
       get friction() {
-        return k.get(this)._GetFriction();
+        return x2.get(this)._GetFriction();
       }
       set elasticity(t2) {
-        c2.RequireFiniteNumber(t2), k.get(this)._SetElasticity(t2);
+        c2.RequireFiniteNumber(t2), x2.get(this)._SetElasticity(t2);
       }
       get elasticity() {
-        return k.get(this)._GetElasticity();
+        return x2.get(this)._GetElasticity();
       }
       set linearDamping(t2) {
-        c2.RequireFiniteNumber(t2), k.get(this)._SetLinearDamping(t2);
+        c2.RequireFiniteNumber(t2), x2.get(this)._SetLinearDamping(t2);
       }
       get linearDamping() {
-        return k.get(this)._GetLinearDamping();
+        return x2.get(this)._GetLinearDamping();
       }
       set angularDamping(t2) {
-        c2.RequireFiniteNumber(t2), k.get(this)._SetAngularDamping(t2);
+        c2.RequireFiniteNumber(t2), x2.get(this)._SetAngularDamping(t2);
       }
       get angularDamping() {
-        return k.get(this)._GetAngularDamping();
+        return x2.get(this)._GetAngularDamping();
       }
       set isImmovable(t2) {
-        k.get(this)._SetImmovable(t2);
+        x2.get(this)._SetImmovable(t2);
       }
       get isImmovable() {
-        return k.get(this)._IsImmovable();
+        return x2.get(this)._IsImmovable();
       }
       set isPreventRotation(t2) {
-        k.get(this)._SetPreventRotate(t2);
+        x2.get(this)._SetPreventRotate(t2);
       }
       get isPreventRotation() {
-        return k.get(this)._IsPreventRotate();
+        return x2.get(this)._IsPreventRotate();
       }
       set isBullet(t2) {
-        k.get(this)._SetBullet(t2);
+        x2.get(this)._SetBullet(t2);
       }
       get isBullet() {
-        return k.get(this)._IsBullet();
+        return x2.get(this)._IsBullet();
       }
       get mass() {
-        return k.get(this)._GetMass();
+        return x2.get(this)._GetMass();
       }
       getCenterOfMassX() {
-        return k.get(this)._GetCenterOfMassX();
+        return x2.get(this)._GetCenterOfMassX();
       }
       getCenterOfMassY() {
-        return k.get(this)._GetCenterOfMassY();
+        return x2.get(this)._GetCenterOfMassY();
       }
       getCenterOfMass() {
-        return k.get(this)._GetCenterOfMass();
+        return x2.get(this)._GetCenterOfMass();
       }
       getContactCount() {
-        return k.get(this)._GetContactCount();
+        return x2.get(this)._GetContactCount();
       }
       getContactX(t2) {
-        return c2.RequireFiniteNumber(t2), k.get(this)._GetContactPositionAt(t2)[0];
+        return c2.RequireFiniteNumber(t2), x2.get(this)._GetContactPositionAt(t2)[0];
       }
       getContactY(t2) {
-        return c2.RequireFiniteNumber(t2), k.get(this)._GetContactPositionAt(t2)[1];
+        return c2.RequireFiniteNumber(t2), x2.get(this)._GetContactPositionAt(t2)[1];
       }
       getContact(t2) {
-        return c2.RequireFiniteNumber(t2), k.get(this)._GetContactPositionAt(t2);
+        return c2.RequireFiniteNumber(t2), x2.get(this)._GetContactPositionAt(t2);
       }
       set isAwake(t2) {
-        k.get(this)._SetAwake(!!t2);
+        x2.get(this)._SetAwake(!!t2);
       }
       get isAwake() {
-        return k.get(this)._IsAwake();
+        return x2.get(this)._IsAwake();
       }
       get isSleeping() {
-        return !k.get(this)._IsAwake();
+        return this.runtime._logDeprecationWarning("IPhysicsBehaviorInstance.isSleeping", "IPhysicsBehaviorInstance 'isSleeping' property is deprecated. Use 'isAwake' instead."), !x2.get(this)._IsAwake();
       }
       createDistanceJoint(t2, e, i, s, n) {
         c2.RequireFiniteNumber(s), c2.RequireFiniteNumber(n);
         const o2 = UnwrapIWorldInstance(this, e);
-        k.get(this)._CreateDistanceJoint(t2, o2, i, s, n);
+        x2.get(this)._CreateDistanceJoint(t2, o2, i, s, n);
       }
       createRevoluteJoint(t2, e) {
         const i = UnwrapIWorldInstance(this, e);
-        k.get(this)._CreateRevoluteJoint(t2, i);
+        x2.get(this)._CreateRevoluteJoint(t2, i);
       }
       createLimitedRevoluteJoint(t2, e, i, s) {
         c2.RequireFiniteNumber(i), c2.RequireFiniteNumber(s);
         const n = UnwrapIWorldInstance(this, e);
-        k.get(this)._CreateLimitedRevoluteJoint(t2, n, i, s);
+        x2.get(this)._CreateLimitedRevoluteJoint(t2, n, i, s);
       }
       createPrismaticJoint(t2, e, i, s, n, o2, r2, a2, l) {
         const h2 = UnwrapIWorldInstance(this, e);
-        k.get(this)._CreatePrismaticJoint(t2, h2, i, s, n, o2, r2, a2, l);
+        x2.get(this)._CreatePrismaticJoint(t2, h2, i, s, n, o2, r2, a2, l);
       }
       removeAllJoints() {
-        k.get(this)._RemoveJoints();
+        x2.get(this)._RemoveJoints();
       }
       setCollisionFilter(t2, e) {
-        "string" == typeof e && (e = _2.splitStringAndNormalize(e)), k.get(this)._SetCollisionFilter(t2, e);
+        "string" == typeof e && (e = _2.splitStringAndNormalize(e)), x2.get(this)._SetCollisionFilter(t2, e);
       }
     };
   }
   {
-    const J = self.C3;
-    J.Behaviors.Physics.Cnds = { IsSleeping() {
+    const k = self.C3;
+    k.Behaviors.Physics.Cnds = { IsSleeping() {
       return !this._IsAwake();
     }, IsImmovable() {
       return this._IsImmovable();
@@ -40790,41 +42740,41 @@ var GetAudioDOMInterface2;
         const [t3, e2] = this._GetVelocity();
         s = Math.hypot(t3, e2);
       }
-      return J.compare(s, e, i);
+      return k.compare(s, e, i);
     }, CompareAngularVelocity(t2, e) {
       if (!this._isEnabled) return false;
-      const i = J.toDegrees(this._GetAngularVelocity());
-      return J.compare(i, t2, e);
+      const i = k.toDegrees(this._GetAngularVelocity());
+      return k.compare(i, t2, e);
     }, CompareMass(t2, e) {
       if (!this._isEnabled) return false;
       const i = this._GetMass();
-      return J.compare(i, t2, e);
+      return k.compare(i, t2, e);
     }, IsEnabled() {
       return this._IsEnabled();
     } };
   }
   {
-    const V = self.C3;
-    V.Behaviors.Physics.Acts = { ApplyForce(t2, e, i) {
+    const J = self.C3;
+    J.Behaviors.Physics.Acts = { ApplyForce(t2, e, i) {
       this._ApplyForce(t2, e, i);
     }, ApplyForceToward(t2, e, i, s) {
       this._ApplyForceToward(t2, e, i, s);
     }, ApplyForceAtAngle(t2, e, i) {
-      this._ApplyForceAtAngle(t2, V.toRadians(e), i);
+      this._ApplyForceAtAngle(t2, J.toRadians(e), i);
     }, ApplyImpulse(t2, e, i) {
       this._ApplyImpulse(t2, e, i);
     }, ApplyImpulseToward(t2, e, i, s) {
       this._ApplyImpulseToward(t2, e, i, s);
     }, ApplyImpulseAtAngle(t2, e, i) {
-      this._ApplyImpulseAtAngle(t2, V.toRadians(e), i);
+      this._ApplyImpulseAtAngle(t2, J.toRadians(e), i);
     }, ApplyTorque(t2) {
-      this._ApplyTorque(V.toRadians(t2));
+      this._ApplyTorque(J.toRadians(t2));
     }, ApplyTorqueToAngle(t2, e) {
-      this._ApplyTorqueToAngle(V.toRadians(t2), V.toRadians(e));
+      this._ApplyTorqueToAngle(J.toRadians(t2), J.toRadians(e));
     }, ApplyTorqueToPosition(t2, e, i) {
-      this._ApplyTorqueToPosition(V.toRadians(t2), e, i);
+      this._ApplyTorqueToPosition(J.toRadians(t2), e, i);
     }, SetAngularVelocity(t2) {
-      this._SetAngularVelocity(V.toRadians(t2));
+      this._SetAngularVelocity(J.toRadians(t2));
     }, CreateDistanceJoint(t2, e, i, s, n) {
       if (!e) return;
       const o2 = e.GetFirstPicked(this._inst);
@@ -40836,11 +42786,11 @@ var GetAudioDOMInterface2;
     }, CreateLimitedRevoluteJoint(t2, e, i, s) {
       if (!e) return;
       const n = e.GetFirstPicked(this._inst);
-      this._CreateLimitedRevoluteJoint(t2, n, V.toRadians(i), V.toRadians(s));
+      this._CreateLimitedRevoluteJoint(t2, n, J.toRadians(i), J.toRadians(s));
     }, CreatePrismaticJoint(t2, e, i, s, n, o2, r2, a2, l) {
       if (!e) return;
       const h2 = e.GetFirstPicked(this._inst);
-      this._CreatePrismaticJoint(t2, h2, V.toRadians(i), s, n, o2, r2, V.toRadians(a2), l);
+      this._CreatePrismaticJoint(t2, h2, J.toRadians(i), s, n, o2, r2, J.toRadians(a2), l);
     }, RemoveJoints() {
       this._RemoveJoints();
     }, SetWorldGravity(t2) {
@@ -40876,17 +42826,17 @@ var GetAudioDOMInterface2;
     }, SetEnabled(t2) {
       this._SetEnabled(0 !== t2);
     }, SetCollisionFilter(t2, e) {
-      this._SetCollisionFilter(0 === t2, V.splitStringAndNormalize(e));
+      this._SetCollisionFilter(0 === t2, J.splitStringAndNormalize(e));
     } };
   }
   {
-    const L = self.C3;
-    L.Behaviors.Physics.Exps = { VelocityX() {
+    const V = self.C3;
+    V.Behaviors.Physics.Exps = { VelocityX() {
       return this._GetVelocityX();
     }, VelocityY() {
       return this._GetVelocityY();
     }, AngularVelocity() {
-      return L.toDegrees(this._GetAngularVelocity());
+      return V.toDegrees(this._GetAngularVelocity());
     }, Mass() {
       return this._GetMass();
     }, CenterOfMassX() {
@@ -42344,7 +44294,7 @@ var accelerate2;
       }
       _UpdateCollisionRect() {
         const t3 = this.GetWorldInfo().GetBoundingBox();
-        this._collisionRect.copy(t3);
+        this._collisionRect.setFromAABB3D(t3);
         let e2 = g2, i2 = g2;
         const s2 = t3.width(), r3 = t3.height();
         if (s2 < g2 + g2) {
@@ -42688,30 +44638,48 @@ var accelerate2;
     };
   }
   {
-    const e = self.C3, t2 = 0;
+    const e = self.C3, t2 = 0, s = 1, o2 = new e.Rect();
     e.Behaviors.bound.Instance = class extends e.SDKBehaviorInstanceBase {
-      constructor(e2, s) {
-        super(e2), this._mode = 0, s && (this._mode = s[t2]), this._StartTicking2();
+      #e = 0;
+      #t = 0;
+      constructor(e2, o3) {
+        super(e2), o3 && (this.#e = o3[t2], this.#t = o3[s]), this._StartTicking2();
       }
       Release() {
         super.Release();
       }
       SaveToJson() {
-        return { "m": this._mode };
+        return { "m": this.#e, "r": this.#t };
       }
       LoadFromJson(e2) {
-        this._mode = e2["m"];
+        this.#e = e2["m"], this.#t = e2["r"] ?? 0;
       }
       Tick2() {
-        const e2 = this._inst.GetWorldInfo(), t3 = e2.GetBoundingBox(), s = e2.GetLayout();
-        let o2 = false;
-        0 === this._mode ? (e2.GetX() < 0 && (e2.SetX(0), o2 = true), e2.GetY() < 0 && (e2.SetY(0), o2 = true), e2.GetX() > s.GetWidth() && (e2.SetX(s.GetWidth()), o2 = true), e2.GetY() > s.GetHeight() && (e2.SetY(s.GetHeight()), o2 = true)) : (t3.getLeft() < 0 && (e2.OffsetX(-t3.getLeft()), o2 = true), t3.getTop() < 0 && (e2.OffsetY(-t3.getTop()), o2 = true), t3.getRight() > s.GetWidth() && (e2.OffsetX(-(t3.getRight() - s.GetWidth())), o2 = true), t3.getBottom() > s.GetHeight() && (e2.OffsetY(-(t3.getBottom() - s.GetHeight())), o2 = true)), o2 && e2.SetBboxChanged();
+        const e2 = this._inst.GetWorldInfo(), t3 = e2.GetBoundingBox();
+        let s2 = false;
+        const i = o2;
+        if (0 === this.#t) {
+          const t4 = e2.GetLayout();
+          i.set(0, 0, t4.GetWidth(), t4.GetHeight());
+        } else i.copy(e2.GetLayer().GetViewport());
+        0 === this.#e ? (e2.GetX() < i.getLeft() && (e2.SetX(i.getLeft()), s2 = true), e2.GetY() < i.getTop() && (e2.SetY(i.getTop()), s2 = true), e2.GetX() > i.getRight() && (e2.SetX(i.getRight()), s2 = true), e2.GetY() > i.getBottom() && (e2.SetY(i.getBottom()), s2 = true)) : (t3.getLeft() < i.getLeft() && (e2.OffsetX(i.getLeft() - t3.getLeft()), s2 = true), t3.getTop() < i.getTop() && (e2.OffsetY(i.getTop() - t3.getTop()), s2 = true), t3.getRight() > i.getRight() && (e2.OffsetX(i.getRight() - t3.getRight()), s2 = true), t3.getBottom() > i.getBottom() && (e2.OffsetY(i.getBottom() - t3.getBottom()), s2 = true)), s2 && e2.SetBboxChanged();
       }
       GetPropertyValueByIndex(e2) {
-        if (e2 === t2) return this._mode;
+        switch (e2) {
+          case t2:
+            return this.#e;
+          case s:
+            return this.#t;
+        }
       }
-      SetPropertyValueByIndex(e2, s) {
-        if (e2 === t2) this._mode = s;
+      SetPropertyValueByIndex(e2, o3) {
+        switch (e2) {
+          case t2:
+            this.#e = o3;
+            break;
+          case s:
+            this.#t = o3;
+        }
       }
     };
   }
@@ -42782,11 +44750,10 @@ var accelerate2;
     () => "PlayerPickups",
     () => "PlusUps",
     () => "Pulse",
-    () => 4,
-    () => 1,
-    () => 2,
-    () => 12,
     () => 3,
+    () => 1,
+    () => 4,
+    () => 12,
     () => "Echoite",
     () => 5,
     () => 25,
@@ -42883,17 +44850,20 @@ var accelerate2;
       return () => v0.GetValue();
     },
     () => "Your Mana is too low!",
+    () => 2,
     () => 650,
     () => "Basic",
     () => "Attack Type: Basic",
     () => "Basic+",
     () => "Attack Type: Basic+",
     () => "BasicFire",
-    () => "Attack Type: Fire Spark",
+    () => 99999999,
+    () => "Unobtained",
     () => "FlameSpark",
+    () => "Attack Type: Fire Spark",
     () => "BasicElectric",
-    () => "Attack Type: Lightning Spark",
     () => "ElectroSpark",
+    () => "Attack Type: Lightning Spark",
     () => "Extreme",
     () => "Attack Type: Extreme",
     () => "Extreme+",
@@ -42903,6 +44873,15 @@ var accelerate2;
     () => "Attack Type: Insane",
     () => -0.1,
     () => 6.1,
+    () => "Copper",
+    () => "Equipped Copper Shortsword!",
+    () => "You don't have that!",
+    () => "Iron",
+    () => "Equipped Iron Shortsword!",
+    () => "Gold",
+    () => "Equipped Golden Shortsword!",
+    () => "Platinum",
+    () => "Equipped Platinum Shortsword!",
     () => "PlayerStats",
     (p2) => {
       const n0 = p2._GetNode(0);
@@ -43058,7 +45037,22 @@ var accelerate2;
     () => "You don't have any of those!",
     () => "Enemies",
     () => "TreasureChest",
-    () => 603,
+    (p2) => {
+      const n0 = p2._GetNode(0);
+      return () => n0.ExpObject() - 35;
+    },
+    (p2) => {
+      const n0 = p2._GetNode(0);
+      return () => n0.ExpObject() + 35;
+    },
+    (p2) => {
+      const n0 = p2._GetNode(0);
+      return () => n0.ExpObject() - 25;
+    },
+    (p2) => {
+      const n0 = p2._GetNode(0);
+      return () => n0.ExpObject() + 10;
+    },
     () => "opening",
     () => 0.25,
     (p2) => {
@@ -43066,16 +45060,42 @@ var accelerate2;
       return () => f0(80, 100);
     },
     () => "LVL5",
+    (p2) => {
+      const f0 = p2._GetNode(0).GetBoundMethod();
+      return () => 1 + Math.floor(f0(1, 2));
+    },
+    (p2) => {
+      const f0 = p2._GetNode(0).GetBoundMethod();
+      return () => 1 + Math.floor(f0(1, 3));
+    },
+    (p2) => {
+      const f0 = p2._GetNode(0).GetBoundMethod();
+      return () => 1 + Math.floor(f0(1, 4));
+    },
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      const v1 = p2._GetNode(1).GetVar();
+      const v2 = p2._GetNode(2).GetVar();
+      const v3 = p2._GetNode(3).GetVar();
+      const v4 = p2._GetNode(4).GetVar();
+      return () => and(and(and(and(and("Fire Frags = ", v0.GetValue()) + ", Lightning Frags = ", v1.GetValue()) + ", Extremity Frags = ", v2.GetValue()) + ", Extremity+ Frags = ", v3.GetValue()) + ", Insanity Frags = ", v4.GetValue());
+    },
+    (p2) => {
+      const n0 = p2._GetNode(0);
+      return () => n0.ExpObject() + 25;
+    },
     () => "staticOpen",
     () => "Unlocked",
+    () => "Unlocking",
     () => "Door has been unlocked!",
     () => "You don't have a key!",
     () => "catastrophicGlutton",
-    () => "NOR3",
-    () => 0.65,
+    () => "NOR5",
     () => "BOSSWYRMSTART",
     () => " Catastrophic Devourer: ''You are no deity... but I shall feast upon your essence nonetheless!'' ",
     () => "Catastrophic Devourer: ",
+    () => "Gained 12 HP and 8 MP!",
+    () => "Also gained 3 of every Potion plus 24 Arrows!",
     () => "CDcollisons",
     () => "DeathAnimeCD",
     () => " Catastrophic Devourer: ''I WILL NOT DIE!'' ",
@@ -43083,23 +45103,17 @@ var accelerate2;
     () => "CDdead",
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
-      return () => 6 - v0.GetValue();
+      return () => Math.floor(4 - v0.GetValue() * 0.75);
     },
     () => -20,
-    () => "CDhealthCode",
-    (p2) => {
-      const n0 = p2._GetNode(0);
-      const n1 = p2._GetNode(1);
-      const n2 = p2._GetNode(2);
-      const n3 = p2._GetNode(3);
-      const n4 = p2._GetNode(4);
-      const n5 = p2._GetNode(5);
-      const n6 = p2._GetNode(6);
-      return () => n0.ExpInstVar() + n1.ExpInstVar() + n2.ExpInstVar() + n3.ExpInstVar() + n4.ExpInstVar() + n5.ExpInstVar() + n6.ExpInstVar();
-    },
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
-      return () => and("Catastrophic Devourer's HP: ", v0.GetValue()) + "/550";
+      return () => Math.floor(6 - v0.GetValue() * 0.75);
+    },
+    () => "CDhealthCode",
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => and("Catastrophic Devourer's HP: ", v0.GetValue()) + "/500";
     },
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
@@ -43111,7 +45125,7 @@ var accelerate2;
     },
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
-      return () => 21 + v0.GetValue();
+      return () => 14 + v0.GetValue();
     },
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
@@ -43127,22 +45141,31 @@ var accelerate2;
     },
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
-      return () => 24 + v0.GetValue();
+      return () => 25 + v0.GetValue();
     },
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
-      return () => 4 + v0.GetValue();
+      return () => 3 + v0.GetValue();
+    },
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => 6 + v0.GetValue();
     },
     (p2) => {
       const n0 = p2._GetNode(0);
-      const n1 = p2._GetNode(1);
-      const n2 = p2._GetNode(2);
-      const n3 = p2._GetNode(3);
-      const n4 = p2._GetNode(4);
-      const n5 = p2._GetNode(5);
-      const n6 = p2._GetNode(6);
-      const n7 = p2._GetNode(7);
-      return () => n0.ExpInstVar() + n1.ExpInstVar() + n2.ExpInstVar() + n3.ExpInstVar() + n4.ExpInstVar() + n5.ExpInstVar() + n6.ExpInstVar() + n7.ExpInstVar();
+      return () => C32.clamp(n0.ExpInstVar(), 425, 455);
+    },
+    (p2) => {
+      const n0 = p2._GetNode(0);
+      return () => C32.clamp(n0.ExpInstVar(), 280, 305);
+    },
+    (p2) => {
+      const n0 = p2._GetNode(0);
+      return () => C32.clamp(n0.ExpInstVar(), 125, 155);
+    },
+    (p2) => {
+      const n0 = p2._GetNode(0);
+      return () => C32.clamp(n0.ExpInstVar(), 25, 55);
     },
     () => "breakableBlock",
     () => "breakableBlock1",
@@ -43159,23 +45182,19 @@ var accelerate2;
     () => "NercomancerCollisions",
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
-      return () => 14 + v0.GetValue();
-    },
-    (p2) => {
-      const v0 = p2._GetNode(0).GetVar();
-      return () => 25 + v0.GetValue();
-    },
-    (p2) => {
-      const v0 = p2._GetNode(0).GetVar();
-      return () => 6 + v0.GetValue();
-    },
-    (p2) => {
-      const v0 = p2._GetNode(0).GetVar();
       return () => 12 - v0.GetValue();
     },
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
       return () => Math.floor(7 - v0.GetValue() * 0.75);
+    },
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => Math.floor(14 - v0.GetValue() * 0.75);
+    },
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => Math.floor(9 - v0.GetValue() * 0.75);
     },
     (p2) => {
       const n0 = p2._GetNode(0);
@@ -43197,11 +45216,11 @@ var accelerate2;
     () => "30SOkill",
     () => "10SOkill",
     () => "spiritOrbCollisions",
-    () => "Tint",
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
-      return () => 3 + v0.GetValue();
+      return () => 4 + v0.GetValue();
     },
+    () => "Tint",
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
       return () => 20 + v0.GetValue();
@@ -43212,15 +45231,22 @@ var accelerate2;
     },
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
+      return () => 9 + v0.GetValue();
+    },
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => 13 + v0.GetValue();
+    },
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
       return () => 5 - v0.GetValue();
     },
-    () => 135,
-    () => 148,
-    () => 160,
-    () => 159,
-    () => 146,
-    () => 147,
-    () => 139,
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => 8 - v0.GetValue();
+    },
+    () => 603,
+    () => 2158,
     () => "systemStuff",
     () => "Portals",
     () => "NOR1",
@@ -43228,7 +45254,9 @@ var accelerate2;
     () => "BOSSTIME",
     () => 141,
     () => "NOR2",
+    () => "NOR3",
     () => "Shop",
+    () => "EndofGame",
     () => "opacity",
     () => "0",
     () => "Sharpen",
@@ -43236,8 +45264,13 @@ var accelerate2;
     () => 0.75,
     () => "LVL1",
     () => 228,
-    () => "EndofGame",
+    () => "LVL6",
+    () => "LVL7",
+    () => "LVL8",
+    () => "LVL9",
+    () => "LVL10",
     () => 140,
+    () => 139,
     () => 144,
     () => 143,
     () => 145,
@@ -43281,8 +45314,21 @@ var accelerate2;
       const v1 = p2._GetNode(1).GetVar();
       return () => f0(v1.GetValue(), 4);
     },
-    () => 740,
-    () => "$740",
+    () => 999999999,
+    () => "It seems you have this.",
+    () => "A plain ol' iron shortsword, a little rusty and damaged but usable.",
+    () => 250,
+    () => "$250",
+    () => 9999999999,
+    () => 750,
+    () => "$750",
+    () => "An ornate gold shortsword, adorned with a ruby.",
+    () => 99999999999,
+    () => 1e3,
+    () => "$1000",
+    () => "An ornate platinum shortsword, adorned with a diamond.",
+    () => 695,
+    () => "$695",
     () => "Restores one of the hearts stolen from you by the Cursed Dark.",
     () => " Increases max health by 4.",
     () => " ",
@@ -43292,15 +45338,72 @@ var accelerate2;
       return () => v0.GetValue() + 1;
     },
     () => "  (Current Number -> New)",
-    () => 1500,
-    () => "$1500",
-    () => "It contains strange runes...",
-    () => " A dictionary. (Currently broken)",
-    () => 999999999999999,
-    () => "$-----------",
-    () => " A dictionary.",
-    () => " You have one already.",
-    () => "$650",
+    () => "$25",
+    () => "A fragment of a magically charged object... Perhaps, if collect enough of this, you could use its power.",
+    () => " Gives knowledges of Fire Magic.",
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => and(" (", v0.GetValue()) + "/5)";
+    },
+    () => "$34",
+    () => " Gives knowledges of Lightning Magic.",
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => and(" (", v0.GetValue()) + "/6)";
+    },
+    () => "$43",
+    () => " Gives knowledges of extreme Magic.",
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => and(" (", v0.GetValue()) + "/8)";
+    },
+    () => "$52",
+    () => " Gives knowledges of enhanced extreme Magic.",
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => and(" (", v0.GetValue()) + "/10)";
+    },
+    () => "$55",
+    () => " Gives knowledges of Insanity Magic.",
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => and(" (", v0.GetValue()) + "/15)";
+    },
+    () => 9999999,
+    () => "$--",
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => and(" (", v0.GetValue()) + "/5)(You have the max)";
+    },
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => and(" (", v0.GetValue()) + "/6)(You have the max)";
+    },
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => and(" (", v0.GetValue()) + "/8)(You have the max)";
+    },
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => and(" (", v0.GetValue()) + "/10)(You have the max)";
+    },
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => and(" (", v0.GetValue()) + "/15)(You have the max)";
+    },
+    () => 160,
+    () => "$160",
+    () => "A magically charged object... Perhaps, this could give you use of its power.",
+    () => 200,
+    () => "$200",
+    () => 305,
+    () => "$305",
+    () => 380,
+    () => "$380",
+    () => 425,
+    () => "$425",
+    () => 635,
+    () => "$635",
     () => "Restores one of the stars stolen from you by the Cursed Dark.",
     () => " Increases max mana by 4.",
     () => "$50",
@@ -43318,9 +45421,20 @@ var accelerate2;
     () => "$120",
     () => "A health restorative drink, obviously made if magic. The shopkeeper says it is safe though...",
     () => " Restores 12 HP",
+    () => " Increases Health Potions by 1.",
+    () => "(Current number of Health Potions to after purchase)   ",
     () => "$75",
     () => "A mana restorative drink, obviously made if magic. The shopkeeper says it is safe though...",
     () => " Restores 16 MP",
+    () => " Increases Mana Potions by 1.",
+    () => "(Current number of Mana Potions to after purchase)   ",
+    () => "$30",
+    () => " Restores 6 HP",
+    () => " Increases Mini Health Potions by 1.",
+    () => "(Current number of Mini Health Potions to after purchase)   ",
+    () => " Restores 8 MP",
+    () => " Increases Mini Mana Potions by 1.",
+    () => "(Current number of Mini Mana Potions to after purchase)   ",
     () => -717706215031807,
     () => -43805490175,
     () => "Insufficent Funds!",
@@ -43333,11 +45447,44 @@ var accelerate2;
     () => " more Echoite!",
     () => -30737107967,
     () => "Purchased 6 Arrows",
+    () => "Purchased Iron Shortsword",
+    () => "Purchased Gold Shortsword",
+    () => "Purchased Platinum Shortsword",
+    () => "You have enough of these already",
+    () => "Purchased a Fire Magic Charge Fragment",
+    () => "Purchased a Lightning Magic Charge Fragment",
+    () => "Purchased an extreme Magic Charge Fragment",
+    () => "Purchased an enhanced extreme Magic Charge Fragment",
+    () => "Purchased an Insanity Magic Charge Fragment",
+    () => "You have one already",
+    () => " more Fire Magic Charge Frags!",
+    () => "Crafted a Fire Magic Charge",
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => 6 - v0.GetValue();
+    },
+    () => " more Lightning Magic Charge Frags!",
+    () => "Crafted a Lightning Magic Charge",
+    () => " more Extremity Magic Charge Frags!",
+    () => "Crafted an extreme Magic Charge",
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => 10 - v0.GetValue();
+    },
+    () => " more enhanced Extremity Magic Charge Frags!",
+    () => "Crafted an enhanced extreme Magic Charge",
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => 15 - v0.GetValue();
+    },
+    () => "Crafted an Insanity Magic Charge",
     () => "Purchased 1 Arrow",
     () => "Purchased 1 Heart Container",
     () => "Purchased 1 Mana Container",
     () => "Purchased 1 Healing Potion",
     () => "Purchased 1 Mana Potion",
+    () => "Purchased 1 Mini Healing Potion",
+    () => "Purchased 1 Mini Mana Potion",
     () => "GameLevelSelectorT1",
     () => 5573478,
     () => 300,
@@ -43506,6 +45653,7 @@ self.C3_GetObjectRefTable = function() {
     C3.Plugins.Mouse,
     C3.Plugins.gamepad,
     C3.Plugins.Audio,
+    C3.Plugins.HTMLElement,
     C3.Plugins.System.Cnds.IsGroupActive,
     C3.Plugins.Sprite.Cnds.OnCollision,
     C3.Plugins.Sprite.Acts.SetEffectEnabled,
@@ -43570,6 +45718,7 @@ self.C3_GetObjectRefTable = function() {
     C3.Plugins.System.Acts.WaitForPreviousActions,
     C3.Behaviors.Bullet.Cnds.CompareTravelled,
     C3.Plugins.Sprite.Acts.SetInstanceVar,
+    C3.Plugins.Mouse.Cnds.IsOverObject,
     C3.Plugins.System.Cnds.EveryTick,
     C3.Plugins.progressbar.Acts.SetTooltip,
     C3.Plugins.Text.Exps.Text,
@@ -43585,23 +45734,24 @@ self.C3_GetObjectRefTable = function() {
     C3.Plugins.System.Acts.GoToLayoutByName,
     C3.Behaviors.Platform.Acts.SetDoubleJumpEnabled,
     C3.Plugins.System.Cnds.Every,
-    C3.Plugins.Mouse.Cnds.IsOverObject,
     C3.Plugins.Particles.Acts.SetVisible,
     C3.Plugins.Sprite.Cnds.IsOverlappingOffset,
-    C3.Plugins.System.Cnds.ObjectUIDExists,
+    C3.Plugins.System.Cnds.CompareBetween,
     C3.Plugins.Sprite.Acts.Spawn,
     C3.Behaviors.Physics.Acts.ApplyImpulseAtAngle,
     C3.Plugins.System.Exps.random,
     C3.Plugins.System.Exps.layoutname,
+    C3.Plugins.Text.Acts.SetSize,
+    C3.Plugins.Text.Exps.Width,
+    C3.Plugins.Text.Exps.Height,
     C3.Behaviors.solid.Acts.SetEnabled,
     C3.Plugins.System.Cnds.OnLayoutStart,
     C3.Plugins.Audio.Acts.StopAll,
-    C3.Plugins.Sprite.Acts.SetScale,
-    C3.Behaviors.Pin.Acts.PinByImagePoint,
     C3.Plugins.System.Acts.WaitForSignal,
     C3.Behaviors.Turret.Acts.AddTarget,
-    C3.Plugins.System.Acts.ToggleBoolVar,
+    C3.Plugins.System.Acts.SetBoolVar,
     C3.Plugins.System.Acts.Signal,
+    C3.Plugins.Text.Acts.AppendText,
     C3.Plugins.Sprite.Acts.RotateTowardPosition,
     C3.Plugins.progressbar.Acts.Destroy,
     C3.Plugins.Text.Acts.Destroy,
@@ -43610,32 +45760,36 @@ self.C3_GetObjectRefTable = function() {
     C3.Behaviors.Platform.Acts.SetVectorX,
     C3.Behaviors.Platform.Acts.SetVectorY,
     C3.Plugins.Sprite.Acts.MoveForward,
+    C3.Behaviors.Turret.Cnds.OnShoot,
     C3.Plugins.Sprite.Cnds.IsVisible,
     C3.Plugins.Particles.Acts.SetPosToObject,
     C3.Plugins.Particles.Acts.SetRate,
     C3.Plugins.progressbar.Acts.SetPosToObject,
-    C3.Plugins.Text.Acts.AppendText,
     C3.Plugins.Text.Exps.PlainText,
     C3.Plugins.Particles.Acts.SetPos,
     C3.Plugins.Sprite.Cnds.PickDistance,
     C3.Plugins.Sprite.Cnds.PickInstVarHiLow,
     C3.Plugins.Sprite.Cnds.PickByUID,
     C3.Behaviors.jumpthru.Acts.SetEnabled,
-    C3.Plugins.System.Acts.SetBoolVar,
-    C3.Behaviors.Turret.Cnds.OnShoot,
     C3.Plugins.Text.Cnds.PickByUID,
     C3.Plugins.Text.Cnds.PickDistance,
     C3.Plugins.Text.Acts.SetPosToObject,
     C3.Plugins.Sprite.Cnds.OnDestroyed,
+    C3.Behaviors.Physics.Acts.SetEnabled,
     C3.Plugins.progressbar.Acts.SetVisible,
     C3.Plugins.Audio.Acts.FadeVolume,
+    C3.Plugins.System.Acts.ToggleBoolVar,
     C3.Plugins.Sprite.Exps.Count,
+    C3.Plugins.System.Acts.SetLayerParallax,
     C3.Plugins.progressbar.Acts.SetCSSStyle,
     C3.Plugins.progressbar.Acts.SetIndeterminate,
     C3.Plugins.Text.Acts.SetEffectEnabled,
     C3.Plugins.Sprite.Acts.SetAngle,
+    C3.Behaviors.Pin.Acts.PinByImagePoint,
     C3.Behaviors.Platform.Acts.SetCeilingCollision,
     C3.Plugins.Button.Acts.SetCSSStyle,
+    C3.Plugins.Sprite.Acts.SetSize,
+    C3.Plugins.Sprite.Acts.SetScale,
     C3.Plugins.System.Acts.LoadLayoutTextures,
     C3.Plugins.System.Acts.UnloadUnusedTextures,
     C3.Plugins.Keyboard.Acts.LockKeyboard,
@@ -43734,6 +45888,23 @@ self.C3_JsPropNameTable = [
   { ToWeaponryCATatkchargeSHOP: 0 },
   { chargeFragType0: 0 },
   { CSshopItem: 0 },
+  { ISshopItem: 0 },
+  { GSshopItem: 0 },
+  { PSshopItem: 0 },
+  { chargeFragType1: 0 },
+  { chargeFragType2: 0 },
+  { chargeFragType3: 0 },
+  { chargeFragType4: 0 },
+  { chargeFragType5: 0 },
+  { chargeFragType6: 0 },
+  { ToWeaponryCATatkchargeSHOP2: 0 },
+  { chargeType6: 0 },
+  { chargeType5: 0 },
+  { chargeType4: 0 },
+  { chargeType2: 0 },
+  { chargeType3: 0 },
+  { MiniHPpot: 0 },
+  { MiniMPpot: 0 },
   { MPpotHUD1: 0 },
   { InventoryHUD: 0 },
   { HPpotHUD1: 0 },
@@ -43754,6 +45925,14 @@ self.C3_JsPropNameTable = [
   { HPpotsHUDINVtestText: 0 },
   { MoneyINVtestText: 0 },
   { MPpotsHUDINVtestText: 0 },
+  { CSInvItem: 0 },
+  { ISInvItem: 0 },
+  { GSInvItem: 0 },
+  { PSInvItem: 0 },
+  { MiniHPpotsHUD2: 0 },
+  { MiniHPpotHUD1: 0 },
+  { MiniMPpotsHUD2: 0 },
+  { MiniMPpotHUD1: 0 },
   { atr\u00E9lurnBookHUD: 0 },
   { atr\u00E9lurnRunes: 0 },
   { regularRunes: 0 },
@@ -43778,6 +45957,7 @@ self.C3_JsPropNameTable = [
   { InstructionsGamepad: 0 },
   { InstructionHUDbringup2: 0 },
   { InstructionsText3: 0 },
+  { LockEntity: 0 },
   { Solid: 0 },
   { oldTileMap: 0 },
   { DungeonBackGround: 0 },
@@ -43799,23 +45979,14 @@ self.C3_JsPropNameTable = [
   { goldenDoor: 0 },
   { breakableBlock1BreakParticles: 0 },
   { breakableBlock2BreakParticles: 0 },
-  { NecromancerATKS: 0 },
-  { HP: 0 },
-  { catastrophicGluttonBodySegment1: 0 },
-  { Turret: 0 },
-  { catastrophicGluttonBodySegment2: 0 },
-  { catastrophicGluttonBodySegment3: 0 },
-  { catastrophicGluttonBodySegment4: 0 },
-  { catastrophicGluttonBodySegment5: 0 },
-  { catastrophicGluttonBodySegment6: 0 },
-  { catastrophicGluttonBodySegmentINBETWEEN1: 0 },
-  { catastrophicGluttonBodySegmentINBETWEEN2: 0 },
-  { catastrophicGluttonBodySegmentINBETWEEN3: 0 },
-  { catastrophicGluttonBodySegmentINBETWEEN4: 0 },
-  { catastrophicGluttonBodySegmentINBETWEEN5: 0 },
-  { catastrophicGluttonHead: 0 },
-  { catastrophicGluttonTail: 0 },
+  { BurntOutTorch: 0 },
+  { NecromancerATKST1: 0 },
+  { NecromancerATKST2: 0 },
+  { SkeletonMelee: 0 },
   { CDSoulBullet: 0 },
+  { cowledWarlock: 0 },
+  { HP: 0 },
+  { Turret: 0 },
   { NecromancerT1: 0 },
   { Sine2: 0 },
   { Sine3: 0 },
@@ -43823,12 +45994,17 @@ self.C3_JsPropNameTable = [
   { SpiritOrbT1: 0 },
   { TileMovement: 0 },
   { SkeletonT1: 0 },
+  { NecromancerT2: 0 },
+  { SpiritOrbT2: 0 },
+  { catastrophicGluttonHead: 0 },
   { Type: 0 },
   { RubyATKS: 0 },
   { RubyMelee: 0 },
   { FriendlyArrow: 0 },
   { RubyMelee2: 0 },
   { shortswordATK: 0 },
+  { SapphireMelee: 0 },
+  { SapphireMelee2: 0 },
   { CC: 0 },
   { GC: 0 },
   { PC: 0 },
@@ -43885,6 +46061,8 @@ self.C3_JsPropNameTable = [
   { SplashKrita: 0 },
   { chargesForAttack: 0 },
   { requestKeyLock: 0 },
+  { HTMLElement: 0 },
+  { Shelf_Tilemap: 0 },
   { Enemies: 0 },
   { CD: 0 },
   { rubyATK: 0 },
@@ -43909,6 +46087,10 @@ self.C3_JsPropNameTable = [
   { LVL2BOSSTIME: 0 },
   { LVL3BOSSTIME: 0 },
   { LVL4BOSSTIME: 0 },
+  { LVL6BOSSTIME: 0 },
+  { LVL7BOSSTIME: 0 },
+  { LVL8BOSSTIME: 0 },
+  { LVL9BOSSTIME: 0 },
   { NecromancerT1isDefeated: 0 },
   { NecroMancerT1HP: 0 },
   { SoundVolume: 0 },
@@ -43922,10 +46104,26 @@ self.C3_JsPropNameTable = [
   { LVLsCompleted: 0 },
   { isKeyBoardLockButton: 0 },
   { meleeATKtype: 0 },
+  { ISobtained: 0 },
+  { GSobtained: 0 },
+  { PSobtained: 0 },
+  { MeleeSStype: 0 },
+  { FireSparkObtained: 0 },
+  { ElectricSparkObtained: 0 },
+  { ExtremeObtained: 0 },
+  { ExtremePlusObtained: 0 },
+  { InsaneObtained: 0 },
+  { MiniHPpots: 0 },
+  { MiniMPpots: 0 },
   { CDdeadyn: 0 },
   { IntroMovieTextVariableThingy: 0 },
   { ItemCost: 0 },
-  { ShopTrue: 0 }
+  { ShopTrue: 0 },
+  { ChargeType2Frags: 0 },
+  { ChargeType3Frags: 0 },
+  { ChargeType4Frags: 0 },
+  { ChargeType5Frags: 0 },
+  { ChargeType6Frags: 0 }
 ];
 self.InstanceType = {
   ArrowNumberstatic: class extends self.ITextInstance {
@@ -44078,6 +46276,40 @@ self.InstanceType = {
   },
   CSshopItem: class extends self.ISpriteInstance {
   },
+  ISshopItem: class extends self.ISpriteInstance {
+  },
+  GSshopItem: class extends self.ISpriteInstance {
+  },
+  PSshopItem: class extends self.ISpriteInstance {
+  },
+  chargeFragType1: class extends self.ISpriteInstance {
+  },
+  chargeFragType2: class extends self.ISpriteInstance {
+  },
+  chargeFragType3: class extends self.ISpriteInstance {
+  },
+  chargeFragType4: class extends self.ISpriteInstance {
+  },
+  chargeFragType5: class extends self.ISpriteInstance {
+  },
+  chargeFragType6: class extends self.ISpriteInstance {
+  },
+  ToWeaponryCATatkchargeSHOP2: class extends self.IButtonInstance {
+  },
+  chargeType6: class extends self.ISpriteInstance {
+  },
+  chargeType5: class extends self.ISpriteInstance {
+  },
+  chargeType4: class extends self.ISpriteInstance {
+  },
+  chargeType2: class extends self.ISpriteInstance {
+  },
+  chargeType3: class extends self.ISpriteInstance {
+  },
+  MiniHPpot: class extends self.ISpriteInstance {
+  },
+  MiniMPpot: class extends self.ISpriteInstance {
+  },
   MPpotHUD1: class extends self.ISpriteInstance {
   },
   InventoryHUD: class extends self.ISpriteInstance {
@@ -44117,6 +46349,22 @@ self.InstanceType = {
   MoneyINVtestText: class extends self.ITextInstance {
   },
   MPpotsHUDINVtestText: class extends self.ITextInstance {
+  },
+  CSInvItem: class extends self.ISpriteInstance {
+  },
+  ISInvItem: class extends self.ISpriteInstance {
+  },
+  GSInvItem: class extends self.ISpriteInstance {
+  },
+  PSInvItem: class extends self.ISpriteInstance {
+  },
+  MiniHPpotsHUD2: class extends self.ITextInstance {
+  },
+  MiniHPpotHUD1: class extends self.ISpriteInstance {
+  },
+  MiniMPpotsHUD2: class extends self.ITextInstance {
+  },
+  MiniMPpotHUD1: class extends self.ISpriteInstance {
   },
   atr\u00E9lurnBookHUD: class extends self.ISpriteInstance {
   },
@@ -44160,6 +46408,8 @@ self.InstanceType = {
   },
   InstructionsText3: class extends self.ITextInstance {
   },
+  LockEntity: class extends self.ISpriteInstance {
+  },
   oldTileMap: class extends self.ITilemapInstance {
   },
   DungeonBackGround: class extends self.ITiledBackgroundInstance {
@@ -44192,41 +46442,29 @@ self.InstanceType = {
   },
   breakableBlock2BreakParticles: class extends self.IParticlesInstance {
   },
-  NecromancerATKS: class extends self.ISpriteInstance {
+  BurntOutTorch: class extends self.ISpriteInstance {
   },
-  catastrophicGluttonBodySegment1: class extends self.ISpriteInstance {
+  NecromancerATKST1: class extends self.ISpriteInstance {
   },
-  catastrophicGluttonBodySegment2: class extends self.ISpriteInstance {
+  NecromancerATKST2: class extends self.ISpriteInstance {
   },
-  catastrophicGluttonBodySegment3: class extends self.ISpriteInstance {
-  },
-  catastrophicGluttonBodySegment4: class extends self.ISpriteInstance {
-  },
-  catastrophicGluttonBodySegment5: class extends self.ISpriteInstance {
-  },
-  catastrophicGluttonBodySegment6: class extends self.ISpriteInstance {
-  },
-  catastrophicGluttonBodySegmentINBETWEEN1: class extends self.ISpriteInstance {
-  },
-  catastrophicGluttonBodySegmentINBETWEEN2: class extends self.ISpriteInstance {
-  },
-  catastrophicGluttonBodySegmentINBETWEEN3: class extends self.ISpriteInstance {
-  },
-  catastrophicGluttonBodySegmentINBETWEEN4: class extends self.ISpriteInstance {
-  },
-  catastrophicGluttonBodySegmentINBETWEEN5: class extends self.ISpriteInstance {
-  },
-  catastrophicGluttonHead: class extends self.ISpriteInstance {
-  },
-  catastrophicGluttonTail: class extends self.ISpriteInstance {
+  SkeletonMelee: class extends self.ISpriteInstance {
   },
   CDSoulBullet: class extends self.ISpriteInstance {
+  },
+  cowledWarlock: class extends self.ISpriteInstance {
   },
   NecromancerT1: class extends self.ISpriteInstance {
   },
   SpiritOrbT1: class extends self.ISpriteInstance {
   },
   SkeletonT1: class extends self.ISpriteInstance {
+  },
+  NecromancerT2: class extends self.ISpriteInstance {
+  },
+  SpiritOrbT2: class extends self.ISpriteInstance {
+  },
+  catastrophicGluttonHead: class extends self.ISpriteInstance {
   },
   RubyATKS: class extends self.ISpriteInstance {
   },
@@ -44237,6 +46475,10 @@ self.InstanceType = {
   RubyMelee2: class extends self.ISpriteInstance {
   },
   shortswordATK: class extends self.ISpriteInstance {
+  },
+  SapphireMelee: class extends self.ISpriteInstance {
+  },
+  SapphireMelee2: class extends self.ISpriteInstance {
   },
   CC: class extends self.ISpriteInstance {
   },
@@ -44339,6 +46581,10 @@ self.InstanceType = {
   chargesForAttack: class extends self.ISpriteInstance {
   },
   requestKeyLock: class extends self.IButtonInstance {
+  },
+  HTMLElement: class extends self.IHTMLElementInstance {
+  },
+  Shelf_Tilemap: class extends self.ITilemapInstance {
   },
   Enemies: class extends self.ISpriteInstance {
   },
