@@ -45210,6 +45210,7 @@ var accelerate2;
     () => "NOR3",
     () => "Shop",
     () => "EndofGame",
+    () => "Idle",
     () => "opacity",
     () => "0",
     () => "Sharpen",
@@ -46019,6 +46020,8 @@ self.C3_JsPropNameTable = [
   { Enemies: 0 },
   { CD: 0 },
   { rubyATK: 0 },
+  { Instruct1: 0 },
+  { Instruct2: 0 },
   { ATKcooldown: 0 },
   { ATKanticooldownfix: 0 },
   { RubyHeartsNumber: 0 },
@@ -46546,6 +46549,10 @@ self.InstanceType = {
   CD: class extends self.ISpriteInstance {
   },
   rubyATK: class extends self.ISpriteInstance {
+  },
+  Instruct1: class extends self.ISpriteInstance {
+  },
+  Instruct2: class extends self.ITextInstance {
   }
 };
 
