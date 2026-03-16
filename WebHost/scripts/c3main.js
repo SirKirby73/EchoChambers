@@ -36193,6 +36193,256 @@ var SortInstancesByValue2;
 }
 {
   {
+    const t2 = self.C3, e = "html-element";
+    t2.Plugins.HTMLElement = class extends t2.SDKDOMPluginBase {
+      constructor(t3) {
+        super(t3, e), this.AddElementMessageHandler("initial-content", (t4, e2) => t4._OnInitialContent(e2)), this.AddElementMessageHandler("click", (t4, e2) => t4._OnClick(e2)), this.AddElementMessageHandler("animationend", (t4, e2) => t4._OnAnimationEnd(e2));
+      }
+      Release() {
+        super.Release();
+      }
+    };
+  }
+  {
+    const t2 = self.C3;
+    t2.Plugins.HTMLElement.Type = class extends t2.SDKTypeBase {
+      constructor(t3) {
+        super(t3);
+      }
+      Release() {
+        super.Release();
+      }
+      OnCreate() {
+      }
+    };
+  }
+  {
+    const t2 = self.C3, e = self.C3X, n = 0, s = 1, i = 2, r2 = 3, a2 = 4, o2 = 5, l = 6, h2 = 7, c2 = 9, C2 = 10, g2 = 11, m2 = 12, _2 = 13, d2 = 14, u2 = 15, S2 = "html-element";
+    t2.Plugins.HTMLElement.Instance = class extends t2.SDKDOMInstanceBase {
+      constructor(e2, p3) {
+        super(e2, S2), this._tag = "div", this._htmlContent = "", this._textContent = "", this._id = "", this._className = "", this._targetId = "", this._targetClass = "", this._cssAnimationName = "";
+        let I3 = "";
+        this._initialType = "html";
+        let y3 = false, T3 = 0, E3 = false, f3 = t2.New(t2.Color), M2 = false, w2 = t2.New(t2.Color);
+        this._autoFontSize = true, this._autoFontSizeOffset = 0;
+        let x2 = false, G = "";
+        if (p3) {
+          this._tag = p3[n] || "div", I3 = p3[s];
+          const e3 = p3[i];
+          1 === e3 ? I3 = t2.New(t2.BBString, I3, { convertLineBreaks: true }).toHTML() : 2 === e3 && (this._initialType = "text"), this.GetWorldInfo().SetVisible(p3[r2]), this._id = p3[a2], this._className = p3[o2], y3 = p3[l], T3 = p3[h2], E3 = p3[c2], f3.setFromJSON(p3[C2]), M2 = p3[g2], w2.setFromJSON(p3[m2]), this._autoFontSize = p3[_2], x2 = p3[d2], G = p3[u2];
+        }
+        "html" === this._initialType ? this._htmlContent = I3 : this._textContent = I3, this.CreateElement({ "tag": this._tag, "str": I3, "type": this._initialType, "id": this._id, "className": this._className, "allow-context-menu": y3, "stop-input-events-mode": T3, "css-color": E3 ? f3.getCssRgb() : "", "css-background-color": M2 ? w2.getCssRgb() : "", "allow-text-selection": x2, "style-attribute": G });
+      }
+      Release() {
+        super.Release();
+      }
+      _GetStringContent(e2, n2) {
+        let s2 = "html";
+        return "bbcode" === n2 ? e2 = t2.New(t2.BBString, e2, { convertLineBreaks: true }).toHTML() : "text" === n2 && (s2 = "text"), { contentType: s2, str: e2 };
+      }
+      async _SetContent(t3, e2 = "html", n2 = "", s2 = false) {
+        const { contentType: i2, str: r3 } = this._GetStringContent(t3, e2);
+        if (!n2) {
+          if ("html" === i2) {
+            if ("html" === this._initialType && this._htmlContent === r3) return;
+            this._htmlContent = r3;
+          } else if ("text" === i2) {
+            if ("text" === this._initialType && this._textContent === r3) return;
+            this._textContent = r3;
+          }
+        }
+        await this._SendHTMLUpdateMessage("set-content", { "str": r3, "type": i2, "selector": n2, "is-all": s2 });
+      }
+      async _InsertContent(t3, e2 = "html", n2 = true, s2 = "", i2 = false) {
+        if (!t3) return;
+        const { contentType: r3, str: a3 } = this._GetStringContent(t3, e2);
+        await this._SendHTMLUpdateMessage("insert-content", { "str": a3, "type": r3, "at-end": n2, "selector": s2, "is-all": i2 });
+      }
+      async _RemoveContent(t3, e2 = false, n2 = false) {
+        await this._SendHTMLUpdateMessage("remove-content", { "selector": t3, "is-clear": e2, "is-all": n2 });
+      }
+      async _SetContentClass(t3, e2, n2, s2 = false) {
+        await this._SendHTMLUpdateMessage("set-content-class", { "mode": t3, "class-array": e2, "selector": n2, "is-all": s2 });
+      }
+      async _SetContentAttribute(t3, e2, n2, s2, i2 = false) {
+        await this._SendHTMLUpdateMessage("set-content-attribute", { "mode": t3, "attribute": e2, "value": n2, "selector": s2, "is-all": i2 });
+      }
+      async _SetContentCSSStyle(e2, n2, s2, i2 = false) {
+        await this._SendHTMLUpdateMessage("set-content-css-style", { "prop": t2.CSSToCamelCase(e2), "value": n2, "selector": s2, "is-all": i2 });
+      }
+      async _SendHTMLUpdateMessage(t3, e2) {
+        const n2 = await this.PostToDOMElementAsync(t3, e2);
+        n2["isOk"] && (this._htmlContent = n2["html"], this._textContent = n2["text"]);
+      }
+      async _PositionObjectAtElement(t3, e2) {
+        const n2 = await this.PostToDOMElementAsync("get-element-box", { "selector": e2 });
+        if (!n2["isOk"]) return;
+        const s2 = this._runtime.GetCanvasManager(), i2 = n2["left"] - s2.GetCanvasClientX(), r3 = n2["top"] - s2.GetCanvasClientY(), a3 = n2["right"] - s2.GetCanvasClientX(), o3 = n2["bottom"] - s2.GetCanvasClientY();
+        for (const e3 of t3) {
+          const t4 = e3.GetWorldInfo();
+          if (!t4) continue;
+          const n3 = t4.GetLayer(), [s3, l2] = n3.CanvasCssToLayer(i2, r3, t4.GetZ()), [h3, c3] = n3.CanvasCssToLayer(a3, o3, t4.GetZ());
+          if (!(isFinite(s3) && isFinite(l2) && isFinite(h3) && isFinite(c3))) continue;
+          const C4 = h3 - s3, g3 = c3 - l2, m3 = s3 + t4.GetOriginX() * C4, _3 = l2 + t4.GetOriginY() * g3;
+          t4.GetX() === m3 && t4.GetY() === _3 && t4.GetWidth() === C4 && t4.GetHeight() === g3 || (t4.SetXY(m3, _3), t4.SetSize(C4, g3), t4.SetBboxChanged());
+        }
+      }
+      async _CreateSpriteImgElement(t3, e2, n2, s2, i2) {
+        const r3 = t3.GetWorldInfo(), a3 = t3.GetCurrentImageInfo();
+        if (!r3 || !a3) return;
+        const o3 = await a3.ExtractImageToBlobURL(), l2 = await this.PostToDOMElementAsync("insert-img-element", { "blobUrl": o3, "width": a3.GetWidth(), "height": a3.GetHeight(), "selector": e2, "insertAt": n2, "id": s2, "class": i2 });
+        l2["isOk"] && (this._htmlContent = l2["html"], this._textContent = l2["text"]);
+      }
+      async _SetElementScrollPosition(t3, e2, n2) {
+        await this.PostToDOMElementAsync("set-scroll-position", { "selector": t3, "direction": e2, "position": n2 });
+      }
+      GetElementState() {
+        return { "html": this._htmlContent };
+      }
+      _OnInitialContent(t3) {
+        this._htmlContent = t3["html"], this._textContent = t3["text"];
+      }
+      _GetHTMLContent() {
+        return this._htmlContent;
+      }
+      _GetTextContent() {
+        return this._textContent;
+      }
+      async _OnClick(e2) {
+        const n2 = e2["chain"];
+        for (const e3 of n2) this._targetId = e3["targetId"], this._targetClass = e3["targetClass"], this.DispatchScriptEvent("click", true, { "targetId": this._targetId, "targetClass": this._targetClass }), this._targetId && await this.TriggerAsync(t2.Plugins.HTMLElement.Cnds.OnClickedID), this._targetClass && await this.TriggerAsync(t2.Plugins.HTMLElement.Cnds.OnClickedClass);
+        if (n2.length > 0) {
+          const t3 = n2[0];
+          this._targetId = t3["targetId"], this._targetClass = t3["targetClass"];
+        } else this._targetId = "", this._targetClass = "";
+        await this.TriggerAsync(t2.Plugins.HTMLElement.Cnds.OnClicked), this._targetId = "", this._targetClass = "";
+      }
+      async _OnAnimationEnd(e2) {
+        this._targetId = e2["targetId"], this._targetClass = e2["targetClass"], this._cssAnimationName = e2["animationName"], this.DispatchScriptEvent("animationend", true, { "targetId": this._targetId, "targetClass": this._targetClass, "animationName": this._cssAnimationName }), await this.TriggerAsync(t2.Plugins.HTMLElement.Cnds.OnCSSAnimationEnded), this._targetId = "", this._targetClass = "", this._cssAnimationName = "";
+      }
+      Draw(t3) {
+      }
+      SaveToJson() {
+        return { "t": this._tag, "h": this._htmlContent, "id": this._id, "c": this._className };
+      }
+      LoadFromJson(t3) {
+        this._tag = t3["t"], this._htmlContent = t3["h"], this._id = t3["id"], this._className = t3["c"], this.UpdateElementState();
+      }
+      GetPropertyValueByIndex(t3) {
+      }
+      SetPropertyValueByIndex(t3, e2) {
+      }
+      GetDebuggerProperties() {
+        return [];
+      }
+      GetScriptInterfaceClass() {
+        return self.IHTMLElementInstance;
+      }
+    };
+    const p2 = /* @__PURE__ */ new WeakMap(), I2 = /* @__PURE__ */ new Set(["html", "bbcode", "text"]), y2 = /* @__PURE__ */ new Set(["add", "toggle", "remove"]), T2 = /* @__PURE__ */ new Set(["set", "remove"]), E2 = ["start", "end", "replace"], f2 = /* @__PURE__ */ new Set(["left", "top"]);
+    self.IHTMLElementInstance = class extends self.IDOMInstance {
+      constructor() {
+        super(), p2.set(this, self.IInstance._GetInitInst().GetSdkInstance());
+      }
+      setContent(t3, n2 = "html", s2 = "", i2 = false) {
+        if (e.RequireString(t3), !I2.has(n2)) throw new Error("invalid type");
+        return e.RequireString(s2), p2.get(this)._SetContent(t3, n2, s2, !!i2);
+      }
+      insertContent(t3, n2 = "html", s2 = true, i2 = "", r3 = false) {
+        if (e.RequireString(t3), !I2.has(n2)) throw new Error("invalid type");
+        return e.RequireString(i2), p2.get(this)._InsertContent(t3, n2, !!s2, i2, !!r3);
+      }
+      setContentClass(t3, n2, s2, i2 = false) {
+        if (!y2.has(t3)) throw new Error("invalid mode");
+        return "string" == typeof n2 && (n2 = n2.split(" ")), e.RequireArray(n2), e.RequireString(s2), p2.get(this)._SetContentClass(t3, n2, s2, !!i2);
+      }
+      setContentAttribute(t3, n2, s2, i2, r3 = false) {
+        if (!T2.has(t3)) throw new Error("invalid type");
+        return e.RequireString(n2), s2 = s2.toString(), e.RequireString(i2), p2.get(this)._SetContentAttribute(t3, n2, s2, i2, !!r3);
+      }
+      setContentCssStyle(t3, n2, s2, i2) {
+        return e.RequireString(t3), n2 = n2.toString(), e.RequireString(s2), p2.get(this)._SetContentCSSStyle(t3, n2, s2, !!i2);
+      }
+      positionInstanceAtElement(t3, n2) {
+        e.RequireIWorldInstance(t3), e.RequireString(n2);
+        const s2 = p2.get(this).GetRuntime()._UnwrapIWorldInstance(t3);
+        return p2.get(this)._PositionObjectAtElement([s2], n2);
+      }
+      createSpriteImgElement(t3, n2, s2, i2, r3) {
+        e.RequireInstanceOf(t3, self.ISpriteInstance), e.RequireString(n2), e.RequireOptionalString(i2), e.RequireOptionalString(r3);
+        const a3 = E2.indexOf(s2);
+        if (a3 < 0) throw new Error("invalid insert position");
+        const o3 = p2.get(this).GetRuntime()._UnwrapIWorldInstance(t3);
+        return p2.get(this)._CreateSpriteImgElement(o3, n2, a3, i2, r3);
+      }
+      setScrollPosition(t3, n2, s2) {
+        if (e.RequireString("selector"), !f2.has(n2)) throw new Error("invalid direction");
+        return e.RequireNumber(s2), p2.get(this)._SetElementScrollPosition(t3, n2, s2);
+      }
+      get htmlContent() {
+        return p2.get(this)._GetHTMLContent();
+      }
+      set htmlContent(t3) {
+        p2.get(this)._SetContent(t3, "html", "", false);
+      }
+      get textContent() {
+        return p2.get(this)._GetTextContent();
+      }
+      set textContent(t3) {
+        p2.get(this)._SetContent(t3, "text", "", false);
+      }
+    };
+  }
+  {
+    const t2 = self.C3;
+    t2.Plugins.HTMLElement.Cnds = { OnClicked: () => true, OnClickedID(e) {
+      return t2.equalsNoCase(this._targetId, e);
+    }, OnClickedClass(t3) {
+      const e = this._targetClass.toLowerCase().split(" ");
+      return t3.toLowerCase().split(" ").every((t4) => e.includes(t4));
+    }, OnCSSAnimationEnded(e) {
+      return t2.equalsNoCase(this._cssAnimationName, e);
+    } };
+  }
+  {
+    const t2 = self.C3, e = ["html", "bbcode", "text"], n = ["add", "toggle", "remove"], s = ["set", "remove"];
+    t2.Plugins.HTMLElement.Acts = { SetContent(t3, n2, s2, i) {
+      return this._SetContent(n2, e[t3], s2, 0 !== i);
+    }, InsertContent(t3, n2, s2, i, r2) {
+      return this._InsertContent(n2, e[t3], 0 !== s2, i, 0 !== r2);
+    }, RemoveContent(t3, e2, n2) {
+      return this._RemoveContent(e2, 0 !== t3, 0 !== n2);
+    }, SetContentClass(t3, e2, s2, i) {
+      return this._SetContentClass(n[t3], e2.split(" "), s2, 0 !== i);
+    }, SetContentAttribute(t3, e2, n2, i, r2) {
+      return this._SetContentAttribute(s[t3], e2, n2.toString(), i, 0 !== r2);
+    }, SetContentCSSStyle(t3, e2, n2, s2) {
+      return this._SetContentCSSStyle(t3, e2, n2, 0 !== s2);
+    }, PositionObjectAtElement(t3, e2) {
+      if (t3) return this._PositionObjectAtElement(t3.GetCurrentSol().GetInstances(), e2);
+    }, CreateSpriteImgElement(t3, e2, n2, s2, i) {
+      if (!t3) return;
+      const r2 = t3.GetFirstPicked();
+      return r2 ? this._CreateSpriteImgElement(r2, e2, n2, s2, i) : void 0;
+    }, SetScrollPosition(t3, e2, n2) {
+      return this._SetElementScrollPosition(t3, ["left", "top"][e2], n2);
+    } };
+  }
+  {
+    const t2 = self.C3;
+    t2.Plugins.HTMLElement.Exps = { HTMLContent() {
+      return this._htmlContent;
+    }, TextContent() {
+      return this._textContent;
+    }, TargetID() {
+      return this._targetId;
+    }, TargetClass() {
+      return this._targetClass;
+    }, EscapeHTML: (e) => t2.EscapeHTML(e.toString()) };
+  }
+}
+{
+  {
     const e = self.C3;
     e.Plugins.TiledBg = class extends e.SDKPluginBase {
       constructor(e2) {
@@ -36640,6 +36890,850 @@ var SortInstancesByValue2;
   }
 }
 var WrapModeToStr2;
+{
+  {
+    const e = self.C3;
+    e.Plugins.Particles = class extends e.SDKPluginBase {
+      constructor(e2) {
+        super(e2);
+      }
+      Release() {
+        super.Release();
+      }
+    };
+  }
+  {
+    const t2 = self.C3;
+    t2.Plugins.Particles.Type = class extends t2.SDKTypeBase {
+      constructor(e) {
+        super(e);
+      }
+      Release() {
+        super.Release();
+      }
+      OnCreate() {
+        this.GetImageInfo().LoadAsset(this._runtime);
+      }
+      LoadTextures(e) {
+        return this.GetImageInfo().LoadStaticTexture(e);
+      }
+      ReleaseTextures() {
+        this.GetImageInfo().ReleaseTexture();
+      }
+    };
+  }
+  {
+    let GetParticleEngine = function(e) {
+      return D2.get(e).GetParticleEngine();
+    };
+    GetParticleEngine2 = GetParticleEngine;
+    const i = self.C3, n = self.C3X, a2 = 0, r2 = 1, s = 2, o2 = 3, c2 = 4, l = 5, S2 = 6, d2 = 7, p2 = 8, G = 9, m2 = 10, u2 = 11, h2 = 12, g2 = 13, R = 14, I2 = 15, y2 = 16, _2 = 17, E2 = 18, P2 = 19, f2 = 20, b2 = 0, C2 = 1, O2 = new i.Rect(), w2 = new i.AABB3D();
+    i.Plugins.Particles.Instance = class extends i.SDKWorldInstanceBase {
+      constructor(e, t2) {
+        super(e), this._isFirstTick = true;
+        const n2 = i.New(self.ParticleEngine);
+        this._particleEngine = n2, n2.ononeshotfinish = () => this._OnOneShotFinish(), this._spawnObjectClass = null, this._particleUpdateCallback = (e2, t3, i2, n3, a3, r3) => this._OnParticleUpdate(e2, t3, i2, n3, a3, r3), this._particleDestroyCallback = (e2) => this._OnParticleDestroy(e2), this._hasAnyDefaultParticle = true;
+        let b3 = true;
+        t2 && (n2.SetRate(t2[a2]), n2.SetSprayCone(i.toRadians(t2[r2])), n2.SetSprayType(t2[s] ? "one-shot" : "continuous-spray"), this._SetParticleObjectClass(this._runtime.GetObjectClassBySID(t2[o2])), b3 = t2[c2], n2.SetInitSpeed(t2[l]), n2.SetInitSize(t2[S2]), n2.SetInitOpacity(t2[d2] / 100), n2.SetGrowRate(t2[p2]), n2.SetInitXRandom(t2[G]), n2.SetInitYRandom(t2[m2]), n2.SetInitSpeedRandom(t2[u2]), n2.SetInitSizeRandom(t2[h2]), n2.SetGrowRandom(t2[g2]), n2.SetAcceleration(t2[R]), n2.SetGravity(t2[I2]), n2.SetLifeAngleRandom(t2[y2]), n2.SetLifeSpeedRandom(t2[_2]), n2.SetLifeOpacityRandom(t2[E2]), n2.SetDestroyModeIndex(t2[P2]), n2.SetTimeout(t2[f2])), this._UpdateEngineParameters(), this._spawnObjectClass && (this._hasAnyDefaultParticle = false), "one-shot" === n2.GetSprayType() ? n2.CreateOneShotSpray() : n2.SetSpraying(true);
+        const C4 = this.GetWorldInfo();
+        C4.SetVisible(b3), C4.SetBboxChangeEventEnabled(true), this._inst.Dispatcher().addEventListener("bboxchange", () => {
+          w2.setFromRect(this._particleEngine.GetBoundingBox()), C4.OverwriteBoundingBox(w2);
+        }), this.GetRuntime().GetRenderer().IsWebGPU() && C4.SetUsePointsShaderProgram(), this._afterLoad = (e2) => this._OnAfterLoad(e2), this.GetRuntime().Dispatcher().addEventListener("afterload", this._afterLoad), this._StartTicking();
+      }
+      Release() {
+        this.GetRuntime().Dispatcher().removeEventListener("afterload", this._afterLoad), this._afterLoad = null, this._particleEngine.Release(), this._particleEngine = null, this._particleUpdateCallback = null, this._particleDestroyCallback = null, super.Release();
+      }
+      GetParticleEngine() {
+        return this._particleEngine;
+      }
+      _SetRate(e) {
+        this._particleEngine.SetRate(e), "one-shot" === this._particleEngine.GetSprayType() && this._isFirstTick && this._particleEngine.SetParticleCount(e);
+      }
+      _SetParticleObjectClass(e) {
+        e === this.GetObjectClass() && (e = null), e !== this._spawnObjectClass && (this._spawnObjectClass = e, this._particleEngine.onparticlecreate = e ? (e2) => this._OnParticleCreate(e2) : null, this._spawnObjectClass || (this._hasAnyDefaultParticle = true));
+      }
+      _UpdateEngineParameters() {
+        const e = this._particleEngine, t2 = this.GetWorldInfo();
+        e.SetMasterOpacity(t2.GetOpacity()), e.SetPixelRounding(this._runtime.IsPixelRoundingEnabled()), e.SetSpawnX(t2.GetX()), e.SetSpawnY(t2.GetY()), e.SetSpawnAngle(t2.GetAngle()), e.SetInitSizeScale(Math.abs(t2.GetSceneGraphScale()));
+      }
+      _OnOneShotFinish() {
+        this._runtime.DestroyInstance(this._inst);
+      }
+      Draw(e) {
+        if (!this._hasAnyDefaultParticle) return;
+        const t2 = this._objectClass.GetImageInfo(), i2 = t2.GetTexture();
+        if (!i2) return;
+        const n2 = this.GetWorldInfo(), a3 = n2.GetLayer(), r3 = O2;
+        this._runtime.GetCanvasManager().IsPastingToDrawingCanvas() ? r3.set(-1 / 0, -1 / 0, 1 / 0, 1 / 0) : a3.Has3DCamera() ? a3.CalculateViewport3D(n2.GetTotalZ(), r3) : a3.GetViewportForZ(n2.GetTotalZ(), r3), e.SetTexture(i2, n2.GetActiveSampling());
+        const s2 = a3.Get2DScaleFactorToZ(n2.GetTotalZ());
+        this._particleEngine.SetParticleScale(a3.GetRenderScale() * s2), this._particleEngine.Draw(e, t2.GetTexQuad(), r3, a3.Has3DCamera());
+      }
+      SaveToJson() {
+        const e = this._particleEngine;
+        return { "r": e.GetRate(), "sc": e.GetSprayCone(), "st": e.GetSprayType(), "isp": e.GetInitSpeed(), "isz": e.GetInitSize(), "io": e.GetInitOpacity(), "gr": e.GetGrowRate(), "xr": e.GetInitXRandom(), "yr": e.GetInitYRandom(), "spr": e.GetInitSpeedRandom(), "szr": e.GetInitSizeRandom(), "grnd": e.GetGrowRandom(), "acc": e.GetAcceleration(), "g": e.GetGravity(), "lar": e.GetLifeAngleRandom(), "lsr": e.GetLifeSpeedRandom(), "lor": e.GetLifeOpacityRandom(), "dm": e.GetDestroyModeIndex(), "to": e.GetTimeout(), "s": e.IsSpraying(), "pcc": e._GetCreateCounter(), "ft": this._isFirstTick, "soc": this._spawnObjectClass ? this._spawnObjectClass.GetSID() : null, "p": e.GetParticles().map((e2) => e2.toJSON()) };
+      }
+      LoadFromJson(e, t2) {
+        const i2 = this._particleEngine;
+        if (i2.SetRate(e["r"]), i2.SetSprayCone(e["sc"]), i2.SetSprayType(e["st"]), i2.SetInitSpeed(e["isp"]), i2.SetInitSize(e["isz"]), i2.SetInitOpacity(e["io"]), i2.SetGrowRate(e["gr"]), i2.SetInitXRandom(e["xr"]), i2.SetInitYRandom(e["yr"]), i2.SetInitSpeedRandom(e["spr"]), i2.SetInitSizeRandom(e["szr"]), i2.SetGrowRandom(e["grnd"]), i2.SetAcceleration(e["acc"]), i2.SetGravity(e["g"]), i2.SetLifeAngleRandom(e["lar"]), i2.SetLifeSpeedRandom(e["lsr"]), i2.SetLifeOpacityRandom(e["lor"]), i2.SetDestroyModeIndex(e["dm"]), i2.SetTimeout(e["to"]), i2.SetSpraying(e["s"]), i2._SetCreateCounter(e["pcc"]), this._isFirstTick = e["ft"], e.hasOwnProperty("soc")) {
+          const t3 = this.GetRuntime().GetObjectClassBySID(e["soc"]);
+          t3 && this._SetParticleObjectClass(t3);
+        }
+        const n2 = e["p"];
+        i2.SetParticleCount(n2.length, false);
+        const a3 = i2.GetParticles();
+        for (let e2 = 0, t3 = a3.length; e2 < t3; ++e2) a3[e2].setFromJSON(n2[e2]);
+        "state" === t2 && this._spawnObjectClass && (i2.UpdateAllParticlesUserData(), i2.ApplyParticleDataToUserData(this));
+      }
+      _OnAfterLoad() {
+        const e = this._particleEngine;
+        e.UpdateAllParticlesUserData(), e.ApplyParticleDataToUserData(this);
+        const t2 = e.GetParticles();
+        for (let e2 = 0, i2 = t2.length; e2 < i2; ++e2) {
+          const i3 = t2[e2], n2 = i3.GetUserData();
+          if (!n2) continue;
+          const a3 = n2.GetWorldInfo();
+          if (!a3) continue;
+          const r3 = a3.GetInstance();
+          if (!r3) continue;
+          const s2 = i3.GetUserDataUID(), o3 = r3.GetUID();
+          if (("number" != typeof s2 || "number" != typeof o3 || s2 !== o3) && "number" == typeof s2) {
+            const e3 = this.GetRuntime(), t3 = e3.GetInstanceByUID(s2);
+            t3 && e3.DestroyInstance(t3);
+          }
+        }
+      }
+      Tick() {
+        const e = this._runtime.GetDt(this._inst);
+        this._UpdateEngineParameters(), this._isFirstTick && "one-shot" === this._particleEngine.GetSprayType() && this._particleEngine.ReInitAllParticles(), this._particleEngine.Tick(e), this._particleEngine.IsSpraying() && this._runtime.UpdateRender(), this.GetWorldInfo().SetBboxChanged(), this._isFirstTick = false;
+      }
+      _FastForward(e) {
+        const t2 = 1 / 60;
+        for (this._isFirstTick && "one-shot" === this._particleEngine.GetSprayType() && this._particleEngine.ReInitAllParticles(); e > 0; ) this._particleEngine.Tick(t2), e -= t2;
+        this._particleEngine.IsSpraying() && this._runtime.UpdateRender(), this.GetWorldInfo().SetBboxChanged(), this._isFirstTick = false;
+      }
+      _OnParticleCreate(e, t2) {
+        let i2;
+        "number" == typeof t2 && (i2 = this._runtime.GetInstanceByUID(t2)), i2 && i2.GetObjectClass() !== this._spawnObjectClass && (i2 = null), i2 || (i2 = this._runtime.CreateInstance(this._spawnObjectClass, this.GetWorldInfo().GetLayer(), e.GetX(), e.GetY()));
+        const n2 = i2.GetWorldInfo();
+        return n2.SetSize(e.GetSize(), e.GetSize()), n2.SetAngle(e.GetAngle()), n2.SetOpacity(e.GetOpacity()), n2.SetUnpremultipliedColor(this.GetWorldInfo().GetUnpremultipliedColor()), n2.SetBboxChanged(), n2.ZOrderMoveAdjacentToInstance(this.GetInstance(), true), i2._TriggerOnCreated(), e.SetUpdateCallback(this._particleUpdateCallback), e.SetDestroyCallback(this._particleDestroyCallback), i2;
+      }
+      _OnParticleUpdate(e, t2, i2, n2, a3, r3) {
+        if (e.IsDestroyed()) return;
+        const s2 = e.GetWorldInfo();
+        s2.OffsetXY(t2, i2), s2.SetSize(s2.GetWidth() + n2, s2.GetHeight() + n2), s2.SetAngle(s2.GetAngle() + a3), s2.SetOpacity(s2.GetOpacity() + r3), s2.SetBboxChanged();
+      }
+      _OnParticleDestroy(e) {
+        e.IsDestroyed() || this._runtime.DestroyInstance(e);
+      }
+      GetPropertyValueByIndex(e) {
+        const t2 = this._particleEngine;
+        switch (e) {
+          case a2:
+            return t2.GetRate();
+          case r2:
+            return i.toDegrees(t2.GetSprayCone());
+          case s:
+            return "one-shot" === t2.GetSprayType() ? C2 : b2;
+          case l:
+            return t2.GetInitSpeed();
+          case S2:
+            return t2.GetInitSize();
+          case d2:
+            return 100 * t2.GetInitOpacity();
+          case p2:
+            return t2.GetGrowRate();
+          case G:
+            return t2.GetInitXRandom();
+          case m2:
+            return t2.GetInitYRandom();
+          case u2:
+            return t2.GetInitSpeedRandom();
+          case h2:
+            return t2.GetInitSizeRandom();
+          case g2:
+            return t2.GetGrowRandom();
+          case R:
+            return t2.GetAcceleration();
+          case I2:
+            return t2.GetGravity();
+          case y2:
+            return t2.GetLifeAngleRandom();
+          case _2:
+            return t2.GetLifeSpeedRandom();
+          case E2:
+            return t2.GetLifeOpacityRandom();
+          case P2:
+            return t2.GetDestroyModeIndex();
+          case f2:
+            return t2.GetTimeout();
+        }
+      }
+      SetPropertyValueByIndex(e, t2) {
+        const n2 = this._particleEngine;
+        switch (e) {
+          case a2:
+            n2.SetRate(t2);
+            break;
+          case r2:
+            n2.SetSprayCone(i.toRadians(t2));
+            break;
+          case s:
+            n2.SetSprayType(t2 ? "one-shot" : "continuous-spray");
+            break;
+          case l:
+            n2.SetInitSpeed(t2);
+            break;
+          case S2:
+            n2.SetInitSize(t2);
+            break;
+          case d2:
+            n2.SetInitOpacity(t2 / 100);
+            break;
+          case p2:
+            n2.SetGrowRate(t2);
+            break;
+          case G:
+            n2.SetInitXRandom(t2);
+            break;
+          case m2:
+            n2.SetInitYRandom(t2);
+            break;
+          case u2:
+            n2.SetInitSpeedRandom(t2);
+            break;
+          case h2:
+            n2.SetInitSizeRandom(t2);
+            break;
+          case g2:
+            n2.SetGrowRandom(t2);
+            break;
+          case R:
+            n2.SetAcceleration(t2);
+            break;
+          case I2:
+            n2.SetGravity(t2);
+            break;
+          case y2:
+            n2.SetLifeAngleRandom(t2);
+            break;
+          case _2:
+            n2.SetLifeSpeedRandom(t2);
+            break;
+          case E2:
+            n2.SetLifeOpacityRandom(t2);
+            break;
+          case P2:
+            n2.SetDestroyModeIndex(t2);
+            break;
+          case f2:
+            n2.SetTimeout(t2);
+        }
+      }
+      GetDebuggerProperties() {
+        const e = "plugins.particles", t2 = e + ".properties", n2 = e + ".debugger", a3 = this._particleEngine;
+        return [{ title: e + ".name", properties: [{ name: n2 + ".particle-count", value: a3.GetParticleCount() }, { name: t2 + ".type.name", value: [t2 + ".type.items." + a3.GetSprayType()] }, { name: n2 + ".is-spraying", value: a3.IsSpraying(), onedit: (e2) => a3.SetSpraying(e2) }, { name: t2 + ".rate.name", value: a3.GetRate(), onedit: (e2) => a3.SetRate(e2) }, { name: t2 + ".spray-cone.name", value: i.toDegrees(a3.GetSprayCone()), onedit: (e2) => a3.SetSprayCone(i.toRadians(e2)) }, { name: t2 + ".speed.name", value: a3.GetInitSpeed(), onedit: (e2) => a3.SetInitSpeed(e2) }, { name: t2 + ".size.name", value: a3.GetInitSize(), onedit: (e2) => a3.SetInitSize(e2) }, { name: t2 + ".opacity.name", value: a3.GetInitOpacity(), onedit: (e2) => a3.SetInitOpacity(e2) }, { name: t2 + ".grow-rate.name", value: a3.GetGrowRate(), onedit: (e2) => a3.SetGrowRate(e2) }, { name: t2 + ".x-randomiser.name", value: a3.GetInitXRandom(), onedit: (e2) => a3.SetInitXRandom(e2) }, { name: t2 + ".y-randomiser.name", value: a3.GetInitYRandom(), onedit: (e2) => a3.SetInitYRandom(e2) }, { name: t2 + ".initial-speed-randomiser.name", value: a3.GetInitSpeedRandom(), onedit: (e2) => a3.SetInitSpeedRandom(e2) }, { name: t2 + ".size-randomiser.name", value: a3.GetInitSizeRandom(), onedit: (e2) => a3.SetInitSizeRandom(e2) }, { name: t2 + ".grow-rate-randomiser.name", value: a3.GetGrowRandom(), onedit: (e2) => a3.SetGrowRandom(e2) }, { name: t2 + ".acceleration.name", value: a3.GetAcceleration(), onedit: (e2) => a3.SetAcceleration(e2) }, { name: t2 + ".gravity.name", value: a3.GetGravity(), onedit: (e2) => a3.SetGravity(e2) }, { name: t2 + ".angle-randomiser.name", value: a3.GetLifeAngleRandom(), onedit: (e2) => a3.SetLifeAngleRandom(e2) }, { name: t2 + ".life-speed-randomiser.name", value: a3.GetLifeSpeedRandom(), onedit: (e2) => a3.SetLifeSpeedRandom(e2) }, { name: t2 + ".opacity-randomiser.name", value: a3.GetLifeOpacityRandom(), onedit: (e2) => a3.SetLifeOpacityRandom(e2) }, { name: t2 + ".timeout.name", value: a3.GetTimeout(), onedit: (e2) => a3.SetTimeout(e2) }] }];
+      }
+      GetScriptInterfaceClass() {
+        return self.IParticlesInstance;
+      }
+    };
+    const D2 = /* @__PURE__ */ new WeakMap();
+    self.IParticlesInstance = class extends self.IWorldInstance {
+      constructor() {
+        super(), D2.set(this, self.IInstance._GetInitInst().GetSdkInstance());
+      }
+      set isSpraying(e) {
+        GetParticleEngine(this).SetSpraying(!!e);
+      }
+      get isSpraying() {
+        return GetParticleEngine(this).IsSpraying();
+      }
+      set rate(e) {
+        n.RequireFiniteNumber(e), D2.get(this)._SetRate(e);
+      }
+      get rate() {
+        return GetParticleEngine(this).GetRate();
+      }
+      set sprayCone(e) {
+        n.RequireFiniteNumber(e), GetParticleEngine(this).SetSprayCone(e);
+      }
+      get sprayCone() {
+        return GetParticleEngine(this).GetSprayCone();
+      }
+      set initSpeed(e) {
+        n.RequireFiniteNumber(e), GetParticleEngine(this).SetInitSpeed(e);
+      }
+      get initSpeed() {
+        return GetParticleEngine(this).GetInitSpeed();
+      }
+      set initSize(e) {
+        n.RequireFiniteNumber(e), GetParticleEngine(this).SetInitSize(e);
+      }
+      get initSize() {
+        return GetParticleEngine(this).GetInitSize();
+      }
+      set initOpacity(e) {
+        n.RequireFiniteNumber(e), GetParticleEngine(this).SetInitOpacity(e);
+      }
+      get initOpacity() {
+        return GetParticleEngine(this).GetInitOpacity();
+      }
+      set initXRandom(e) {
+        n.RequireFiniteNumber(e), GetParticleEngine(this).SetInitXRandom(e);
+      }
+      get initXRandom() {
+        return GetParticleEngine(this).GetInitXRandom();
+      }
+      set initYRandom(e) {
+        n.RequireFiniteNumber(e), GetParticleEngine(this).SetInitYRandom(e);
+      }
+      get initYRandom() {
+        return GetParticleEngine(this).GetInitYRandom();
+      }
+      set initSpeedRandom(e) {
+        n.RequireFiniteNumber(e), GetParticleEngine(this).SetInitSpeedRandom(e);
+      }
+      get initSpeedRandom() {
+        return GetParticleEngine(this).GetInitSpeedRandom();
+      }
+      set initSizeRandom(e) {
+        n.RequireFiniteNumber(e), GetParticleEngine(this).SetInitSizeRandom(e);
+      }
+      get initSizeRandom() {
+        return GetParticleEngine(this).GetInitSizeRandom();
+      }
+      set initGrowRate(e) {
+        n.RequireFiniteNumber(e), GetParticleEngine(this).SetGrowRate(e);
+      }
+      get initGrowRate() {
+        return GetParticleEngine(this).GetGrowRate();
+      }
+      set initGrowRandom(e) {
+        n.RequireFiniteNumber(e), GetParticleEngine(this).SetGrowRandom(e);
+      }
+      get initGrowRandom() {
+        return GetParticleEngine(this).GetGrowRandom();
+      }
+      set acceleration(e) {
+        n.RequireFiniteNumber(e), GetParticleEngine(this).SetAcceleration(e);
+      }
+      get acceleration() {
+        return GetParticleEngine(this).GetAcceleration();
+      }
+      set gravity(e) {
+        n.RequireFiniteNumber(e), GetParticleEngine(this).SetGravity(e);
+      }
+      get gravity() {
+        return GetParticleEngine(this).GetGravity();
+      }
+      set lifeAngleRandom(e) {
+        n.RequireFiniteNumber(e), GetParticleEngine(this).SetLifeAngleRandom(e);
+      }
+      get lifeAngleRandom() {
+        return GetParticleEngine(this).GetLifeAngleRandom();
+      }
+      set lifeSpeedRandom(e) {
+        n.RequireFiniteNumber(e), GetParticleEngine(this).SetLifeSpeedRandom(e);
+      }
+      get lifeSpeedRandom() {
+        return GetParticleEngine(this).GetLifeSpeedRandom();
+      }
+      set lifeOpacityRandom(e) {
+        n.RequireFiniteNumber(e), GetParticleEngine(this).SetLifeOpacityRandom(e);
+      }
+      get lifeOpacityRandom() {
+        return GetParticleEngine(this).GetLifeOpacityRandom();
+      }
+      set timeout(e) {
+        n.RequireFiniteNumber(e), GetParticleEngine(this).SetTimeout(e);
+      }
+      get timeout() {
+        return GetParticleEngine(this).GetTimeout();
+      }
+      fastForward(e) {
+        n.RequireFiniteNumber(e), D2.get(this)._FastForward(e);
+      }
+      setParticleObjectClass(e) {
+        const t2 = D2.get(this);
+        e ? t2._SetParticleObjectClass(t2.GetRuntime()._UnwrapIObjectClass(e)) : t2._SetParticleObjectClass(null);
+      }
+    };
+  }
+  self.C3.Plugins.Particles.Cnds = { IsSpraying() {
+    return this._particleEngine.IsSpraying();
+  } };
+  {
+    const T2 = self.C3;
+    T2.Plugins.Particles.Acts = { SetSpraying(e) {
+      this._particleEngine.SetSpraying(0 !== e);
+    }, SetRate(e) {
+      this._SetRate(e);
+    }, SetParticleObject(e) {
+      this._SetParticleObjectClass(e);
+    }, UnsetParticleObject() {
+      this._SetParticleObjectClass(null);
+    }, SetSprayCone(e) {
+      this._particleEngine.SetSprayCone(T2.toRadians(e));
+    }, SetInitSpeed(e) {
+      this._particleEngine.SetInitSpeed(e);
+    }, SetInitSize(e) {
+      this._particleEngine.SetInitSize(e);
+    }, SetInitOpacity(e) {
+      this._particleEngine.SetInitOpacity(e / 100);
+    }, SetGrowRate(e) {
+      this._particleEngine.SetGrowRate(e);
+    }, SetXRandomiser(e) {
+      this._particleEngine.SetInitXRandom(e);
+    }, SetYRandomiser(e) {
+      this._particleEngine.SetInitYRandom(e);
+    }, SetSpeedRandomiser(e) {
+      this._particleEngine.SetInitSpeedRandom(e);
+    }, SetSizeRandomiser(e) {
+      this._particleEngine.SetInitSizeRandom(e);
+    }, SetGrowRateRandomiser(e) {
+      this._particleEngine.SetGrowRandom(e);
+    }, SetParticleAcc(e) {
+      this._particleEngine.SetAcceleration(e);
+    }, SetGravity(e) {
+      this._particleEngine.SetGravity(e);
+    }, SetAngleRandomiser(e) {
+      this._particleEngine.SetLifeAngleRandom(e);
+    }, SetLifeSpeedRandomiser(e) {
+      this._particleEngine.SetLifeSpeedRandom(e);
+    }, SetOpacityRandomiser(e) {
+      this._particleEngine.SetLifeOpacityRandom(e);
+    }, SetTimeout(e) {
+      this._particleEngine.SetTimeout(e);
+    }, FastForward(e) {
+      this._FastForward(e);
+    }, SetEffect(e) {
+      this.GetWorldInfo().SetBlendMode(e), this._runtime.UpdateRender();
+    } };
+  }
+  {
+    const A = self.C3;
+    A.Plugins.Particles.Exps = { ParticleCount() {
+      return this._particleEngine.GetParticleCount();
+    }, Rate() {
+      return this._particleEngine.GetRate();
+    }, SprayCone() {
+      return A.toDegrees(this._particleEngine.GetSprayCone());
+    }, InitSpeed() {
+      return this._particleEngine.GetInitSpeed();
+    }, InitSize() {
+      return this._particleEngine.GetInitSize();
+    }, InitOpacity() {
+      return 100 * this._particleEngine.GetInitOpacity();
+    }, InitGrowRate() {
+      return this._particleEngine.GetGrowRate();
+    }, XRandom() {
+      return this._particleEngine.GetInitXRandom();
+    }, YRandom() {
+      return this._particleEngine.GetInitYRandom();
+    }, InitSizeRandom() {
+      return this._particleEngine.GetInitSizeRandom();
+    }, InitSpeedRandom() {
+      return this._particleEngine.GetInitSpeedRandom();
+    }, InitGrowRandom() {
+      return this._particleEngine.GetGrowRandom();
+    }, ParticleAcceleration() {
+      return this._particleEngine.GetAcceleration();
+    }, Gravity() {
+      return this._particleEngine.GetGravity();
+    }, ParticleAngleRandom() {
+      return this._particleEngine.GetLifeAngleRandom();
+    }, ParticleSpeedRandom() {
+      return this._particleEngine.GetLifeSpeedRandom();
+    }, ParticleOpacityRandom() {
+      return this._particleEngine.GetLifeOpacityRandom();
+    }, Timeout() {
+      return this._particleEngine.GetTimeout();
+    } };
+  }
+}
+var GetParticleEngine2;
+{
+  const C32 = self.C3, inactiveParticles = [], MAX_RECYCLE_PARTICLES = 1e3, VALID_SPRAY_TYPES = /* @__PURE__ */ new Set(["continuous-spray", "one-shot"]), DESTROY_MODES = ["fade-to-invisible", "timeout-expired", "particle-stopped"], tempRect = C32.New(C32.Rect);
+  self.ParticleEngine = class {
+    constructor() {
+      this._rate = 0, this._sprayCone = 0, this._sprayType = "continuous-spray", this._isSpraying = false, this._masterOpacity = 0, this._isPixelRounding = false, this._spawnX = 0, this._spawnY = 0, this._spawnAngle = 0, this._initSpeed = 0, this._initSize = 0, this._initSizeScale = 1, this._initOpacity = 0, this._growRate = 0, this._xRandom = 0, this._yRandom = 0, this._initSpeedRandom = 0, this._initSizeRandom = 0, this._growRandom = 0, this._acceleration = 0, this._gravity = 0, this._lifeAngleRandom = 0, this._lifeSpeedRandom = 0, this._lifeOpacityRandom = 0, this._destroyMode = 0, this._timeout = 0, this._createCounter = 0, this._particleScale = 1, this.ononeshotfinish = null, this.onparticlecreate = null, this._particles = [], this._boundingBox = new C32.Rect(), this._color = new C32.Color(), this._devicePixelRatio = globalThis.devicePixelRatio || 1;
+    }
+    Release() {
+      this.Cancel(), C32.clearArray(this._particles), this._particles = null, this.ononeshotfinish = null, this.onparticlecreate = null, this._boundingBox = null, this._color = null;
+    }
+    Cancel() {
+      const t2 = this._particles;
+      for (let e = 0, i = t2.length; e < i; ++e) t2[e].Destroy();
+      C32.appendArray(inactiveParticles, t2), C32.clearArray(t2), inactiveParticles.length > 1e3 && C32.truncateArray(inactiveParticles, 1e3), this._isSpraying = false;
+    }
+    CreateOneShotSpray() {
+      for (let t2 = 0, e = this._rate; t2 < e; ++t2) this._CreateParticle();
+      this._particles.length && (this._isSpraying = true);
+    }
+    _CreateParticle(t2 = true) {
+      let e = null;
+      return inactiveParticles.length ? (e = inactiveParticles.pop(), e.SetEngine(this)) : e = C32.New(self.Particle, this), this._particles.push(e), t2 ? e.Init(this.onparticlecreate) : e.Init(), e;
+    }
+    ReInitAllParticles() {
+      const t2 = this._particles, e = this.onparticlecreate;
+      for (let i = 0, n = t2.length; i < n; ++i) t2[i].Init(e);
+    }
+    UpdateAllParticlesUserData() {
+      const t2 = this._particles, e = this.onparticlecreate;
+      for (let i = 0, n = t2.length; i < n; ++i) t2[i].UpdateUserData(e);
+    }
+    ApplyParticleDataToUserData(t2) {
+      const e = this._particles;
+      for (let i = 0, n = e.length; i < n; ++i) {
+        const n2 = e[i], s = n2.GetUserData();
+        if (s) {
+          const e2 = s.GetWorldInfo();
+          e2.SetX(n2.GetX()), e2.SetY(n2.GetY()), e2.SetSize(n2.GetSize(), n2.GetSize()), e2.SetOpacity(n2.GetOpacity()), e2.SetAngle(n2.GetAngle()), e2.SetUnpremultipliedColor(t2.GetWorldInfo().GetUnpremultipliedColor()), e2.SetBboxChanged();
+        }
+      }
+    }
+    SetParticleCount(t2, e = true) {
+      const i = this._particles;
+      if (t2 < i.length) {
+        const e2 = i.length - t2;
+        for (let t3 = 0; t3 < e2; ++t3) {
+          const t4 = i.pop();
+          t4.Destroy(), inactiveParticles.push(t4);
+        }
+        inactiveParticles.length > 1e3 && C32.truncateArray(inactiveParticles, 1e3);
+      } else if (t2 > i.length) {
+        const n = t2 - i.length;
+        for (let t3 = 0; t3 < n; ++t3) this._CreateParticle(e);
+      }
+    }
+    GetParticles() {
+      return this._particles;
+    }
+    GetParticleCount() {
+      return this._particles.length;
+    }
+    Tick(t2) {
+      this._SpawnContinuous(t2), this._TickParticles(t2), this._MaybeFinishOneShot();
+    }
+    _SpawnContinuous(t2) {
+      if ("continuous-spray" === this._sprayType && this._isSpraying) {
+        this._createCounter += t2 * this._rate;
+        const e = Math.floor(this._createCounter);
+        this._createCounter -= e;
+        for (let t3 = 0; t3 < e; ++t3) this._CreateParticle();
+      }
+    }
+    _SetCreateCounter(t2) {
+      this._createCounter = t2;
+    }
+    _GetCreateCounter() {
+      return this._createCounter;
+    }
+    _TickParticles(t2) {
+      const e = this._boundingBox;
+      e.set(this._spawnX, this._spawnY, this._spawnX, this._spawnY);
+      const i = this._particles;
+      let n = 0;
+      for (let s = 0, r2 = i.length; s < r2; ++s) {
+        const r3 = i[s];
+        i[n] = r3, r3.Tick(t2), r3.IsActive() ? (++n, e.expandToContain(r3.GetBoundingBox())) : (r3.Destroy(), inactiveParticles.push(r3));
+      }
+      C32.truncateArray(i, n), inactiveParticles.length > 1e3 && C32.truncateArray(inactiveParticles, 1e3);
+    }
+    _MaybeFinishOneShot() {
+      "one-shot" === this._sprayType && 0 === this._particles.length && this._isSpraying && (this.ononeshotfinish && this.ononeshotfinish(), this._isSpraying = false);
+    }
+    Draw(t2, e, i, n) {
+      this._devicePixelRatio = globalThis.devicePixelRatio || 1, tempRect.set(e.getTlx(), e.getTly(), e.getBrx(), e.getBry()), t2.StartRenderingPoints(tempRect), this._color.copy(t2.GetColor());
+      const s = this._particles;
+      for (let r2 = 0, a2 = s.length; r2 < a2; ++r2) {
+        const a3 = s[r2];
+        i.intersectsRect(a3.GetBoundingBox()) && a3.Draw(t2, e, n);
+      }
+      t2.FinishRenderingPoints();
+    }
+    GetColor() {
+      return this._color;
+    }
+    SetRate(t2) {
+      this._rate = +t2;
+    }
+    GetRate() {
+      return this._rate;
+    }
+    SetSprayCone(t2) {
+      this._sprayCone = +t2;
+    }
+    GetSprayCone() {
+      return this._sprayCone;
+    }
+    SetSprayType(t2) {
+      if (!VALID_SPRAY_TYPES.has(t2)) throw new Error("invalid spray type");
+      this._sprayType = t2;
+    }
+    GetSprayType() {
+      return this._sprayType;
+    }
+    SetSpraying(t2) {
+      this._isSpraying = !!t2;
+    }
+    IsSpraying() {
+      return this._isSpraying;
+    }
+    SetMasterOpacity(t2) {
+      this._masterOpacity = +t2;
+    }
+    GetMasterOpacity() {
+      return this._masterOpacity;
+    }
+    SetPixelRounding(t2) {
+      this._isPixelRounding = !!t2;
+    }
+    IsPixelRounding() {
+      return this._isPixelRounding;
+    }
+    SetSpawnX(t2) {
+      this._spawnX = +t2;
+    }
+    GetSpawnX() {
+      return this._spawnX;
+    }
+    SetSpawnY(t2) {
+      this._spawnY = +t2;
+    }
+    GetSpawnY() {
+      return this._spawnY;
+    }
+    SetSpawnAngle(t2) {
+      this._spawnAngle = +t2;
+    }
+    GetInitAngle() {
+      return this._spawnAngle;
+    }
+    SetInitSpeed(t2) {
+      this._initSpeed = +t2;
+    }
+    GetInitSpeed() {
+      return this._initSpeed;
+    }
+    SetInitSize(t2) {
+      this._initSize = +t2;
+    }
+    GetInitSize() {
+      return this._initSize;
+    }
+    SetInitSizeScale(t2) {
+      this._initSizeScale = +t2;
+    }
+    GetInitSizeScale() {
+      return this._initSizeScale;
+    }
+    SetInitOpacity(t2) {
+      this._initOpacity = +t2;
+    }
+    GetInitOpacity() {
+      return this._initOpacity;
+    }
+    SetGrowRate(t2) {
+      this._growRate = +t2;
+    }
+    GetGrowRate() {
+      return this._growRate;
+    }
+    SetInitXRandom(t2) {
+      this._xRandom = +t2;
+    }
+    GetInitXRandom() {
+      return this._xRandom;
+    }
+    SetInitYRandom(t2) {
+      this._yRandom = +t2;
+    }
+    GetInitYRandom() {
+      return this._yRandom;
+    }
+    SetInitSpeedRandom(t2) {
+      this._initSpeedRandom = +t2;
+    }
+    GetInitSpeedRandom() {
+      return this._initSpeedRandom;
+    }
+    SetInitSizeRandom(t2) {
+      this._initSizeRandom = +t2;
+    }
+    GetInitSizeRandom() {
+      return this._initSizeRandom;
+    }
+    SetGrowRandom(t2) {
+      this._growRandom = +t2;
+    }
+    GetGrowRandom() {
+      return this._growRandom;
+    }
+    SetAcceleration(t2) {
+      this._acceleration = +t2;
+    }
+    GetAcceleration() {
+      return this._acceleration;
+    }
+    SetGravity(t2) {
+      this._gravity = +t2;
+    }
+    GetGravity() {
+      return this._gravity;
+    }
+    SetLifeAngleRandom(t2) {
+      this._lifeAngleRandom = +t2;
+    }
+    GetLifeAngleRandom() {
+      return this._lifeAngleRandom;
+    }
+    SetLifeSpeedRandom(t2) {
+      this._lifeSpeedRandom = +t2;
+    }
+    GetLifeSpeedRandom() {
+      return this._lifeSpeedRandom;
+    }
+    SetLifeOpacityRandom(t2) {
+      this._lifeOpacityRandom = +t2;
+    }
+    GetLifeOpacityRandom() {
+      return this._lifeOpacityRandom;
+    }
+    SetDestroyMode(t2) {
+      let e = DESTROY_MODES.indexOf(t2);
+      if (-1 === e) throw new Error("invalid destroy mode");
+      this._destroyMode = e;
+    }
+    SetDestroyModeIndex(t2) {
+      this.SetDestroyMode(DESTROY_MODES[t2]);
+    }
+    GetDestroyMode() {
+      return DESTROY_MODES[this._destroyMode];
+    }
+    GetDestroyModeIndex() {
+      return this._destroyMode;
+    }
+    SetTimeout(t2) {
+      this._timeout = +t2;
+    }
+    GetTimeout() {
+      return this._timeout;
+    }
+    SetParticleScale(t2) {
+      this._particleScale = +t2;
+    }
+    GetParticleScale() {
+      return this._particleScale;
+    }
+    GetBoundingBox() {
+      return this._boundingBox;
+    }
+    GetDevicePixelRatio() {
+      return this._devicePixelRatio;
+    }
+  };
+}
+{
+  let randomOffset = function(t2) {
+    return Math.random() * t2 - t2 / 2;
+  };
+  randomOffset2 = randomOffset;
+  const C32 = self.C3, ParticleEngine = self.ParticleEngine;
+  const tmpQuad = new C32.Quad2D(), tmpColor = new C32.Color();
+  let didChangeColor = false;
+  self.Particle = class {
+    constructor(t2) {
+      this._engine = t2, this._isActive = false, this._x = 0, this._y = 0, this._speed = 0, this._angle = 0, this._opacity = 1, this._lastOpacity = 0, this._grow = 0, this._size = 0, this._halfSize = 0, this._gs = 0, this._age = 0, this._bbox = new C32.Rect(), this._userData = null, this._userDataUid = NaN, this._updateCallback = null, this._destroyCallback = null;
+    }
+    SetEngine(t2) {
+      this._engine = t2;
+    }
+    Init(t2) {
+      const e = this._engine;
+      this._isActive = true, this._x = e.GetSpawnX() + randomOffset(e.GetInitXRandom()), this._y = e.GetSpawnY() + randomOffset(e.GetInitYRandom()), this._speed = e.GetInitSpeed() + randomOffset(e.GetInitSpeedRandom()), this._angle = e.GetInitAngle() + randomOffset(e.GetSprayCone()), this._opacity = e.GetInitOpacity(), this._lastOpacity = this._opacity, this._size = (e.GetInitSize() + randomOffset(e.GetInitSizeRandom())) * e.GetInitSizeScale(), this._halfSize = this._size / 2, this._grow = e.GetGrowRate() + randomOffset(e.GetGrowRandom()), this._gs = 0, this._age = 0, this._UpdateBoundingBox(), t2 ? this._userData || (this._userData = t2(this)) : (this._userData = null, this._updateCallback = null, this._destroyCallback = null);
+    }
+    UpdateUserData(t2) {
+      t2 ? this._userData && !this._userData.IsDestroyed() || (this._userData = t2(this, this._userDataUid)) : (this._userData = null, this._updateCallback = null, this._destroyCallback = null);
+    }
+    SetUpdateCallback(t2) {
+      this._updateCallback = t2;
+    }
+    SetDestroyCallback(t2) {
+      this._destroyCallback = t2;
+    }
+    Destroy() {
+      const t2 = this._destroyCallback;
+      t2 && t2(this._userData), this._userData = null, this._updateCallback = null, this._destroyCallback = null;
+    }
+    toJSON() {
+      let t2;
+      return this._userData && this._userData.GetWorldInfo() && (t2 = this._userData.GetWorldInfo().GetInstance().GetUID()), [this._x, this._y, this._speed, this._angle, this._opacity, this._grow, this._size, this._gs, this._age, t2];
+    }
+    setFromJSON(t2) {
+      this._x = t2[0], this._y = t2[1], this._speed = t2[2], this._angle = t2[3], this._opacity = t2[4], this._lastOpacity = this._opacity, this._grow = t2[5], this._size = t2[6], this._gs = t2[7], this._age = t2[8], this._userDataUid = t2[9], this._halfSize = this._size / 2, this._UpdateBoundingBox();
+    }
+    Tick(t2) {
+      const e = this._engine, i = this._speed * t2, s = this._angle, a2 = Math.cos(s) * i, h2 = Math.sin(s) * i + this._gs * t2;
+      this._x += a2, this._y += h2;
+      const n = this._grow * t2;
+      this._size += n, this._halfSize = this._size / 2, this._speed += e.GetAcceleration() * t2, this._gs += e.GetGravity() * t2, this._age += t2, this._UpdateBoundingBox();
+      const _2 = e.GetLifeAngleRandom(), o2 = e.GetLifeSpeedRandom(), l = e.GetLifeOpacityRandom();
+      let r2 = 0;
+      0 !== _2 && (r2 = randomOffset(_2 * t2), this._angle += r2), 0 !== o2 && (this._speed += randomOffset(o2 * t2)), 0 !== l && (this._opacity = C32.clamp(this._opacity + randomOffset(l * t2), 0, 1));
+      const d2 = this._size >= 1 && (2 === e.GetDestroyModeIndex() ? this._speed > 0 : this._age < e.GetTimeout()), c2 = this._updateCallback;
+      if (c2 && d2) {
+        let t3 = e.GetMasterOpacity() * this._opacity;
+        0 === e.GetDestroyModeIndex() && (t3 *= 1 - this._age / e.GetTimeout());
+        const i2 = t3 - this._lastOpacity;
+        this._lastOpacity = t3, c2(this._userData, a2, h2, n, r2, i2);
+      }
+      this._isActive = d2;
+    }
+    IsActive() {
+      return this._isActive;
+    }
+    GetBoundingBox() {
+      return this._bbox;
+    }
+    _UpdateBoundingBox() {
+      const t2 = this._x, e = this._y, i = this._halfSize;
+      this._bbox.set(t2 - i, e - i, t2 + i, e + i);
+    }
+    Draw(t2, e, i) {
+      if (this._userData) return;
+      const s = this._engine;
+      let a2 = s.GetMasterOpacity() * this._opacity;
+      if (0 === s.GetDestroyModeIndex() && (a2 *= 1 - this._age / s.GetTimeout()), a2 <= 0) return;
+      const h2 = this._size, n = h2 * s.GetParticleScale() * s.GetDevicePixelRatio();
+      if (n < 1) return;
+      let _2 = this._x, o2 = this._y;
+      s.IsPixelRounding() && (_2 = _2 + 0.5 | 0, o2 = o2 + 0.5 | 0), t2.IsWebGPU() ? t2.Point(_2, o2, h2, a2) : i || n > t2.GetMaxPointSize() || n < t2.GetMinPointSize() ? (tmpColor.copy(s.GetColor()), tmpColor.multiplyAlpha(a2), t2.SetColor(tmpColor), didChangeColor = true, tmpQuad.setFromRect(this._bbox), t2.Quad4(tmpQuad, e)) : (didChangeColor && (t2.SetColor(s.GetColor()), didChangeColor = false), t2.Point(_2, o2, n, a2));
+    }
+    GetUserData() {
+      return this._userData;
+    }
+    GetUserDataUID() {
+      return this._userDataUid;
+    }
+    GetX() {
+      return this._x;
+    }
+    GetY() {
+      return this._y;
+    }
+    GetSize() {
+      return this._size;
+    }
+    GetAngle() {
+      return this._angle;
+    }
+    GetOpacity() {
+      return this._opacity;
+    }
+  };
+}
+var randomOffset2;
 {
   {
     const t2 = self.C3;
@@ -37673,850 +38767,6 @@ var RunLengthDecode2;
     }
   };
 }
-{
-  {
-    const e = self.C3;
-    e.Plugins.Particles = class extends e.SDKPluginBase {
-      constructor(e2) {
-        super(e2);
-      }
-      Release() {
-        super.Release();
-      }
-    };
-  }
-  {
-    const t2 = self.C3;
-    t2.Plugins.Particles.Type = class extends t2.SDKTypeBase {
-      constructor(e) {
-        super(e);
-      }
-      Release() {
-        super.Release();
-      }
-      OnCreate() {
-        this.GetImageInfo().LoadAsset(this._runtime);
-      }
-      LoadTextures(e) {
-        return this.GetImageInfo().LoadStaticTexture(e);
-      }
-      ReleaseTextures() {
-        this.GetImageInfo().ReleaseTexture();
-      }
-    };
-  }
-  {
-    let GetParticleEngine = function(e) {
-      return D2.get(e).GetParticleEngine();
-    };
-    GetParticleEngine2 = GetParticleEngine;
-    const i = self.C3, n = self.C3X, a2 = 0, r2 = 1, s = 2, o2 = 3, c2 = 4, l = 5, S2 = 6, d2 = 7, p2 = 8, G = 9, m2 = 10, u2 = 11, h2 = 12, g2 = 13, R = 14, I2 = 15, y2 = 16, _2 = 17, E2 = 18, P2 = 19, f2 = 20, b2 = 0, C2 = 1, O2 = new i.Rect(), w2 = new i.AABB3D();
-    i.Plugins.Particles.Instance = class extends i.SDKWorldInstanceBase {
-      constructor(e, t2) {
-        super(e), this._isFirstTick = true;
-        const n2 = i.New(self.ParticleEngine);
-        this._particleEngine = n2, n2.ononeshotfinish = () => this._OnOneShotFinish(), this._spawnObjectClass = null, this._particleUpdateCallback = (e2, t3, i2, n3, a3, r3) => this._OnParticleUpdate(e2, t3, i2, n3, a3, r3), this._particleDestroyCallback = (e2) => this._OnParticleDestroy(e2), this._hasAnyDefaultParticle = true;
-        let b3 = true;
-        t2 && (n2.SetRate(t2[a2]), n2.SetSprayCone(i.toRadians(t2[r2])), n2.SetSprayType(t2[s] ? "one-shot" : "continuous-spray"), this._SetParticleObjectClass(this._runtime.GetObjectClassBySID(t2[o2])), b3 = t2[c2], n2.SetInitSpeed(t2[l]), n2.SetInitSize(t2[S2]), n2.SetInitOpacity(t2[d2] / 100), n2.SetGrowRate(t2[p2]), n2.SetInitXRandom(t2[G]), n2.SetInitYRandom(t2[m2]), n2.SetInitSpeedRandom(t2[u2]), n2.SetInitSizeRandom(t2[h2]), n2.SetGrowRandom(t2[g2]), n2.SetAcceleration(t2[R]), n2.SetGravity(t2[I2]), n2.SetLifeAngleRandom(t2[y2]), n2.SetLifeSpeedRandom(t2[_2]), n2.SetLifeOpacityRandom(t2[E2]), n2.SetDestroyModeIndex(t2[P2]), n2.SetTimeout(t2[f2])), this._UpdateEngineParameters(), this._spawnObjectClass && (this._hasAnyDefaultParticle = false), "one-shot" === n2.GetSprayType() ? n2.CreateOneShotSpray() : n2.SetSpraying(true);
-        const C4 = this.GetWorldInfo();
-        C4.SetVisible(b3), C4.SetBboxChangeEventEnabled(true), this._inst.Dispatcher().addEventListener("bboxchange", () => {
-          w2.setFromRect(this._particleEngine.GetBoundingBox()), C4.OverwriteBoundingBox(w2);
-        }), this.GetRuntime().GetRenderer().IsWebGPU() && C4.SetUsePointsShaderProgram(), this._afterLoad = (e2) => this._OnAfterLoad(e2), this.GetRuntime().Dispatcher().addEventListener("afterload", this._afterLoad), this._StartTicking();
-      }
-      Release() {
-        this.GetRuntime().Dispatcher().removeEventListener("afterload", this._afterLoad), this._afterLoad = null, this._particleEngine.Release(), this._particleEngine = null, this._particleUpdateCallback = null, this._particleDestroyCallback = null, super.Release();
-      }
-      GetParticleEngine() {
-        return this._particleEngine;
-      }
-      _SetRate(e) {
-        this._particleEngine.SetRate(e), "one-shot" === this._particleEngine.GetSprayType() && this._isFirstTick && this._particleEngine.SetParticleCount(e);
-      }
-      _SetParticleObjectClass(e) {
-        e === this.GetObjectClass() && (e = null), e !== this._spawnObjectClass && (this._spawnObjectClass = e, this._particleEngine.onparticlecreate = e ? (e2) => this._OnParticleCreate(e2) : null, this._spawnObjectClass || (this._hasAnyDefaultParticle = true));
-      }
-      _UpdateEngineParameters() {
-        const e = this._particleEngine, t2 = this.GetWorldInfo();
-        e.SetMasterOpacity(t2.GetOpacity()), e.SetPixelRounding(this._runtime.IsPixelRoundingEnabled()), e.SetSpawnX(t2.GetX()), e.SetSpawnY(t2.GetY()), e.SetSpawnAngle(t2.GetAngle()), e.SetInitSizeScale(Math.abs(t2.GetSceneGraphScale()));
-      }
-      _OnOneShotFinish() {
-        this._runtime.DestroyInstance(this._inst);
-      }
-      Draw(e) {
-        if (!this._hasAnyDefaultParticle) return;
-        const t2 = this._objectClass.GetImageInfo(), i2 = t2.GetTexture();
-        if (!i2) return;
-        const n2 = this.GetWorldInfo(), a3 = n2.GetLayer(), r3 = O2;
-        this._runtime.GetCanvasManager().IsPastingToDrawingCanvas() ? r3.set(-1 / 0, -1 / 0, 1 / 0, 1 / 0) : a3.Has3DCamera() ? a3.CalculateViewport3D(n2.GetTotalZ(), r3) : a3.GetViewportForZ(n2.GetTotalZ(), r3), e.SetTexture(i2, n2.GetActiveSampling());
-        const s2 = a3.Get2DScaleFactorToZ(n2.GetTotalZ());
-        this._particleEngine.SetParticleScale(a3.GetRenderScale() * s2), this._particleEngine.Draw(e, t2.GetTexQuad(), r3, a3.Has3DCamera());
-      }
-      SaveToJson() {
-        const e = this._particleEngine;
-        return { "r": e.GetRate(), "sc": e.GetSprayCone(), "st": e.GetSprayType(), "isp": e.GetInitSpeed(), "isz": e.GetInitSize(), "io": e.GetInitOpacity(), "gr": e.GetGrowRate(), "xr": e.GetInitXRandom(), "yr": e.GetInitYRandom(), "spr": e.GetInitSpeedRandom(), "szr": e.GetInitSizeRandom(), "grnd": e.GetGrowRandom(), "acc": e.GetAcceleration(), "g": e.GetGravity(), "lar": e.GetLifeAngleRandom(), "lsr": e.GetLifeSpeedRandom(), "lor": e.GetLifeOpacityRandom(), "dm": e.GetDestroyModeIndex(), "to": e.GetTimeout(), "s": e.IsSpraying(), "pcc": e._GetCreateCounter(), "ft": this._isFirstTick, "soc": this._spawnObjectClass ? this._spawnObjectClass.GetSID() : null, "p": e.GetParticles().map((e2) => e2.toJSON()) };
-      }
-      LoadFromJson(e, t2) {
-        const i2 = this._particleEngine;
-        if (i2.SetRate(e["r"]), i2.SetSprayCone(e["sc"]), i2.SetSprayType(e["st"]), i2.SetInitSpeed(e["isp"]), i2.SetInitSize(e["isz"]), i2.SetInitOpacity(e["io"]), i2.SetGrowRate(e["gr"]), i2.SetInitXRandom(e["xr"]), i2.SetInitYRandom(e["yr"]), i2.SetInitSpeedRandom(e["spr"]), i2.SetInitSizeRandom(e["szr"]), i2.SetGrowRandom(e["grnd"]), i2.SetAcceleration(e["acc"]), i2.SetGravity(e["g"]), i2.SetLifeAngleRandom(e["lar"]), i2.SetLifeSpeedRandom(e["lsr"]), i2.SetLifeOpacityRandom(e["lor"]), i2.SetDestroyModeIndex(e["dm"]), i2.SetTimeout(e["to"]), i2.SetSpraying(e["s"]), i2._SetCreateCounter(e["pcc"]), this._isFirstTick = e["ft"], e.hasOwnProperty("soc")) {
-          const t3 = this.GetRuntime().GetObjectClassBySID(e["soc"]);
-          t3 && this._SetParticleObjectClass(t3);
-        }
-        const n2 = e["p"];
-        i2.SetParticleCount(n2.length, false);
-        const a3 = i2.GetParticles();
-        for (let e2 = 0, t3 = a3.length; e2 < t3; ++e2) a3[e2].setFromJSON(n2[e2]);
-        "state" === t2 && this._spawnObjectClass && (i2.UpdateAllParticlesUserData(), i2.ApplyParticleDataToUserData(this));
-      }
-      _OnAfterLoad() {
-        const e = this._particleEngine;
-        e.UpdateAllParticlesUserData(), e.ApplyParticleDataToUserData(this);
-        const t2 = e.GetParticles();
-        for (let e2 = 0, i2 = t2.length; e2 < i2; ++e2) {
-          const i3 = t2[e2], n2 = i3.GetUserData();
-          if (!n2) continue;
-          const a3 = n2.GetWorldInfo();
-          if (!a3) continue;
-          const r3 = a3.GetInstance();
-          if (!r3) continue;
-          const s2 = i3.GetUserDataUID(), o3 = r3.GetUID();
-          if (("number" != typeof s2 || "number" != typeof o3 || s2 !== o3) && "number" == typeof s2) {
-            const e3 = this.GetRuntime(), t3 = e3.GetInstanceByUID(s2);
-            t3 && e3.DestroyInstance(t3);
-          }
-        }
-      }
-      Tick() {
-        const e = this._runtime.GetDt(this._inst);
-        this._UpdateEngineParameters(), this._isFirstTick && "one-shot" === this._particleEngine.GetSprayType() && this._particleEngine.ReInitAllParticles(), this._particleEngine.Tick(e), this._particleEngine.IsSpraying() && this._runtime.UpdateRender(), this.GetWorldInfo().SetBboxChanged(), this._isFirstTick = false;
-      }
-      _FastForward(e) {
-        const t2 = 1 / 60;
-        for (this._isFirstTick && "one-shot" === this._particleEngine.GetSprayType() && this._particleEngine.ReInitAllParticles(); e > 0; ) this._particleEngine.Tick(t2), e -= t2;
-        this._particleEngine.IsSpraying() && this._runtime.UpdateRender(), this.GetWorldInfo().SetBboxChanged(), this._isFirstTick = false;
-      }
-      _OnParticleCreate(e, t2) {
-        let i2;
-        "number" == typeof t2 && (i2 = this._runtime.GetInstanceByUID(t2)), i2 && i2.GetObjectClass() !== this._spawnObjectClass && (i2 = null), i2 || (i2 = this._runtime.CreateInstance(this._spawnObjectClass, this.GetWorldInfo().GetLayer(), e.GetX(), e.GetY()));
-        const n2 = i2.GetWorldInfo();
-        return n2.SetSize(e.GetSize(), e.GetSize()), n2.SetAngle(e.GetAngle()), n2.SetOpacity(e.GetOpacity()), n2.SetUnpremultipliedColor(this.GetWorldInfo().GetUnpremultipliedColor()), n2.SetBboxChanged(), n2.ZOrderMoveAdjacentToInstance(this.GetInstance(), true), i2._TriggerOnCreated(), e.SetUpdateCallback(this._particleUpdateCallback), e.SetDestroyCallback(this._particleDestroyCallback), i2;
-      }
-      _OnParticleUpdate(e, t2, i2, n2, a3, r3) {
-        if (e.IsDestroyed()) return;
-        const s2 = e.GetWorldInfo();
-        s2.OffsetXY(t2, i2), s2.SetSize(s2.GetWidth() + n2, s2.GetHeight() + n2), s2.SetAngle(s2.GetAngle() + a3), s2.SetOpacity(s2.GetOpacity() + r3), s2.SetBboxChanged();
-      }
-      _OnParticleDestroy(e) {
-        e.IsDestroyed() || this._runtime.DestroyInstance(e);
-      }
-      GetPropertyValueByIndex(e) {
-        const t2 = this._particleEngine;
-        switch (e) {
-          case a2:
-            return t2.GetRate();
-          case r2:
-            return i.toDegrees(t2.GetSprayCone());
-          case s:
-            return "one-shot" === t2.GetSprayType() ? C2 : b2;
-          case l:
-            return t2.GetInitSpeed();
-          case S2:
-            return t2.GetInitSize();
-          case d2:
-            return 100 * t2.GetInitOpacity();
-          case p2:
-            return t2.GetGrowRate();
-          case G:
-            return t2.GetInitXRandom();
-          case m2:
-            return t2.GetInitYRandom();
-          case u2:
-            return t2.GetInitSpeedRandom();
-          case h2:
-            return t2.GetInitSizeRandom();
-          case g2:
-            return t2.GetGrowRandom();
-          case R:
-            return t2.GetAcceleration();
-          case I2:
-            return t2.GetGravity();
-          case y2:
-            return t2.GetLifeAngleRandom();
-          case _2:
-            return t2.GetLifeSpeedRandom();
-          case E2:
-            return t2.GetLifeOpacityRandom();
-          case P2:
-            return t2.GetDestroyModeIndex();
-          case f2:
-            return t2.GetTimeout();
-        }
-      }
-      SetPropertyValueByIndex(e, t2) {
-        const n2 = this._particleEngine;
-        switch (e) {
-          case a2:
-            n2.SetRate(t2);
-            break;
-          case r2:
-            n2.SetSprayCone(i.toRadians(t2));
-            break;
-          case s:
-            n2.SetSprayType(t2 ? "one-shot" : "continuous-spray");
-            break;
-          case l:
-            n2.SetInitSpeed(t2);
-            break;
-          case S2:
-            n2.SetInitSize(t2);
-            break;
-          case d2:
-            n2.SetInitOpacity(t2 / 100);
-            break;
-          case p2:
-            n2.SetGrowRate(t2);
-            break;
-          case G:
-            n2.SetInitXRandom(t2);
-            break;
-          case m2:
-            n2.SetInitYRandom(t2);
-            break;
-          case u2:
-            n2.SetInitSpeedRandom(t2);
-            break;
-          case h2:
-            n2.SetInitSizeRandom(t2);
-            break;
-          case g2:
-            n2.SetGrowRandom(t2);
-            break;
-          case R:
-            n2.SetAcceleration(t2);
-            break;
-          case I2:
-            n2.SetGravity(t2);
-            break;
-          case y2:
-            n2.SetLifeAngleRandom(t2);
-            break;
-          case _2:
-            n2.SetLifeSpeedRandom(t2);
-            break;
-          case E2:
-            n2.SetLifeOpacityRandom(t2);
-            break;
-          case P2:
-            n2.SetDestroyModeIndex(t2);
-            break;
-          case f2:
-            n2.SetTimeout(t2);
-        }
-      }
-      GetDebuggerProperties() {
-        const e = "plugins.particles", t2 = e + ".properties", n2 = e + ".debugger", a3 = this._particleEngine;
-        return [{ title: e + ".name", properties: [{ name: n2 + ".particle-count", value: a3.GetParticleCount() }, { name: t2 + ".type.name", value: [t2 + ".type.items." + a3.GetSprayType()] }, { name: n2 + ".is-spraying", value: a3.IsSpraying(), onedit: (e2) => a3.SetSpraying(e2) }, { name: t2 + ".rate.name", value: a3.GetRate(), onedit: (e2) => a3.SetRate(e2) }, { name: t2 + ".spray-cone.name", value: i.toDegrees(a3.GetSprayCone()), onedit: (e2) => a3.SetSprayCone(i.toRadians(e2)) }, { name: t2 + ".speed.name", value: a3.GetInitSpeed(), onedit: (e2) => a3.SetInitSpeed(e2) }, { name: t2 + ".size.name", value: a3.GetInitSize(), onedit: (e2) => a3.SetInitSize(e2) }, { name: t2 + ".opacity.name", value: a3.GetInitOpacity(), onedit: (e2) => a3.SetInitOpacity(e2) }, { name: t2 + ".grow-rate.name", value: a3.GetGrowRate(), onedit: (e2) => a3.SetGrowRate(e2) }, { name: t2 + ".x-randomiser.name", value: a3.GetInitXRandom(), onedit: (e2) => a3.SetInitXRandom(e2) }, { name: t2 + ".y-randomiser.name", value: a3.GetInitYRandom(), onedit: (e2) => a3.SetInitYRandom(e2) }, { name: t2 + ".initial-speed-randomiser.name", value: a3.GetInitSpeedRandom(), onedit: (e2) => a3.SetInitSpeedRandom(e2) }, { name: t2 + ".size-randomiser.name", value: a3.GetInitSizeRandom(), onedit: (e2) => a3.SetInitSizeRandom(e2) }, { name: t2 + ".grow-rate-randomiser.name", value: a3.GetGrowRandom(), onedit: (e2) => a3.SetGrowRandom(e2) }, { name: t2 + ".acceleration.name", value: a3.GetAcceleration(), onedit: (e2) => a3.SetAcceleration(e2) }, { name: t2 + ".gravity.name", value: a3.GetGravity(), onedit: (e2) => a3.SetGravity(e2) }, { name: t2 + ".angle-randomiser.name", value: a3.GetLifeAngleRandom(), onedit: (e2) => a3.SetLifeAngleRandom(e2) }, { name: t2 + ".life-speed-randomiser.name", value: a3.GetLifeSpeedRandom(), onedit: (e2) => a3.SetLifeSpeedRandom(e2) }, { name: t2 + ".opacity-randomiser.name", value: a3.GetLifeOpacityRandom(), onedit: (e2) => a3.SetLifeOpacityRandom(e2) }, { name: t2 + ".timeout.name", value: a3.GetTimeout(), onedit: (e2) => a3.SetTimeout(e2) }] }];
-      }
-      GetScriptInterfaceClass() {
-        return self.IParticlesInstance;
-      }
-    };
-    const D2 = /* @__PURE__ */ new WeakMap();
-    self.IParticlesInstance = class extends self.IWorldInstance {
-      constructor() {
-        super(), D2.set(this, self.IInstance._GetInitInst().GetSdkInstance());
-      }
-      set isSpraying(e) {
-        GetParticleEngine(this).SetSpraying(!!e);
-      }
-      get isSpraying() {
-        return GetParticleEngine(this).IsSpraying();
-      }
-      set rate(e) {
-        n.RequireFiniteNumber(e), D2.get(this)._SetRate(e);
-      }
-      get rate() {
-        return GetParticleEngine(this).GetRate();
-      }
-      set sprayCone(e) {
-        n.RequireFiniteNumber(e), GetParticleEngine(this).SetSprayCone(e);
-      }
-      get sprayCone() {
-        return GetParticleEngine(this).GetSprayCone();
-      }
-      set initSpeed(e) {
-        n.RequireFiniteNumber(e), GetParticleEngine(this).SetInitSpeed(e);
-      }
-      get initSpeed() {
-        return GetParticleEngine(this).GetInitSpeed();
-      }
-      set initSize(e) {
-        n.RequireFiniteNumber(e), GetParticleEngine(this).SetInitSize(e);
-      }
-      get initSize() {
-        return GetParticleEngine(this).GetInitSize();
-      }
-      set initOpacity(e) {
-        n.RequireFiniteNumber(e), GetParticleEngine(this).SetInitOpacity(e);
-      }
-      get initOpacity() {
-        return GetParticleEngine(this).GetInitOpacity();
-      }
-      set initXRandom(e) {
-        n.RequireFiniteNumber(e), GetParticleEngine(this).SetInitXRandom(e);
-      }
-      get initXRandom() {
-        return GetParticleEngine(this).GetInitXRandom();
-      }
-      set initYRandom(e) {
-        n.RequireFiniteNumber(e), GetParticleEngine(this).SetInitYRandom(e);
-      }
-      get initYRandom() {
-        return GetParticleEngine(this).GetInitYRandom();
-      }
-      set initSpeedRandom(e) {
-        n.RequireFiniteNumber(e), GetParticleEngine(this).SetInitSpeedRandom(e);
-      }
-      get initSpeedRandom() {
-        return GetParticleEngine(this).GetInitSpeedRandom();
-      }
-      set initSizeRandom(e) {
-        n.RequireFiniteNumber(e), GetParticleEngine(this).SetInitSizeRandom(e);
-      }
-      get initSizeRandom() {
-        return GetParticleEngine(this).GetInitSizeRandom();
-      }
-      set initGrowRate(e) {
-        n.RequireFiniteNumber(e), GetParticleEngine(this).SetGrowRate(e);
-      }
-      get initGrowRate() {
-        return GetParticleEngine(this).GetGrowRate();
-      }
-      set initGrowRandom(e) {
-        n.RequireFiniteNumber(e), GetParticleEngine(this).SetGrowRandom(e);
-      }
-      get initGrowRandom() {
-        return GetParticleEngine(this).GetGrowRandom();
-      }
-      set acceleration(e) {
-        n.RequireFiniteNumber(e), GetParticleEngine(this).SetAcceleration(e);
-      }
-      get acceleration() {
-        return GetParticleEngine(this).GetAcceleration();
-      }
-      set gravity(e) {
-        n.RequireFiniteNumber(e), GetParticleEngine(this).SetGravity(e);
-      }
-      get gravity() {
-        return GetParticleEngine(this).GetGravity();
-      }
-      set lifeAngleRandom(e) {
-        n.RequireFiniteNumber(e), GetParticleEngine(this).SetLifeAngleRandom(e);
-      }
-      get lifeAngleRandom() {
-        return GetParticleEngine(this).GetLifeAngleRandom();
-      }
-      set lifeSpeedRandom(e) {
-        n.RequireFiniteNumber(e), GetParticleEngine(this).SetLifeSpeedRandom(e);
-      }
-      get lifeSpeedRandom() {
-        return GetParticleEngine(this).GetLifeSpeedRandom();
-      }
-      set lifeOpacityRandom(e) {
-        n.RequireFiniteNumber(e), GetParticleEngine(this).SetLifeOpacityRandom(e);
-      }
-      get lifeOpacityRandom() {
-        return GetParticleEngine(this).GetLifeOpacityRandom();
-      }
-      set timeout(e) {
-        n.RequireFiniteNumber(e), GetParticleEngine(this).SetTimeout(e);
-      }
-      get timeout() {
-        return GetParticleEngine(this).GetTimeout();
-      }
-      fastForward(e) {
-        n.RequireFiniteNumber(e), D2.get(this)._FastForward(e);
-      }
-      setParticleObjectClass(e) {
-        const t2 = D2.get(this);
-        e ? t2._SetParticleObjectClass(t2.GetRuntime()._UnwrapIObjectClass(e)) : t2._SetParticleObjectClass(null);
-      }
-    };
-  }
-  self.C3.Plugins.Particles.Cnds = { IsSpraying() {
-    return this._particleEngine.IsSpraying();
-  } };
-  {
-    const T2 = self.C3;
-    T2.Plugins.Particles.Acts = { SetSpraying(e) {
-      this._particleEngine.SetSpraying(0 !== e);
-    }, SetRate(e) {
-      this._SetRate(e);
-    }, SetParticleObject(e) {
-      this._SetParticleObjectClass(e);
-    }, UnsetParticleObject() {
-      this._SetParticleObjectClass(null);
-    }, SetSprayCone(e) {
-      this._particleEngine.SetSprayCone(T2.toRadians(e));
-    }, SetInitSpeed(e) {
-      this._particleEngine.SetInitSpeed(e);
-    }, SetInitSize(e) {
-      this._particleEngine.SetInitSize(e);
-    }, SetInitOpacity(e) {
-      this._particleEngine.SetInitOpacity(e / 100);
-    }, SetGrowRate(e) {
-      this._particleEngine.SetGrowRate(e);
-    }, SetXRandomiser(e) {
-      this._particleEngine.SetInitXRandom(e);
-    }, SetYRandomiser(e) {
-      this._particleEngine.SetInitYRandom(e);
-    }, SetSpeedRandomiser(e) {
-      this._particleEngine.SetInitSpeedRandom(e);
-    }, SetSizeRandomiser(e) {
-      this._particleEngine.SetInitSizeRandom(e);
-    }, SetGrowRateRandomiser(e) {
-      this._particleEngine.SetGrowRandom(e);
-    }, SetParticleAcc(e) {
-      this._particleEngine.SetAcceleration(e);
-    }, SetGravity(e) {
-      this._particleEngine.SetGravity(e);
-    }, SetAngleRandomiser(e) {
-      this._particleEngine.SetLifeAngleRandom(e);
-    }, SetLifeSpeedRandomiser(e) {
-      this._particleEngine.SetLifeSpeedRandom(e);
-    }, SetOpacityRandomiser(e) {
-      this._particleEngine.SetLifeOpacityRandom(e);
-    }, SetTimeout(e) {
-      this._particleEngine.SetTimeout(e);
-    }, FastForward(e) {
-      this._FastForward(e);
-    }, SetEffect(e) {
-      this.GetWorldInfo().SetBlendMode(e), this._runtime.UpdateRender();
-    } };
-  }
-  {
-    const A = self.C3;
-    A.Plugins.Particles.Exps = { ParticleCount() {
-      return this._particleEngine.GetParticleCount();
-    }, Rate() {
-      return this._particleEngine.GetRate();
-    }, SprayCone() {
-      return A.toDegrees(this._particleEngine.GetSprayCone());
-    }, InitSpeed() {
-      return this._particleEngine.GetInitSpeed();
-    }, InitSize() {
-      return this._particleEngine.GetInitSize();
-    }, InitOpacity() {
-      return 100 * this._particleEngine.GetInitOpacity();
-    }, InitGrowRate() {
-      return this._particleEngine.GetGrowRate();
-    }, XRandom() {
-      return this._particleEngine.GetInitXRandom();
-    }, YRandom() {
-      return this._particleEngine.GetInitYRandom();
-    }, InitSizeRandom() {
-      return this._particleEngine.GetInitSizeRandom();
-    }, InitSpeedRandom() {
-      return this._particleEngine.GetInitSpeedRandom();
-    }, InitGrowRandom() {
-      return this._particleEngine.GetGrowRandom();
-    }, ParticleAcceleration() {
-      return this._particleEngine.GetAcceleration();
-    }, Gravity() {
-      return this._particleEngine.GetGravity();
-    }, ParticleAngleRandom() {
-      return this._particleEngine.GetLifeAngleRandom();
-    }, ParticleSpeedRandom() {
-      return this._particleEngine.GetLifeSpeedRandom();
-    }, ParticleOpacityRandom() {
-      return this._particleEngine.GetLifeOpacityRandom();
-    }, Timeout() {
-      return this._particleEngine.GetTimeout();
-    } };
-  }
-}
-var GetParticleEngine2;
-{
-  const C32 = self.C3, inactiveParticles = [], MAX_RECYCLE_PARTICLES = 1e3, VALID_SPRAY_TYPES = /* @__PURE__ */ new Set(["continuous-spray", "one-shot"]), DESTROY_MODES = ["fade-to-invisible", "timeout-expired", "particle-stopped"], tempRect = C32.New(C32.Rect);
-  self.ParticleEngine = class {
-    constructor() {
-      this._rate = 0, this._sprayCone = 0, this._sprayType = "continuous-spray", this._isSpraying = false, this._masterOpacity = 0, this._isPixelRounding = false, this._spawnX = 0, this._spawnY = 0, this._spawnAngle = 0, this._initSpeed = 0, this._initSize = 0, this._initSizeScale = 1, this._initOpacity = 0, this._growRate = 0, this._xRandom = 0, this._yRandom = 0, this._initSpeedRandom = 0, this._initSizeRandom = 0, this._growRandom = 0, this._acceleration = 0, this._gravity = 0, this._lifeAngleRandom = 0, this._lifeSpeedRandom = 0, this._lifeOpacityRandom = 0, this._destroyMode = 0, this._timeout = 0, this._createCounter = 0, this._particleScale = 1, this.ononeshotfinish = null, this.onparticlecreate = null, this._particles = [], this._boundingBox = new C32.Rect(), this._color = new C32.Color(), this._devicePixelRatio = globalThis.devicePixelRatio || 1;
-    }
-    Release() {
-      this.Cancel(), C32.clearArray(this._particles), this._particles = null, this.ononeshotfinish = null, this.onparticlecreate = null, this._boundingBox = null, this._color = null;
-    }
-    Cancel() {
-      const t2 = this._particles;
-      for (let e = 0, i = t2.length; e < i; ++e) t2[e].Destroy();
-      C32.appendArray(inactiveParticles, t2), C32.clearArray(t2), inactiveParticles.length > 1e3 && C32.truncateArray(inactiveParticles, 1e3), this._isSpraying = false;
-    }
-    CreateOneShotSpray() {
-      for (let t2 = 0, e = this._rate; t2 < e; ++t2) this._CreateParticle();
-      this._particles.length && (this._isSpraying = true);
-    }
-    _CreateParticle(t2 = true) {
-      let e = null;
-      return inactiveParticles.length ? (e = inactiveParticles.pop(), e.SetEngine(this)) : e = C32.New(self.Particle, this), this._particles.push(e), t2 ? e.Init(this.onparticlecreate) : e.Init(), e;
-    }
-    ReInitAllParticles() {
-      const t2 = this._particles, e = this.onparticlecreate;
-      for (let i = 0, n = t2.length; i < n; ++i) t2[i].Init(e);
-    }
-    UpdateAllParticlesUserData() {
-      const t2 = this._particles, e = this.onparticlecreate;
-      for (let i = 0, n = t2.length; i < n; ++i) t2[i].UpdateUserData(e);
-    }
-    ApplyParticleDataToUserData(t2) {
-      const e = this._particles;
-      for (let i = 0, n = e.length; i < n; ++i) {
-        const n2 = e[i], s = n2.GetUserData();
-        if (s) {
-          const e2 = s.GetWorldInfo();
-          e2.SetX(n2.GetX()), e2.SetY(n2.GetY()), e2.SetSize(n2.GetSize(), n2.GetSize()), e2.SetOpacity(n2.GetOpacity()), e2.SetAngle(n2.GetAngle()), e2.SetUnpremultipliedColor(t2.GetWorldInfo().GetUnpremultipliedColor()), e2.SetBboxChanged();
-        }
-      }
-    }
-    SetParticleCount(t2, e = true) {
-      const i = this._particles;
-      if (t2 < i.length) {
-        const e2 = i.length - t2;
-        for (let t3 = 0; t3 < e2; ++t3) {
-          const t4 = i.pop();
-          t4.Destroy(), inactiveParticles.push(t4);
-        }
-        inactiveParticles.length > 1e3 && C32.truncateArray(inactiveParticles, 1e3);
-      } else if (t2 > i.length) {
-        const n = t2 - i.length;
-        for (let t3 = 0; t3 < n; ++t3) this._CreateParticle(e);
-      }
-    }
-    GetParticles() {
-      return this._particles;
-    }
-    GetParticleCount() {
-      return this._particles.length;
-    }
-    Tick(t2) {
-      this._SpawnContinuous(t2), this._TickParticles(t2), this._MaybeFinishOneShot();
-    }
-    _SpawnContinuous(t2) {
-      if ("continuous-spray" === this._sprayType && this._isSpraying) {
-        this._createCounter += t2 * this._rate;
-        const e = Math.floor(this._createCounter);
-        this._createCounter -= e;
-        for (let t3 = 0; t3 < e; ++t3) this._CreateParticle();
-      }
-    }
-    _SetCreateCounter(t2) {
-      this._createCounter = t2;
-    }
-    _GetCreateCounter() {
-      return this._createCounter;
-    }
-    _TickParticles(t2) {
-      const e = this._boundingBox;
-      e.set(this._spawnX, this._spawnY, this._spawnX, this._spawnY);
-      const i = this._particles;
-      let n = 0;
-      for (let s = 0, r2 = i.length; s < r2; ++s) {
-        const r3 = i[s];
-        i[n] = r3, r3.Tick(t2), r3.IsActive() ? (++n, e.expandToContain(r3.GetBoundingBox())) : (r3.Destroy(), inactiveParticles.push(r3));
-      }
-      C32.truncateArray(i, n), inactiveParticles.length > 1e3 && C32.truncateArray(inactiveParticles, 1e3);
-    }
-    _MaybeFinishOneShot() {
-      "one-shot" === this._sprayType && 0 === this._particles.length && this._isSpraying && (this.ononeshotfinish && this.ononeshotfinish(), this._isSpraying = false);
-    }
-    Draw(t2, e, i, n) {
-      this._devicePixelRatio = globalThis.devicePixelRatio || 1, tempRect.set(e.getTlx(), e.getTly(), e.getBrx(), e.getBry()), t2.StartRenderingPoints(tempRect), this._color.copy(t2.GetColor());
-      const s = this._particles;
-      for (let r2 = 0, a2 = s.length; r2 < a2; ++r2) {
-        const a3 = s[r2];
-        i.intersectsRect(a3.GetBoundingBox()) && a3.Draw(t2, e, n);
-      }
-      t2.FinishRenderingPoints();
-    }
-    GetColor() {
-      return this._color;
-    }
-    SetRate(t2) {
-      this._rate = +t2;
-    }
-    GetRate() {
-      return this._rate;
-    }
-    SetSprayCone(t2) {
-      this._sprayCone = +t2;
-    }
-    GetSprayCone() {
-      return this._sprayCone;
-    }
-    SetSprayType(t2) {
-      if (!VALID_SPRAY_TYPES.has(t2)) throw new Error("invalid spray type");
-      this._sprayType = t2;
-    }
-    GetSprayType() {
-      return this._sprayType;
-    }
-    SetSpraying(t2) {
-      this._isSpraying = !!t2;
-    }
-    IsSpraying() {
-      return this._isSpraying;
-    }
-    SetMasterOpacity(t2) {
-      this._masterOpacity = +t2;
-    }
-    GetMasterOpacity() {
-      return this._masterOpacity;
-    }
-    SetPixelRounding(t2) {
-      this._isPixelRounding = !!t2;
-    }
-    IsPixelRounding() {
-      return this._isPixelRounding;
-    }
-    SetSpawnX(t2) {
-      this._spawnX = +t2;
-    }
-    GetSpawnX() {
-      return this._spawnX;
-    }
-    SetSpawnY(t2) {
-      this._spawnY = +t2;
-    }
-    GetSpawnY() {
-      return this._spawnY;
-    }
-    SetSpawnAngle(t2) {
-      this._spawnAngle = +t2;
-    }
-    GetInitAngle() {
-      return this._spawnAngle;
-    }
-    SetInitSpeed(t2) {
-      this._initSpeed = +t2;
-    }
-    GetInitSpeed() {
-      return this._initSpeed;
-    }
-    SetInitSize(t2) {
-      this._initSize = +t2;
-    }
-    GetInitSize() {
-      return this._initSize;
-    }
-    SetInitSizeScale(t2) {
-      this._initSizeScale = +t2;
-    }
-    GetInitSizeScale() {
-      return this._initSizeScale;
-    }
-    SetInitOpacity(t2) {
-      this._initOpacity = +t2;
-    }
-    GetInitOpacity() {
-      return this._initOpacity;
-    }
-    SetGrowRate(t2) {
-      this._growRate = +t2;
-    }
-    GetGrowRate() {
-      return this._growRate;
-    }
-    SetInitXRandom(t2) {
-      this._xRandom = +t2;
-    }
-    GetInitXRandom() {
-      return this._xRandom;
-    }
-    SetInitYRandom(t2) {
-      this._yRandom = +t2;
-    }
-    GetInitYRandom() {
-      return this._yRandom;
-    }
-    SetInitSpeedRandom(t2) {
-      this._initSpeedRandom = +t2;
-    }
-    GetInitSpeedRandom() {
-      return this._initSpeedRandom;
-    }
-    SetInitSizeRandom(t2) {
-      this._initSizeRandom = +t2;
-    }
-    GetInitSizeRandom() {
-      return this._initSizeRandom;
-    }
-    SetGrowRandom(t2) {
-      this._growRandom = +t2;
-    }
-    GetGrowRandom() {
-      return this._growRandom;
-    }
-    SetAcceleration(t2) {
-      this._acceleration = +t2;
-    }
-    GetAcceleration() {
-      return this._acceleration;
-    }
-    SetGravity(t2) {
-      this._gravity = +t2;
-    }
-    GetGravity() {
-      return this._gravity;
-    }
-    SetLifeAngleRandom(t2) {
-      this._lifeAngleRandom = +t2;
-    }
-    GetLifeAngleRandom() {
-      return this._lifeAngleRandom;
-    }
-    SetLifeSpeedRandom(t2) {
-      this._lifeSpeedRandom = +t2;
-    }
-    GetLifeSpeedRandom() {
-      return this._lifeSpeedRandom;
-    }
-    SetLifeOpacityRandom(t2) {
-      this._lifeOpacityRandom = +t2;
-    }
-    GetLifeOpacityRandom() {
-      return this._lifeOpacityRandom;
-    }
-    SetDestroyMode(t2) {
-      let e = DESTROY_MODES.indexOf(t2);
-      if (-1 === e) throw new Error("invalid destroy mode");
-      this._destroyMode = e;
-    }
-    SetDestroyModeIndex(t2) {
-      this.SetDestroyMode(DESTROY_MODES[t2]);
-    }
-    GetDestroyMode() {
-      return DESTROY_MODES[this._destroyMode];
-    }
-    GetDestroyModeIndex() {
-      return this._destroyMode;
-    }
-    SetTimeout(t2) {
-      this._timeout = +t2;
-    }
-    GetTimeout() {
-      return this._timeout;
-    }
-    SetParticleScale(t2) {
-      this._particleScale = +t2;
-    }
-    GetParticleScale() {
-      return this._particleScale;
-    }
-    GetBoundingBox() {
-      return this._boundingBox;
-    }
-    GetDevicePixelRatio() {
-      return this._devicePixelRatio;
-    }
-  };
-}
-{
-  let randomOffset = function(t2) {
-    return Math.random() * t2 - t2 / 2;
-  };
-  randomOffset2 = randomOffset;
-  const C32 = self.C3, ParticleEngine = self.ParticleEngine;
-  const tmpQuad = new C32.Quad2D(), tmpColor = new C32.Color();
-  let didChangeColor = false;
-  self.Particle = class {
-    constructor(t2) {
-      this._engine = t2, this._isActive = false, this._x = 0, this._y = 0, this._speed = 0, this._angle = 0, this._opacity = 1, this._lastOpacity = 0, this._grow = 0, this._size = 0, this._halfSize = 0, this._gs = 0, this._age = 0, this._bbox = new C32.Rect(), this._userData = null, this._userDataUid = NaN, this._updateCallback = null, this._destroyCallback = null;
-    }
-    SetEngine(t2) {
-      this._engine = t2;
-    }
-    Init(t2) {
-      const e = this._engine;
-      this._isActive = true, this._x = e.GetSpawnX() + randomOffset(e.GetInitXRandom()), this._y = e.GetSpawnY() + randomOffset(e.GetInitYRandom()), this._speed = e.GetInitSpeed() + randomOffset(e.GetInitSpeedRandom()), this._angle = e.GetInitAngle() + randomOffset(e.GetSprayCone()), this._opacity = e.GetInitOpacity(), this._lastOpacity = this._opacity, this._size = (e.GetInitSize() + randomOffset(e.GetInitSizeRandom())) * e.GetInitSizeScale(), this._halfSize = this._size / 2, this._grow = e.GetGrowRate() + randomOffset(e.GetGrowRandom()), this._gs = 0, this._age = 0, this._UpdateBoundingBox(), t2 ? this._userData || (this._userData = t2(this)) : (this._userData = null, this._updateCallback = null, this._destroyCallback = null);
-    }
-    UpdateUserData(t2) {
-      t2 ? this._userData && !this._userData.IsDestroyed() || (this._userData = t2(this, this._userDataUid)) : (this._userData = null, this._updateCallback = null, this._destroyCallback = null);
-    }
-    SetUpdateCallback(t2) {
-      this._updateCallback = t2;
-    }
-    SetDestroyCallback(t2) {
-      this._destroyCallback = t2;
-    }
-    Destroy() {
-      const t2 = this._destroyCallback;
-      t2 && t2(this._userData), this._userData = null, this._updateCallback = null, this._destroyCallback = null;
-    }
-    toJSON() {
-      let t2;
-      return this._userData && this._userData.GetWorldInfo() && (t2 = this._userData.GetWorldInfo().GetInstance().GetUID()), [this._x, this._y, this._speed, this._angle, this._opacity, this._grow, this._size, this._gs, this._age, t2];
-    }
-    setFromJSON(t2) {
-      this._x = t2[0], this._y = t2[1], this._speed = t2[2], this._angle = t2[3], this._opacity = t2[4], this._lastOpacity = this._opacity, this._grow = t2[5], this._size = t2[6], this._gs = t2[7], this._age = t2[8], this._userDataUid = t2[9], this._halfSize = this._size / 2, this._UpdateBoundingBox();
-    }
-    Tick(t2) {
-      const e = this._engine, i = this._speed * t2, s = this._angle, a2 = Math.cos(s) * i, h2 = Math.sin(s) * i + this._gs * t2;
-      this._x += a2, this._y += h2;
-      const n = this._grow * t2;
-      this._size += n, this._halfSize = this._size / 2, this._speed += e.GetAcceleration() * t2, this._gs += e.GetGravity() * t2, this._age += t2, this._UpdateBoundingBox();
-      const _2 = e.GetLifeAngleRandom(), o2 = e.GetLifeSpeedRandom(), l = e.GetLifeOpacityRandom();
-      let r2 = 0;
-      0 !== _2 && (r2 = randomOffset(_2 * t2), this._angle += r2), 0 !== o2 && (this._speed += randomOffset(o2 * t2)), 0 !== l && (this._opacity = C32.clamp(this._opacity + randomOffset(l * t2), 0, 1));
-      const d2 = this._size >= 1 && (2 === e.GetDestroyModeIndex() ? this._speed > 0 : this._age < e.GetTimeout()), c2 = this._updateCallback;
-      if (c2 && d2) {
-        let t3 = e.GetMasterOpacity() * this._opacity;
-        0 === e.GetDestroyModeIndex() && (t3 *= 1 - this._age / e.GetTimeout());
-        const i2 = t3 - this._lastOpacity;
-        this._lastOpacity = t3, c2(this._userData, a2, h2, n, r2, i2);
-      }
-      this._isActive = d2;
-    }
-    IsActive() {
-      return this._isActive;
-    }
-    GetBoundingBox() {
-      return this._bbox;
-    }
-    _UpdateBoundingBox() {
-      const t2 = this._x, e = this._y, i = this._halfSize;
-      this._bbox.set(t2 - i, e - i, t2 + i, e + i);
-    }
-    Draw(t2, e, i) {
-      if (this._userData) return;
-      const s = this._engine;
-      let a2 = s.GetMasterOpacity() * this._opacity;
-      if (0 === s.GetDestroyModeIndex() && (a2 *= 1 - this._age / s.GetTimeout()), a2 <= 0) return;
-      const h2 = this._size, n = h2 * s.GetParticleScale() * s.GetDevicePixelRatio();
-      if (n < 1) return;
-      let _2 = this._x, o2 = this._y;
-      s.IsPixelRounding() && (_2 = _2 + 0.5 | 0, o2 = o2 + 0.5 | 0), t2.IsWebGPU() ? t2.Point(_2, o2, h2, a2) : i || n > t2.GetMaxPointSize() || n < t2.GetMinPointSize() ? (tmpColor.copy(s.GetColor()), tmpColor.multiplyAlpha(a2), t2.SetColor(tmpColor), didChangeColor = true, tmpQuad.setFromRect(this._bbox), t2.Quad4(tmpQuad, e)) : (didChangeColor && (t2.SetColor(s.GetColor()), didChangeColor = false), t2.Point(_2, o2, n, a2));
-    }
-    GetUserData() {
-      return this._userData;
-    }
-    GetUserDataUID() {
-      return this._userDataUid;
-    }
-    GetX() {
-      return this._x;
-    }
-    GetY() {
-      return this._y;
-    }
-    GetSize() {
-      return this._size;
-    }
-    GetAngle() {
-      return this._angle;
-    }
-    GetOpacity() {
-      return this._opacity;
-    }
-  };
-}
-var randomOffset2;
 {
   {
     const t2 = self.C3;
@@ -40210,256 +40460,6 @@ var GetMouseSdkInstance2;
 }
 var GetAudioSdkInstance2;
 var GetAudioDOMInterface2;
-{
-  {
-    const t2 = self.C3, e = "html-element";
-    t2.Plugins.HTMLElement = class extends t2.SDKDOMPluginBase {
-      constructor(t3) {
-        super(t3, e), this.AddElementMessageHandler("initial-content", (t4, e2) => t4._OnInitialContent(e2)), this.AddElementMessageHandler("click", (t4, e2) => t4._OnClick(e2)), this.AddElementMessageHandler("animationend", (t4, e2) => t4._OnAnimationEnd(e2));
-      }
-      Release() {
-        super.Release();
-      }
-    };
-  }
-  {
-    const t2 = self.C3;
-    t2.Plugins.HTMLElement.Type = class extends t2.SDKTypeBase {
-      constructor(t3) {
-        super(t3);
-      }
-      Release() {
-        super.Release();
-      }
-      OnCreate() {
-      }
-    };
-  }
-  {
-    const t2 = self.C3, e = self.C3X, n = 0, s = 1, i = 2, r2 = 3, a2 = 4, o2 = 5, l = 6, h2 = 7, c2 = 9, C2 = 10, g2 = 11, m2 = 12, _2 = 13, d2 = 14, u2 = 15, S2 = "html-element";
-    t2.Plugins.HTMLElement.Instance = class extends t2.SDKDOMInstanceBase {
-      constructor(e2, p3) {
-        super(e2, S2), this._tag = "div", this._htmlContent = "", this._textContent = "", this._id = "", this._className = "", this._targetId = "", this._targetClass = "", this._cssAnimationName = "";
-        let I3 = "";
-        this._initialType = "html";
-        let y3 = false, T3 = 0, E3 = false, f3 = t2.New(t2.Color), M2 = false, w2 = t2.New(t2.Color);
-        this._autoFontSize = true, this._autoFontSizeOffset = 0;
-        let x2 = false, G = "";
-        if (p3) {
-          this._tag = p3[n] || "div", I3 = p3[s];
-          const e3 = p3[i];
-          1 === e3 ? I3 = t2.New(t2.BBString, I3, { convertLineBreaks: true }).toHTML() : 2 === e3 && (this._initialType = "text"), this.GetWorldInfo().SetVisible(p3[r2]), this._id = p3[a2], this._className = p3[o2], y3 = p3[l], T3 = p3[h2], E3 = p3[c2], f3.setFromJSON(p3[C2]), M2 = p3[g2], w2.setFromJSON(p3[m2]), this._autoFontSize = p3[_2], x2 = p3[d2], G = p3[u2];
-        }
-        "html" === this._initialType ? this._htmlContent = I3 : this._textContent = I3, this.CreateElement({ "tag": this._tag, "str": I3, "type": this._initialType, "id": this._id, "className": this._className, "allow-context-menu": y3, "stop-input-events-mode": T3, "css-color": E3 ? f3.getCssRgb() : "", "css-background-color": M2 ? w2.getCssRgb() : "", "allow-text-selection": x2, "style-attribute": G });
-      }
-      Release() {
-        super.Release();
-      }
-      _GetStringContent(e2, n2) {
-        let s2 = "html";
-        return "bbcode" === n2 ? e2 = t2.New(t2.BBString, e2, { convertLineBreaks: true }).toHTML() : "text" === n2 && (s2 = "text"), { contentType: s2, str: e2 };
-      }
-      async _SetContent(t3, e2 = "html", n2 = "", s2 = false) {
-        const { contentType: i2, str: r3 } = this._GetStringContent(t3, e2);
-        if (!n2) {
-          if ("html" === i2) {
-            if ("html" === this._initialType && this._htmlContent === r3) return;
-            this._htmlContent = r3;
-          } else if ("text" === i2) {
-            if ("text" === this._initialType && this._textContent === r3) return;
-            this._textContent = r3;
-          }
-        }
-        await this._SendHTMLUpdateMessage("set-content", { "str": r3, "type": i2, "selector": n2, "is-all": s2 });
-      }
-      async _InsertContent(t3, e2 = "html", n2 = true, s2 = "", i2 = false) {
-        if (!t3) return;
-        const { contentType: r3, str: a3 } = this._GetStringContent(t3, e2);
-        await this._SendHTMLUpdateMessage("insert-content", { "str": a3, "type": r3, "at-end": n2, "selector": s2, "is-all": i2 });
-      }
-      async _RemoveContent(t3, e2 = false, n2 = false) {
-        await this._SendHTMLUpdateMessage("remove-content", { "selector": t3, "is-clear": e2, "is-all": n2 });
-      }
-      async _SetContentClass(t3, e2, n2, s2 = false) {
-        await this._SendHTMLUpdateMessage("set-content-class", { "mode": t3, "class-array": e2, "selector": n2, "is-all": s2 });
-      }
-      async _SetContentAttribute(t3, e2, n2, s2, i2 = false) {
-        await this._SendHTMLUpdateMessage("set-content-attribute", { "mode": t3, "attribute": e2, "value": n2, "selector": s2, "is-all": i2 });
-      }
-      async _SetContentCSSStyle(e2, n2, s2, i2 = false) {
-        await this._SendHTMLUpdateMessage("set-content-css-style", { "prop": t2.CSSToCamelCase(e2), "value": n2, "selector": s2, "is-all": i2 });
-      }
-      async _SendHTMLUpdateMessage(t3, e2) {
-        const n2 = await this.PostToDOMElementAsync(t3, e2);
-        n2["isOk"] && (this._htmlContent = n2["html"], this._textContent = n2["text"]);
-      }
-      async _PositionObjectAtElement(t3, e2) {
-        const n2 = await this.PostToDOMElementAsync("get-element-box", { "selector": e2 });
-        if (!n2["isOk"]) return;
-        const s2 = this._runtime.GetCanvasManager(), i2 = n2["left"] - s2.GetCanvasClientX(), r3 = n2["top"] - s2.GetCanvasClientY(), a3 = n2["right"] - s2.GetCanvasClientX(), o3 = n2["bottom"] - s2.GetCanvasClientY();
-        for (const e3 of t3) {
-          const t4 = e3.GetWorldInfo();
-          if (!t4) continue;
-          const n3 = t4.GetLayer(), [s3, l2] = n3.CanvasCssToLayer(i2, r3, t4.GetZ()), [h3, c3] = n3.CanvasCssToLayer(a3, o3, t4.GetZ());
-          if (!(isFinite(s3) && isFinite(l2) && isFinite(h3) && isFinite(c3))) continue;
-          const C4 = h3 - s3, g3 = c3 - l2, m3 = s3 + t4.GetOriginX() * C4, _3 = l2 + t4.GetOriginY() * g3;
-          t4.GetX() === m3 && t4.GetY() === _3 && t4.GetWidth() === C4 && t4.GetHeight() === g3 || (t4.SetXY(m3, _3), t4.SetSize(C4, g3), t4.SetBboxChanged());
-        }
-      }
-      async _CreateSpriteImgElement(t3, e2, n2, s2, i2) {
-        const r3 = t3.GetWorldInfo(), a3 = t3.GetCurrentImageInfo();
-        if (!r3 || !a3) return;
-        const o3 = await a3.ExtractImageToBlobURL(), l2 = await this.PostToDOMElementAsync("insert-img-element", { "blobUrl": o3, "width": a3.GetWidth(), "height": a3.GetHeight(), "selector": e2, "insertAt": n2, "id": s2, "class": i2 });
-        l2["isOk"] && (this._htmlContent = l2["html"], this._textContent = l2["text"]);
-      }
-      async _SetElementScrollPosition(t3, e2, n2) {
-        await this.PostToDOMElementAsync("set-scroll-position", { "selector": t3, "direction": e2, "position": n2 });
-      }
-      GetElementState() {
-        return { "html": this._htmlContent };
-      }
-      _OnInitialContent(t3) {
-        this._htmlContent = t3["html"], this._textContent = t3["text"];
-      }
-      _GetHTMLContent() {
-        return this._htmlContent;
-      }
-      _GetTextContent() {
-        return this._textContent;
-      }
-      async _OnClick(e2) {
-        const n2 = e2["chain"];
-        for (const e3 of n2) this._targetId = e3["targetId"], this._targetClass = e3["targetClass"], this.DispatchScriptEvent("click", true, { "targetId": this._targetId, "targetClass": this._targetClass }), this._targetId && await this.TriggerAsync(t2.Plugins.HTMLElement.Cnds.OnClickedID), this._targetClass && await this.TriggerAsync(t2.Plugins.HTMLElement.Cnds.OnClickedClass);
-        if (n2.length > 0) {
-          const t3 = n2[0];
-          this._targetId = t3["targetId"], this._targetClass = t3["targetClass"];
-        } else this._targetId = "", this._targetClass = "";
-        await this.TriggerAsync(t2.Plugins.HTMLElement.Cnds.OnClicked), this._targetId = "", this._targetClass = "";
-      }
-      async _OnAnimationEnd(e2) {
-        this._targetId = e2["targetId"], this._targetClass = e2["targetClass"], this._cssAnimationName = e2["animationName"], this.DispatchScriptEvent("animationend", true, { "targetId": this._targetId, "targetClass": this._targetClass, "animationName": this._cssAnimationName }), await this.TriggerAsync(t2.Plugins.HTMLElement.Cnds.OnCSSAnimationEnded), this._targetId = "", this._targetClass = "", this._cssAnimationName = "";
-      }
-      Draw(t3) {
-      }
-      SaveToJson() {
-        return { "t": this._tag, "h": this._htmlContent, "id": this._id, "c": this._className };
-      }
-      LoadFromJson(t3) {
-        this._tag = t3["t"], this._htmlContent = t3["h"], this._id = t3["id"], this._className = t3["c"], this.UpdateElementState();
-      }
-      GetPropertyValueByIndex(t3) {
-      }
-      SetPropertyValueByIndex(t3, e2) {
-      }
-      GetDebuggerProperties() {
-        return [];
-      }
-      GetScriptInterfaceClass() {
-        return self.IHTMLElementInstance;
-      }
-    };
-    const p2 = /* @__PURE__ */ new WeakMap(), I2 = /* @__PURE__ */ new Set(["html", "bbcode", "text"]), y2 = /* @__PURE__ */ new Set(["add", "toggle", "remove"]), T2 = /* @__PURE__ */ new Set(["set", "remove"]), E2 = ["start", "end", "replace"], f2 = /* @__PURE__ */ new Set(["left", "top"]);
-    self.IHTMLElementInstance = class extends self.IDOMInstance {
-      constructor() {
-        super(), p2.set(this, self.IInstance._GetInitInst().GetSdkInstance());
-      }
-      setContent(t3, n2 = "html", s2 = "", i2 = false) {
-        if (e.RequireString(t3), !I2.has(n2)) throw new Error("invalid type");
-        return e.RequireString(s2), p2.get(this)._SetContent(t3, n2, s2, !!i2);
-      }
-      insertContent(t3, n2 = "html", s2 = true, i2 = "", r3 = false) {
-        if (e.RequireString(t3), !I2.has(n2)) throw new Error("invalid type");
-        return e.RequireString(i2), p2.get(this)._InsertContent(t3, n2, !!s2, i2, !!r3);
-      }
-      setContentClass(t3, n2, s2, i2 = false) {
-        if (!y2.has(t3)) throw new Error("invalid mode");
-        return "string" == typeof n2 && (n2 = n2.split(" ")), e.RequireArray(n2), e.RequireString(s2), p2.get(this)._SetContentClass(t3, n2, s2, !!i2);
-      }
-      setContentAttribute(t3, n2, s2, i2, r3 = false) {
-        if (!T2.has(t3)) throw new Error("invalid type");
-        return e.RequireString(n2), s2 = s2.toString(), e.RequireString(i2), p2.get(this)._SetContentAttribute(t3, n2, s2, i2, !!r3);
-      }
-      setContentCssStyle(t3, n2, s2, i2) {
-        return e.RequireString(t3), n2 = n2.toString(), e.RequireString(s2), p2.get(this)._SetContentCSSStyle(t3, n2, s2, !!i2);
-      }
-      positionInstanceAtElement(t3, n2) {
-        e.RequireIWorldInstance(t3), e.RequireString(n2);
-        const s2 = p2.get(this).GetRuntime()._UnwrapIWorldInstance(t3);
-        return p2.get(this)._PositionObjectAtElement([s2], n2);
-      }
-      createSpriteImgElement(t3, n2, s2, i2, r3) {
-        e.RequireInstanceOf(t3, self.ISpriteInstance), e.RequireString(n2), e.RequireOptionalString(i2), e.RequireOptionalString(r3);
-        const a3 = E2.indexOf(s2);
-        if (a3 < 0) throw new Error("invalid insert position");
-        const o3 = p2.get(this).GetRuntime()._UnwrapIWorldInstance(t3);
-        return p2.get(this)._CreateSpriteImgElement(o3, n2, a3, i2, r3);
-      }
-      setScrollPosition(t3, n2, s2) {
-        if (e.RequireString("selector"), !f2.has(n2)) throw new Error("invalid direction");
-        return e.RequireNumber(s2), p2.get(this)._SetElementScrollPosition(t3, n2, s2);
-      }
-      get htmlContent() {
-        return p2.get(this)._GetHTMLContent();
-      }
-      set htmlContent(t3) {
-        p2.get(this)._SetContent(t3, "html", "", false);
-      }
-      get textContent() {
-        return p2.get(this)._GetTextContent();
-      }
-      set textContent(t3) {
-        p2.get(this)._SetContent(t3, "text", "", false);
-      }
-    };
-  }
-  {
-    const t2 = self.C3;
-    t2.Plugins.HTMLElement.Cnds = { OnClicked: () => true, OnClickedID(e) {
-      return t2.equalsNoCase(this._targetId, e);
-    }, OnClickedClass(t3) {
-      const e = this._targetClass.toLowerCase().split(" ");
-      return t3.toLowerCase().split(" ").every((t4) => e.includes(t4));
-    }, OnCSSAnimationEnded(e) {
-      return t2.equalsNoCase(this._cssAnimationName, e);
-    } };
-  }
-  {
-    const t2 = self.C3, e = ["html", "bbcode", "text"], n = ["add", "toggle", "remove"], s = ["set", "remove"];
-    t2.Plugins.HTMLElement.Acts = { SetContent(t3, n2, s2, i) {
-      return this._SetContent(n2, e[t3], s2, 0 !== i);
-    }, InsertContent(t3, n2, s2, i, r2) {
-      return this._InsertContent(n2, e[t3], 0 !== s2, i, 0 !== r2);
-    }, RemoveContent(t3, e2, n2) {
-      return this._RemoveContent(e2, 0 !== t3, 0 !== n2);
-    }, SetContentClass(t3, e2, s2, i) {
-      return this._SetContentClass(n[t3], e2.split(" "), s2, 0 !== i);
-    }, SetContentAttribute(t3, e2, n2, i, r2) {
-      return this._SetContentAttribute(s[t3], e2, n2.toString(), i, 0 !== r2);
-    }, SetContentCSSStyle(t3, e2, n2, s2) {
-      return this._SetContentCSSStyle(t3, e2, n2, 0 !== s2);
-    }, PositionObjectAtElement(t3, e2) {
-      if (t3) return this._PositionObjectAtElement(t3.GetCurrentSol().GetInstances(), e2);
-    }, CreateSpriteImgElement(t3, e2, n2, s2, i) {
-      if (!t3) return;
-      const r2 = t3.GetFirstPicked();
-      return r2 ? this._CreateSpriteImgElement(r2, e2, n2, s2, i) : void 0;
-    }, SetScrollPosition(t3, e2, n2) {
-      return this._SetElementScrollPosition(t3, ["left", "top"][e2], n2);
-    } };
-  }
-  {
-    const t2 = self.C3;
-    t2.Plugins.HTMLElement.Exps = { HTMLContent() {
-      return this._htmlContent;
-    }, TextContent() {
-      return this._textContent;
-    }, TargetID() {
-      return this._targetId;
-    }, TargetClass() {
-      return this._targetClass;
-    }, EscapeHTML: (e) => t2.EscapeHTML(e.toString()) };
-  }
-}
 {
   {
     const t2 = self.C3;
@@ -44761,78 +44761,29 @@ var accelerate2;
     () => 100,
     () => 500,
     () => "PlayerControls",
-    () => "Controller",
+    () => "KeyboardAndMouse",
     () => 0,
-    () => "You do not have the Runic Dictionary!!",
-    () => 0.1,
-    () => 0.5,
-    () => "",
     () => 1e-5,
     () => 8,
-    () => "PlayerGamePadMove",
-    (p2) => {
-      const f0 = p2._GetNode(0).GetBoundMethod();
-      return () => C32.clamp(f0(0, 3), -24, 24);
-    },
-    (p2) => {
-      const f0 = p2._GetNode(0).GetBoundMethod();
-      return () => C32.clamp(f0(0, 2), -24, 24);
-    },
-    (p2) => {
-      const f0 = p2._GetNode(0).GetBoundMethod();
-      return () => C32.clamp(f0(0, 3), 25, 100);
-    },
-    () => 90,
-    (p2) => {
-      const f0 = p2._GetNode(0).GetBoundMethod();
-      return () => C32.clamp(f0(0, 3), -100, -25);
-    },
-    () => 270,
-    (p2) => {
-      const f0 = p2._GetNode(0).GetBoundMethod();
-      return () => C32.clamp(f0(0, 2), 25, 100);
-    },
-    (p2) => {
-      const f0 = p2._GetNode(0).GetBoundMethod();
-      return () => C32.clamp(f0(0, 2), -100, -25);
-    },
-    () => 180,
+    () => "PlayerMOVEMENT",
+    () => "MovementKBM",
+    () => "Jump",
     (p2) => {
       const n0 = p2._GetNode(0);
       return () => n0.ExpObject();
     },
-    (p2) => {
-      const n0 = p2._GetNode(0);
-      return () => C32.clamp(n0.ExpObject(), -255, 255);
-    },
-    (p2) => {
-      const n0 = p2._GetNode(0);
-      return () => C32.clamp(n0.ExpObject(), -100, 25);
-    },
-    (p2) => {
-      const n0 = p2._GetNode(0);
-      return () => n0.ExpObject() + 15;
-    },
-    (p2) => {
-      const n0 = p2._GetNode(0);
-      return () => n0.ExpObject() - 100;
-    },
-    () => "KeyboardAndMouse",
-    () => "PlayerMOVEMENT",
-    () => "MovementGAMEPAD",
-    () => -10,
-    () => "Walk",
-    () => 10,
-    () => "Jump",
-    () => "MovementKBM",
     () => "Stand",
     (p2) => {
       const f0 = p2._GetNode(0).GetBoundMethod();
       return () => C32.clamp(f0(0, 0), -24, 24);
     },
+    () => "Walk",
     () => "PlayerATKS",
     () => "atkBowNArrow",
     () => "You don't have any arrows!",
+    () => 0.1,
+    () => 0.5,
+    () => "",
     (p2) => {
       const f0 = p2._GetNode(0).GetBoundMethod();
       return () => f0();
@@ -44942,6 +44893,7 @@ var accelerate2;
     () => 111,
     () => 9,
     () => 110,
+    () => 10,
     () => 109,
     () => 11,
     () => 108,
@@ -44975,6 +44927,7 @@ var accelerate2;
     () => 93,
     () => 92,
     () => 91,
+    () => 90,
     () => 89,
     () => 31,
     () => 88,
@@ -45488,10 +45441,11 @@ var accelerate2;
     () => "GameLevelSelectorT1",
     () => 5573478,
     () => 300,
+    () => 180,
     () => "You can still skip the Intro Movie if you choose not to.",
     () => "Loading.....",
-    () => "IntroMovie",
-    () => "This isn't unlocked or available yet!"
+    () => "This isn't unlocked or available yet!",
+    () => "IntroMovie"
   ];
 }
 var unaryminus2;
@@ -45634,26 +45588,26 @@ self.C3_GetObjectRefTable = function() {
     C3.Behaviors.Sin,
     C3.Plugins.sliderbar,
     C3.Plugins.Button,
+    C3.Plugins.HTMLElement,
+    C3.Plugins.TiledBg,
     C3.Behaviors.Flash,
     C3.Behaviors.skymen_FollowMouse,
     C3.Behaviors.Bullet,
-    C3.Plugins.TiledBg,
+    C3.Plugins.Particles,
     C3.Plugins.Tilemap,
     C3.Behaviors.solid,
     C3.Behaviors.shadowcaster,
     C3.Behaviors.Physics,
     C3.Behaviors.jumpthru,
-    C3.Plugins.Particles,
     C3.Behaviors.Turret,
     C3.Behaviors.Platform,
     C3.Behaviors.TileMovement,
-    C3.Behaviors.bound,
     C3.Plugins.shadowlight,
+    C3.Behaviors.bound,
     C3.Plugins.Keyboard,
     C3.Plugins.Mouse,
     C3.Plugins.gamepad,
     C3.Plugins.Audio,
-    C3.Plugins.HTMLElement,
     C3.Plugins.System.Cnds.IsGroupActive,
     C3.Plugins.Sprite.Cnds.OnCollision,
     C3.Plugins.Sprite.Acts.SetEffectEnabled,
@@ -45662,51 +45616,47 @@ self.C3_GetObjectRefTable = function() {
     C3.Plugins.Sprite.Acts.Destroy,
     C3.Plugins.Sprite.Acts.SubInstanceVar,
     C3.Plugins.Sprite.Acts.AddInstanceVar,
-    C3.Plugins.gamepad.Cnds.IsButtonDown,
+    C3.Plugins.Keyboard.Cnds.IsKeyDown,
     C3.Plugins.System.Cnds.TriggerOnce,
     C3.Plugins.Sprite.Acts.SetOpacity,
     C3.Plugins.Text.Acts.SetOpacity,
-    C3.Plugins.System.Cnds.CompareBoolVar,
-    C3.Plugins.gamepad.Cnds.OnButtonDown,
-    C3.Plugins.Text.Acts.SetText,
-    C3.Plugins.Text.Acts.SetVisible,
-    C3.Behaviors.Flash.Acts.Flash,
+    C3.Plugins.Keyboard.Cnds.OnKey,
     C3.Plugins.Button.Acts.SetVisible,
     C3.Plugins.Button.Acts.SetEnabled,
     C3.Plugins.System.Acts.SetTimescale,
+    C3.Plugins.Button.Cnds.OnClicked,
     C3.Plugins.Button.Acts.SetBlur,
     C3.Plugins.Sprite.Acts.ToggleBoolInstanceVar,
+    C3.Plugins.Keyboard.Cnds.OnKeyReleased,
     C3.Plugins.System.Acts.SubVar,
     C3.Plugins.Sprite.Cnds.IsBoolInstanceVarSet,
     C3.Plugins.Sprite.Acts.SetVisible,
-    C3.Plugins.gamepad.Cnds.HasGamepads,
-    C3.Plugins.System.Acts.SetGroupActive,
-    C3.Behaviors.skymen_FollowMouse.Acts.SetEnabled,
-    C3.Plugins.gamepad.Cnds.CompareAxis,
-    C3.Plugins.gamepad.Exps.Axis,
-    C3.Behaviors.Bullet.Acts.SetEnabled,
-    C3.Behaviors.Bullet.Acts.SetAngleOfMotion,
-    C3.Plugins.System.Cnds.Compare,
-    C3.Plugins.Sprite.Exps.X,
-    C3.Plugins.Sprite.Exps.Y,
-    C3.Plugins.Sprite.Acts.SetPos,
-    C3.Plugins.Keyboard.Cnds.IsKeyDown,
-    C3.Plugins.Keyboard.Cnds.OnKey,
-    C3.Plugins.Button.Cnds.OnClicked,
-    C3.Plugins.Keyboard.Cnds.OnKeyReleased,
     C3.Plugins.Sprite.Acts.SetMirrored,
     C3.Behaviors.Platform.Acts.SimulateControl,
     C3.Plugins.Sprite.Acts.SetAnim,
+    C3.Behaviors.Platform.Acts.FallThrough,
     C3.Plugins.System.Cnds.Else,
+    C3.Plugins.System.Cnds.Compare,
     C3.Plugins.Sprite.Exps.AnimationName,
+    C3.Plugins.gamepad.Cnds.CompareAxis,
+    C3.Plugins.gamepad.Exps.Axis,
     C3.Plugins.Mouse.Cnds.OnClick,
     C3.Plugins.System.Cnds.CompareVar,
+    C3.Plugins.Text.Acts.SetText,
+    C3.Plugins.Text.Acts.SetVisible,
+    C3.Behaviors.Flash.Acts.Flash,
     C3.Plugins.Sprite.Acts.SetPosToObject,
     C3.Plugins.Sprite.Acts.SetTowardPosition,
     C3.Plugins.Mouse.Exps.X,
     C3.Plugins.Mouse.Exps.Y,
+    C3.Behaviors.Bullet.Acts.SetEnabled,
     C3.Behaviors.Platform.Acts.SetIgnoreInput,
     C3.Behaviors.Platform.Acts.SetEnabled,
+    C3.Plugins.System.Acts.SetGroupActive,
+    C3.Plugins.gamepad.Cnds.OnButtonDown,
+    C3.Plugins.Sprite.Exps.X,
+    C3.Plugins.Sprite.Exps.Y,
+    C3.Plugins.Sprite.Acts.SetPos,
     C3.Plugins.Sprite.Acts.StartAnim,
     C3.Plugins.System.Acts.SetVar,
     C3.Plugins.Sprite.Cnds.OnAnimFinished,
@@ -45718,6 +45668,7 @@ self.C3_GetObjectRefTable = function() {
     C3.Plugins.System.Acts.WaitForPreviousActions,
     C3.Behaviors.Bullet.Cnds.CompareTravelled,
     C3.Plugins.Sprite.Acts.SetInstanceVar,
+    C3.Plugins.System.Cnds.CompareBoolVar,
     C3.Plugins.Mouse.Cnds.IsOverObject,
     C3.Plugins.System.Cnds.EveryTick,
     C3.Plugins.progressbar.Acts.SetTooltip,
@@ -45784,6 +45735,7 @@ self.C3_GetObjectRefTable = function() {
     C3.Plugins.progressbar.Acts.SetCSSStyle,
     C3.Plugins.progressbar.Acts.SetIndeterminate,
     C3.Plugins.Text.Acts.SetEffectEnabled,
+    C3.Behaviors.skymen_FollowMouse.Acts.SetEnabled,
     C3.Plugins.Sprite.Acts.SetAngle,
     C3.Behaviors.Pin.Acts.PinByImagePoint,
     C3.Behaviors.Platform.Acts.SetCeilingCollision,
@@ -45810,39 +45762,39 @@ self.C3_GetObjectRefTable = function() {
 };
 self.C3_JsPropNameTable = [
   { ArrowNumberstatic: 0 },
-  { BossBarLVLstatic: 0 },
   { MoneyTextStatic: 0 },
   { Anchor: 0 },
   { GoldKeyHUD: 0 },
-  { HPbar: 0 },
-  { HPTEXT: 0 },
-  { MPbar: 0 },
-  { MPTEXT: 0 },
   { Pin: 0 },
-  { ShieldBar: 0 },
-  { SOHPTEXT: 0 },
-  { ManaBar30: 0 },
-  { LifeBar30: 0 },
-  { NECROT1HPtext: 0 },
   { BossBarLVL1variable: 0 },
-  { BossBarLVL1PROGRESS: 0 },
-  { ATKtypeText: 0 },
-  { blockhptexttest: 0 },
-  { SKHPTEXT: 0 },
   { EXPbarStatic: 0 },
   { EXPbarVariable: 0 },
-  { CDHPtext: 0 },
-  { CDHPbar: 0 },
+  { HPbar: 0 },
+  { MPbar: 0 },
+  { BossBarLVLstatic: 0 },
+  { ATKtypeText: 0 },
+  { blockhptexttest: 0 },
   { bossHPTextTest: 0 },
   { bossHPTextTest2: 0 },
+  { CDHPtext: 0 },
   { CDHPtext2: 0 },
+  { GoldenKeysNumberText: 0 },
+  { HPTEXT: 0 },
+  { HPTEXT2: 0 },
+  { MPTEXT: 0 },
+  { MPTEXT2: 0 },
+  { NECROT1HPtext: 0 },
+  { NECROT1HPtext2: 0 },
+  { SKHPTEXT: 0 },
+  { SOHPTEXT: 0 },
+  { ShieldBar: 0 },
+  { ManaBar30: 0 },
+  { LifeBar30: 0 },
+  { BossBarLVL1PROGRESS: 0 },
+  { CDHPbar: 0 },
   { CDsegmentHPbar: 0 },
   { HPbarInfo: 0 },
   { MPbarInfo: 0 },
-  { MPTEXT2: 0 },
-  { HPTEXT2: 0 },
-  { NECROT1HPtext2: 0 },
-  { GoldenKeysNumberText: 0 },
   { altHPBar: 0 },
   { altMPBar: 0 },
   { ScrollTo: 0 },
@@ -45871,6 +45823,10 @@ self.C3_JsPropNameTable = [
   { skipIntroMovieNopeInput: 0 },
   { skipIntroMovieYepInput: 0 },
   { StartGameText2: 0 },
+  { FixScrollBugSprite: 0 },
+  { HTMLElement: 0 },
+  { requestKeyLock: 0 },
+  { ToStartScreen: 0 },
   { ShopHUDbckgrd: 0 },
   { HeartContainer: 0 },
   { ItemCostDescription: 0 },
@@ -45905,6 +45861,7 @@ self.C3_JsPropNameTable = [
   { chargeType3: 0 },
   { MiniHPpot: 0 },
   { MiniMPpot: 0 },
+  { ToNextLevelButton: 0 },
   { MPpotHUD1: 0 },
   { InventoryHUD: 0 },
   { HPpotHUD1: 0 },
@@ -45936,49 +45893,48 @@ self.C3_JsPropNameTable = [
   { atr\u00E9lurnBookHUD: 0 },
   { atr\u00E9lurnRunes: 0 },
   { regularRunes: 0 },
+  { bkgrdfix: 0 },
+  { fullscreenfix: 0 },
+  { CatastrophicGluttonTextSpeak: 0 },
   { Flash: 0 },
   { CooldownText: 0 },
+  { InstructionsText: 0 },
+  { InstructionsText2: 0 },
+  { InstructionsText3: 0 },
+  { RubyTextSpeak: 0 },
+  { TheVoiceTextSpeak: 0 },
+  { TextSpeakCollisionsAppear: 0 },
+  { InstructionHUDbringup: 0 },
+  { InstructionHUDbringup2: 0 },
+  { InstructionsGamepad: 0 },
+  { InstructionsKBM: 0 },
   { FollowMouse: 0 },
   { Bullet: 0 },
   { CursorSprite: 0 },
-  { InstructionsText: 0 },
-  { InstructionHUDbringup: 0 },
-  { InstructionsText2: 0 },
   { ContinueGameButton: 0 },
   { DeathScreen: 0 },
-  { TheVoiceTextSpeak: 0 },
-  { TextSpeakCollisionsAppear: 0 },
-  { RubyTextSpeak: 0 },
-  { InstructionsKBM: 0 },
-  { bkgrdfix: 0 },
-  { fullscreenfix: 0 },
-  { ToNextLevelButton: 0 },
-  { CatastrophicGluttonTextSpeak: 0 },
-  { InstructionsGamepad: 0 },
-  { InstructionHUDbringup2: 0 },
-  { InstructionsText3: 0 },
-  { LockEntity: 0 },
+  { BreakableBlock1hp: 0 },
+  { BreakableBlock2hp: 0 },
+  { breakableBlock1BreakParticles: 0 },
+  { breakableBlock2BreakParticles: 0 },
   { Solid: 0 },
-  { oldTileMap: 0 },
-  { DungeonBackGround: 0 },
   { ShadowCaster: 0 },
   { Physics: 0 },
   { DungeonTileMap: 0 },
+  { oldTileMap: 0 },
   { Jumpthru: 0 },
+  { Shelf_Tilemap: 0 },
+  { DungeonBackGround: 0 },
   { Platform: 0 },
   { Platform2: 0 },
   { Platform3: 0 },
   { BlockHealth: 0 },
   { BreakableBlock1: 0 },
-  { BreakableBlock1hp: 0 },
   { BreakableBlock2: 0 },
-  { BreakableBlock2hp: 0 },
   { strangeWallSymbols: 0 },
   { hangingSkeleton: 0 },
   { treasureChest: 0 },
   { goldenDoor: 0 },
-  { breakableBlock1BreakParticles: 0 },
-  { breakableBlock2BreakParticles: 0 },
   { BurntOutTorch: 0 },
   { NecromancerATKST1: 0 },
   { NecromancerATKST2: 0 },
@@ -46000,11 +45956,11 @@ self.C3_JsPropNameTable = [
   { Type: 0 },
   { RubyATKS: 0 },
   { RubyMelee: 0 },
-  { FriendlyArrow: 0 },
   { RubyMelee2: 0 },
-  { shortswordATK: 0 },
   { SapphireMelee: 0 },
   { SapphireMelee2: 0 },
+  { FriendlyArrow: 0 },
+  { shortswordATK: 0 },
   { CC: 0 },
   { GC: 0 },
   { PC: 0 },
@@ -46034,17 +45990,18 @@ self.C3_JsPropNameTable = [
   { TPportal3a: 0 },
   { LVL4Portal: 0 },
   { LVL5Portal: 0 },
+  { LockEntity: 0 },
+  { particlesBlue: 0 },
+  { particlesRed: 0 },
+  { ShadowLight: 0 },
+  { TorchFlames: 0 },
   { MP: 0 },
   { DEF: 0 },
   { Guarding: 0 },
   { ShieldEnergy: 0 },
   { BoundToLayout: 0 },
   { Ruby: 0 },
-  { TorchFlames: 0 },
   { Sapphire: 0 },
-  { particlesBlue: 0 },
-  { particlesRed: 0 },
-  { ShadowLight: 0 },
   { Keyboard: 0 },
   { Mouse: 0 },
   { Gamepad: 0 },
@@ -46059,10 +46016,6 @@ self.C3_JsPropNameTable = [
   { SplashC3: 0 },
   { SplashPiskel: 0 },
   { SplashKrita: 0 },
-  { chargesForAttack: 0 },
-  { requestKeyLock: 0 },
-  { HTMLElement: 0 },
-  { Shelf_Tilemap: 0 },
   { Enemies: 0 },
   { CD: 0 },
   { rubyATK: 0 },
@@ -46128,67 +46081,67 @@ self.C3_JsPropNameTable = [
 self.InstanceType = {
   ArrowNumberstatic: class extends self.ITextInstance {
   },
-  BossBarLVLstatic: class extends self.ISpriteInstance {
-  },
   MoneyTextStatic: class extends self.ITextInstance {
   },
   GoldKeyHUD: class extends self.ISpriteInstance {
   },
-  HPbar: class extends self.ISpriteInstance {
-  },
-  HPTEXT: class extends self.ITextInstance {
-  },
-  MPbar: class extends self.ISpriteInstance {
-  },
-  MPTEXT: class extends self.ITextInstance {
-  },
-  ShieldBar: class extends self.ISpriteInstance {
-  },
-  SOHPTEXT: class extends self.ITextInstance {
-  },
-  ManaBar30: class extends self.ISpriteInstance {
-  },
-  LifeBar30: class extends self.ISpriteInstance {
-  },
-  NECROT1HPtext: class extends self.ITextInstance {
-  },
   BossBarLVL1variable: class extends self.ISpriteInstance {
-  },
-  BossBarLVL1PROGRESS: class extends self.IProgressBarInstance {
-  },
-  ATKtypeText: class extends self.ITextInstance {
-  },
-  blockhptexttest: class extends self.ITextInstance {
-  },
-  SKHPTEXT: class extends self.ITextInstance {
   },
   EXPbarStatic: class extends self.ISpriteInstance {
   },
   EXPbarVariable: class extends self.ISpriteInstance {
   },
-  CDHPtext: class extends self.ITextInstance {
+  HPbar: class extends self.ISpriteInstance {
   },
-  CDHPbar: class extends self.IProgressBarInstance {
+  MPbar: class extends self.ISpriteInstance {
+  },
+  BossBarLVLstatic: class extends self.ISpriteInstance {
+  },
+  ATKtypeText: class extends self.ITextInstance {
+  },
+  blockhptexttest: class extends self.ITextInstance {
   },
   bossHPTextTest: class extends self.ITextInstance {
   },
   bossHPTextTest2: class extends self.ITextInstance {
   },
+  CDHPtext: class extends self.ITextInstance {
+  },
   CDHPtext2: class extends self.ITextInstance {
+  },
+  GoldenKeysNumberText: class extends self.ITextInstance {
+  },
+  HPTEXT: class extends self.ITextInstance {
+  },
+  HPTEXT2: class extends self.ITextInstance {
+  },
+  MPTEXT: class extends self.ITextInstance {
+  },
+  MPTEXT2: class extends self.ITextInstance {
+  },
+  NECROT1HPtext: class extends self.ITextInstance {
+  },
+  NECROT1HPtext2: class extends self.ITextInstance {
+  },
+  SKHPTEXT: class extends self.ITextInstance {
+  },
+  SOHPTEXT: class extends self.ITextInstance {
+  },
+  ShieldBar: class extends self.ISpriteInstance {
+  },
+  ManaBar30: class extends self.ISpriteInstance {
+  },
+  LifeBar30: class extends self.ISpriteInstance {
+  },
+  BossBarLVL1PROGRESS: class extends self.IProgressBarInstance {
+  },
+  CDHPbar: class extends self.IProgressBarInstance {
   },
   CDsegmentHPbar: class extends self.IProgressBarInstance {
   },
   HPbarInfo: class extends self.IProgressBarInstance {
   },
   MPbarInfo: class extends self.IProgressBarInstance {
-  },
-  MPTEXT2: class extends self.ITextInstance {
-  },
-  HPTEXT2: class extends self.ITextInstance {
-  },
-  NECROT1HPtext2: class extends self.ITextInstance {
-  },
-  GoldenKeysNumberText: class extends self.ITextInstance {
   },
   altHPBar: class extends self.IProgressBarInstance {
   },
@@ -46241,6 +46194,14 @@ self.InstanceType = {
   skipIntroMovieYepInput: class extends self.IButtonInstance {
   },
   StartGameText2: class extends self.ITextInstance {
+  },
+  FixScrollBugSprite: class extends self.ISpriteInstance {
+  },
+  HTMLElement: class extends self.IHTMLElementInstance {
+  },
+  requestKeyLock: class extends self.IButtonInstance {
+  },
+  ToStartScreen: class extends self.ITextInstance {
   },
   ShopHUDbckgrd: class extends self.ISpriteInstance {
   },
@@ -46310,6 +46271,8 @@ self.InstanceType = {
   },
   MiniMPpot: class extends self.ISpriteInstance {
   },
+  ToNextLevelButton: class extends self.IButtonInstance {
+  },
   MPpotHUD1: class extends self.ISpriteInstance {
   },
   InventoryHUD: class extends self.ISpriteInstance {
@@ -46372,49 +46335,55 @@ self.InstanceType = {
   },
   regularRunes: class extends self.ITextInstance {
   },
-  CooldownText: class extends self.ITextInstance {
+  bkgrdfix: class extends self.ITiledBackgroundInstance {
   },
-  CursorSprite: class extends self.ISpriteInstance {
+  fullscreenfix: class extends self.ISpriteInstance {
+  },
+  CatastrophicGluttonTextSpeak: class extends self.ITextInstance {
+  },
+  CooldownText: class extends self.ITextInstance {
   },
   InstructionsText: class extends self.ITextInstance {
   },
-  InstructionHUDbringup: class extends self.ISpriteInstance {
-  },
   InstructionsText2: class extends self.ITextInstance {
   },
-  ContinueGameButton: class extends self.IButtonInstance {
+  InstructionsText3: class extends self.ITextInstance {
   },
-  DeathScreen: class extends self.ISpriteInstance {
+  RubyTextSpeak: class extends self.ITextInstance {
   },
   TheVoiceTextSpeak: class extends self.ITextInstance {
   },
   TextSpeakCollisionsAppear: class extends self.ISpriteInstance {
   },
-  RubyTextSpeak: class extends self.ITextInstance {
-  },
-  InstructionsKBM: class extends self.ISpriteInstance {
-  },
-  bkgrdfix: class extends self.ITiledBackgroundInstance {
-  },
-  fullscreenfix: class extends self.ISpriteInstance {
-  },
-  ToNextLevelButton: class extends self.IButtonInstance {
-  },
-  CatastrophicGluttonTextSpeak: class extends self.ITextInstance {
-  },
-  InstructionsGamepad: class extends self.ISpriteInstance {
+  InstructionHUDbringup: class extends self.ISpriteInstance {
   },
   InstructionHUDbringup2: class extends self.ISpriteInstance {
   },
-  InstructionsText3: class extends self.ITextInstance {
+  InstructionsGamepad: class extends self.ISpriteInstance {
   },
-  LockEntity: class extends self.ISpriteInstance {
+  InstructionsKBM: class extends self.ISpriteInstance {
+  },
+  CursorSprite: class extends self.ISpriteInstance {
+  },
+  ContinueGameButton: class extends self.IButtonInstance {
+  },
+  DeathScreen: class extends self.ISpriteInstance {
+  },
+  BreakableBlock1hp: class extends self.IProgressBarInstance {
+  },
+  BreakableBlock2hp: class extends self.IProgressBarInstance {
+  },
+  breakableBlock1BreakParticles: class extends self.IParticlesInstance {
+  },
+  breakableBlock2BreakParticles: class extends self.IParticlesInstance {
+  },
+  DungeonTileMap: class extends self.ITilemapInstance {
   },
   oldTileMap: class extends self.ITilemapInstance {
   },
-  DungeonBackGround: class extends self.ITiledBackgroundInstance {
+  Shelf_Tilemap: class extends self.ITilemapInstance {
   },
-  DungeonTileMap: class extends self.ITilemapInstance {
+  DungeonBackGround: class extends self.ITiledBackgroundInstance {
   },
   Platform: class extends self.ISpriteInstance {
   },
@@ -46424,11 +46393,7 @@ self.InstanceType = {
   },
   BreakableBlock1: class extends self.ISpriteInstance {
   },
-  BreakableBlock1hp: class extends self.IProgressBarInstance {
-  },
   BreakableBlock2: class extends self.ISpriteInstance {
-  },
-  BreakableBlock2hp: class extends self.IProgressBarInstance {
   },
   strangeWallSymbols: class extends self.ITextInstance {
   },
@@ -46437,10 +46402,6 @@ self.InstanceType = {
   treasureChest: class extends self.ISpriteInstance {
   },
   goldenDoor: class extends self.ISpriteInstance {
-  },
-  breakableBlock1BreakParticles: class extends self.IParticlesInstance {
-  },
-  breakableBlock2BreakParticles: class extends self.IParticlesInstance {
   },
   BurntOutTorch: class extends self.ISpriteInstance {
   },
@@ -46470,15 +46431,15 @@ self.InstanceType = {
   },
   RubyMelee: class extends self.ISpriteInstance {
   },
-  FriendlyArrow: class extends self.ISpriteInstance {
-  },
   RubyMelee2: class extends self.ISpriteInstance {
-  },
-  shortswordATK: class extends self.ISpriteInstance {
   },
   SapphireMelee: class extends self.ISpriteInstance {
   },
   SapphireMelee2: class extends self.ISpriteInstance {
+  },
+  FriendlyArrow: class extends self.ISpriteInstance {
+  },
+  shortswordATK: class extends self.ISpriteInstance {
   },
   CC: class extends self.ISpriteInstance {
   },
@@ -46538,17 +46499,19 @@ self.InstanceType = {
   },
   LVL5Portal: class extends self.ISpriteInstance {
   },
-  Ruby: class extends self.ISpriteInstance {
-  },
-  TorchFlames: class extends self.ISpriteInstance {
-  },
-  Sapphire: class extends self.ISpriteInstance {
+  LockEntity: class extends self.ISpriteInstance {
   },
   particlesBlue: class extends self.IParticlesInstance {
   },
   particlesRed: class extends self.IParticlesInstance {
   },
   ShadowLight: class extends self.IShadowLightInstance {
+  },
+  TorchFlames: class extends self.ISpriteInstance {
+  },
+  Ruby: class extends self.ISpriteInstance {
+  },
+  Sapphire: class extends self.ISpriteInstance {
   },
   Keyboard: class extends self.IInstance {
   },
@@ -46577,14 +46540,6 @@ self.InstanceType = {
   SplashPiskel: class extends self.ISpriteInstance {
   },
   SplashKrita: class extends self.ISpriteInstance {
-  },
-  chargesForAttack: class extends self.ISpriteInstance {
-  },
-  requestKeyLock: class extends self.IButtonInstance {
-  },
-  HTMLElement: class extends self.IHTMLElementInstance {
-  },
-  Shelf_Tilemap: class extends self.ITilemapInstance {
   },
   Enemies: class extends self.ISpriteInstance {
   },
