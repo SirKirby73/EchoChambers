@@ -41195,6 +41195,46 @@ var GetAudioDOMInterface2;
 {
   {
     const e = self.C3;
+    e.Behaviors.Persist = class extends e.SDKBehaviorBase {
+      constructor(e2) {
+        super(e2);
+      }
+      Release() {
+        super.Release();
+      }
+    };
+  }
+  {
+    const e = self.C3;
+    e.Behaviors.Persist.Type = class extends e.SDKBehaviorTypeBase {
+      constructor(e2) {
+        super(e2);
+      }
+      Release() {
+        super.Release();
+      }
+      OnCreate() {
+      }
+    };
+  }
+  {
+    const e = self.C3;
+    e.Behaviors.Persist.Instance = class extends e.SDKBehaviorInstanceBase {
+      constructor(e2, s) {
+        super(e2);
+      }
+      Release() {
+        super.Release();
+      }
+    };
+  }
+  self.C3.Behaviors.Persist.Cnds = {};
+  self.C3.Behaviors.Persist.Acts = {};
+  self.C3.Behaviors.Persist.Exps = {};
+}
+{
+  {
+    const e = self.C3;
     e.Behaviors.Flash = class extends e.SDKBehaviorBase {
       constructor(e2) {
         super(e2);
@@ -44767,17 +44807,8 @@ var accelerate2;
     () => 8,
     () => "PlayerMOVEMENT",
     () => "MovementKBM",
-    () => "Jump",
-    (p2) => {
-      const n0 = p2._GetNode(0);
-      return () => n0.ExpObject();
-    },
-    () => "Stand",
-    (p2) => {
-      const f0 = p2._GetNode(0).GetBoundMethod();
-      return () => C32.clamp(f0(0, 0), -24, 24);
-    },
     () => "Walk",
+    () => "Stand",
     () => "PlayerATKS",
     () => "atkBowNArrow",
     () => "You don't have any arrows!",
@@ -44791,6 +44822,7 @@ var accelerate2;
     () => "PlayerMovement",
     () => "MagicAttack",
     () => -1e3,
+    () => 650,
     () => "atkMelee",
     () => "Attack",
     () => "Animation 1",
@@ -44802,25 +44834,29 @@ var accelerate2;
     },
     () => "Your Mana is too low!",
     () => 2,
-    () => 650,
     () => "Basic",
     () => "Attack Type: Basic",
     () => "Basic+",
     () => "Attack Type: Basic+",
     () => "BasicFire",
     () => 99999999,
-    () => "Unobtained",
+    () => "Unobtained (Type 2)",
     () => "FlameSpark",
     () => "Attack Type: Fire Spark",
     () => "BasicElectric",
+    () => "Unobtained (Type 3)",
     () => "ElectroSpark",
     () => "Attack Type: Lightning Spark",
     () => "Extreme",
+    () => "Unobtained  (Type 4)",
     () => "Attack Type: Extreme",
     () => "Extreme+",
+    () => "Unobtained  (Type 5)",
     () => "Attack Type: Extreme+",
     () => 6,
     () => "Insane",
+    () => "Unobtained  (Type 6)",
+    () => "Insanity",
     () => "Attack Type: Insane",
     () => -0.1,
     () => 6.1,
@@ -44842,6 +44878,10 @@ var accelerate2;
       const n0 = p2._GetNode(0);
       const v1 = p2._GetNode(1).GetVar();
       return () => and(and("Health ", n0.ExpInstVar()) + "/", v1.GetValue());
+    },
+    (p2) => {
+      const n0 = p2._GetNode(0);
+      return () => n0.ExpObject();
     },
     (p2) => {
       const n0 = p2._GetNode(0);
@@ -45058,7 +45098,6 @@ var accelerate2;
       const v0 = p2._GetNode(0).GetVar();
       return () => Math.floor(4 - v0.GetValue() * 0.75);
     },
-    () => -20,
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
       return () => Math.floor(6 - v0.GetValue() * 0.75);
@@ -45126,7 +45165,7 @@ var accelerate2;
     () => "breakableBlock2",
     () => " / 10",
     () => 273,
-    () => "355",
+    () => "273",
     () => 548,
     () => "548",
     () => 355,
@@ -45137,6 +45176,7 @@ var accelerate2;
       const v0 = p2._GetNode(0).GetVar();
       return () => 12 - v0.GetValue();
     },
+    () => -20,
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
       return () => Math.floor(7 - v0.GetValue() * 0.75);
@@ -45151,7 +45191,7 @@ var accelerate2;
     },
     (p2) => {
       const n0 = p2._GetNode(0);
-      return () => and("Health ", n0.ExpInstVar()) + "228/";
+      return () => and("Necromancer Health ", n0.ExpInstVar()) + "/154";
     },
     () => "SpiritOrb",
     () => "spiritOrbHealth",
@@ -45160,14 +45200,6 @@ var accelerate2;
     () => "LVL2",
     () => 334,
     () => 178,
-    () => 122,
-    () => 121,
-    () => 128,
-    () => 127,
-    () => 130,
-    () => 129,
-    () => "30SOkill",
-    () => "10SOkill",
     () => "spiritOrbCollisions",
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
@@ -45192,7 +45224,7 @@ var accelerate2;
     },
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
-      return () => 5 - v0.GetValue();
+      return () => 3 - v0.GetValue();
     },
     (p2) => {
       const v0 = p2._GetNode(0).GetVar();
@@ -45215,14 +45247,13 @@ var accelerate2;
     () => "0",
     () => "Sharpen",
     () => 315,
-    () => 0.75,
+    () => "154",
+    () => 154,
+    () => "font-family",
+    () => "DungeonFont",
+    () => "Copperplate Gothic",
     () => "LVL1",
     () => 228,
-    () => "LVL6",
-    () => "LVL7",
-    () => "LVL8",
-    () => "LVL9",
-    () => "LVL10",
     () => 140,
     () => 139,
     () => 144,
@@ -45236,6 +45267,8 @@ var accelerate2;
     () => "StartScreenControlsGamepad",
     () => "StartScreenSound",
     () => "SSM",
+    () => "border",
+    () => "2px solid cadetblue",
     () => "intro",
     () => "Wauh?! Where... where am I?!",
     () => 1.5,
@@ -45250,6 +45283,7 @@ var accelerate2;
     () => "But I need information, not mindless quests.",
     () => "...",
     () => "Good point.",
+    () => 0.75,
     () => 1.75,
     () => "This Echo Chambers is a dungeon filled with Skeletons, Spirit Orbs, Necromancers, and unholy magicks. With the amount of magic around, you are capable of some small spells. But be careful, Ruby. You will never know what is around the corner, or behind a door.",
     () => 7.5,
@@ -45411,6 +45445,10 @@ var accelerate2;
     () => "Purchased an enhanced extreme Magic Charge Fragment",
     () => "Purchased an Insanity Magic Charge Fragment",
     () => "You have one already",
+    (p2) => {
+      const v0 = p2._GetNode(0).GetVar();
+      return () => 5 - v0.GetValue();
+    },
     () => " more Fire Magic Charge Frags!",
     () => "Crafted a Fire Magic Charge",
     (p2) => {
@@ -45439,11 +45477,13 @@ var accelerate2;
     () => "Purchased 1 Mana Potion",
     () => "Purchased 1 Mini Healing Potion",
     () => "Purchased 1 Mini Mana Potion",
+    () => "word-wrap",
+    () => "break-word",
     () => "GameLevelSelectorT1",
     () => 5573478,
     () => 300,
     () => 180,
-    () => "You can still skip the Intro Movie if you choose not to.",
+    () => "You can still skip the Intro Movie if you choose not to. NOTE: YOU CANNOT SPAM THE DIALOGUE!",
     () => "Loading.....",
     () => "This isn't unlocked or available yet!",
     () => "IntroMovie"
@@ -45590,6 +45630,7 @@ self.C3_GetObjectRefTable = function() {
     C3.Plugins.sliderbar,
     C3.Plugins.Button,
     C3.Plugins.HTMLElement,
+    C3.Behaviors.Persist,
     C3.Plugins.TiledBg,
     C3.Behaviors.Flash,
     C3.Behaviors.skymen_FollowMouse,
@@ -45634,13 +45675,8 @@ self.C3_GetObjectRefTable = function() {
     C3.Plugins.Sprite.Acts.SetVisible,
     C3.Plugins.Sprite.Acts.SetMirrored,
     C3.Behaviors.Platform.Acts.SimulateControl,
-    C3.Plugins.Sprite.Acts.SetAnim,
     C3.Behaviors.Platform.Acts.FallThrough,
-    C3.Plugins.System.Cnds.Else,
-    C3.Plugins.System.Cnds.Compare,
-    C3.Plugins.Sprite.Exps.AnimationName,
-    C3.Plugins.gamepad.Cnds.CompareAxis,
-    C3.Plugins.gamepad.Exps.Axis,
+    C3.Plugins.Sprite.Acts.SetAnim,
     C3.Plugins.Mouse.Cnds.OnClick,
     C3.Plugins.System.Cnds.CompareVar,
     C3.Plugins.Text.Acts.SetText,
@@ -45652,22 +45688,24 @@ self.C3_GetObjectRefTable = function() {
     C3.Plugins.Mouse.Exps.Y,
     C3.Behaviors.Bullet.Acts.SetEnabled,
     C3.Behaviors.Platform.Acts.SetIgnoreInput,
-    C3.Behaviors.Platform.Acts.SetEnabled,
+    C3.Behaviors.Platform.Acts.SetVectorX,
+    C3.Behaviors.Platform.Acts.SetVectorY,
     C3.Plugins.System.Acts.SetGroupActive,
-    C3.Plugins.gamepad.Cnds.OnButtonDown,
-    C3.Plugins.Sprite.Exps.X,
-    C3.Plugins.Sprite.Exps.Y,
+    C3.Behaviors.Bullet.Acts.SetDistanceTravelled,
+    C3.Behaviors.Bullet.Acts.SetAcceleration,
     C3.Plugins.Sprite.Acts.SetPos,
+    C3.Behaviors.Bullet.Cnds.CompareTravelled,
+    C3.Behaviors.Bullet.Cnds.IsEnabled,
     C3.Plugins.Sprite.Acts.StartAnim,
-    C3.Plugins.System.Acts.SetVar,
+    C3.Behaviors.Platform.Acts.SetEnabled,
     C3.Plugins.Sprite.Cnds.OnAnimFinished,
     C3.Plugins.Sprite.Cnds.OnAnyAnimFinished,
-    C3.Behaviors.Bullet.Cnds.IsEnabled,
+    C3.Plugins.System.Acts.SetVar,
+    C3.Plugins.Sprite.Cnds.IsVisible,
+    C3.Behaviors.Bullet.Acts.Bounce,
     C3.Plugins.Sprite.Cnds.CompareInstanceVar,
-    C3.Behaviors.Bullet.Acts.SetDistanceTravelled,
     C3.Plugins.Audio.Acts.Play,
     C3.Plugins.System.Acts.WaitForPreviousActions,
-    C3.Behaviors.Bullet.Cnds.CompareTravelled,
     C3.Plugins.Sprite.Acts.SetInstanceVar,
     C3.Plugins.System.Cnds.CompareBoolVar,
     C3.Plugins.Mouse.Cnds.IsOverObject,
@@ -45687,11 +45725,15 @@ self.C3_GetObjectRefTable = function() {
     C3.Behaviors.Platform.Acts.SetDoubleJumpEnabled,
     C3.Plugins.System.Cnds.Every,
     C3.Plugins.Particles.Acts.SetVisible,
+    C3.Plugins.gamepad.Cnds.OnButtonDown,
     C3.Plugins.Sprite.Cnds.IsOverlappingOffset,
     C3.Plugins.System.Cnds.CompareBetween,
+    C3.Plugins.Sprite.Exps.X,
+    C3.Plugins.Sprite.Exps.Y,
     C3.Plugins.Sprite.Acts.Spawn,
     C3.Behaviors.Physics.Acts.ApplyImpulseAtAngle,
     C3.Plugins.System.Exps.random,
+    C3.Plugins.System.Cnds.Compare,
     C3.Plugins.System.Exps.layoutname,
     C3.Plugins.Text.Acts.SetSize,
     C3.Plugins.Text.Exps.Width,
@@ -45709,11 +45751,7 @@ self.C3_GetObjectRefTable = function() {
     C3.Plugins.Text.Acts.Destroy,
     C3.Plugins.System.Cnds.OnSignal,
     C3.Plugins.Sprite.Acts.InstanceSignal,
-    C3.Behaviors.Platform.Acts.SetVectorX,
-    C3.Behaviors.Platform.Acts.SetVectorY,
-    C3.Plugins.Sprite.Acts.MoveForward,
     C3.Behaviors.Turret.Cnds.OnShoot,
-    C3.Plugins.Sprite.Cnds.IsVisible,
     C3.Plugins.Particles.Acts.SetPosToObject,
     C3.Plugins.Particles.Acts.SetRate,
     C3.Plugins.progressbar.Acts.SetPosToObject,
@@ -45723,10 +45761,10 @@ self.C3_GetObjectRefTable = function() {
     C3.Plugins.Sprite.Cnds.PickInstVarHiLow,
     C3.Plugins.Sprite.Cnds.PickByUID,
     C3.Behaviors.jumpthru.Acts.SetEnabled,
+    C3.Plugins.Sprite.Acts.MoveForward,
     C3.Plugins.Text.Cnds.PickByUID,
     C3.Plugins.Text.Cnds.PickDistance,
     C3.Plugins.Text.Acts.SetPosToObject,
-    C3.Plugins.Sprite.Cnds.OnDestroyed,
     C3.Behaviors.Physics.Acts.SetEnabled,
     C3.Plugins.progressbar.Acts.SetVisible,
     C3.Plugins.Audio.Acts.FadeVolume,
@@ -45740,19 +45778,23 @@ self.C3_GetObjectRefTable = function() {
     C3.Plugins.Sprite.Acts.SetAngle,
     C3.Behaviors.Pin.Acts.PinByImagePoint,
     C3.Behaviors.Platform.Acts.SetCeilingCollision,
+    C3.Plugins.progressbar.Acts.SetMaximum,
     C3.Plugins.Button.Acts.SetCSSStyle,
     C3.Plugins.Sprite.Acts.SetSize,
-    C3.Plugins.Sprite.Acts.SetScale,
+    C3.Plugins.Text.Acts.SetFontFace,
+    C3.Plugins.Text.Acts.SetFontSize,
     C3.Plugins.System.Acts.LoadLayoutTextures,
     C3.Plugins.System.Acts.UnloadUnusedTextures,
-    C3.Plugins.Keyboard.Acts.LockKeyboard,
-    C3.Plugins.Keyboard.Acts.UnlockKeyboard,
     C3.Plugins.Sprite.Acts.StopAnim,
+    C3.Plugins.System.Cnds.Else,
     C3.Plugins.Sprite.Acts.SetAnimSpeed,
     C3.Plugins.Mouse.Cnds.OnObjectClicked,
     C3.Plugins.sliderbar.Cnds.OnChanged,
     C3.Plugins.sliderbar.Exps.Value,
     C3.Plugins.Audio.Acts.SetMasterVolume,
+    C3.Plugins.Button.Cnds.IsChecked,
+    C3.Plugins.Keyboard.Acts.LockKeyboard,
+    C3.Plugins.Keyboard.Acts.UnlockKeyboard,
     C3.Plugins.Text.Acts.TypewriterText,
     C3.Plugins.Button.Cnds.IsEnabled,
     C3.Plugins.System.Acts.GoToLayout,
@@ -45826,6 +45868,7 @@ self.C3_JsPropNameTable = [
   { StartGameText2: 0 },
   { FixScrollBugSprite: 0 },
   { HTMLElement: 0 },
+  { Persist: 0 },
   { requestKeyLock: 0 },
   { ToStartScreen: 0 },
   { ShopHUDbckgrd: 0 },
@@ -45863,6 +45906,7 @@ self.C3_JsPropNameTable = [
   { MiniHPpot: 0 },
   { MiniMPpot: 0 },
   { ToNextLevelButton: 0 },
+  { ToMainMenuButton: 0 },
   { MPpotHUD1: 0 },
   { InventoryHUD: 0 },
   { HPpotHUD1: 0 },
@@ -46017,11 +46061,14 @@ self.C3_JsPropNameTable = [
   { SplashC3: 0 },
   { SplashPiskel: 0 },
   { SplashKrita: 0 },
+  { FontChangerButton: 0 },
   { Enemies: 0 },
   { CD: 0 },
   { rubyATK: 0 },
   { Instruct1: 0 },
   { Instruct2: 0 },
+  { AllTexts: 0 },
+  { Buttons: 0 },
   { ATKcooldown: 0 },
   { ATKanticooldownfix: 0 },
   { RubyHeartsNumber: 0 },
@@ -46072,6 +46119,7 @@ self.C3_JsPropNameTable = [
   { MiniHPpots: 0 },
   { MiniMPpots: 0 },
   { CDdeadyn: 0 },
+  { FontChangeVariable: 0 },
   { IntroMovieTextVariableThingy: 0 },
   { ItemCost: 0 },
   { ShopTrue: 0 },
@@ -46275,6 +46323,8 @@ self.InstanceType = {
   MiniMPpot: class extends self.ISpriteInstance {
   },
   ToNextLevelButton: class extends self.IButtonInstance {
+  },
+  ToMainMenuButton: class extends self.IButtonInstance {
   },
   MPpotHUD1: class extends self.ISpriteInstance {
   },
@@ -46544,6 +46594,8 @@ self.InstanceType = {
   },
   SplashKrita: class extends self.ISpriteInstance {
   },
+  FontChangerButton: class extends self.IButtonInstance {
+  },
   Enemies: class extends self.ISpriteInstance {
   },
   CD: class extends self.ISpriteInstance {
@@ -46553,6 +46605,10 @@ self.InstanceType = {
   Instruct1: class extends self.ISpriteInstance {
   },
   Instruct2: class extends self.ITextInstance {
+  },
+  AllTexts: class extends self.ITextInstance {
+  },
+  Buttons: class extends self.IButtonInstance {
   }
 };
 
